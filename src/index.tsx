@@ -1,6 +1,14 @@
+export { default as Formity } from './react/components/formity';
+export { default as Components } from './react/types/components';
+export { default as FormProps } from './react/types/form';
 export {
-  default as Formity,
-  FormProps,
-  Components,
-} from './react/components/formity';
-export { ListSchema as Schema } from './core/types/schema';
+  Schema,
+  FlowSchema,
+  ListSchema,
+  CondSchema,
+  LoopSchema,
+  ItemSchema,
+  FormSchema,
+  ReturnSchema,
+  VariablesSchema,
+} from './core/types/schema';
