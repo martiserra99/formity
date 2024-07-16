@@ -80,20 +80,14 @@ function flowUtils(flow: FlowSchema) {
   throw new Error('Invalid flow schema');
 }
 
-function checkType(flow: FlowSchema): 'list' | 'cond' | 'loop' {
-  if (Array.isArray(flow)) return 'list';
-  if ('cond' in flow) return 'cond';
-  if ('loop' in flow) return 'loop';
-  throw new Error('Invalid flow schema');
+export function navigateNext(flow: FlowSchema, spot: Spot, vars: Vars) {
+  return flowUtils(flow).navigateNext(spot, vars);
 }
 
-function createMapper<T, U extends string[]>(
-  checkType: (data: T) => U[number],
-  mapper: Record<U[number], (data: T) => any>
-) {}
+export function navigateInto(flow: FlowSchema, vars: Vars) {
+  return flowUtils(flow).navigateInto(vars);
+}
 
-const mapper = createMapper<FlowSchema, ['list', 'cond', 'loop']>(checkType, {
-  list: (flow: ListSchema) => listUtils(flow),
-  cond: (flow: CondSchema) => condUtils(flow),
-  loop: (flow: LoopSchema) => loopUtils(flow),
-});
+export function getChild(flow: FlowSchema, spot: Spot) {
+  return flowUtils(flow).getChild(spot);
+}
