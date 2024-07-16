@@ -8,6 +8,7 @@
     "build": "parcel build index.html"
   },
   "dependencies": {
+    "@radix-ui/themes": "^2.0.3",
     "react-app-polyfill": "^1.0.0"
   },
   "alias": {
