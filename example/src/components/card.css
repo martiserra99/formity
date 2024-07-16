@@ -1,9 +1,0 @@
-.card__card {
-  width: 100%;
-  max-width: 850px;
-}
-
-.card__content {
-  max-height: 80vh;
-  overflow-y: scroll;
-}
