@@ -1,0 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&display=swap');
+
+.radix-themes {
+  --scaling: 2.8;
+  --default-font-family: 'Familjen Grotesk', sans-serif;
+}
