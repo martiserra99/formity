@@ -1,14 +1,14 @@
 import { Expry } from 'expry';
-import { Position } from '../types/position';
+import { Spot } from '../types/spot';
 
 export class DefaultValues {
   constructor() {}
 
-  set(path: Position[], name: string, deps: Expry[], value: Expry) {
+  set(path: Spot[], name: string, deps: Expry[], value: Expry) {
     return null as any;
   }
 
-  get(path: Position[], name: string, deps: Expry[]): Expry {
+  get(path: Spot[], name: string, deps: Expry[]): Expry {
     return null as any;
   }
 }

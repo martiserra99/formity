@@ -1,8 +1,8 @@
 import { Expry } from 'expry';
 
-import { Position } from './position';
+import { Spot } from './spot';
 
 export interface Point {
-  path: Position[];
+  path: Spot[];
   vars: Record<string, Expry>;
 }
