@@ -1,18 +1,14 @@
 import { Expry } from 'expry';
+import { ReactElement } from 'react';
 
-export interface FormValue {
+export interface FormValue<T extends Record<string, unknown>> {
   type: 'form';
-  defaultValues: Record<string, Expry>;
+  defaultValues: Record<string, unknown>;
   resolver: Record<string, [Expry, string][]>;
-  render: Expry;
+  render: (values: T) => ReactElement;
 }
 
 export interface ReturnValue {
   type: 'return';
-  return: Expry;
-}
-
-export interface VariablesValue {
-  type: 'variables';
-  variables: Record<string, Expry>;
+  return: unknown;
 }

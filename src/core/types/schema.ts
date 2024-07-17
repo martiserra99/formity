@@ -1,8 +1,8 @@
 import { Expry } from 'expry';
 
-export type Schema = FlowSchema | ItemSchema;
+export type UnitSchema = FlowSchema | ItemSchema;
 export type FlowSchema = ListSchema | CondSchema | LoopSchema;
-export type ListSchema = Schema[];
+export type ListSchema = UnitSchema[];
 export type CondSchema = {
   cond: {
     if: Expry;

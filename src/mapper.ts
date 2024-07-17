@@ -1,13 +1,13 @@
 import { expry, Expry } from 'expry';
 
-import { Spot, ListSpot, CondSpot, LoopSpot } from './core/types/spot';
+import { Spot, ListSpot, CondSpot, LoopSpot } from './core/types/position';
 
 import {
   FlowSchema,
   ListSchema,
   CondSchema,
   LoopSchema,
-  Schema,
+  UnitSchema,
 } from './core/types/schema';
 
 type Vars = Record<string, Expry>;
@@ -22,7 +22,7 @@ const listUtils = (flow: ListSchema) => ({
     if (flow.length > 0) return ['list', 0];
     return null;
   },
-  getChild(spot: Spot): Schema {
+  getChild(spot: Spot): UnitSchema {
     const [_, index] = spot as ListSpot;
     return flow[index];
   },
@@ -48,7 +48,7 @@ const condUtils = (flow: CondSchema) => ({
     }
     return null;
   },
-  getChild(spot: Spot): Schema {
+  getChild(spot: Spot): UnitSchema {
     const [_, [branch, index]] = spot as CondSpot;
     return flow.cond[branch][index];
   },
@@ -67,7 +67,7 @@ const loopUtils = (flow: LoopSchema) => ({
     }
     return null;
   },
-  getChild(spot: Spot): Schema {
+  getChild(spot: Spot): UnitSchema {
     const [_, index] = spot as LoopSpot;
     return flow.loop.do[index];
   },
