@@ -1,4 +1,4 @@
-import { Position } from '../old/core/types/position';
+import { Position } from './position';
 
 export interface Step {
   path: Position[];
