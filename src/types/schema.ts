@@ -1,32 +1,33 @@
-import { Expry } from 'expry';
+import { Expr } from 'expry';
 
+export type Schema = ListSchema;
 export type UnitSchema = FlowSchema | ItemSchema;
 export type FlowSchema = ListSchema | CondSchema | LoopSchema;
 export type ListSchema = UnitSchema[];
 export type CondSchema = {
   cond: {
-    if: Expry;
+    if: Expr;
     then: ListSchema;
     else: ListSchema;
   };
 };
 export type LoopSchema = {
   loop: {
-    while: Expry;
+    while: Expr;
     do: ListSchema;
   };
 };
 export type ItemSchema = FormSchema | ReturnSchema | VariablesSchema;
 export type FormSchema = {
   form: {
-    defaultValues: Expry;
-    resolver: Expry;
-    render: Expry;
+    defaultValues: Expr;
+    resolver: Expr;
+    render: Expr;
   };
 };
 export type ReturnSchema = {
-  return: Expry;
+  return: Expr;
 };
 export type VariablesSchema = {
-  variables: Expry;
+  variables: Expr;
 };

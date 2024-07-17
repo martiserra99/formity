@@ -1,6 +1,5 @@
+import { Vars } from 'expry';
+
 import { Position } from './position';
 
-export interface Step {
-  path: Position[];
-  vars: Record<string, unknown>;
-}
+export type Step = { path: Position[]; vars: Vars };

@@ -1,7 +1,8 @@
 export { Formity } from './formity';
-export { Components, FormProps } from './types';
+export { Components } from './types/components';
+export { FormProps } from './types/form';
 export {
-  ListSchema as Schema,
+  Schema,
   UnitSchema,
   FlowSchema,
   ListSchema,

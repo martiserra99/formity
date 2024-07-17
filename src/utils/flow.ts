@@ -1,4 +1,4 @@
-import { expry, Expry } from 'expry';
+import { expry, Vars } from 'expry';
 
 import {
   Position,
@@ -39,8 +39,8 @@ const condUtils = (flow: CondSchema) => ({
     }
     return null;
   },
-  navigateInto(variables: Record<string, Expry>): Position | null {
-    if (expry(flow.cond.if, variables)) {
+  navigateInto(vars: Vars): Position | null {
+    if (expry(flow.cond.if, vars)) {
       if (flow.cond.then.length > 0) {
         return ['cond', ['then', 0]];
       }
@@ -58,17 +58,14 @@ const condUtils = (flow: CondSchema) => ({
 });
 
 const loopUtils = (flow: LoopSchema) => ({
-  navigateNext(
-    position: Position,
-    variables: Record<string, Expry>
-  ): Position | null {
+  navigateNext(position: Position, vars: Vars): Position | null {
     const [_, index] = position as LoopPosition;
     if (index < flow.loop.do.length - 1) return ['loop', index + 1];
-    if (expry(flow.loop.while, variables)) return ['loop', 0];
+    if (expry(flow.loop.while, vars)) return ['loop', 0];
     return null;
   },
-  navigateInto(variables: Record<string, Expry>): Position | null {
-    if (expry(flow.loop.while, variables)) {
+  navigateInto(vars: Vars): Position | null {
+    if (expry(flow.loop.while, vars)) {
       if (flow.loop.do.length > 0) return ['loop', 0];
     }
     return null;
@@ -86,19 +83,12 @@ function flowUtils(flow: FlowSchema) {
   throw new Error('Invalid flow schema');
 }
 
-export function navigateNext(
-  flow: FlowSchema,
-  position: Position,
-  variables: Record<string, Expry>
-) {
-  return flowUtils(flow).navigateNext(position, variables);
+export function navigateNext(flow: FlowSchema, position: Position, vars: Vars) {
+  return flowUtils(flow).navigateNext(position, vars);
 }
 
-export function navigateInto(
-  flow: FlowSchema,
-  variables: Record<string, Expry>
-) {
-  return flowUtils(flow).navigateInto(variables);
+export function navigateInto(flow: FlowSchema, vars: Vars) {
+  return flowUtils(flow).navigateInto(vars);
 }
 
 export function getChild(flow: FlowSchema, position: Position) {

@@ -1,7 +1,4 @@
 import { Step } from './step';
-import { ListDefaultValues } from './default-values';
+import { Values } from './values';
 
-export interface State {
-  steps: Step[];
-  defaultValues: ListDefaultValues;
-}
+export type State = { steps: Step[]; values: Values };

@@ -1,25 +1,21 @@
-import { ListSchema } from '../types/schema';
-import { State } from '../types/state';
+import { Schema } from '../types/schema';
+import { Step } from '../types/step';
+import { Position } from '../types/position';
 
-export function getInitialState(schema: ListSchema): State {
-  return {
-    steps: [],
-    defaultValues: {},
-  };
+export function getInitialStep(schema: Schema): Step {
+  return { path: getInitialPath(schema), vars: {} };
 }
 
-export function getNextState(
-  schema: ListSchema,
-  state: State,
-  data: unknown
-): State {
-  return state;
+function getInitialPath(schema: Schema): Position[] {
+  console.log('toInitialPath', schema);
+  return [];
 }
 
-export function getPreviousState(
-  schema: ListSchema,
-  state: State,
-  data: unknown
-): State {
-  return state;
+export function getNextStep(
+  schema: Schema,
+  step: Step,
+  formData: unknown
+): Step {
+  console.log('getNextStep', schema, step, formData);
+  return step;
 }
