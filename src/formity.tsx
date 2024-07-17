@@ -22,7 +22,7 @@ interface FormityProps<T extends Params, U extends Render> {
   onSubmit: (data: unknown) => void;
 }
 
-export default function Formity<T extends Params, U extends Render>({
+export function Formity<T extends Params, U extends Render>({
   components,
   form: Form,
   schema,
