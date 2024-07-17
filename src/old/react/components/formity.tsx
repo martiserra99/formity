@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { ReactElement, useState, useCallback } from 'react';
 
-import { ListSchema } from '../../core/types/schema';
+import { ListSchema } from '../../old/core/types/schema';
 
 import Params from '../types/params';
 import Values from '../types/values';

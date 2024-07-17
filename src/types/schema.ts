@@ -17,6 +17,16 @@ export type LoopSchema = {
   };
 };
 export type ItemSchema = FormSchema | ReturnSchema | VariablesSchema;
-export type FormSchema = { form: Expry };
-export type ReturnSchema = { return: Expry };
-export type VariablesSchema = { variables: Expry };
+export type FormSchema = {
+  form: {
+    defaultValues: Expry;
+    resolver: Expry;
+    render: Expry;
+  };
+};
+export type ReturnSchema = {
+  return: Expry;
+};
+export type VariablesSchema = {
+  variables: Expry;
+};

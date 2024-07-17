@@ -1,64 +1,21 @@
-const a = {
-  path: [
-    ['list', 0],
-    ['loop', 1],
-    ['cond', ['then', 0]],
-  ],
-  name: 'name',
-  deps: ['abc', 'def'],
+import { UseFormProps } from 'react-hook-form';
+import { ReactElement } from 'react';
+import { Expry } from 'expry';
+
+export type Params = Record<string, Record<string, Expry>>;
+export type Render = Record<string, unknown>;
+
+export type Components<T extends Params> = {
+  [K in keyof T]: (
+    values: T[K],
+    render: (component: Expry) => ReactElement
+  ) => ReactElement;
 };
 
-// type FlowDefaultValues =
-//   | ListDefaultValues
-//   | CondDefaultValues
-//   | LoopDefaultValues;
-
-// type ListDefaultValues = {
-//   [key: number]: FlowDefaultValues | NameDefaultValues;
-// };
-
-// type CondDefaultValues = {
-//   then: { [key: number]: FlowDefaultValues | NameDefaultValues };
-//   else: { [key: number]: FlowDefaultValues | NameDefaultValues };
-// };
-
-// type LoopDefaultValues = {
-//   [key: number]: FlowDefaultValues | NameDefaultValues;
-// };
-
-// type NameDefaultValues = {
-//   [key: string]: DepsDefaultValues;
-// };
-
-// type DepsDefaultValues = {
-//   [key: string | number]: { data: unknown; deps: DepsDefaultValues };
-// };
-
-const defaultValues: ListDefaultValues = {
-  0: {
-    0: '',
-    1: {
-      then: {
-        0: '',
-        1: {
-          0: {
-            name: {
-              data: '',
-              deps: {
-                a: {
-                  data: '',
-                  deps: {},
-                },
-              },
-            },
-          },
-        },
-      },
-      else: {
-        0: '',
-        1: '',
-      },
-    },
-  },
-  1: {},
-};
+export interface FormProps<T extends Render> {
+  defaultValues: UseFormProps['defaultValues'];
+  resolver: UseFormProps['resolver'];
+  render: (values: T) => ReactElement;
+  onSubmit: (data: unknown) => void;
+  onBack: (data: unknown) => void;
+}
