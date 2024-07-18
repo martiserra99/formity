@@ -38,31 +38,27 @@ export abstract class FlowSchema<T extends FlowSchemaType = FlowSchemaType> exte
   }
 
   getSchema(path: Position[]): UnitSchema {
-    return path.reduce((schema: UnitSchema, position: Position) => {
-      const flow = schema as FlowSchema;
-      return flow.getDirectSchema(position);
-    }, this);
+    let selected: UnitSchema = this;
+    for (const position of path) {
+      selected = this.getSchemaPosition(position) as FlowSchema;
+    }
+    return selected;
   }
-
-  abstract getDirectSchema(position: Position): UnitSchema;
 
   abstract getIntoPosition(variables: Variables): Position | null;
 
   abstract getNextPosition(position: Position, variables: Variables): Position | null;
+
+  protected abstract getSchemaPosition(position: Position): UnitSchema;
 }
 
-export class ListSchema<T extends ListSchemaType> extends FlowSchema<T> {
-  constructor(schema: T) {
+export class ListSchema extends FlowSchema<ListSchemaType> {
+  constructor(schema: ListSchemaType) {
     super(schema);
   }
 
   static is(schema: UnitSchemaType): schema is ListSchemaType {
     return Array.isArray(schema);
-  }
-
-  getDirectSchema(position: ListPosition): UnitSchema {
-    const [_, index] = position;
-    return UnitSchema.create(this.schema[index]);
   }
 
   getIntoPosition(): ListPosition | null {
@@ -75,20 +71,20 @@ export class ListSchema<T extends ListSchemaType> extends FlowSchema<T> {
     if (index < this.schema.length - 1) return ["list", index + 1];
     return null;
   }
+
+  protected getSchemaPosition(position: ListPosition): UnitSchema {
+    const [_, index] = position;
+    return UnitSchema.create(this.schema[index]);
+  }
 }
 
-export class CondSchema<T extends CondSchemaType> extends FlowSchema<T> {
-  constructor(schema: T) {
+export class CondSchema extends FlowSchema<CondSchemaType> {
+  constructor(schema: CondSchemaType) {
     super(schema);
   }
 
   static is(schema: UnitSchemaType): schema is CondSchemaType {
     return "cond" in schema;
-  }
-
-  getDirectSchema(position: CondPosition): UnitSchema {
-    const [_, [branch, index]] = position;
-    return UnitSchema.create(this.schema.cond[branch][index]);
   }
 
   getIntoPosition(variables: Variables): CondPosition | null {
@@ -111,20 +107,20 @@ export class CondSchema<T extends CondSchemaType> extends FlowSchema<T> {
     }
     return null;
   }
+
+  protected getSchemaPosition(position: CondPosition): UnitSchema {
+    const [_, [branch, index]] = position;
+    return UnitSchema.create(this.schema.cond[branch][index]);
+  }
 }
 
-export class LoopSchema<T extends LoopSchemaType> extends FlowSchema<T> {
-  constructor(schema: T) {
+export class LoopSchema extends FlowSchema<LoopSchemaType> {
+  constructor(schema: LoopSchemaType) {
     super(schema);
   }
 
   static is(schema: UnitSchemaType): schema is LoopSchemaType {
     return "loop" in schema;
-  }
-
-  getDirectSchema(position: LoopPosition): UnitSchema {
-    const [_, index] = position;
-    return UnitSchema.create(this.schema.loop.do[index]);
   }
 
   getIntoPosition(variables: Variables): LoopPosition | null {
@@ -140,16 +136,21 @@ export class LoopSchema<T extends LoopSchemaType> extends FlowSchema<T> {
     if (expry(this.schema.loop.while, variables)) return ["loop", 0];
     return null;
   }
+
+  protected getSchemaPosition(position: LoopPosition): UnitSchema {
+    const [_, index] = position;
+    return UnitSchema.create(this.schema.loop.do[index]);
+  }
 }
 
-export abstract class ItemSchema<T extends ItemSchemaType> extends UnitSchema<T> {
+export abstract class ItemSchema<T extends ItemSchemaType = ItemSchemaType> extends UnitSchema<T> {
   constructor(schema: T) {
     super(schema);
   }
 }
 
-export class FormSchema<T extends FormSchemaType> extends ItemSchema<T> {
-  constructor(schema: T) {
+export class FormSchema extends ItemSchema<FormSchemaType> {
+  constructor(schema: FormSchemaType) {
     super(schema);
   }
 
@@ -170,8 +171,8 @@ export class FormSchema<T extends FormSchemaType> extends ItemSchema<T> {
   }
 }
 
-export class ReturnSchema<T extends ReturnSchemaType> extends ItemSchema<T> {
-  constructor(schema: T) {
+export class ReturnSchema extends ItemSchema<ReturnSchemaType> {
+  constructor(schema: ReturnSchemaType) {
     super(schema);
   }
 
@@ -184,8 +185,8 @@ export class ReturnSchema<T extends ReturnSchemaType> extends ItemSchema<T> {
   }
 }
 
-export class VariablesSchema<T extends VariablesSchemaType> extends ItemSchema<T> {
-  constructor(schema: T) {
+export class VariablesSchema extends ItemSchema<VariablesSchemaType> {
+  constructor(schema: VariablesSchemaType) {
     super(schema);
   }
 
