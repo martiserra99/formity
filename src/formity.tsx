@@ -2,18 +2,18 @@ import * as React from 'react';
 
 import { ReactElement, useState, useMemo, useCallback } from 'react';
 
-import { Components, ComponentsParams } from './types/components';
-import { FormProps, RenderValues } from './types/form';
+import { Components, ComponentsParams } from './old/types/components';
+import { FormProps, RenderValues } from './old/types/form';
 
-import { Schema } from './types/schema';
-import { FormData } from './types/data';
+import { Schema } from './old/types/schema';
+import { FormData } from './old/types/data';
 
 import {
   getInitialState,
   getNextState,
   getPreviousState,
-} from './functions/state';
-import { getData } from './functions/data';
+} from './old/functions/state';
+import { getData } from './old/functions/data';
 
 interface FormityProps<T extends ComponentsParams, U extends RenderValues> {
   components: Components<T>;

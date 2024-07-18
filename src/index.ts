@@ -1,6 +1,6 @@
 export { Formity } from './formity';
-export { Components } from './types/components';
-export { FormProps } from './types/form';
+export { Components } from './old/types/components';
+export { FormProps } from './old/types/form';
 export {
   Schema,
   UnitSchema,
@@ -12,4 +12,4 @@ export {
   FormSchema,
   ReturnSchema,
   VariablesSchema,
-} from './types/schema';
+} from './old/types/schema';

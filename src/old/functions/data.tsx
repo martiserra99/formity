@@ -2,7 +2,7 @@ import * as React from 'react';
 
 import { UseFormProps } from 'react-hook-form';
 import { ReactElement } from 'react';
-import { expry, Expr, Vars } from 'expry';
+import { expry, Expression, Variables } from 'expry';
 
 import { Components, ComponentsParams } from '../types/components';
 import { RenderValues } from '../types/form';
@@ -47,7 +47,7 @@ function getItemSchema(schema: Schema, step: Step): FormSchema | ReturnSchema {
   return { return: '' };
 }
 
-function getReturnData(schema: ReturnSchema, vars: Vars): ReturnData {
+function getReturnData(schema: ReturnSchema, vars: Variables): ReturnData {
   console.log(schema, vars);
   return { type: 'return', return: '' };
 }
@@ -67,7 +67,7 @@ function getFormData<T extends ComponentsParams, U extends RenderValues>(
 }
 
 function getDefaultValues(
-  expr: Expr,
+  expr: Expression,
   step: Step,
   values: Values
 ): UseFormProps['defaultValues'] {
@@ -81,15 +81,18 @@ function getDefaultValues(
   return {};
 }
 
-function getResolver(expr: Expr, vars: Vars): UseFormProps['resolver'] {
+function getResolver(
+  expr: Expression,
+  vars: Variables
+): UseFormProps['resolver'] {
   console.log(expr, vars);
   return () => ({ values: {}, errors: {} });
 }
 
 function getRender<T extends ComponentsParams, U extends RenderValues>(
   components: Components<T>,
-  expr: Expr,
-  vars: Vars
+  expr: Expression,
+  vars: Variables
 ): (values: U) => ReactElement {
   console.log(components, expr, vars);
   return () => <></>;

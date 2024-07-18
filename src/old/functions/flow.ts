@@ -1,4 +1,4 @@
-import { expry, Vars } from 'expry';
+import { expry, Variables } from 'expry';
 
 import {
   Position,
@@ -39,7 +39,7 @@ const condUtils = (flow: CondSchema) => ({
     }
     return null;
   },
-  navigateInto(vars: Vars): Position | null {
+  navigateInto(vars: Variables): Position | null {
     if (expry(flow.cond.if, vars)) {
       if (flow.cond.then.length > 0) {
         return ['cond', ['then', 0]];
@@ -58,13 +58,13 @@ const condUtils = (flow: CondSchema) => ({
 });
 
 const loopUtils = (flow: LoopSchema) => ({
-  navigateNext(position: Position, vars: Vars): Position | null {
+  navigateNext(position: Position, vars: Variables): Position | null {
     const [_, index] = position as LoopPosition;
     if (index < flow.loop.do.length - 1) return ['loop', index + 1];
     if (expry(flow.loop.while, vars)) return ['loop', 0];
     return null;
   },
-  navigateInto(vars: Vars): Position | null {
+  navigateInto(vars: Variables): Position | null {
     if (expry(flow.loop.while, vars)) {
       if (flow.loop.do.length > 0) return ['loop', 0];
     }
@@ -83,11 +83,15 @@ function flowUtils(flow: FlowSchema) {
   throw new Error('Invalid flow schema');
 }
 
-export function navigateNext(flow: FlowSchema, position: Position, vars: Vars) {
+export function navigateNext(
+  flow: FlowSchema,
+  position: Position,
+  vars: Variables
+) {
   return flowUtils(flow).navigateNext(position, vars);
 }
 
-export function navigateInto(flow: FlowSchema, vars: Vars) {
+export function navigateInto(flow: FlowSchema, vars: Variables) {
   return flowUtils(flow).navigateInto(vars);
 }
 

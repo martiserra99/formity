@@ -1,33 +1,40 @@
-import { Expr } from 'expry';
+import { Expression } from "expry";
 
-export type Schema = ListSchema;
-export type UnitSchema = FlowSchema | ItemSchema;
-export type FlowSchema = ListSchema | CondSchema | LoopSchema;
-export type ListSchema = UnitSchema[];
-export type CondSchema = {
+export type UnitSchemaType = FlowSchemaType | ItemSchemaType;
+
+export type FlowSchemaType = ListSchemaType | CondSchemaType | LoopSchemaType;
+
+export type ListSchemaType = UnitSchemaType[];
+
+export type CondSchemaType = {
   cond: {
-    if: Expr;
-    then: ListSchema;
-    else: ListSchema;
+    if: Expression;
+    then: ListSchemaType;
+    else: ListSchemaType;
   };
 };
-export type LoopSchema = {
+
+export type LoopSchemaType = {
   loop: {
-    while: Expr;
-    do: ListSchema;
+    while: Expression;
+    do: ListSchemaType;
   };
 };
-export type ItemSchema = FormSchema | ReturnSchema | VariablesSchema;
-export type FormSchema = {
+
+export type ItemSchemaType = FormSchemaType | ReturnSchemaType | VariablesSchemaType;
+
+export type FormSchemaType = {
   form: {
-    defaultValues: Expr;
-    resolver: Expr;
-    render: Expr;
+    defaultValues: Expression;
+    resolver: Expression;
+    render: Expression;
   };
 };
-export type ReturnSchema = {
-  return: Expr;
+
+export type ReturnSchemaType = {
+  return: Expression;
 };
-export type VariablesSchema = {
-  variables: Expr;
+
+export type VariablesSchemaType = {
+  variables: Expression;
 };
