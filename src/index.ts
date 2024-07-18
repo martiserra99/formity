@@ -1,15 +1,14 @@
-export { Formity } from './formity';
-export { Components } from './old/types/components';
-export { FormProps } from './old/types/form';
+export { Formity } from "./formity";
+export { FormData, FormProps } from "./types/form";
+export { ComponentsType as Components } from "./types/components";
 export {
-  Schema,
-  UnitSchema,
-  FlowSchema,
-  ListSchema,
-  CondSchema,
-  LoopSchema,
-  ItemSchema,
-  FormSchema,
-  ReturnSchema,
-  VariablesSchema,
-} from './old/types/schema';
+  SchemaType as Schema,
+  UnitSchemaType as UnitSchema,
+  FlowSchemaType as FlowSchema,
+  ListSchemaType as ListSchema,
+  CondSchemaType as CondSchema,
+  LoopSchemaType as LoopSchema,
+  FormSchemaType as FormSchema,
+  ReturnSchemaType as ReturnSchema,
+  VariablesSchemaType as VariablesSchema,
+} from "./types/schema";

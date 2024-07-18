@@ -1,4 +1,4 @@
-import { Expression, expry, Variables } from "expry";
+import { expry, Expression, ExpressionVariables } from "expry";
 
 import {
   UnitSchemaType,
@@ -28,16 +28,16 @@ export abstract class FlowSchema extends UnitSchema {
   get(path: Position[]): UnitSchema {
     let selected: UnitSchema = this;
     for (const position of path) {
-      selected = this.child(position) as FlowSchema;
+      selected = this.find(position) as FlowSchema;
     }
     return selected;
   }
 
-  abstract into(variables: Variables): Position | null;
+  abstract into(variables: ExpressionVariables): Position | null;
 
-  abstract next(position: Position, variables: Variables): Position | null;
+  abstract next(position: Position, variables: ExpressionVariables): Position | null;
 
-  protected abstract child(position: Position): UnitSchema;
+  protected abstract find(position: Position): UnitSchema;
 }
 
 export class ListSchema extends FlowSchema {
@@ -63,7 +63,7 @@ export class ListSchema extends FlowSchema {
     return null;
   }
 
-  protected child(position: ListPosition): UnitSchema {
+  protected find(position: ListPosition): UnitSchema {
     const index = position[1];
     return this.list[index];
   }
@@ -85,7 +85,7 @@ export class CondSchema extends FlowSchema {
     return "cond" in schema;
   }
 
-  into(variables: Variables): CondPosition | null {
+  into(variables: ExpressionVariables): CondPosition | null {
     if (expry(this.if, variables)) {
       if (this.then.length > 0) {
         return ["cond", ["then", 0]];
@@ -106,7 +106,7 @@ export class CondSchema extends FlowSchema {
     return null;
   }
 
-  protected child(position: CondPosition): UnitSchema {
+  protected find(position: CondPosition): UnitSchema {
     const [branch, index] = position[1];
     return this[branch][index];
   }
@@ -126,21 +126,21 @@ export class LoopSchema extends FlowSchema {
     return "loop" in schema;
   }
 
-  into(variables: Variables): LoopPosition | null {
+  into(variables: ExpressionVariables): LoopPosition | null {
     if (expry(this.while, variables)) {
       if (this.do.length > 0) return ["loop", 0];
     }
     return null;
   }
 
-  next(position: LoopPosition, variables: Variables): LoopPosition | null {
+  next(position: LoopPosition, variables: ExpressionVariables): LoopPosition | null {
     const index = position[1];
     if (index < this.do.length - 1) return ["loop", index + 1];
     if (expry(this.while, variables)) return ["loop", 0];
     return null;
   }
 
-  protected child(position: LoopPosition): UnitSchema {
+  protected find(position: LoopPosition): UnitSchema {
     const index = position[1];
     return this.do[index];
   }
@@ -192,3 +192,5 @@ export class VariablesSchema extends ItemSchema {
     return "variables" in schema;
   }
 }
+
+export { ListSchema as Schema };

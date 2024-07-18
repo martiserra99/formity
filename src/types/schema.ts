@@ -38,3 +38,5 @@ export type ReturnSchemaType = {
 export type VariablesSchemaType = {
   variables: Expression;
 };
+
+export { ListSchemaType as SchemaType };

@@ -1,158 +1,113 @@
+import { ExpressionValue } from "expry";
 import { Position, ListPosition, CondPosition, LoopPosition } from "../types/position";
 
-import {
-  UnitValuesType,
-  FlowValuesType,
-  ListValuesType,
-  CondValuesType,
-  LoopValuesType,
-  FormValuesType,
-  NameValuesType,
-  Dependency,
-  Value,
-} from "../types/values";
+type Key = string | number;
 
-export abstract class UnitValues<T extends UnitValuesType = UnitValuesType> {
-  protected values: T;
-
-  constructor(values: T) {
-    this.values = values;
+export abstract class FlowValues {
+  get(path: Position[], name: string, keys: Key[], defaultValue: ExpressionValue): ExpressionValue {
+    return defaultValue;
   }
 
-  static create(values: UnitValuesType): UnitValues {
-    if (FlowValues.is(values)) return FlowValues.create(values);
-    if (FormValues.is(values)) return FormValues.create(values);
-    throw new Error("Invalid values");
+  set(path: Position[], name: string, keys: Key[], value: ExpressionValue) {
+    return this;
+  }
+
+  protected formValues(path: Position[]): FormValues {
+    let selected: FlowValues | FormValues = this;
+    for (const position of path) {
+      const flow = selected as FlowValues;
+      selected = flow.find(position);
+    }
+    return selected as FormValues;
+  }
+
+  protected abstract find(position: Position): FlowValues | FormValues;
+}
+
+export class ListValues extends FlowValues {
+  private map: Map<number, FlowValues | FormValues>;
+
+  constructor() {
+    super();
+    this.map = new Map();
+  }
+
+  protected find(position: ListPosition): FlowValues | FormValues {
+    const index = position[1];
+    return this.map.get(index)!;
   }
 }
 
-export abstract class FlowValues<T extends FlowValuesType = FlowValuesType> extends UnitValues<T> {
-  constructor(values: T) {
-    super(values);
+export class CondValues extends FlowValues {
+  private then: Map<number, FlowValues | FormValues>;
+  private else: Map<number, FlowValues | FormValues>;
+
+  constructor() {
+    super();
+    this.then = new Map();
+    this.else = new Map();
   }
 
-  static create(values: FlowValuesType): FlowValues {
-    if (ListValues.is(values)) return new ListValues(values);
-    if (CondValues.is(values)) return new CondValues(values);
-    if (LoopValues.is(values)) return new LoopValues(values);
-    throw new Error("Invalid values");
-  }
-
-  static is(values: UnitValuesType): values is FlowValuesType {
-    return values.type === "flow";
-  }
-
-  getValue(path: Position[], name: string, dependencies: Dependency[], defaultValue: Value): Value {
-    const formValues = this.getFormValues(path);
-    return formValues.getValue(name, dependencies, defaultValue);
-  }
-
-  protected getFormValues(path: Position[]): FormValues {
-    return path.reduce((values: UnitValues, position: Position) => {
-      const flow = values as FlowValues;
-      return flow.getDirectValues(position);
-    }, this) as FormValues;
-  }
-
-  protected abstract getDirectValues(position: Position): UnitValues;
-}
-
-export class ListValues extends FlowValues<ListValuesType> {
-  constructor(values: ListValuesType) {
-    super(values);
-  }
-
-  static is(values: FlowValuesType): values is ListValuesType {
-    return values.flow === "list";
-  }
-
-  protected getDirectValues(position: ListPosition): UnitValues {
-    const [_, index] = position;
-    return UnitValues.create(this.values.data[index]);
+  protected find(position: CondPosition): FlowValues | FormValues {
+    const [branch, index] = position[1];
+    return this[branch].get(index)!;
   }
 }
 
-export class CondValues extends FlowValues<CondValuesType> {
-  constructor(values: CondValuesType) {
-    super(values);
+export class LoopValues extends FlowValues {
+  private map: Map<number, FlowValues | FormValues>;
+
+  constructor() {
+    super();
+    this.map = new Map();
   }
 
-  static is(values: FlowValuesType): values is CondValuesType {
-    return values.flow === "cond";
-  }
-
-  protected getDirectValues(position: CondPosition): UnitValues {
-    const [_, [branch, index]] = position;
-    return UnitValues.create(this.values.data[branch][index]);
-  }
-}
-
-export class LoopValues extends FlowValues<LoopValuesType> {
-  constructor(values: LoopValuesType) {
-    super(values);
-  }
-
-  static is(values: FlowValuesType): values is LoopValuesType {
-    return values.flow === "loop";
-  }
-
-  protected getDirectValues(position: LoopPosition): UnitValues {
-    const [_, index] = position;
-    return UnitValues.create(this.values.data[index]);
+  protected find(position: LoopPosition): FlowValues | FormValues {
+    const index = position[1];
+    return this.map.get(index)!;
   }
 }
 
-export class FormValues extends UnitValues<FormValuesType> {
-  constructor(values: FormValuesType) {
-    super(values);
+export class FormValues {
+  private names: Map<string, NameValues>;
+
+  constructor() {
+    this.names = new Map();
   }
 
-  static create(values: FormValuesType): FormValues {
-    return new FormValues(values);
-  }
-
-  static is(values: UnitValuesType): values is FormValuesType {
-    return values.type === "form";
-  }
-
-  getValue(name: string, dependencies: Dependency[], defaultValue: Value): Value {
-    const nameValues = this.getNameValues(name);
-    return nameValues.getValue(dependencies, defaultValue);
-  }
-
-  setValue(name: string, dependencies: Dependency[], value: Value): FormValues {
-    const nameValues = this.getNameValues(name);
-    return new FormValues({ ...this.values });
-  }
-
-  protected getNameValues(name: string): NameValues {
-    return new NameValues(this.values.data[name]);
+  nameValues(name: string): NameValues {
+    return this.names.get(name)!;
   }
 }
 
 export class NameValues {
-  public values: NameValuesType;
+  private data: ExpressionValue | undefined;
+  private keys: Map<Key, NameValues>;
 
-  constructor(values: NameValuesType) {
-    this.values = values;
+  constructor() {
+    this.data = undefined;
+    this.keys = new Map();
   }
 
-  getValue(dependencies: Dependency[], defaultValue: Value): Value {
-    let selected = this.values;
-    for (const dependency of dependencies) {
-      selected = selected.dependencies[dependency];
+  get(keys: Key[]): NameValues {
+    let selected: NameValues = this;
+    for (const key of keys) {
+      selected = selected.find(key);
     }
-    return selected.value ?? defaultValue;
+    return selected;
   }
 
-  setValue(dependencies: Dependency[], value: Value): NameValues {
-    const values = { ...this.values };
-    let selected = values;
-    for (const dependency of dependencies) {
-      values.dependencies[dependency] = { ...values.dependencies[dependency] };
-      selected = values.dependencies[dependency];
-    }
-    selected.value = value;
-    return new NameValues(values);
+  set(keys: Key[], value: ExpressionValue): NameValues {
+    return this;
+  }
+
+  find(key: Key): NameValues {
+    return this.keys.get(key)!;
+  }
+
+  value(defaultValue: ExpressionValue): ExpressionValue {
+    return this.data ?? defaultValue;
   }
 }
+
+export { ListValues as Values };

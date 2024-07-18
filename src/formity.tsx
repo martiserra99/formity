@@ -1,25 +1,20 @@
-import * as React from 'react';
+import * as React from "react";
 
-import { ReactElement, useState, useMemo, useCallback } from 'react';
+import { ReactElement, useState, useMemo, useCallback } from "react";
 
-import { Components, ComponentsParams } from './old/types/components';
-import { FormProps, RenderValues } from './old/types/form';
+import { FormProps, FormData, RenderValues } from "./types/form";
+import { ComponentsType, ComponentsParams } from "./types/components";
+import { SchemaType } from "./types/schema";
 
-import { Schema } from './old/types/schema';
-import { FormData } from './old/types/data';
-
-import {
-  getInitialState,
-  getNextState,
-  getPreviousState,
-} from './old/functions/state';
-import { getData } from './old/functions/data';
+import { Controller } from "./classes/controller";
+import { Flow } from "./classes/flow";
+import { FormResult } from "./types/result";
 
 interface FormityProps<T extends ComponentsParams, U extends RenderValues> {
-  components: Components<T>;
+  components: ComponentsType<T>;
   form: (props: FormProps<U>) => ReactElement;
-  schema: Schema;
-  onSubmit: (data: unknown) => void;
+  schema: SchemaType;
+  onSubmit: (data: FormData) => void;
 }
 
 export function Formity<T extends ComponentsParams, U extends RenderValues>({
@@ -28,24 +23,21 @@ export function Formity<T extends ComponentsParams, U extends RenderValues>({
   schema,
   onSubmit,
 }: FormityProps<T, U>) {
-  const [state, setState] = useState(() => getInitialState(schema));
+  const controller = useMemo(() => new Controller<T, U>(schema, components), [schema, components]);
 
-  const form = useMemo(() => getData(components, schema, state), [
-    components,
-    schema,
-    state,
-  ]) as FormData<U>;
+  const [flow, setFlow] = useState<Flow<U>>(() => controller.initial());
 
-  const handleSubmit = useCallback((formData: unknown) => {
-    const nextState = getNextState(schema, state, formData);
-    const data = getData(components, schema, nextState);
-    if (data.type === 'return') onSubmit(data.return);
-    else setState(nextState);
+  const form = flow.result as FormResult<U>;
+
+  const handleSubmit = useCallback((data: FormData) => {
+    const nextFlow = controller.next(flow, data);
+    if (nextFlow.result.type === "return") onSubmit(nextFlow.result.return);
+    else setFlow(nextFlow);
   }, []);
 
-  const handleBack = useCallback((formData: unknown) => {
-    const previousState = getPreviousState(schema, state, formData);
-    setState(previousState);
+  const handleBack = useCallback((data: FormData) => {
+    const previousFlow = controller.previous(flow, data);
+    setFlow(previousFlow);
   }, []);
 
   return (
