@@ -14,7 +14,7 @@ import {
 
 import { CondPosition, ListPosition, LoopPosition, Position } from "../types/position";
 
-abstract class UnitSchema<T extends UnitSchemaType = UnitSchemaType> {
+export abstract class UnitSchema<T extends UnitSchemaType = UnitSchemaType> {
   protected schema: T;
 
   constructor(schema: T) {
@@ -32,7 +32,7 @@ abstract class UnitSchema<T extends UnitSchemaType = UnitSchemaType> {
   }
 }
 
-abstract class FlowSchema<T extends FlowSchemaType = FlowSchemaType> extends UnitSchema<T> {
+export abstract class FlowSchema<T extends FlowSchemaType = FlowSchemaType> extends UnitSchema<T> {
   constructor(schema: T) {
     super(schema);
   }
@@ -51,7 +51,7 @@ abstract class FlowSchema<T extends FlowSchemaType = FlowSchemaType> extends Uni
   abstract getNextPosition(position: Position, variables: Variables): Position | null;
 }
 
-class ListSchema<T extends ListSchemaType> extends FlowSchema<T> {
+export class ListSchema<T extends ListSchemaType> extends FlowSchema<T> {
   constructor(schema: T) {
     super(schema);
   }
@@ -77,7 +77,7 @@ class ListSchema<T extends ListSchemaType> extends FlowSchema<T> {
   }
 }
 
-class CondSchema<T extends CondSchemaType> extends FlowSchema<T> {
+export class CondSchema<T extends CondSchemaType> extends FlowSchema<T> {
   constructor(schema: T) {
     super(schema);
   }
@@ -113,7 +113,7 @@ class CondSchema<T extends CondSchemaType> extends FlowSchema<T> {
   }
 }
 
-class LoopSchema<T extends LoopSchemaType> extends FlowSchema<T> {
+export class LoopSchema<T extends LoopSchemaType> extends FlowSchema<T> {
   constructor(schema: T) {
     super(schema);
   }
@@ -142,13 +142,13 @@ class LoopSchema<T extends LoopSchemaType> extends FlowSchema<T> {
   }
 }
 
-abstract class ItemSchema<T extends ItemSchemaType> extends UnitSchema<T> {
+export abstract class ItemSchema<T extends ItemSchemaType> extends UnitSchema<T> {
   constructor(schema: T) {
     super(schema);
   }
 }
 
-class FormSchema<T extends FormSchemaType> extends ItemSchema<T> {
+export class FormSchema<T extends FormSchemaType> extends ItemSchema<T> {
   constructor(schema: T) {
     super(schema);
   }
@@ -170,7 +170,7 @@ class FormSchema<T extends FormSchemaType> extends ItemSchema<T> {
   }
 }
 
-class ReturnSchema<T extends ReturnSchemaType> extends ItemSchema<T> {
+export class ReturnSchema<T extends ReturnSchemaType> extends ItemSchema<T> {
   constructor(schema: T) {
     super(schema);
   }
@@ -184,7 +184,7 @@ class ReturnSchema<T extends ReturnSchemaType> extends ItemSchema<T> {
   }
 }
 
-class VariablesSchema<T extends VariablesSchemaType> extends ItemSchema<T> {
+export class VariablesSchema<T extends VariablesSchemaType> extends ItemSchema<T> {
   constructor(schema: T) {
     super(schema);
   }
