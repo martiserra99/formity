@@ -1,11 +1,11 @@
 import { ReactElement } from 'react';
 import { UseFormProps } from 'react-hook-form';
 
-import { Render } from './form';
+import { RenderValues } from './form';
 
-export type Data<T extends Render> = FormData<T> | ReturnData;
+export type Data<T extends RenderValues> = FormData<T> | ReturnData;
 
-export type FormData<T extends Render> = {
+export type FormData<T extends RenderValues> = {
   type: 'form';
   defaultValues: UseFormProps['defaultValues'];
   resolver: UseFormProps['resolver'];

@@ -2,23 +2,27 @@ import * as React from 'react';
 
 import { ReactElement, useState, useMemo, useCallback } from 'react';
 
-import { Components, Params } from './types/components';
-import { FormProps, Render } from './types/form';
+import { Components, ComponentsParams } from './types/components';
+import { FormProps, RenderValues } from './types/form';
 
 import { Schema } from './types/schema';
 import { FormData } from './types/data';
 
-import { getInitialState, getNextState, getPreviousState } from './utils/state';
-import { getData } from './utils/data';
+import {
+  getInitialState,
+  getNextState,
+  getPreviousState,
+} from './functions/state';
+import { getData } from './functions/data';
 
-interface FormityProps<T extends Params, U extends Render> {
+interface FormityProps<T extends ComponentsParams, U extends RenderValues> {
   components: Components<T>;
   form: (props: FormProps<U>) => ReactElement;
   schema: Schema;
   onSubmit: (data: unknown) => void;
 }
 
-export function Formity<T extends Params, U extends Render>({
+export function Formity<T extends ComponentsParams, U extends RenderValues>({
   components,
   form: Form,
   schema,

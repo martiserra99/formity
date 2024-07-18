@@ -4,8 +4,8 @@ import { UseFormProps } from 'react-hook-form';
 import { ReactElement } from 'react';
 import { expry, Expr, Vars } from 'expry';
 
-import { Components, Params } from '../types/components';
-import { Render } from '../types/form';
+import { Components, ComponentsParams } from '../types/components';
+import { RenderValues } from '../types/form';
 
 import { Data, FormData, ReturnData } from '../types/data';
 import { Schema, FormSchema, ReturnSchema } from '../types/schema';
@@ -17,7 +17,7 @@ import { getValue } from './values';
 
 type DefaultValuesSchema = Record<string, [unknown, (number | string)[]]>;
 
-export function getData<T extends Params, U extends Render>(
+export function getData<T extends ComponentsParams, U extends RenderValues>(
   components: Components<T>,
   schema: Schema,
   state: State
@@ -30,7 +30,7 @@ export function getData<T extends Params, U extends Render>(
   );
 }
 
-function getDataFromStep<T extends Params, U extends Render>(
+function getDataFromStep<T extends ComponentsParams, U extends RenderValues>(
   components: Components<T>,
   schema: Schema,
   step: Step,
@@ -52,7 +52,7 @@ function getReturnData(schema: ReturnSchema, vars: Vars): ReturnData {
   return { type: 'return', return: '' };
 }
 
-function getFormData<T extends Params, U extends Render>(
+function getFormData<T extends ComponentsParams, U extends RenderValues>(
   components: Components<T>,
   schema: FormSchema,
   step: Step,
@@ -86,7 +86,7 @@ function getResolver(expr: Expr, vars: Vars): UseFormProps['resolver'] {
   return () => ({ values: {}, errors: {} });
 }
 
-function getRender<T extends Params, U extends Render>(
+function getRender<T extends ComponentsParams, U extends RenderValues>(
   components: Components<T>,
   expr: Expr,
   vars: Vars
