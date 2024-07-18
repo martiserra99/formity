@@ -1,17 +1,17 @@
 import { Point } from "./point";
-import { Values } from "./values";
+import { ListValues } from "./values";
 
-import { RenderValues } from "../types/form";
+import { FormRenderValues } from "../types/form";
 import { Result } from "../types/result";
 
-export class Flow<T extends RenderValues> {
+export class Flow<T extends FormRenderValues> {
   public points: Point[];
-  public values: Values;
+  public values: ListValues;
   public result: Result<T>;
 
   constructor() {
     this.points = [];
-    this.values = new Values();
+    this.values = new ListValues();
     this.result = { type: "return", return: null };
   }
 }

@@ -192,5 +192,3 @@ export class VariablesSchema extends ItemSchema {
     return "variables" in schema;
   }
 }
-
-export { ListSchema as Schema };

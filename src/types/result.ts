@@ -2,9 +2,9 @@ import { UseFormProps } from "react-hook-form";
 import { ReactElement } from "react";
 import { ExpressionResult } from "expry";
 
-import { RenderValues } from "./form";
+import { FormRenderValues } from "./form";
 
-export type Result<T extends RenderValues> = FormResult<T> | ReturnResult;
+export type Result<T extends FormRenderValues> = FormResult<T> | ReturnResult;
 
 export interface FormResult<T> {
   type: "form";

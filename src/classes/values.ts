@@ -109,5 +109,3 @@ export class NameValues {
     return this.data ?? defaultValue;
   }
 }
-
-export { ListValues as Values };
