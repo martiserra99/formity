@@ -1,12 +1,10 @@
-import { expry, Expression, Variables } from "expry";
+import { Expression, expry, Variables } from "expry";
 
 import {
   UnitSchemaType,
-  FlowSchemaType,
   ListSchemaType,
   CondSchemaType,
   LoopSchemaType,
-  ItemSchemaType,
   FormSchemaType,
   ReturnSchemaType,
   VariablesSchemaType,
@@ -14,13 +12,7 @@ import {
 
 import { CondPosition, ListPosition, LoopPosition, Position } from "../types/position";
 
-export abstract class UnitSchema<T extends UnitSchemaType = UnitSchemaType> {
-  protected schema: T;
-
-  constructor(schema: T) {
-    this.schema = schema;
-  }
-
+export class UnitSchema {
   static create(schema: UnitSchemaType): UnitSchema {
     if (ListSchema.is(schema)) return new ListSchema(schema);
     if (CondSchema.is(schema)) return new CondSchema(schema);
@@ -32,169 +24,171 @@ export abstract class UnitSchema<T extends UnitSchemaType = UnitSchemaType> {
   }
 }
 
-export abstract class FlowSchema<T extends FlowSchemaType = FlowSchemaType> extends UnitSchema<T> {
-  constructor(schema: T) {
-    super(schema);
-  }
-
-  getSchema(path: Position[]): UnitSchema {
+export abstract class FlowSchema extends UnitSchema {
+  get(path: Position[]): UnitSchema {
     let selected: UnitSchema = this;
     for (const position of path) {
-      selected = this.getSchemaPosition(position) as FlowSchema;
+      selected = this.child(position) as FlowSchema;
     }
     return selected;
   }
 
-  abstract getIntoPosition(variables: Variables): Position | null;
+  abstract into(variables: Variables): Position | null;
 
-  abstract getNextPosition(position: Position, variables: Variables): Position | null;
+  abstract next(position: Position, variables: Variables): Position | null;
 
-  protected abstract getSchemaPosition(position: Position): UnitSchema;
+  protected abstract child(position: Position): UnitSchema;
 }
 
-export class ListSchema extends FlowSchema<ListSchemaType> {
+export class ListSchema extends FlowSchema {
+  private list: UnitSchema[];
+
   constructor(schema: ListSchemaType) {
-    super(schema);
+    super();
+    this.list = schema.map(unit => UnitSchema.create(unit));
   }
 
   static is(schema: UnitSchemaType): schema is ListSchemaType {
     return Array.isArray(schema);
   }
 
-  getIntoPosition(): ListPosition | null {
-    if (this.schema.length > 0) return ["list", 0];
+  into(): ListPosition | null {
+    if (this.list.length > 0) return ["list", 0];
     return null;
   }
 
-  getNextPosition(position: ListPosition): ListPosition | null {
-    const [_, index] = position;
-    if (index < this.schema.length - 1) return ["list", index + 1];
+  next(position: ListPosition): ListPosition | null {
+    const index = position[1];
+    if (index < this.list.length - 1) return ["list", index + 1];
     return null;
   }
 
-  protected getSchemaPosition(position: ListPosition): UnitSchema {
-    const [_, index] = position;
-    return UnitSchema.create(this.schema[index]);
+  protected child(position: ListPosition): UnitSchema {
+    const index = position[1];
+    return this.list[index];
   }
 }
 
-export class CondSchema extends FlowSchema<CondSchemaType> {
+export class CondSchema extends FlowSchema {
+  private if: Expression;
+  private then: UnitSchema[];
+  private else: UnitSchema[];
+
   constructor(schema: CondSchemaType) {
-    super(schema);
+    super();
+    this.if = schema.cond.if;
+    this.then = schema.cond.then.map(unit => UnitSchema.create(unit));
+    this.else = schema.cond.else.map(unit => UnitSchema.create(unit));
   }
 
   static is(schema: UnitSchemaType): schema is CondSchemaType {
     return "cond" in schema;
   }
 
-  getIntoPosition(variables: Variables): CondPosition | null {
-    if (expry(this.schema.cond.if, variables)) {
-      if (this.schema.cond.then.length > 0) {
+  into(variables: Variables): CondPosition | null {
+    if (expry(this.if, variables)) {
+      if (this.then.length > 0) {
         return ["cond", ["then", 0]];
       }
     } else {
-      if (this.schema.cond.else.length > 0) {
+      if (this.else.length > 0) {
         return ["cond", ["else", 0]];
       }
     }
     return null;
   }
 
-  getNextPosition(position: CondPosition): CondPosition | null {
-    const [_, [branch, index]] = position;
-    if (index < this.schema.cond[branch].length - 1) {
+  next(position: CondPosition): CondPosition | null {
+    const [branch, index] = position[1];
+    if (index < this[branch].length - 1) {
       return ["cond", [branch, index + 1]];
     }
     return null;
   }
 
-  protected getSchemaPosition(position: CondPosition): UnitSchema {
-    const [_, [branch, index]] = position;
-    return UnitSchema.create(this.schema.cond[branch][index]);
+  protected child(position: CondPosition): UnitSchema {
+    const [branch, index] = position[1];
+    return this[branch][index];
   }
 }
 
-export class LoopSchema extends FlowSchema<LoopSchemaType> {
+export class LoopSchema extends FlowSchema {
+  private while: Expression;
+  private do: UnitSchema[];
+
   constructor(schema: LoopSchemaType) {
-    super(schema);
+    super();
+    this.while = schema.loop.while;
+    this.do = schema.loop.do.map(unit => UnitSchema.create(unit));
   }
 
   static is(schema: UnitSchemaType): schema is LoopSchemaType {
     return "loop" in schema;
   }
 
-  getIntoPosition(variables: Variables): LoopPosition | null {
-    if (expry(this.schema.loop.while, variables)) {
-      if (this.schema.loop.do.length > 0) return ["loop", 0];
+  into(variables: Variables): LoopPosition | null {
+    if (expry(this.while, variables)) {
+      if (this.do.length > 0) return ["loop", 0];
     }
     return null;
   }
 
-  getNextPosition(position: LoopPosition, variables: Variables): LoopPosition | null {
-    const [_, index] = position;
-    if (index < this.schema.loop.do.length - 1) return ["loop", index + 1];
-    if (expry(this.schema.loop.while, variables)) return ["loop", 0];
+  next(position: LoopPosition, variables: Variables): LoopPosition | null {
+    const index = position[1];
+    if (index < this.do.length - 1) return ["loop", index + 1];
+    if (expry(this.while, variables)) return ["loop", 0];
     return null;
   }
 
-  protected getSchemaPosition(position: LoopPosition): UnitSchema {
-    const [_, index] = position;
-    return UnitSchema.create(this.schema.loop.do[index]);
+  protected child(position: LoopPosition): UnitSchema {
+    const index = position[1];
+    return this.do[index];
   }
 }
 
-export abstract class ItemSchema<T extends ItemSchemaType = ItemSchemaType> extends UnitSchema<T> {
-  constructor(schema: T) {
-    super(schema);
-  }
+export class ItemSchema extends UnitSchema {
+  // Empty
 }
 
-export class FormSchema extends ItemSchema<FormSchemaType> {
+export class FormSchema extends ItemSchema {
+  readonly defaultValues: Expression;
+  readonly resolver: Expression;
+  readonly render: Expression;
+
   constructor(schema: FormSchemaType) {
-    super(schema);
+    super();
+    this.defaultValues = schema.form.defaultValues;
+    this.resolver = schema.form.resolver;
+    this.render = schema.form.render;
   }
 
   static is(schema: UnitSchemaType): schema is FormSchemaType {
     return "form" in schema;
   }
-
-  get defaultValues(): Expression {
-    return this.schema.form.defaultValues;
-  }
-
-  get resolver(): Expression {
-    return this.schema.form.resolver;
-  }
-
-  get render(): Expression {
-    return this.schema.form.render;
-  }
 }
 
-export class ReturnSchema extends ItemSchema<ReturnSchemaType> {
+export class ReturnSchema extends ItemSchema {
+  readonly return: Expression;
+
   constructor(schema: ReturnSchemaType) {
-    super(schema);
+    super();
+    this.return = schema.return;
   }
 
   static is(schema: UnitSchemaType): schema is ReturnSchemaType {
     return "return" in schema;
   }
-
-  get return(): Expression {
-    return this.schema.return;
-  }
 }
 
-export class VariablesSchema extends ItemSchema<VariablesSchemaType> {
+export class VariablesSchema extends ItemSchema {
+  readonly variables: Expression;
+
   constructor(schema: VariablesSchemaType) {
-    super(schema);
+    super();
+    this.variables = schema.variables;
   }
 
   static is(schema: UnitSchemaType): schema is VariablesSchemaType {
     return "variables" in schema;
-  }
-
-  get variables(): Expression {
-    return this.schema.variables;
   }
 }
