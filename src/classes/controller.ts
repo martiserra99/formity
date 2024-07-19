@@ -90,7 +90,7 @@ export class Controller<T extends Parameters> {
     while (this.schema.find(selected.path) instanceof VariablesSchema) {
       const step = this.schema.find(selected.path) as VariablesSchema;
       const variables = step.getVariables(selected.variables);
-      selected = new Point(selected.parentPath, { ...selected.variables, ...variables });
+      selected = new Point(selected.path, { ...selected.variables, ...variables });
       selected = this.nextPoint(selected);
     }
     return selected;
