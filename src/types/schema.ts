@@ -1,4 +1,4 @@
-import { Expression } from "expry";
+import { Value } from "expry";
 
 export type UnitSchemaType = FlowSchemaType | ItemSchemaType;
 
@@ -8,7 +8,7 @@ export type ListSchemaType = UnitSchemaType[];
 
 export type CondSchemaType = {
   cond: {
-    if: Expression;
+    if: Value;
     then: ListSchemaType;
     else: ListSchemaType;
   };
@@ -16,7 +16,7 @@ export type CondSchemaType = {
 
 export type LoopSchemaType = {
   loop: {
-    while: Expression;
+    while: Value;
     do: ListSchemaType;
   };
 };
@@ -25,16 +25,16 @@ export type ItemSchemaType = FormSchemaType | ReturnSchemaType | VariablesSchema
 
 export type FormSchemaType = {
   form: {
-    defaultValues: Expression;
-    resolver: Expression;
-    render: Expression;
+    defaultValues: Value;
+    resolver: Value;
+    render: Value;
   };
 };
 
 export type ReturnSchemaType = {
-  return: Expression;
+  return: Value;
 };
 
 export type VariablesSchemaType = {
-  variables: Expression;
+  variables: Value;
 };

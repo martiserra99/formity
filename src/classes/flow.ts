@@ -1,17 +1,20 @@
 import { Point } from "./point";
 import { ListValues } from "./values";
 
-import { FormRenderValues } from "../types/form";
 import { Result } from "../types/result";
 
-export class Flow<T extends FormRenderValues> {
+export class Flow {
+  public result: Result;
   public points: Point[];
   public values: ListValues;
-  public result: Result<T>;
 
-  constructor() {
-    this.points = [];
-    this.values = new ListValues();
-    this.result = { type: "return", return: null };
+  constructor(points: Point[], values: ListValues) {
+    this.points = points;
+    this.values = values;
+    this.result = this.getResult(points, values);
+  }
+
+  private getResult(points: Point[], values: ListValues): Result {
+    return { type: "return", return: null };
   }
 }

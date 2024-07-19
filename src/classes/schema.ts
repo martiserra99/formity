@@ -1,4 +1,4 @@
-import { expry, Expression, ExpressionVariables } from "expry";
+import { expry, Value, Variables } from "expry";
 
 import {
   UnitSchemaType,
@@ -25,19 +25,20 @@ export class UnitSchema {
 }
 
 export abstract class FlowSchema extends UnitSchema {
-  get(path: Position[]): UnitSchema {
+  find(path: Position[]): UnitSchema {
     let selected: UnitSchema = this;
     for (const position of path) {
-      selected = this.find(position) as FlowSchema;
+      const flow = selected as FlowSchema;
+      selected = flow.at(position);
     }
     return selected;
   }
 
-  abstract into(variables: ExpressionVariables): Position | null;
+  abstract into(variables: Variables): Position | null;
 
-  abstract next(position: Position, variables: ExpressionVariables): Position | null;
+  abstract next(position: Position, variables: Variables): Position | null;
 
-  protected abstract find(position: Position): UnitSchema;
+  protected abstract at(position: Position): UnitSchema;
 }
 
 export class ListSchema extends FlowSchema {
@@ -63,14 +64,14 @@ export class ListSchema extends FlowSchema {
     return null;
   }
 
-  protected find(position: ListPosition): UnitSchema {
+  protected at(position: ListPosition): UnitSchema {
     const index = position[1];
     return this.list[index];
   }
 }
 
 export class CondSchema extends FlowSchema {
-  private if: Expression;
+  private if: Value;
   private then: UnitSchema[];
   private else: UnitSchema[];
 
@@ -85,7 +86,7 @@ export class CondSchema extends FlowSchema {
     return "cond" in schema;
   }
 
-  into(variables: ExpressionVariables): CondPosition | null {
+  into(variables: Variables): CondPosition | null {
     if (expry(this.if, variables)) {
       if (this.then.length > 0) {
         return ["cond", ["then", 0]];
@@ -106,14 +107,14 @@ export class CondSchema extends FlowSchema {
     return null;
   }
 
-  protected find(position: CondPosition): UnitSchema {
+  protected at(position: CondPosition): UnitSchema {
     const [branch, index] = position[1];
     return this[branch][index];
   }
 }
 
 export class LoopSchema extends FlowSchema {
-  private while: Expression;
+  private while: Value;
   private do: UnitSchema[];
 
   constructor(schema: LoopSchemaType) {
@@ -126,21 +127,21 @@ export class LoopSchema extends FlowSchema {
     return "loop" in schema;
   }
 
-  into(variables: ExpressionVariables): LoopPosition | null {
+  into(variables: Variables): LoopPosition | null {
     if (expry(this.while, variables)) {
       if (this.do.length > 0) return ["loop", 0];
     }
     return null;
   }
 
-  next(position: LoopPosition, variables: ExpressionVariables): LoopPosition | null {
+  next(position: LoopPosition, variables: Variables): LoopPosition | null {
     const index = position[1];
     if (index < this.do.length - 1) return ["loop", index + 1];
     if (expry(this.while, variables)) return ["loop", 0];
     return null;
   }
 
-  protected find(position: LoopPosition): UnitSchema {
+  protected at(position: LoopPosition): UnitSchema {
     const index = position[1];
     return this.do[index];
   }
@@ -151,24 +152,36 @@ export class ItemSchema extends UnitSchema {
 }
 
 export class FormSchema extends ItemSchema {
-  readonly defaultValues: Expression;
-  readonly resolver: Expression;
-  readonly render: Expression;
+  private _defaultValues: Value;
+  private _resolver: Value;
+  private _render: Value;
 
   constructor(schema: FormSchemaType) {
     super();
-    this.defaultValues = schema.form.defaultValues;
-    this.resolver = schema.form.resolver;
-    this.render = schema.form.render;
+    this._defaultValues = schema.form.defaultValues;
+    this._resolver = schema.form.resolver;
+    this._render = schema.form.render;
   }
 
   static is(schema: UnitSchemaType): schema is FormSchemaType {
     return "form" in schema;
   }
+
+  private defaultValues(): Value {
+    return this._defaultValues;
+  }
+
+  private resolver(): Value {
+    return this._resolver;
+  }
+
+  private render(): Value {
+    return this._render;
+  }
 }
 
 export class ReturnSchema extends ItemSchema {
-  readonly return: Expression;
+  readonly return: Value;
 
   constructor(schema: ReturnSchemaType) {
     super();
@@ -181,7 +194,7 @@ export class ReturnSchema extends ItemSchema {
 }
 
 export class VariablesSchema extends ItemSchema {
-  readonly variables: Expression;
+  readonly variables: Value;
 
   constructor(schema: VariablesSchemaType) {
     super();

@@ -1,8 +1,8 @@
 import { ReactElement } from "react";
-import { ExpressionResult } from "expry";
+import { Value } from "expry";
 
-export type ComponentsParams = Record<string, Record<string, ExpressionResult>>;
+export type Parameters = Record<string, Record<string, Value>>;
 
-export type ComponentsType<T extends ComponentsParams> = {
-  [K in keyof T]: (values: T[K], render: (component: ExpressionResult) => ReactElement) => ReactElement;
+export type Components<T extends Parameters> = {
+  [K in keyof T]: (values: T[K], render: (component: Value) => ReactElement) => ReactElement;
 };

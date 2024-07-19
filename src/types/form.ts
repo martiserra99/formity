@@ -1,15 +1,11 @@
 import { UseFormProps } from "react-hook-form";
 import { ReactElement } from "react";
-import { ExpressionResult, ExpressionValue } from "expry";
+import { Variables } from "expry";
 
-export type FormRenderValues = Record<string, ExpressionValue>;
-
-export type FormData = ExpressionResult;
-
-export interface FormProps<T extends FormRenderValues> {
+export interface FormProps<T extends Variables = Variables> {
   defaultValues: UseFormProps["defaultValues"];
   resolver: UseFormProps["resolver"];
   render: (values: T) => ReactElement;
-  onSubmit: (data: FormData) => void;
-  onBack: (data: FormData) => void;
+  onSubmit: (variables: Variables) => void;
+  onBack: (variables: Variables) => void;
 }

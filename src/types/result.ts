@@ -1,19 +1,16 @@
-import { UseFormProps } from "react-hook-form";
 import { ReactElement } from "react";
-import { ExpressionResult } from "expry";
+import { UseFormProps } from "react-hook-form";
+import { Value, Variables } from "expry";
 
-import { FormRenderValues } from "./form";
+export type Result = FormResult | ReturnResult | VariablesResult;
 
-export type Result<T extends FormRenderValues> = FormResult<T> | ReturnResult;
-
-export interface FormResult<T> {
+export type FormResult = {
   type: "form";
   defaultValues: UseFormProps["defaultValues"];
   resolver: UseFormProps["resolver"];
-  render: (values: T) => ReactElement;
-}
+  render: (values: Variables) => ReactElement;
+};
 
-export interface ReturnResult {
-  type: "return";
-  return: ExpressionResult;
-}
+export type ReturnResult = { type: "return"; return: Value };
+
+export type VariablesResult = { type: "variables"; variables: Variables };

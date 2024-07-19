@@ -1,14 +1,14 @@
-import { ExpressionValue } from "expry";
+import { Value } from "expry";
 import { Position, ListPosition, CondPosition, LoopPosition } from "../types/position";
 
 type Key = string | number;
 
 export abstract class FlowValues {
-  get(path: Position[], name: string, keys: Key[], defaultValue: ExpressionValue): ExpressionValue {
+  get(path: Position[], name: string, keys: Key[], defaultValue: Value): Value {
     return defaultValue;
   }
 
-  set(path: Position[], name: string, keys: Key[], value: ExpressionValue) {
+  set(path: Position[], name: string, keys: Key[], value: Value) {
     return this;
   }
 
@@ -81,7 +81,7 @@ export class FormValues {
 }
 
 export class NameValues {
-  private data: ExpressionValue | undefined;
+  private data: Value | undefined;
   private keys: Map<Key, NameValues>;
 
   constructor() {
@@ -97,7 +97,7 @@ export class NameValues {
     return selected;
   }
 
-  set(keys: Key[], value: ExpressionValue): NameValues {
+  set(keys: Key[], value: Value): NameValues {
     return this;
   }
 
@@ -105,7 +105,7 @@ export class NameValues {
     return this.keys.get(key)!;
   }
 
-  value(defaultValue: ExpressionValue): ExpressionValue {
+  value(defaultValue: Value): Value {
     return this.data ?? defaultValue;
   }
 }

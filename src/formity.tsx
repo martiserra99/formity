@@ -1,42 +1,45 @@
 import * as React from "react";
 
 import { ReactElement, useState, useMemo, useCallback } from "react";
+import { Value, Variables } from "expry";
 
-import { FormProps, FormData, FormRenderValues } from "./types/form";
-import { ComponentsType, ComponentsParams } from "./types/components";
+import { FormProps } from "./types/form";
+import { Components, Parameters } from "./types/components";
 import { ListSchemaType } from "./types/schema";
+import { FormResult } from "./types/result";
 
 import { Controller } from "./classes/controller";
 import { Flow } from "./classes/flow";
-import { FormResult } from "./types/result";
 
-interface FormityProps<T extends ComponentsParams, U extends FormRenderValues> {
-  components: ComponentsType<T>;
+interface FormityProps<T extends Parameters, U extends Variables> {
+  components: Components<T>;
   form: (props: FormProps<U>) => ReactElement;
   schema: ListSchemaType;
-  onSubmit: (data: FormData) => void;
+  onSubmit: (result: Value) => void;
 }
 
-export function Formity<T extends ComponentsParams, U extends FormRenderValues>({
+export function Formity<T extends Parameters, U extends Variables>({
   components,
   form: Form,
   schema,
   onSubmit,
 }: FormityProps<T, U>) {
-  const controller = useMemo(() => new Controller<T, U>(schema, components), [schema, components]);
+  const controller = useMemo(() => new Controller(schema, components), [schema, components]);
 
-  const [flow, setFlow] = useState<Flow<U>>(() => controller.initial());
+  const [flow, setFlow] = useState<Flow>(() => controller.initial());
 
-  const form = flow.result as FormResult<U>;
+  const form = flow.result as FormResult;
 
-  const handleSubmit = useCallback((data: FormData) => {
-    const nextFlow = controller.next(flow, data);
-    if (nextFlow.result.type === "return") onSubmit(nextFlow.result.return);
-    else setFlow(nextFlow);
+  const handleSubmit = useCallback((variables: Variables) => {
+    const nextFlow = controller.next(flow, variables);
+    if (nextFlow.result.type === "return") {
+      return onSubmit(nextFlow.result.return);
+    }
+    setFlow(nextFlow);
   }, []);
 
-  const handleBack = useCallback((data: FormData) => {
-    const previousFlow = controller.previous(flow, data);
+  const handleBack = useCallback((variables: Variables) => {
+    const previousFlow = controller.previous(flow, variables);
     setFlow(previousFlow);
   }, []);
 
