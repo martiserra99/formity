@@ -1,4 +1,4 @@
-import { Variables } from "Expry";
+import { Variables } from "expry";
 
 import { Components, Parameters } from "../types/components";
 import { ListSchemaType } from "../types/schema";

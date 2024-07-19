@@ -5,10 +5,12 @@ type Key = string | number;
 
 export abstract class FlowValues {
   set(path: Position[], name: string, keys: Key[], value: Value): FlowValues {
+    console.log(path, name, keys, value);
     return this;
   }
 
   get(path: Position[], name: string, keys: Key[], defaultValue: Value): Value {
+    console.log(path, name, keys, defaultValue);
     return defaultValue;
   }
 
@@ -98,6 +100,7 @@ export class NameValues {
   }
 
   setValue(keys: Key[], value: Value): NameValues {
+    console.log(keys, value);
     return this;
   }
 
