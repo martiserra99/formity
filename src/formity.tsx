@@ -30,17 +30,15 @@ export function Formity<T extends Parameters, U extends Variables>({
 
   const form = flow.result as FormResult;
 
-  const handleSubmit = useCallback((variables: Variables) => {
-    const nextFlow = controller.next(flow, variables);
-    if (nextFlow.result.type === "return") {
-      return onSubmit(nextFlow.result.return);
-    }
-    setFlow(nextFlow);
+  const handleSubmit = useCallback((formData: Variables) => {
+    const next = controller.next(flow, formData);
+    if (next.result.type === "form") setFlow(next);
+    else return onSubmit(next.result.return);
   }, []);
 
-  const handleBack = useCallback((variables: Variables) => {
-    const previousFlow = controller.previous(flow, variables);
-    setFlow(previousFlow);
+  const handleBack = useCallback((formData: Variables) => {
+    const previous = controller.previous(flow, formData);
+    setFlow(previous);
   }, []);
 
   return (

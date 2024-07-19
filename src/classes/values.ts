@@ -4,7 +4,7 @@ import { Position, ListPosition, CondPosition, LoopPosition } from "../types/pos
 type Key = string | number;
 
 export abstract class FlowValues {
-  set(path: Position[], name: string, keys: Key[], value: Value) {
+  set(path: Position[], name: string, keys: Key[], value: Value): FlowValues {
     return this;
   }
 
@@ -12,16 +12,16 @@ export abstract class FlowValues {
     return defaultValue;
   }
 
-  protected formValues(path: Position[]): FormValues {
+  protected getFormValues(path: Position[]): FormValues {
     let selected: FlowValues | FormValues = this;
     for (const position of path) {
       const flow = selected as FlowValues;
-      selected = flow.find(position);
+      selected = flow.at(position);
     }
     return selected as FormValues;
   }
 
-  protected abstract find(position: Position): FlowValues | FormValues;
+  protected abstract at(position: Position): FlowValues | FormValues;
 }
 
 export class ListValues extends FlowValues {
@@ -32,7 +32,7 @@ export class ListValues extends FlowValues {
     this.map = new Map();
   }
 
-  protected find(position: ListPosition): FlowValues | FormValues {
+  protected at(position: ListPosition): FlowValues | FormValues {
     const index = position[1];
     return this.map.get(index)!;
   }
@@ -48,7 +48,7 @@ export class CondValues extends FlowValues {
     this.else = new Map();
   }
 
-  protected find(position: CondPosition): FlowValues | FormValues {
+  protected at(position: CondPosition): FlowValues | FormValues {
     const [branch, index] = position[1];
     return this[branch].get(index)!;
   }
@@ -62,7 +62,7 @@ export class LoopValues extends FlowValues {
     this.map = new Map();
   }
 
-  protected find(position: LoopPosition): FlowValues | FormValues {
+  protected at(position: LoopPosition): FlowValues | FormValues {
     const index = position[1];
     return this.map.get(index)!;
   }
@@ -75,7 +75,7 @@ export class FormValues {
     this.names = new Map();
   }
 
-  nameValues(name: string): NameValues {
+  getNameValues(name: string): NameValues {
     return this.names.get(name)!;
   }
 }
@@ -89,19 +89,19 @@ export class NameValues {
     this.keys = new Map();
   }
 
-  get(keys: Key[]): NameValues {
+  getValue(keys: Key[], defaultValue: Value): Value {
     let selected: NameValues = this;
     for (const key of keys) {
-      selected = selected.find(key);
+      selected = selected.get(key);
     }
-    return selected;
+    return selected.value(defaultValue);
   }
 
-  set(keys: Key[], value: Value): NameValues {
+  setValue(keys: Key[], value: Value): NameValues {
     return this;
   }
 
-  find(key: Key): NameValues {
+  get(key: Key): NameValues {
     return this.keys.get(key)!;
   }
 

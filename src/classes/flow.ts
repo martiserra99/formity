@@ -1,14 +1,14 @@
 import { Point } from "./point";
-import { ListValues } from "./values";
+import { FlowValues } from "./values";
 
 import { Result } from "../types/result";
 
 export class Flow {
   public result: Result;
   public points: Point[];
-  public values: ListValues;
+  public values: FlowValues;
 
-  constructor(result: Result, points: Point[], values: ListValues) {
+  constructor(result: Result, points: Point[], values: FlowValues) {
     this.result = result;
     this.points = points;
     this.values = values;

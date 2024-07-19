@@ -6,6 +6,6 @@ export interface FormProps<T extends Variables = Variables> {
   defaultValues: UseFormProps["defaultValues"];
   resolver: UseFormProps["resolver"];
   render: (values: T) => ReactElement;
-  onSubmit: (variables: Variables) => void;
-  onBack: (variables: Variables) => void;
+  onSubmit: (formData: Variables) => void;
+  onBack: (formData: Variables) => void;
 }

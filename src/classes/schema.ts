@@ -13,7 +13,7 @@ import {
 import { CondPosition, ListPosition, LoopPosition, Position } from "../types/position";
 import { Result, FormResult, ReturnResult } from "../types/result";
 import { Components, Parameters } from "../types/components";
-import { ListValues } from "./values";
+import { FlowValues } from "./values";
 
 export class UnitSchema {
   static create(schema: UnitSchemaType): UnitSchema {
@@ -155,7 +155,7 @@ export abstract class StepSchema extends UnitSchema {
 }
 
 export abstract class StopSchema<T extends Parameters> extends StepSchema {
-  abstract getResult(variables: Variables, components: Components<T>, values: ListValues, path: Position[]): Result;
+  abstract getResult(variables: Variables, components: Components<T>, values: FlowValues, path: Position[]): Result;
 }
 
 type Key = string | number;
@@ -183,7 +183,7 @@ export class FormSchema<T extends Parameters> extends StopSchema<T> {
     return (name: string) => defaultValues[name][1];
   }
 
-  getResult(variables: Variables, components: Components<T>, values: ListValues, path: Position[]): FormResult {
+  getResult(variables: Variables, components: Components<T>, values: FlowValues, path: Position[]): FormResult {
     return {
       type: "form",
       defaultValues: this.getDefaultValues(variables, values, path),
@@ -192,7 +192,7 @@ export class FormSchema<T extends Parameters> extends StopSchema<T> {
     };
   }
 
-  private getDefaultValues(variables: Variables, values: ListValues, path: Position[]): FormResult["defaultValues"] {
+  private getDefaultValues(variables: Variables, values: FlowValues, path: Position[]): FormResult["defaultValues"] {
     const defaultValues = expry(this.defaultValues, variables) as DefaultValues;
     return Object.fromEntries(
       Object.entries(defaultValues).map(([name, [value, keys]]) => {

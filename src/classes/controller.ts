@@ -7,7 +7,7 @@ import { ListSchema, FlowSchema, VariablesSchema, FormSchema, StopSchema } from 
 import { Flow } from "./flow";
 import { Position } from "../types/position";
 import { Point } from "./point";
-import { ListValues } from "./values";
+import { FlowValues, ListValues } from "./values";
 
 export class Controller<T extends Parameters> {
   private schema: ListSchema;
@@ -52,7 +52,7 @@ export class Controller<T extends Parameters> {
     return this.navigateNext(flow, values, formData);
   }
 
-  private navigateNext(flow: Flow, values: ListValues, formData: Variables) {
+  private navigateNext(flow: Flow, values: FlowValues, formData: Variables) {
     const last = flow.points[flow.points.length - 1];
     const vars = { ...last.variables, ...formData };
     const next = this.nearestStopPoint(this.nextPoint(new Point(last.path, vars)));
@@ -66,7 +66,7 @@ export class Controller<T extends Parameters> {
     return this.navigatePrevious(flow, values);
   }
 
-  private navigatePrevious(flow: Flow, values: ListValues) {
+  private navigatePrevious(flow: Flow, values: FlowValues) {
     const previous = flow.points.slice(0, -1);
     const last = previous[previous.length - 1];
     const schema = this.schema.find(last.path) as FormSchema<T>;
@@ -74,7 +74,7 @@ export class Controller<T extends Parameters> {
     return new Flow(result, previous, values);
   }
 
-  private updateValues(flow: Flow, formData: Variables): ListValues {
+  private updateValues(flow: Flow, formData: Variables): FlowValues {
     const point = flow.points[flow.points.length - 1];
     const form = this.schema.find(point.path) as FormSchema<T>;
     const nameKeys = form.getNameKeys(point.variables);
