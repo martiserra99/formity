@@ -12,3 +12,4 @@ export {
   ReturnSchemaType as ReturnSchema,
   VariablesSchemaType as VariablesSchema,
 } from "./types/schema";
+export { Value, Variables } from "expry";
