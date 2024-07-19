@@ -11,6 +11,10 @@ export class Point {
     this.variables = variables;
   }
 
+  get position(): Position {
+    return this.path[this.path.length - 1];
+  }
+
   get parentPath(): Position[] {
     return this.path.slice(0, -1);
   }

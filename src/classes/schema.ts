@@ -11,6 +11,9 @@ import {
 } from "../types/schema";
 
 import { CondPosition, ListPosition, LoopPosition, Position } from "../types/position";
+import { Result, FormResult, ReturnResult } from "../types/result";
+import { Components, Parameters } from "../types/components";
+import { ListValues } from "./values";
 
 export class UnitSchema {
   static create(schema: UnitSchemaType): UnitSchema {
@@ -147,41 +150,86 @@ export class LoopSchema extends FlowSchema {
   }
 }
 
-export class ItemSchema extends UnitSchema {
+export abstract class StepSchema extends UnitSchema {
   // Empty
 }
 
-export class FormSchema extends ItemSchema {
-  private _defaultValues: Value;
-  private _resolver: Value;
-  private _render: Value;
+export abstract class StopSchema<T extends Parameters> extends StepSchema {
+  abstract getResult(variables: Variables, components: Components<T>, values: ListValues, path: Position[]): Result;
+}
+
+type Key = string | number;
+type DefaultValues = Record<string, [Value, Key[]]>;
+type Resolver = Record<string, [Value, string][]>;
+
+export class FormSchema<T extends Parameters> extends StopSchema<T> {
+  private defaultValues: Value;
+  private resolver: Value;
+  private render: Value;
 
   constructor(schema: FormSchemaType) {
     super();
-    this._defaultValues = schema.form.defaultValues;
-    this._resolver = schema.form.resolver;
-    this._render = schema.form.render;
+    this.defaultValues = schema.form.defaultValues;
+    this.resolver = schema.form.resolver;
+    this.render = schema.form.render;
   }
 
   static is(schema: UnitSchemaType): schema is FormSchemaType {
     return "form" in schema;
   }
 
-  private defaultValues(): Value {
-    return this._defaultValues;
+  getNameKeys(variables: Variables): (name: string) => Key[] {
+    const defaultValues = expry(this.defaultValues, variables) as DefaultValues;
+    return (name: string) => defaultValues[name][1];
   }
 
-  private resolver(): Value {
-    return this._resolver;
+  getResult(variables: Variables, components: Components<T>, values: ListValues, path: Position[]): FormResult {
+    return {
+      type: "form",
+      defaultValues: this.getDefaultValues(variables, values, path),
+      resolver: this.getResolver(variables),
+      render: this.getRender(variables, components),
+    };
   }
 
-  private render(): Value {
-    return this._render;
+  private getDefaultValues(variables: Variables, values: ListValues, path: Position[]): FormResult["defaultValues"] {
+    const defaultValues = expry(this.defaultValues, variables) as DefaultValues;
+    return Object.fromEntries(
+      Object.entries(defaultValues).map(([name, [value, keys]]) => {
+        return [name, values.get(path, name, keys, value)];
+      })
+    );
+  }
+
+  private getResolver(variables: Variables): FormResult["resolver"] {
+    const resolver = expry(this.resolver, variables) as Resolver;
+    return (values: Variables) => {
+      const errors: Record<string, { type: string; message: string }> = {};
+      for (const [name, validations] of Object.entries(resolver)) {
+        const error = validations.find(([expr]) => !expry(expr, values));
+        if (error) errors[name] = { type: "validation", message: error[1] };
+      }
+      return { values, errors };
+    };
+  }
+
+  private getRender(variables: Variables, components: Components<T>): FormResult["render"] {
+    const callback = (value: Value) => {
+      const object = value as Record<string, Value>;
+      const [key] = Object.keys(object);
+      const component = components[key];
+      const values = object[key] as T[string];
+      return component(values, callback);
+    };
+    return (values: Variables) => {
+      const render = expry(this.render, { ...variables, ...values });
+      return callback(render);
+    };
   }
 }
 
-export class ReturnSchema extends ItemSchema {
-  readonly return: Value;
+export class ReturnSchema<T extends Parameters> extends StopSchema<T> {
+  private return: Value;
 
   constructor(schema: ReturnSchemaType) {
     super();
@@ -191,10 +239,17 @@ export class ReturnSchema extends ItemSchema {
   static is(schema: UnitSchemaType): schema is ReturnSchemaType {
     return "return" in schema;
   }
+
+  getResult(variables: Variables): ReturnResult {
+    return {
+      type: "return",
+      return: expry(this.return, variables),
+    };
+  }
 }
 
-export class VariablesSchema extends ItemSchema {
-  readonly variables: Value;
+export class VariablesSchema extends StepSchema {
+  private variables: Value;
 
   constructor(schema: VariablesSchemaType) {
     super();
@@ -203,5 +258,9 @@ export class VariablesSchema extends ItemSchema {
 
   static is(schema: UnitSchemaType): schema is VariablesSchemaType {
     return "variables" in schema;
+  }
+
+  getVariables(variables: Variables): Variables {
+    return expry(this.variables, variables) as Variables;
   }
 }

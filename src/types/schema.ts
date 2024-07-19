@@ -1,6 +1,6 @@
 import { Value } from "expry";
 
-export type UnitSchemaType = FlowSchemaType | ItemSchemaType;
+export type UnitSchemaType = FlowSchemaType | StepSchemaType;
 
 export type FlowSchemaType = ListSchemaType | CondSchemaType | LoopSchemaType;
 
@@ -21,7 +21,9 @@ export type LoopSchemaType = {
   };
 };
 
-export type ItemSchemaType = FormSchemaType | ReturnSchemaType | VariablesSchemaType;
+export type StepSchemaType = StopSchemaType | VariablesSchemaType;
+
+export type StopSchemaType = FormSchemaType | ReturnSchemaType;
 
 export type FormSchemaType = {
   form: {

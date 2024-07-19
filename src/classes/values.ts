@@ -4,12 +4,12 @@ import { Position, ListPosition, CondPosition, LoopPosition } from "../types/pos
 type Key = string | number;
 
 export abstract class FlowValues {
-  get(path: Position[], name: string, keys: Key[], defaultValue: Value): Value {
-    return defaultValue;
-  }
-
   set(path: Position[], name: string, keys: Key[], value: Value) {
     return this;
+  }
+
+  get(path: Position[], name: string, keys: Key[], defaultValue: Value): Value {
+    return defaultValue;
   }
 
   protected formValues(path: Position[]): FormValues {

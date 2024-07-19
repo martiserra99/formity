@@ -8,13 +8,9 @@ export class Flow {
   public points: Point[];
   public values: ListValues;
 
-  constructor(points: Point[], values: ListValues) {
+  constructor(result: Result, points: Point[], values: ListValues) {
+    this.result = result;
     this.points = points;
     this.values = values;
-    this.result = this.getResult(points, values);
-  }
-
-  private getResult(points: Point[], values: ListValues): Result {
-    return { type: "return", return: null };
   }
 }

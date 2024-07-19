@@ -2,7 +2,7 @@ import { ReactElement } from "react";
 import { UseFormProps } from "react-hook-form";
 import { Value, Variables } from "expry";
 
-export type Result = FormResult | ReturnResult | VariablesResult;
+export type Result = FormResult | ReturnResult;
 
 export type FormResult = {
   type: "form";
@@ -12,5 +12,3 @@ export type FormResult = {
 };
 
 export type ReturnResult = { type: "return"; return: Value };
-
-export type VariablesResult = { type: "variables"; variables: Variables };
