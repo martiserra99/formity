@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { ReactElement, useState, useMemo, useCallback } from "react";
+import { ReactElement, Fragment, useState, useMemo, useCallback } from "react";
 import { Value, Variables } from "expry";
 
 import { FormProps } from "./types/form";
@@ -13,6 +13,7 @@ import { Flow } from "./classes/flow";
 
 interface FormityProps<T extends Parameters, U extends Variables> {
   components: Components<T>;
+  wrapper?: (children: ReactElement, key: number) => ReactElement;
   form: (props: FormProps<U>) => ReactElement;
   schema: ListSchemaType;
   onSubmit: (result: Value) => void;
@@ -20,6 +21,7 @@ interface FormityProps<T extends Parameters, U extends Variables> {
 
 export function Formity<T extends Parameters, U extends Variables>({
   components,
+  wrapper = (children, key) => <Fragment key={key}>{children}</Fragment>,
   form: Form,
   schema,
   onSubmit,
@@ -47,9 +49,8 @@ export function Formity<T extends Parameters, U extends Variables>({
     [controller, flow]
   );
 
-  return (
+  const component = (
     <Form
-      key={flow.points.length}
       defaultValues={form.defaultValues}
       resolver={form.resolver}
       render={form.render}
@@ -57,4 +58,8 @@ export function Formity<T extends Parameters, U extends Variables>({
       onBack={handleBack}
     />
   );
+
+  const key = flow.points.length;
+
+  return wrapper(component, key);
 }
