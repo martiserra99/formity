@@ -41,7 +41,7 @@ export function Formity<T extends Parameters>({ components, schema, onReturn }: 
   );
 
   return form.render({
-    key: flow.points.length,
+    step: flow.points.length,
     defaultValues: form.defaultValues,
     resolver: form.resolver,
     onNext: handleNext,

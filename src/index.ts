@@ -11,5 +11,5 @@ export {
   ReturnSchemaType as ReturnSchema,
   VariablesSchemaType as VariablesSchema,
 } from "./types/schema";
-export { DefaultValues, Resolver, OnNext, OnBack, Key } from "./types/form";
+export { Step, DefaultValues, Resolver, OnNext, OnBack } from "./types/form";
 export { Value, Variables } from "expry";
