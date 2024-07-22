@@ -1,5 +1,4 @@
 export { Formity } from "./formity";
-export { FormProps } from "./types/form";
 export { Components } from "./types/components";
 export {
   ListSchemaType as Schema,
@@ -12,4 +11,5 @@ export {
   ReturnSchemaType as ReturnSchema,
   VariablesSchemaType as VariablesSchema,
 } from "./types/schema";
+export { DefaultValues, Resolver, OnNext, OnBack, Key } from "./types/form";
 export { Value, Variables } from "expry";
