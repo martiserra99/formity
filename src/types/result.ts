@@ -1,14 +1,21 @@
 import { ReactElement } from "react";
-import { UseFormProps } from "react-hook-form";
-import { Value, Variables } from "expry";
+import { Value } from "expry";
+
+import { DefaultValues, Resolver, OnNext, OnBack, Key } from "./form";
 
 export type Result = FormResult | ReturnResult;
 
 export type FormResult = {
   type: "form";
-  defaultValues: UseFormProps["defaultValues"];
-  resolver: UseFormProps["resolver"];
-  render: (values: Variables) => ReactElement;
+  defaultValues: DefaultValues;
+  resolver: Resolver;
+  render: (values: {
+    defaultValues: DefaultValues;
+    resolver: Resolver;
+    onNext: OnNext;
+    onBack: OnBack;
+    key: Key;
+  }) => ReactElement;
 };
 
 export type ReturnResult = { type: "return"; return: Value };
