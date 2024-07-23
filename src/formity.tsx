@@ -11,8 +11,6 @@ import { Flow } from "./classes/flow";
 interface FormityProps<T extends Parameters> {
   components: Components<T>;
   schema: ListSchemaType;
-  onEmit?: () => {};
-  onSave?: () => {};
   onReturn: (result: Value) => void;
 }
 
