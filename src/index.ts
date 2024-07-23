@@ -1,4 +1,5 @@
 export { Formity } from "./formity";
+export { useFormity } from "./context/formity-context";
 export { Components } from "./types/components";
 export {
   ListSchemaType as Schema,

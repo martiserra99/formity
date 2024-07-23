@@ -1,3 +1,5 @@
+import * as React from "react";
+
 import { useState, useMemo, useCallback } from "react";
 import { Value, Variables } from "expry";
 
@@ -7,6 +9,8 @@ import { FormResult } from "./types/result";
 
 import { Controller } from "./classes/controller";
 import { Flow } from "./classes/flow";
+
+import { FormityContext } from "./context/formity-context";
 
 interface FormityProps<T extends Parameters> {
   components: Components<T>;
@@ -38,11 +42,16 @@ export function Formity<T extends Parameters>({ components, schema, onReturn }: 
     [controller, flow]
   );
 
-  return form.render({
-    step: flow.points.length,
-    defaultValues: form.defaultValues,
-    resolver: form.resolver,
-    onNext: handleNext,
-    onBack: handleBack,
-  });
+  const values = useMemo(
+    () => ({
+      step: flow.points.length,
+      defaultValues: form.defaultValues,
+      resolver: form.resolver,
+      onNext: handleNext,
+      onBack: handleBack,
+    }),
+    [flow.points.length, form.defaultValues, form.resolver, handleNext, handleBack]
+  );
+
+  return <FormityContext.Provider value={values}>{form.render(values)}</FormityContext.Provider>;
 }
