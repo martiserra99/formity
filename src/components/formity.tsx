@@ -3,14 +3,14 @@ import * as React from "react";
 import { useState, useMemo, useCallback } from "react";
 import { Value, Variables } from "expry";
 
-import { Components, Parameters } from "./types/components";
-import { ListSchemaType } from "./types/schema";
-import { FormResult } from "./types/result";
+import { Components, Parameters } from "../types/components";
+import { ListSchemaType } from "../types/schema";
+import { FormResult } from "../types/result";
 
-import { Controller } from "./classes/controller";
-import { Flow } from "./classes/flow";
+import { Controller } from "../classes/controller";
+import { Flow } from "../classes/flow";
 
-import { FormityContext } from "./context/formity-context";
+import { FormityContext } from "../context/formity-context";
 
 interface FormityProps<T extends Parameters> {
   components: Components<T>;

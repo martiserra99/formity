@@ -1,4 +1,4 @@
-export { Formity } from "./formity";
+export { Formity } from "./components/formity";
 export { useFormity } from "./context/formity-context";
 export { Components } from "./types/components";
 export {
