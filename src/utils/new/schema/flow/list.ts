@@ -1,5 +1,5 @@
-import { ItemSchema, ListSchema } from "../../../../types/new/schema";
-import { Position, ListPosition } from "../../../../types/new/flow/position";
+import { ListSchema, ItemSchema } from "../../../../types/new/schema";
+import { ListPosition, Position } from "../../../../types/new/flow/position";
 
 export namespace ListSchemaUtils {
   export function is(schema: ItemSchema): schema is ListSchema {

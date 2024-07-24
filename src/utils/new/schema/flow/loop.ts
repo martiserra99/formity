@@ -1,7 +1,7 @@
 import { expry, Variables } from "expry";
 
-import { ItemSchema, LoopSchema } from "../../../../types/new/schema";
-import { Position, LoopPosition } from "../../../../types/new/flow/position";
+import { LoopSchema, ItemSchema } from "../../../../types/new/schema";
+import { LoopPosition, Position } from "../../../../types/new/flow/position";
 
 export namespace LoopSchemaUtils {
   export function is(schema: ItemSchema): schema is LoopSchema {

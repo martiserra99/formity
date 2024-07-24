@@ -1,6 +1,6 @@
 import { expry, Variables, Value } from "expry";
 
-import { FormSchema, StepSchema } from "../../../../types/new/schema";
+import { FormSchema, ItemSchema } from "../../../../types/new/schema";
 import { FormResult } from "../../../../types/new/flow/result";
 import { ListFields } from "../../../../types/new/flow/fields";
 import { Position } from "../../../../types/new/flow/position";
@@ -11,11 +11,11 @@ type DefaultValues = Record<string, [Value, Key[]]>;
 type Resolver = Record<string, [Value, string][]>;
 
 export namespace FormSchemaUtils {
-  export function is(schema: StepSchema): schema is FormSchema {
+  export function is(schema: ItemSchema): schema is FormSchema {
     return "form" in schema;
   }
 
-  export function getState<T extends Parameters>(
+  export function getResult<T extends Parameters>(
     schema: FormSchema,
     variables: Variables,
     components: Components<T>,

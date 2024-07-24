@@ -8,6 +8,10 @@ import { CondSchemaUtils } from "./cond";
 import { LoopSchemaUtils } from "./loop";
 
 export namespace FlowSchemaUtils {
+  export function is(schema: ItemSchema): schema is FlowSchema {
+    return ListSchemaUtils.is(schema) || CondSchemaUtils.is(schema) || LoopSchemaUtils.is(schema);
+  }
+
   export function find(schema: FlowSchema, path: Position[]): ItemSchema {
     let current: ItemSchema = schema;
     for (const position of path) {
