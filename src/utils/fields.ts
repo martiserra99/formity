@@ -11,7 +11,32 @@ import {
 } from "../types/types/fields";
 import { CondPosition, ListPosition, LoopPosition, Position } from "../types/position";
 
+const a = {
+  a: "",
+  b: {
+    c: {
+      d: "a",
+    },
+  },
+};
+
+const b = withValue(a, ["b", "c", "d"], "b");
+
+function withValue(obj: object, path: string, value: string) {
+  //
+}
+
 export namespace FlowFieldsUtils {
+  export function setFieldValue(params: {
+    flowFields: FlowFields;
+    path: Position[];
+    name: string;
+    keys: string[];
+    value: Value;
+  }) {
+    const { flowFields, path, name, keys, value } = params;
+  }
+
   export function getFieldValue(params: {
     flowFields: FlowFields;
     path: Position[];

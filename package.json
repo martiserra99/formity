@@ -59,6 +59,7 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
+    "delegy": "^1.0.1",
     "expry": "file:../../Expry/expry",
     "react-hook-form": "^7.52.1"
   }
