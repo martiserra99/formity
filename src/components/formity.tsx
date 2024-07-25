@@ -11,6 +11,7 @@ import { Flow } from "../types/flow";
 import { Controller } from "../classes/controller";
 
 import { FormityContext } from "../context/formity-context";
+import { FlowUtils } from "../utils/flow";
 
 export interface FormityProps<T extends Parameters> {
   components: Components<T>;
@@ -48,6 +49,13 @@ export function Formity<T extends Parameters>({ components, schema, initialFlow,
     [controller, flow]
   );
 
+  const getFlow = useCallback(
+    (formData: Variables): Flow => {
+      return FlowUtils.getFlow(flow, schema, formData);
+    },
+    [flow, schema]
+  );
+
   const values = useMemo(
     () => ({
       step: flow.points.length,
@@ -55,6 +63,7 @@ export function Formity<T extends Parameters>({ components, schema, initialFlow,
       resolver: form.resolver,
       onNext: handleNext,
       onBack: handleBack,
+      getFlow,
     }),
     [flow.points.length, form.defaultValues, form.resolver, handleNext, handleBack]
   );

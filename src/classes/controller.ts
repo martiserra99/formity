@@ -75,7 +75,7 @@ export class Controller<T extends Parameters> {
   private updateFields(flow: Flow, formData: Variables): ListFields {
     const point = flow.points[flow.points.length - 1];
     const form = FlowSchemaUtils.find(this.schema, point.path) as FormSchema;
-    const nameKeys = FormSchemaUtils.nameKeys(form, point.variables);
+    const nameKeys = FormSchemaUtils.getNameKeys(form, point.variables);
     let fields: FlowFields = flow.fields;
     for (const [name, value] of Object.entries(formData)) {
       fields = FlowFieldsUtils.set(fields, point.path, name, nameKeys(name), value);
