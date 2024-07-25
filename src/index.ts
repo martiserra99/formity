@@ -1,4 +1,4 @@
-export { Formity } from "./components/formity";
+export { Formity, FormityProps, OnReturn } from "./components/formity";
 export { useFormity } from "./context/formity-context";
 export { Components } from "./types/components";
 export {
@@ -14,4 +14,9 @@ export {
   VariablesSchema,
 } from "./types/schema";
 export { Step, DefaultValues, Resolver, OnNext, OnBack } from "./types/form";
+export { Flow } from "./types/flow";
+export { Result, FormResult, ReturnResult } from "./types/result";
+export { Point } from "./types/point";
+export { Position, ListPosition, CondPosition, LoopPosition } from "./types/position";
+export { ItemFields, FlowFields, ListFields, CondFields, LoopFields, FormFields, NameValues } from "./types/fields";
 export { Value, Variables } from "expry";
