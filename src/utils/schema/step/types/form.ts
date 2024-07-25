@@ -2,11 +2,14 @@ import { expry, Variables, Value } from "expry";
 
 import { FormSchema, ItemSchema } from "../../../../types/schema";
 import { FormResult } from "../../../../types/result";
-import { ListFields } from "../../../../types/fields";
+import { FlowFields } from "../../../../types/fields";
 import { Position } from "../../../../types/position";
 import { Components, Parameters } from "../../../../types/components";
+import { Values } from "../../../../types/form";
 
-type Key = string | number;
+import { FlowFieldsUtils } from "../../../fields/flow/flow";
+
+type Key = string;
 type DefaultValues = Record<string, [Value, Key[]]>;
 type Resolver = Record<string, [Value, string][]>;
 
@@ -15,11 +18,16 @@ export namespace FormSchemaUtils {
     return "form" in schema;
   }
 
+  export function nameKeys(schema: FormSchema, variables: Variables): (name: string) => Key[] {
+    const defaultValues = expry(schema.form.defaultValues, variables) as DefaultValues;
+    return (name: string) => defaultValues[name][1];
+  }
+
   export function getResult<T extends Parameters>(
     schema: FormSchema,
     variables: Variables,
     components: Components<T>,
-    fields: ListFields,
+    fields: FlowFields,
     path: Position[]
   ): FormResult {
     return {
@@ -33,13 +41,13 @@ export namespace FormSchemaUtils {
   function getDefaultValues(
     schema: FormSchema,
     variables: Variables,
-    _fields: ListFields,
-    _path: Position[]
+    fields: FlowFields,
+    path: Position[]
   ): FormResult["defaultValues"] {
     const defaultValues = expry(schema.form.defaultValues, variables) as DefaultValues;
     return Object.fromEntries(
-      Object.entries(defaultValues).map(([name, [value, _]]) => {
-        return [name, value];
+      Object.entries(defaultValues).map(([name, [value, keys]]) => {
+        return [name, FlowFieldsUtils.get(fields, path, name, keys, value)];
       })
     );
   }
@@ -68,7 +76,7 @@ export namespace FormSchemaUtils {
       const values = object[key] as T[string];
       return component(values, callback);
     };
-    return (values: Variables) => {
+    return (values: Values) => {
       const render = expry(schema.form.render, { ...variables, ...values });
       return callback(render);
     };

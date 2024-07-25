@@ -2,7 +2,7 @@ import { Variables } from "expry";
 
 import { StepSchema, ItemSchema } from "../../../types/schema";
 import { Result } from "../../../types/result";
-import { ListFields } from "../../../types/fields";
+import { FlowFields } from "../../../types/fields";
 import { Position } from "../../../types/position";
 import { Components, Parameters } from "../../../types/components";
 
@@ -18,7 +18,7 @@ export namespace StepSchemaUtils {
     schema: StepSchema,
     variables: Variables,
     components: Components<T>,
-    fields: ListFields,
+    fields: FlowFields,
     path: Position[]
   ): Result {
     if (FormSchemaUtils.is(schema)) return FormSchemaUtils.getResult(schema, variables, components, fields, path);

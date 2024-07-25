@@ -24,5 +24,5 @@ export type FormFields = { [key: string]: NameValues };
 
 export type NameValues = {
   data: Value | undefined;
-  keys: { [key: string]: NameValues };
+  keys: { [key: string | number]: NameValues };
 };

@@ -12,8 +12,10 @@ import { ListFieldsUtils } from "./types/list";
 import { CondFieldsUtils } from "./types/cond";
 import { LoopFieldsUtils } from "./types/loop";
 
+type Key = string | number;
+
 export namespace FlowFieldsUtils {
-  export function get(flow: FlowFields, path: Position[], name: string, keys: string[], defaultValue: Value): Value {
+  export function get(flow: FlowFields, path: Position[], name: string, keys: Key[], defaultValue: Value): Value {
     let current: ItemFields = flow;
     for (const position of path) {
       const flow = current as FlowFields;
@@ -25,7 +27,7 @@ export namespace FlowFieldsUtils {
     return FormFieldsUtils.get(form, name, keys, defaultValue);
   }
 
-  export function set(flow: FlowFields, path: Position[], name: string, keys: string[], value: Value): FlowFields {
+  export function set(flow: FlowFields, path: Position[], name: string, keys: Key[], value: Value): FlowFields {
     let updated: FlowFields = copy(flow);
     let current: FlowFields = updated;
     for (let i = 0; i < path.length - 1; i++) {

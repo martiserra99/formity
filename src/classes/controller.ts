@@ -5,11 +5,13 @@ import { FlowSchema, ListSchema, StepSchema, FormSchema, VariablesSchema } from 
 import { Flow } from "../types/flow";
 import { Point } from "../types/point";
 import { Position } from "../types/position";
-import { ListFields } from "../types/fields";
+import { FlowFields, ListFields } from "../types/fields";
 
 import { FlowSchemaUtils } from "../utils/schema/flow/flow";
 import { StepSchemaUtils } from "../utils/schema/step/step";
+import { FormSchemaUtils } from "../utils/schema/step/types/form";
 import { VariablesSchemaUtils } from "../utils/schema/variables";
+import { FlowFieldsUtils } from "../utils/fields/flow/flow";
 
 export class Controller<T extends Parameters> {
   constructor(private schema: ListSchema, private components: Components<T>) {}
@@ -44,8 +46,8 @@ export class Controller<T extends Parameters> {
   }
 
   next(flow: Flow, formData: Variables): Flow {
-    // const values = this.updateValues(flow, formData);
-    return this.navigateNext(flow, { type: "list", list: [] }, formData);
+    const fields = this.updateFields(flow, formData);
+    return this.navigateNext(flow, fields, formData);
   }
 
   private navigateNext(flow: Flow, fields: ListFields, formData: Variables) {
@@ -57,12 +59,12 @@ export class Controller<T extends Parameters> {
     return { result, points: [...flow.points, next], fields };
   }
 
-  previous(flow: Flow, _formData: Variables): Flow {
-    // const values = this.updateValues(flow, formData);
-    return this.navigatePrevious(flow, { type: "list", list: [] });
+  previous(flow: Flow, formData: Variables): Flow {
+    const fields = this.updateFields(flow, formData);
+    return this.navigatePrevious(flow, fields);
   }
 
-  private navigatePrevious(flow: Flow, fields: ListFields) {
+  private navigatePrevious(flow: Flow, fields: ListFields): Flow {
     const prev = flow.points.slice(0, -1);
     const last = prev[prev.length - 1];
     const schema = FlowSchemaUtils.find(this.schema, last.path) as FormSchema;
@@ -70,16 +72,16 @@ export class Controller<T extends Parameters> {
     return { result, points: prev, fields };
   }
 
-  // private updateValues(flow: Flow, formData: Variables): FlowValues {
-  //   const point = flow.points[flow.points.length - 1];
-  //   const form = this.schema.find(point.path) as FormSchema<T>;
-  //   const nameKeys = form.getNameKeys(point.variables);
-  //   let values = flow.values;
-  //   for (const [name, value] of Object.entries(formData)) {
-  //     values = values.set(point.path, name, nameKeys(name), value);
-  //   }
-  //   return values;
-  // }
+  private updateFields(flow: Flow, formData: Variables): ListFields {
+    const point = flow.points[flow.points.length - 1];
+    const form = FlowSchemaUtils.find(this.schema, point.path) as FormSchema;
+    const nameKeys = FormSchemaUtils.nameKeys(form, point.variables);
+    let fields: FlowFields = flow.fields;
+    for (const [name, value] of Object.entries(formData)) {
+      fields = FlowFieldsUtils.set(fields, point.path, name, nameKeys(name), value);
+    }
+    return fields as ListFields;
+  }
 
   private nearestStopPoint(point: Point): Point {
     let current = point;
