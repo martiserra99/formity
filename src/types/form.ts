@@ -8,6 +8,7 @@ export type DefaultValues = UseFormProps["defaultValues"];
 export type Resolver = UseFormProps["resolver"];
 export type OnNext = (formData: Variables) => void;
 export type OnBack = (formData: Variables) => void;
+export type GetFlow = (formData: Variables) => Flow;
 
 export type Values = {
   step: Step;
@@ -15,5 +16,5 @@ export type Values = {
   resolver: Resolver;
   onNext: OnNext;
   onBack: OnBack;
-  getFlow: (formData: Variables) => Flow;
+  getFlow: GetFlow;
 };

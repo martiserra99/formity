@@ -13,7 +13,7 @@ export {
   ReturnSchema,
   VariablesSchema,
 } from "./types/schema";
-export { Step, DefaultValues, Resolver, OnNext, OnBack } from "./types/form";
+export { Step, DefaultValues, Resolver, OnNext, OnBack, GetFlow } from "./types/form";
 export { Flow } from "./types/flow";
 export { Result, FormResult, ReturnResult } from "./types/result";
 export { Point } from "./types/point";

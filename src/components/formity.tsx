@@ -26,7 +26,7 @@ export interface FormityProps<T extends Parameters> {
 
 export type OnReturn = (result: Value) => void;
 
-export function Formity<T extends Parameters>({ components, schema, initialFlow, onReturn }: FormityProps<T>) {
+export function Formity<T extends Parameters>({ components, schema, onReturn, initialFlow }: FormityProps<T>) {
   const controller = useMemo(() => new Controller(schema), [schema]);
 
   const [flow, setFlow] = useState<Flow>(() => {
@@ -75,7 +75,7 @@ export function Formity<T extends Parameters>({ components, schema, initialFlow,
       onBack: handleBack,
       getFlow,
     }),
-    [flow.points.length, defaultValues, form.resolver, handleNext, handleBack]
+    [flow.points.length, defaultValues, resolver, handleNext, handleBack, getFlow]
   );
 
   return <FormityContext.Provider value={values}>{render(values)}</FormityContext.Provider>;
