@@ -1,18 +1,23 @@
 import { Value } from "expry";
 
-export type ElementFields = FlowFields | FormFields;
+export type ItemFields = FlowFields | FormFields;
 
-export type FlowFields = ListFields | CondFields;
+export type FlowFields = ListFields | CondFields | LoopFields;
 
 export type ListFields = {
   type: "list";
-  list: { [position: number]: ElementFields };
+  list: { [position: number]: ItemFields };
 };
 
 export type CondFields = {
   type: "cond";
-  then: { [position: number]: ElementFields };
-  else: { [position: number]: ElementFields };
+  then: { [position: number]: ItemFields };
+  else: { [position: number]: ItemFields };
+};
+
+export type LoopFields = {
+  type: "loop";
+  list: { [position: number]: ItemFields };
 };
 
 export type FormFields = { [key: string]: NameValues };

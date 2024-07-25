@@ -3,7 +3,7 @@ import { Value } from "expry";
 
 import { DefaultValues, Resolver, Values } from "../form";
 
-export type StepResult = FormResult | ReturnResult;
+export type Result = FormResult | ReturnResult;
 
 export type FormResult = {
   type: "form";

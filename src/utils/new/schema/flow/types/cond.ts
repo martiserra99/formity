@@ -1,7 +1,7 @@
 import { expry, Variables } from "expry";
 
-import { CondSchema, ItemSchema } from "../../../../types/new/schema";
-import { CondPosition, Position } from "../../../../types/new/flow/position";
+import { CondSchema, ItemSchema } from "../../../../../types/new/schema";
+import { CondPosition, Position } from "../../../../../types/new/flow/position";
 
 export namespace CondSchemaUtils {
   export function is(schema: ItemSchema): schema is CondSchema {

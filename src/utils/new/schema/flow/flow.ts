@@ -3,9 +3,9 @@ import { Variables } from "expry";
 import { FlowSchema, ItemSchema } from "../../../../types/new/schema";
 import { Position } from "../../../../types/new/flow/position";
 
-import { ListSchemaUtils } from "./list";
-import { CondSchemaUtils } from "./cond";
-import { LoopSchemaUtils } from "./loop";
+import { ListSchemaUtils } from "./types/list";
+import { CondSchemaUtils } from "./types/cond";
+import { LoopSchemaUtils } from "./types/loop";
 
 export namespace FlowSchemaUtils {
   export function is(schema: ItemSchema): schema is FlowSchema {

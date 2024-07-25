@@ -7,8 +7,8 @@ import { Point } from "../../types/new/flow/point";
 import { Position } from "../../types/new/flow/position";
 import { ListFields } from "../../types/new/flow/fields";
 
-import { FlowSchemaUtils } from "./schema/flow";
-import { StepSchemaUtils } from "./schema/step";
+import { FlowSchemaUtils } from "./schema/flow/flow";
+import { StepSchemaUtils } from "./schema/step/step";
 import { VariablesSchemaUtils } from "./schema/variables";
 
 export class Controller<T extends Parameters> {
