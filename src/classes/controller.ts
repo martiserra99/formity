@@ -1,6 +1,5 @@
 import { Variables } from "expry";
 
-import { Components, Parameters } from "../types/components";
 import { FlowSchema, ListSchema, StepSchema, FormSchema, VariablesSchema } from "../types/schema";
 import { Flow } from "../types/flow";
 import { Point } from "../types/point";
@@ -13,15 +12,15 @@ import { FormSchemaUtils } from "../utils/schema/step/types/form";
 import { VariablesSchemaUtils } from "../utils/schema/variables";
 import { FlowFieldsUtils } from "../utils/fields/flow/flow";
 
-export class Controller<T extends Parameters> {
-  constructor(private schema: ListSchema, private components: Components<T>) {}
+export class Controller {
+  constructor(private schema: ListSchema) {}
 
   initial(): Flow {
     const path = this.initialPath(this.schema) as Position[];
     const point = this.nearestStopPoint({ path, variables: {} });
     const fields: ListFields = { type: "list", list: {} };
     const schema = FlowSchemaUtils.find(this.schema, point.path) as FormSchema;
-    const result = StepSchemaUtils.getResult(schema, point.variables, this.components, fields, path);
+    const result = StepSchemaUtils.result(schema, point.variables);
     return { result, points: [point], fields };
   }
 
@@ -55,7 +54,7 @@ export class Controller<T extends Parameters> {
     const vars = { ...last.variables, ...formData };
     const next = this.nearestStopPoint(this.nextPoint({ path: last.path, variables: vars }));
     const schema = FlowSchemaUtils.find(this.schema, next.path) as StepSchema;
-    const result = StepSchemaUtils.getResult(schema, next.variables, this.components, fields, next.path);
+    const result = StepSchemaUtils.result(schema, next.variables);
     return { result, points: [...flow.points, next], fields };
   }
 
@@ -68,14 +67,14 @@ export class Controller<T extends Parameters> {
     const prev = flow.points.slice(0, -1);
     const last = prev[prev.length - 1];
     const schema = FlowSchemaUtils.find(this.schema, last.path) as FormSchema;
-    const result = StepSchemaUtils.getResult(schema, last.variables, this.components, fields, last.path);
+    const result = StepSchemaUtils.result(schema, last.variables);
     return { result, points: prev, fields };
   }
 
   private updateFields(flow: Flow, formData: Variables): ListFields {
     const point = flow.points[flow.points.length - 1];
     const form = FlowSchemaUtils.find(this.schema, point.path) as FormSchema;
-    const nameKeys = FormSchemaUtils.getNameKeys(form, point.variables);
+    const nameKeys = FormSchemaUtils.nameKeys(form, point.variables);
     let fields: FlowFields = flow.fields;
     for (const [name, value] of Object.entries(formData)) {
       fields = FlowFieldsUtils.set(fields, point.path, name, nameKeys(name), value);
@@ -87,7 +86,7 @@ export class Controller<T extends Parameters> {
     let current = point;
     while (VariablesSchemaUtils.is(FlowSchemaUtils.find(this.schema, current.path))) {
       const schema = FlowSchemaUtils.find(this.schema, current.path) as VariablesSchema;
-      const variables = VariablesSchemaUtils.getVariables(schema, current.variables);
+      const variables = VariablesSchemaUtils.variables(schema, current.variables);
       current = { path: current.path, variables: { ...current.variables, ...variables } };
       current = this.nextPoint(current);
     }

@@ -1,15 +1,12 @@
-import { ReactElement } from "react";
 import { Value } from "expry";
-
-import { DefaultValues, Resolver, Values } from "./form";
 
 export type Result = FormResult | ReturnResult;
 
 export type FormResult = {
   type: "form";
-  defaultValues: DefaultValues;
-  resolver: Resolver;
-  render: (values: Values) => ReactElement;
+  defaultValues: Record<string, [Value, string[]]>;
+  resolver: Record<string, [Value, string][]>;
+  render: Value;
 };
 
 export type ReturnResult = { type: "return"; return: Value };

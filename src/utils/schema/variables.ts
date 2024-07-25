@@ -7,7 +7,7 @@ export namespace VariablesSchemaUtils {
     return "variables" in schema;
   }
 
-  export function getVariables(schema: VariablesSchema, variables: Variables): Variables {
+  export function variables(schema: VariablesSchema, variables: Variables): Variables {
     return expry(schema.variables, variables) as Variables;
   }
 }

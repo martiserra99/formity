@@ -8,7 +8,10 @@ export namespace ReturnSchemaUtils {
     return "return" in schema;
   }
 
-  export function getResult(schema: ReturnSchema, variables: Variables): ReturnResult {
-    return { type: "return", return: expry(schema.return, variables) };
+  export function result(schema: ReturnSchema, variables: Variables): ReturnResult {
+    return {
+      type: "return",
+      return: expry(schema.return, variables) as ReturnResult["return"],
+    };
   }
 }

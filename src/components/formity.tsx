@@ -10,6 +10,10 @@ import { Flow } from "../types/flow";
 
 import { Controller } from "../classes/controller";
 
+import { useDefaultValues } from "../hooks/use-default-values";
+import { useResolver } from "../hooks/use-resolver";
+import { useRender } from "../hooks/use-render";
+
 import { FormityContext } from "../context/formity-context";
 import { FlowUtils } from "../utils/flow";
 
@@ -23,7 +27,7 @@ export interface FormityProps<T extends Parameters> {
 export type OnReturn = (result: Value) => void;
 
 export function Formity<T extends Parameters>({ components, schema, initialFlow, onReturn }: FormityProps<T>) {
-  const controller = useMemo(() => new Controller(schema, components), [schema, components]);
+  const controller = useMemo(() => new Controller(schema), [schema]);
 
   const [flow, setFlow] = useState<Flow>(() => {
     if (initialFlow) return initialFlow;
@@ -56,17 +60,23 @@ export function Formity<T extends Parameters>({ components, schema, initialFlow,
     [flow, schema]
   );
 
+  const point = flow.points[flow.points.length - 1];
+
+  const defaultValues = useDefaultValues(form, point.path, flow.fields);
+  const resolver = useResolver(form);
+  const render = useRender(form, point.variables, components);
+
   const values = useMemo(
     () => ({
       step: flow.points.length,
-      defaultValues: form.defaultValues,
-      resolver: form.resolver,
+      defaultValues: defaultValues,
+      resolver: resolver,
       onNext: handleNext,
       onBack: handleBack,
       getFlow,
     }),
-    [flow.points.length, form.defaultValues, form.resolver, handleNext, handleBack]
+    [flow.points.length, defaultValues, form.resolver, handleNext, handleBack]
   );
 
-  return <FormityContext.Provider value={values}>{form.render(values)}</FormityContext.Provider>;
+  return <FormityContext.Provider value={values}>{render(values)}</FormityContext.Provider>;
 }
