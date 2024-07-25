@@ -1,31 +1,29 @@
 import { Value } from "expry";
 
-export type UnitSchemaType = FlowSchemaType | StepSchemaType;
+export type ItemSchema = FlowSchema | StepSchema | VariablesSchema;
 
-export type FlowSchemaType = ListSchemaType | CondSchemaType | LoopSchemaType;
+export type FlowSchema = ListSchema | CondSchema | LoopSchema;
 
-export type ListSchemaType = UnitSchemaType[];
+export type ListSchema = ItemSchema[];
 
-export type CondSchemaType = {
+export type CondSchema = {
   cond: {
     if: Value;
-    then: ListSchemaType;
-    else: ListSchemaType;
+    then: ListSchema;
+    else: ListSchema;
   };
 };
 
-export type LoopSchemaType = {
+export type LoopSchema = {
   loop: {
     while: Value;
-    do: ListSchemaType;
+    do: ListSchema;
   };
 };
 
-export type StepSchemaType = StopSchemaType | VariablesSchemaType;
+export type StepSchema = FormSchema | ReturnSchema;
 
-export type StopSchemaType = FormSchemaType | ReturnSchemaType;
-
-export type FormSchemaType = {
+export type FormSchema = {
   form: {
     defaultValues: Value;
     resolver: Value;
@@ -33,10 +31,10 @@ export type FormSchemaType = {
   };
 };
 
-export type ReturnSchemaType = {
+export type ReturnSchema = {
   return: Value;
 };
 
-export type VariablesSchemaType = {
+export type VariablesSchema = {
   variables: Value;
 };

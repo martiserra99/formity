@@ -1,46 +1,42 @@
 import { Variables } from "expry";
 
 import { Components, Parameters } from "../types/components";
-import { ListSchemaType } from "../types/schema";
-
-import { ListSchema, FlowSchema, VariablesSchema, FormSchema, StopSchema } from "./schema";
-import { Flow } from "./flow";
+import { FlowSchema, ListSchema, StepSchema, FormSchema, VariablesSchema } from "../types/schema";
+import { Flow } from "../types/flow";
+import { Point } from "../types/point";
 import { Position } from "../types/position";
-import { Point } from "./point";
-import { FlowValues, ListValues } from "./values";
+import { ListFields } from "../types/fields";
+
+import { FlowSchemaUtils } from "../utils/schema/flow/flow";
+import { StepSchemaUtils } from "../utils/schema/step/step";
+import { VariablesSchemaUtils } from "../utils/schema/variables";
 
 export class Controller<T extends Parameters> {
-  private schema: ListSchema;
-  private components: Components<T>;
-
-  constructor(schema: ListSchemaType, components: Components<T>) {
-    this.schema = new ListSchema(schema);
-    this.components = components;
-  }
+  constructor(private schema: ListSchema, private components: Components<T>) {}
 
   initial(): Flow {
     const path = this.initialPath(this.schema) as Position[];
-    const point = this.nearestStopPoint(new Point(path, {}));
-    const values = new ListValues();
-    const schema = this.schema.find(point.path) as FormSchema<T>;
-    const result = schema.getResult(point.variables, this.components, values, path);
-    return new Flow(result, [point], values);
+    const point = this.nearestStopPoint({ path, variables: {} });
+    const fields: ListFields = { type: "list", list: {} };
+    const schema = FlowSchemaUtils.find(this.schema, point.path) as FormSchema;
+    const result = StepSchemaUtils.getResult(schema, point.variables, this.components, fields, path);
+    return { result, points: [point], fields };
   }
 
   private initialPath(schema: FlowSchema): Position[] | null {
-    let position = schema.into({});
+    let position = FlowSchemaUtils.into(schema, {});
     while (position) {
       const path = this.initialPathFromPosition(schema, position);
       if (path) return path;
-      position = schema.next(position, {});
+      position = FlowSchemaUtils.next(schema, position, {});
     }
     return null;
   }
 
   private initialPathFromPosition(schema: FlowSchema, position: Position): Position[] | null {
-    const unit = schema.find([position]);
-    if (unit instanceof FlowSchema) {
-      const path = this.initialPath(unit);
+    const item = FlowSchemaUtils.find(schema, [position]);
+    if (FlowSchemaUtils.is(item)) {
+      const path = this.initialPath(item);
       if (path) return [position, ...path];
       else return null;
     }
@@ -48,52 +44,52 @@ export class Controller<T extends Parameters> {
   }
 
   next(flow: Flow, formData: Variables): Flow {
-    const values = this.updateValues(flow, formData);
-    return this.navigateNext(flow, values, formData);
+    // const values = this.updateValues(flow, formData);
+    return this.navigateNext(flow, { type: "list", list: [] }, formData);
   }
 
-  private navigateNext(flow: Flow, values: FlowValues, formData: Variables) {
+  private navigateNext(flow: Flow, fields: ListFields, formData: Variables) {
     const last = flow.points[flow.points.length - 1];
     const vars = { ...last.variables, ...formData };
-    const next = this.nearestStopPoint(this.nextPoint(new Point(last.path, vars)));
-    const schema = this.schema.find(next.path) as StopSchema<T>;
-    const result = schema.getResult(next.variables, this.components, values, next.path);
-    return new Flow(result, [...flow.points, next], values);
+    const next = this.nearestStopPoint(this.nextPoint({ path: last.path, variables: vars }));
+    const schema = FlowSchemaUtils.find(this.schema, next.path) as StepSchema;
+    const result = StepSchemaUtils.getResult(schema, next.variables, this.components, fields, next.path);
+    return { result, points: [...flow.points, next], fields };
   }
 
-  previous(flow: Flow, formData: Variables): Flow {
-    const values = this.updateValues(flow, formData);
-    return this.navigatePrevious(flow, values);
+  previous(flow: Flow, _formData: Variables): Flow {
+    // const values = this.updateValues(flow, formData);
+    return this.navigatePrevious(flow, { type: "list", list: [] });
   }
 
-  private navigatePrevious(flow: Flow, values: FlowValues) {
-    const previous = flow.points.slice(0, -1);
-    const last = previous[previous.length - 1];
-    const schema = this.schema.find(last.path) as FormSchema<T>;
-    const result = schema.getResult(last.variables, this.components, values, last.path);
-    return new Flow(result, previous, values);
+  private navigatePrevious(flow: Flow, fields: ListFields) {
+    const prev = flow.points.slice(0, -1);
+    const last = prev[prev.length - 1];
+    const schema = FlowSchemaUtils.find(this.schema, last.path) as FormSchema;
+    const result = StepSchemaUtils.getResult(schema, last.variables, this.components, fields, last.path);
+    return { result, points: prev, fields };
   }
 
-  private updateValues(flow: Flow, formData: Variables): FlowValues {
-    const point = flow.points[flow.points.length - 1];
-    const form = this.schema.find(point.path) as FormSchema<T>;
-    const nameKeys = form.getNameKeys(point.variables);
-    let values = flow.values;
-    for (const [name, value] of Object.entries(formData)) {
-      values = values.set(point.path, name, nameKeys(name), value);
-    }
-    return values;
-  }
+  // private updateValues(flow: Flow, formData: Variables): FlowValues {
+  //   const point = flow.points[flow.points.length - 1];
+  //   const form = this.schema.find(point.path) as FormSchema<T>;
+  //   const nameKeys = form.getNameKeys(point.variables);
+  //   let values = flow.values;
+  //   for (const [name, value] of Object.entries(formData)) {
+  //     values = values.set(point.path, name, nameKeys(name), value);
+  //   }
+  //   return values;
+  // }
 
   private nearestStopPoint(point: Point): Point {
-    let selected = point;
-    while (this.schema.find(selected.path) instanceof VariablesSchema) {
-      const step = this.schema.find(selected.path) as VariablesSchema;
-      const variables = step.getVariables(selected.variables);
-      selected = new Point(selected.path, { ...selected.variables, ...variables });
-      selected = this.nextPoint(selected);
+    let current = point;
+    while (VariablesSchemaUtils.is(FlowSchemaUtils.find(this.schema, current.path))) {
+      const schema = FlowSchemaUtils.find(this.schema, current.path) as VariablesSchema;
+      const variables = VariablesSchemaUtils.getVariables(schema, current.variables);
+      current = { path: current.path, variables: { ...current.variables, ...variables } };
+      current = this.nextPoint(current);
     }
-    return selected;
+    return current;
   }
 
   private nextPoint(point: Point): Point {
@@ -113,22 +109,22 @@ export class Controller<T extends Parameters> {
   }
 
   private nextFlowPointNext(point: Point): Point | null {
-    const flow = this.schema.find(point.parentPath) as FlowSchema;
-    const position = flow.next(point.position, point.variables);
+    const flow = FlowSchemaUtils.find(this.schema, point.path.slice(0, -1)) as FlowSchema;
+    const position = FlowSchemaUtils.next(flow, point.path[point.path.length - 1], point.variables);
     if (position) {
-      const path = [...point.parentPath, position];
-      return new Point(path, point.variables);
+      const path = [...point.path.slice(0, -1), position];
+      return { path, variables: point.variables };
     }
     return null;
   }
 
   private nextFlowPointInto(point: Point): Point | null {
-    const unit = this.schema.find(point.path);
-    if (unit instanceof FlowSchema) {
-      const position = unit.into(point.variables);
+    const item = FlowSchemaUtils.find(this.schema, point.path);
+    if (FlowSchemaUtils.is(item)) {
+      const position = FlowSchemaUtils.into(item, point.variables);
       if (position) {
         const path = [...point.path, position];
-        const next = new Point(path, point.variables);
+        const next = { path, variables: point.variables };
         const into = this.nextFlowPointInto(next);
         if (into) return into;
         return this.nextFlowPoint(next);
@@ -139,6 +135,6 @@ export class Controller<T extends Parameters> {
   }
 
   private parentPoint(point: Point): Point {
-    return new Point(point.parentPath, point.variables);
+    return { path: point.path.slice(0, -1), variables: point.variables };
   }
 }
