@@ -20,7 +20,9 @@
     "analyze": "size-limit --why"
   },
   "peerDependencies": {
-    "react": ">=16"
+    "react": ">=16",
+    "expry": ">=0.1.0",
+    "react-hook-form": ">=7.0.0"
   },
   "husky": {
     "hooks": {
@@ -59,8 +61,6 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
-    "delegy": "^1.0.1",
-    "expry": "file:../../Expry/expry",
-    "react-hook-form": "^7.52.1"
+    "delegy": "^1.0.1"
   }
 }
