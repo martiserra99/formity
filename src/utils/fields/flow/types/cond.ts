@@ -12,12 +12,13 @@ export namespace CondFieldsUtils {
 
   export function getItemFields(flow: CondFields, position: Position): ItemFields | undefined {
     const { branch, index } = position as CondPosition;
-    if (index in flow[branch]) return flow[branch][index];
+    if (branch in flow && index in flow[branch]) return flow[branch][index];
     else return undefined;
   }
 
   export function setItemFields(flow: CondFields, position: Position, value: ItemFields): void {
     const { branch, index } = position as CondPosition;
+    if (!(branch in flow)) flow[branch] = {};
     flow[branch][index] = value;
   }
 }
