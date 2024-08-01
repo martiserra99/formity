@@ -17,10 +17,10 @@ export namespace FormFieldsUtils {
   }
 
   export function set(form: FormFields, name: string, keys: string[], data: Value): FormFields {
-    let updated = {
-      ...form,
-      [name]: name in form ? { ...form[name], keys: { ...form[name].keys } } : { data: undefined, keys: {} },
-    };
+    let updated =
+      name in form
+        ? { ...form, [name]: { data: form[name].data, keys: { ...form[name].keys } } }
+        : { ...form, [name]: { data: undefined, keys: {} } };
     let current = updated[name];
     for (const key of keys) {
       if (key in current.keys) {

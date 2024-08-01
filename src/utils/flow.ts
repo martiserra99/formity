@@ -3,23 +3,22 @@ import { Variables } from "expry";
 import { Flow } from "../types/flow";
 
 import { FormSchema, ListSchema } from "../types/schema";
-import { FlowFields, ListFields } from "../types/fields";
 
-import { FlowFieldsUtils } from "./fields/flow/flow";
 import { FormSchemaUtils } from "./schema/step/types/form";
 import { FlowSchemaUtils } from "./schema/flow/flow";
+import { ListFieldsUtils } from "./fields/flow/types/list";
 
 export namespace FlowUtils {
   export function getFlow(flow: Flow, schema: ListSchema, formData: Variables): Flow {
-    const point = flow.points[flow.points.length - 1];
-    const path = point.path;
-    const variables = point.variables;
+    const stop = flow.points[flow.points.length - 1];
+    const path = stop.path;
+    const variables = stop.variables;
     const form = FlowSchemaUtils.find(schema, path) as FormSchema;
-    const nameKeys = FormSchemaUtils.keys(form, variables);
-    let current: FlowFields = flow.fields;
+    const keys = FormSchemaUtils.keys(form, variables);
+    let fields = flow.fields;
     for (const [name, value] of Object.entries(formData)) {
-      current = FlowFieldsUtils.set(current, path, name, nameKeys(name), value);
+      fields = ListFieldsUtils.set(fields, path, name, keys(name), value);
     }
-    return { ...flow, fields: current as ListFields };
+    return { ...flow, fields: fields };
   }
 }
