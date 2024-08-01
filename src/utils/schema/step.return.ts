@@ -1,7 +1,7 @@
 import { expry, Variables } from "expry";
 
-import { ReturnSchema, ItemSchema } from "../../../../types/schema";
-import { ReturnResult } from "../../../../types/result";
+import { ReturnSchema, ItemSchema } from "../../types/schema";
+import { ReturnResult } from "../../types/result";
 
 export namespace ReturnSchemaUtils {
   export function is(schema: ItemSchema): schema is ReturnSchema {

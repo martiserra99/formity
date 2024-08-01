@@ -1,19 +1,7 @@
-import { Value } from "expry";
-
-import { CondFields, FlowFields, ItemFields } from "../../../../types/fields";
-import { CondPosition, Position } from "../../../../types/position";
-
-import { FlowFieldsUtils } from "../flow";
+import { CondFields, FlowFields, ItemFields } from "../../types/fields";
+import { CondPosition, Position } from "../../types/position";
 
 export namespace CondFieldsUtils {
-  export function get(flow: CondFields, path: Position[], name: string, keys: string[], defaultValue: Value): Value {
-    return FlowFieldsUtils.get(flow, path, name, keys, defaultValue);
-  }
-
-  export function set(flow: CondFields, path: Position[], name: string, keys: string[], value: Value): CondFields {
-    return FlowFieldsUtils.set(flow, path, name, keys, value) as CondFields;
-  }
-
   export function clone(flow: CondFields): FlowFields {
     return {
       type: "cond",

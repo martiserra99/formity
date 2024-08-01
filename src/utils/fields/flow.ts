@@ -1,14 +1,14 @@
 import { Value } from "expry";
 import { mapis } from "mapis";
 
-import { ItemFields, FlowFields, FormFields } from "../../../types/fields";
-import { Position } from "../../../types/position";
+import { ItemFields, FlowFields, FormFields } from "../../types/fields";
+import { Position } from "../../types/position";
 
-import { FormFieldsUtils } from "../form";
+import { FormFieldsUtils } from "./form";
 
-import { ListFieldsUtils } from "./types/list";
-import { CondFieldsUtils } from "./types/cond";
-import { LoopFieldsUtils } from "./types/loop";
+import { ListFieldsUtils } from "./flow.list";
+import { CondFieldsUtils } from "./flow.cond";
+import { LoopFieldsUtils } from "./flow.loop";
 
 export namespace FlowFieldsUtils {
   export function get(flow: FlowFields, path: Position[], name: string, keys: string[], defaultValue: Value): Value {

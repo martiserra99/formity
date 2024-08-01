@@ -5,7 +5,7 @@ import { FormResult } from "../types/result";
 import { ListFields } from "../types/fields";
 import { Position } from "../types/position";
 
-import { FlowFieldsUtils } from "../utils/fields/flow/flow";
+import { FlowFieldsUtils } from "../utils/fields/flow";
 
 export function useDefaultValues(form: FormResult, path: Position[], fields: ListFields): DefaultValues {
   return useMemo(() => {

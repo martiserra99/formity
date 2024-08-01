@@ -1,11 +1,11 @@
 import { Variables } from "expry";
 
-import { FlowSchema, ItemSchema } from "../../../types/schema";
-import { Position } from "../../../types/position";
+import { FlowSchema, ItemSchema } from "../../types/schema";
+import { Position } from "../../types/position";
 
-import { ListSchemaUtils } from "./types/list";
-import { CondSchemaUtils } from "./types/cond";
-import { LoopSchemaUtils } from "./types/loop";
+import { ListSchemaUtils } from "./flow.list";
+import { CondSchemaUtils } from "./flow.cond";
+import { LoopSchemaUtils } from "./flow.loop";
 
 export namespace FlowSchemaUtils {
   export function is(schema: ItemSchema): schema is FlowSchema {

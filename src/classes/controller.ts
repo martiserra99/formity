@@ -4,14 +4,14 @@ import { FlowSchema, ListSchema, StepSchema, FormSchema, VariablesSchema } from 
 import { Flow } from "../types/flow";
 import { Point } from "../types/point";
 import { Position } from "../types/position";
-import { ListFields } from "../types/fields";
+import { FlowFields, ListFields } from "../types/fields";
 import { FormResult } from "../types/result";
 
-import { FlowSchemaUtils } from "../utils/schema/flow/flow";
-import { StepSchemaUtils } from "../utils/schema/step/step";
-import { FormSchemaUtils } from "../utils/schema/step/types/form";
+import { FlowSchemaUtils } from "../utils/schema/flow";
+import { StepSchemaUtils } from "../utils/schema/step";
+import { FormSchemaUtils } from "../utils/schema/step.form";
 import { VariablesSchemaUtils } from "../utils/schema/variables";
-import { ListFieldsUtils } from "../utils/fields/flow/types/list";
+import { FlowFieldsUtils } from "../utils/fields/flow";
 
 export class Controller {
   constructor(private schema: ListSchema) {}
@@ -124,11 +124,11 @@ export class Controller {
     const stop = flow.points[flow.points.length - 1];
     const form = FlowSchemaUtils.find(this.schema, stop.path) as FormSchema;
     const keys = FormSchemaUtils.keys(form, stop.variables);
-    let fields = flow.fields;
+    let fields = flow.fields as FlowFields;
     for (const [name, value] of Object.entries(formData)) {
-      fields = ListFieldsUtils.set(fields, stop.path, name, keys(name), value);
+      fields = FlowFieldsUtils.set(fields, stop.path, name, keys(name), value);
     }
-    return fields;
+    return fields as ListFields;
   }
 
   private navigateNext(flow: Flow, fields: ListFields, formData: Variables) {

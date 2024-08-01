@@ -1,19 +1,7 @@
-import { Value } from "expry";
-
-import { ListFields, FlowFields, ItemFields } from "../../../../types/fields";
-import { ListPosition, Position } from "../../../../types/position";
-
-import { FlowFieldsUtils } from "../flow";
+import { ListFields, FlowFields, ItemFields } from "../../types/fields";
+import { ListPosition, Position } from "../../types/position";
 
 export namespace ListFieldsUtils {
-  export function get(flow: ListFields, path: Position[], name: string, keys: string[], defaultValue: Value): Value {
-    return FlowFieldsUtils.get(flow, path, name, keys, defaultValue);
-  }
-
-  export function set(flow: ListFields, path: Position[], name: string, keys: string[], value: Value): ListFields {
-    return FlowFieldsUtils.set(flow, path, name, keys, value) as ListFields;
-  }
-
   export function clone(flow: ListFields): FlowFields {
     return {
       type: "list",

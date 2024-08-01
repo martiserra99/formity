@@ -1,7 +1,7 @@
 import { expry, Variables } from "expry";
 
-import { FormSchema, ItemSchema } from "../../../../types/schema";
-import { FormResult } from "../../../../types/result";
+import { FormSchema, ItemSchema } from "../../types/schema";
+import { FormResult } from "../../types/result";
 
 export namespace FormSchemaUtils {
   export function is(schema: ItemSchema): schema is FormSchema {
