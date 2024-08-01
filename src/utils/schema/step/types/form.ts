@@ -8,7 +8,7 @@ export namespace FormSchemaUtils {
     return "form" in schema;
   }
 
-  export function nameKeys(schema: FormSchema, variables: Variables): (name: string) => string[] {
+  export function keys(schema: FormSchema, variables: Variables): (name: string) => string[] {
     const defaultValues = expry(schema.form.defaultValues, variables) as FormResult["defaultValues"];
     return (name: string) => defaultValues[name][1];
   }

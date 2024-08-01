@@ -15,7 +15,7 @@ export namespace FlowUtils {
     const path = point.path;
     const variables = point.variables;
     const form = FlowSchemaUtils.find(schema, path) as FormSchema;
-    const nameKeys = FormSchemaUtils.nameKeys(form, variables);
+    const nameKeys = FormSchemaUtils.keys(form, variables);
     let current: FlowFields = flow.fields;
     for (const [name, value] of Object.entries(formData)) {
       current = FlowFieldsUtils.set(current, path, name, nameKeys(name), value);

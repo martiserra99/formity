@@ -1,5 +1,5 @@
 import { Value } from "expry";
-import { delegy } from "delegy";
+import { mapis } from "mapis";
 
 import { ItemFields, FlowFields, FormFields } from "../../../types/fields";
 import { Position } from "../../../types/position";
@@ -54,19 +54,19 @@ export namespace FlowFieldsUtils {
     return updated;
   }
 
-  const copy = delegy<FlowFields, [], ["type"], [], FlowFields>([], ["type"], {
+  const copy = mapis<FlowFields, [], ["type"], [], FlowFields>([], ["type"], {
     list: ListFieldsUtils.clone,
     cond: CondFieldsUtils.clone,
     loop: LoopFieldsUtils.clone,
   });
 
-  const getItemFields = delegy<FlowFields, [], ["type"], [Position], ItemFields | undefined>([], ["type"], {
+  const getItemFields = mapis<FlowFields, [], ["type"], [Position], ItemFields | undefined>([], ["type"], {
     list: ListFieldsUtils.getItemFields,
     cond: CondFieldsUtils.getItemFields,
     loop: LoopFieldsUtils.getItemFields,
   });
 
-  const setItemFields = delegy<FlowFields, [], ["type"], [Position, ItemFields], void>([], ["type"], {
+  const setItemFields = mapis<FlowFields, [], ["type"], [Position, ItemFields], void>([], ["type"], {
     list: ListFieldsUtils.setItemFields,
     cond: CondFieldsUtils.setItemFields,
     loop: LoopFieldsUtils.setItemFields,

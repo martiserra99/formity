@@ -1,7 +1,15 @@
+import { Value } from "expry";
+
 import { ListFields, FlowFields, ItemFields } from "../../../../types/fields";
 import { ListPosition, Position } from "../../../../types/position";
 
+import { FlowFieldsUtils } from "../flow";
+
 export namespace ListFieldsUtils {
+  export function set(flow: ListFields, path: Position[], name: string, keys: string[], value: Value): ListFields {
+    return FlowFieldsUtils.set(flow, path, name, keys, value) as ListFields;
+  }
+
   export function clone(flow: ListFields): FlowFields {
     return {
       type: "list",
