@@ -9,7 +9,7 @@ export namespace ListFieldsUtils {
     };
   }
 
-  export function newFlow(): FlowFields {
+  export function createFlow(): FlowFields {
     return { type: "list", list: {} };
   }
 

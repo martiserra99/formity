@@ -9,7 +9,7 @@ export namespace LoopFieldsUtils {
     };
   }
 
-  export function newFlow(): FlowFields {
+  export function createFlow(): FlowFields {
     return { type: "loop", list: {} };
   }
 

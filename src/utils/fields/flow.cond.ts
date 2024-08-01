@@ -10,7 +10,7 @@ export namespace CondFieldsUtils {
     };
   }
 
-  export function newFlow(): FlowFields {
+  export function createFlow(): FlowFields {
     return { type: "cond", then: {}, else: {} };
   }
 

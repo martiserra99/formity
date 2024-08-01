@@ -126,6 +126,11 @@ export class Controller {
     const keys = FormSchemaUtils.keys(form, stop.variables);
     let fields = flow.fields as FlowFields;
     for (const [name, value] of Object.entries(formData)) {
+      console.log("fields", fields);
+      console.log("stop.path", stop.path);
+      console.log("name", name);
+      console.log("keys(name)", keys(name));
+      console.log("value", value);
       fields = FlowFieldsUtils.set(fields, stop.path, name, keys(name), value);
     }
     return fields as ListFields;
