@@ -1,6 +1,23 @@
 {
+  "name": "formity",
+  "description": "Build the most powerful forms, without the hassle",
   "version": "0.1.0",
   "license": "MIT",
+  "author": "Marti Serra <contact@martiserra.me> (https://www.martiserra.me/)",
+  "contributors": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/martiserra99/formity"
+  },
+  "homepage": "https://formity.app/",
+  "keywords": [
+    "form",
+    "multi-step form",
+    "dynamic form",
+    "react",
+    "hooks",
+    "react hooks"
+  ],
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -35,8 +52,6 @@
     "singleQuote": false,
     "trailingComma": "es5"
   },
-  "name": "formity",
-  "author": "Marti Serra",
   "module": "dist/formity.esm.js",
   "size-limit": [
     {
