@@ -37,7 +37,7 @@
     "analyze": "size-limit --why"
   },
   "peerDependencies": {
-    "expry": ">=0.1.0",
+    "expry": ">=1.0.0",
     "react": ">=16",
     "react-hook-form": ">=7.0.0"
   },
