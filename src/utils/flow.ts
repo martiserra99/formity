@@ -3,10 +3,10 @@ import { Variables } from "expry";
 import { Flow } from "../types/flow";
 
 import { FormSchema, ListSchema } from "../types/schema";
+import { FlowFields, ListFields } from "../types/fields";
 
 import { FormSchemaUtils } from "./schema/step.form";
 import { FlowSchemaUtils } from "./schema/flow";
-import { FlowFields, ListFields } from "../types/fields";
 import { FlowFieldsUtils } from "./fields/flow";
 
 export namespace FlowUtils {
