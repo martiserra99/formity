@@ -16,3 +16,7 @@
 ```bash
 npm install formity expry react-hook-form
 ```
+
+## License
+
+[MIT License](https://opensource.org/license/mit)
