@@ -1,7 +1,7 @@
 {
   "name": "formity",
   "description": "Build the most powerful forms, without the hassle",
-  "version": "1.0.0",
+  "version": "4.0.0",
   "license": "MIT",
   "author": "Marti Serra <contact@martiserra.me> (https://www.martiserra.me/)",
   "contributors": [],
@@ -37,7 +37,7 @@
     "analyze": "size-limit --why"
   },
   "peerDependencies": {
-    "expry": ">=1.0.0",
+    "expry": ">=2.0.0",
     "react": ">=16",
     "react-hook-form": ">=7.0.0"
   },
