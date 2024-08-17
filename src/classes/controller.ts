@@ -16,9 +16,9 @@ import { FlowFieldsUtils } from "../utils/fields/flow";
 export class Controller {
   constructor(private schema: ListSchema) {}
 
-  initial(): Flow {
+  initial(variables: Variables = {}): Flow {
     const path = this.initialPath();
-    const stop = this.nearestStopPoint({ path, variables: {} });
+    const stop = this.nearestStopPoint({ path, variables });
     const form = this.getForm(stop.path);
     const fields: ListFields = { type: "list", list: {} };
     const result: FormResult = StepSchemaUtils.result(form, stop.variables) as FormResult;

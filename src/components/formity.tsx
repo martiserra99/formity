@@ -21,6 +21,7 @@ import { FlowUtils } from "../utils/flow";
 
 export interface FormityProps<T extends Parameters> {
   components: Components<T>;
+  variables?: Variables;
   schema: ListSchema;
   onReturn: OnReturn;
   initialFlow?: Flow;
@@ -28,12 +29,18 @@ export interface FormityProps<T extends Parameters> {
 
 export type OnReturn = (result: Value) => void;
 
-export function Formity<T extends Parameters>({ components, schema, onReturn, initialFlow }: FormityProps<T>) {
+export function Formity<T extends Parameters>({
+  components,
+  variables,
+  schema,
+  onReturn,
+  initialFlow,
+}: FormityProps<T>) {
   const controller = useMemo(() => new Controller(schema), [schema]);
 
   const [flow, setFlow] = useState<Flow>(() => {
     if (initialFlow) return initialFlow;
-    return controller.initial();
+    return controller.initial(variables);
   });
 
   const form = flow.result as FormResult;
