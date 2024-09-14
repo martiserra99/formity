@@ -14,12 +14,12 @@ export namespace CondFieldsUtils {
     return { type: "cond", then: {}, else: {} };
   }
 
-  export function getItem(flow: CondFields, position: Position): ItemFields | undefined {
+  export function getItem(flow: CondFields, position: Position): ItemFields | null {
     const { branch, index } = position as CondPosition;
     if (branch in flow) {
       if (index in flow[branch]) return flow[branch][index];
     }
-    return undefined;
+    return null;
   }
 
   export function setItem(flow: CondFields, position: Position, value: ItemFields): void {

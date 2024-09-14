@@ -23,6 +23,6 @@ export type LoopFields = {
 export type FormFields = { [key: string]: NameValues };
 
 export type NameValues = {
-  data: Value | undefined;
+  data: Value | null;
   keys: { [key: string]: NameValues };
 };

@@ -13,10 +13,10 @@ export namespace ListFieldsUtils {
     return { type: "list", list: {} };
   }
 
-  export function getItem(flow: ListFields, position: Position): ItemFields | undefined {
+  export function getItem(flow: ListFields, position: Position): ItemFields | null {
     const { index } = position as ListPosition;
     if (index in flow.list) return flow.list[index];
-    return undefined;
+    return null;
   }
 
   export function setItem(flow: ListFields, position: Position, item: ItemFields): void {

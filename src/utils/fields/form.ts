@@ -12,7 +12,7 @@ export namespace FormFieldsUtils {
         return defaultValue;
       }
     }
-    if (current.data === undefined) return defaultValue;
+    if (current.data === null) return defaultValue;
     return current.data;
   }
 
@@ -20,7 +20,7 @@ export namespace FormFieldsUtils {
     let updated =
       name in form
         ? { ...form, [name]: { data: form[name].data, keys: { ...form[name].keys } } }
-        : { ...form, [name]: { data: undefined, keys: {} } };
+        : { ...form, [name]: { data: null, keys: {} } };
     let current = updated[name];
     for (const key of keys) {
       if (key in current.keys) {
@@ -29,7 +29,7 @@ export namespace FormFieldsUtils {
         current.keys[key] = copy;
         current = copy;
       } else {
-        const name = { data: undefined, keys: {} };
+        const name = { data: null, keys: {} };
         current.keys[key] = name;
         current = name;
       }

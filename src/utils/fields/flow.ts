@@ -16,7 +16,7 @@ export namespace FlowFieldsUtils {
     for (const position of path) {
       const flow = current as FlowFields;
       const item = getItem(flow, position);
-      if (item === undefined) return defaultValue;
+      if (item === null) return defaultValue;
       current = item;
     }
     const form = current as FormFields;
@@ -46,7 +46,7 @@ export namespace FlowFieldsUtils {
       const form = item as FormFields;
       setItem(current, position, FormFieldsUtils.set(form, name, keys, value));
     } else {
-      const form: FormFields = { [name]: { data: undefined, keys: {} } };
+      const form: FormFields = { [name]: { data: null, keys: {} } };
       setItem(current, position, FormFieldsUtils.set(form, name, keys, value));
     }
     return updated;
@@ -64,7 +64,7 @@ export namespace FlowFieldsUtils {
     loop: LoopFieldsUtils.createFlow,
   });
 
-  const getItem = mapis<FlowFields, [], ["type"], [Position], ItemFields | undefined>([], ["type"], {
+  const getItem = mapis<FlowFields, [], ["type"], [Position], ItemFields | null>([], ["type"], {
     list: ListFieldsUtils.getItem,
     cond: CondFieldsUtils.getItem,
     loop: LoopFieldsUtils.getItem,

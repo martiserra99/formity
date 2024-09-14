@@ -27,7 +27,7 @@ export interface FormityProps<T extends Parameters> {
   initialFlow?: Flow;
 }
 
-export type OnReturn = (result: Value) => void;
+export type OnReturn = (data: Value, flow: Flow) => void;
 
 export function Formity<T extends Parameters>({
   components,
@@ -43,12 +43,13 @@ export function Formity<T extends Parameters>({
     return controller.initial(variables);
   });
 
-  const form = flow.result as FormResult;
+  const form = FlowUtils.getResult(flow, schema) as FormResult;
 
   const handleNext = useCallback(
     (formData: Variables) => {
       const next = controller.next(flow, formData);
-      if (next.result.type === "return") onReturn(next.result.return);
+      const result = FlowUtils.getResult(next, schema);
+      if (result.type === "return") onReturn(result.return, { ...flow, fields: next.fields });
       else setFlow(next);
     },
     [controller, flow, onReturn]
