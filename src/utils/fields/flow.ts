@@ -1,5 +1,5 @@
 import { Value } from "expry";
-import { mapis } from "mapis";
+import { mapsy } from "mapsy";
 
 import { ItemFields, FlowFields, FormFields } from "../../types/fields";
 import { Position } from "../../types/position";
@@ -52,25 +52,49 @@ export namespace FlowFieldsUtils {
     return updated;
   }
 
-  const clone = mapis<FlowFields, [], ["type"], [], FlowFields>([], ["type"], {
+  const clone = mapsy<{
+    object: FlowFields;
+    nested: [];
+    subset: ["type"];
+    params: [];
+    return: FlowFields;
+  }>([], ["type"], {
     list: ListFieldsUtils.clone,
     cond: CondFieldsUtils.clone,
     loop: LoopFieldsUtils.clone,
   });
 
-  const createFlow = mapis<Position, [], ["type"], [], FlowFields>([], ["type"], {
+  const createFlow = mapsy<{
+    object: Position;
+    nested: [];
+    subset: ["type"];
+    params: [];
+    return: FlowFields;
+  }>([], ["type"], {
     list: ListFieldsUtils.createFlow,
     cond: CondFieldsUtils.createFlow,
     loop: LoopFieldsUtils.createFlow,
   });
 
-  const getItem = mapis<FlowFields, [], ["type"], [Position], ItemFields | null>([], ["type"], {
+  const getItem = mapsy<{
+    object: FlowFields;
+    nested: [];
+    subset: ["type"];
+    params: [Position];
+    return: ItemFields | null;
+  }>([], ["type"], {
     list: ListFieldsUtils.getItem,
     cond: CondFieldsUtils.getItem,
     loop: LoopFieldsUtils.getItem,
   });
 
-  const setItem = mapis<FlowFields, [], ["type"], [Position, ItemFields], void>([], ["type"], {
+  const setItem = mapsy<{
+    object: FlowFields;
+    nested: [];
+    subset: ["type"];
+    params: [Position, ItemFields];
+    return: void;
+  }>([], ["type"], {
     list: ListFieldsUtils.setItem,
     cond: CondFieldsUtils.setItem,
     loop: LoopFieldsUtils.setItem,

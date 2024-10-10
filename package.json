@@ -1,7 +1,7 @@
 {
   "name": "formity",
   "description": "Build the most powerful forms, without the hassle",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "license": "MIT",
   "author": "Marti Serra <contact@martiserra.me> (https://www.martiserra.me/)",
   "contributors": [],
@@ -76,6 +76,6 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
-    "mapis": "^2.0.0"
+    "mapsy": "^1.0.1"
   }
 }
