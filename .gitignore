@@ -1,5 +1,7 @@
-*.log
+/node_modules
+/build
+
+/example/node_modules
+/example/build
+
 .DS_Store
-node_modules
-.cache
-dist

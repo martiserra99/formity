@@ -11,14 +11,14 @@ import { FlowFieldsUtils } from "./fields/flow";
 import { FormSchemaUtils } from "./schema/step.form";
 import { Result } from "../types/result";
 
-export namespace FlowUtils {
-  export function getResult(flow: Flow, schema: ListSchema): Result {
+export const FlowUtils = {
+  getResult(flow: Flow, schema: ListSchema): Result {
     const { path, variables } = flow.points[flow.points.length - 1];
     const nested = FlowSchemaUtils.find(schema, path) as StepSchema;
     return StepSchemaUtils.result(nested, variables);
-  }
+  },
 
-  export function getFlow(flow: Flow, schema: ListSchema, formData: Variables): Flow {
+  getFlow(flow: Flow, schema: ListSchema, formData: Variables): Flow {
     const stop = flow.points[flow.points.length - 1];
     const path = stop.path;
     const variables = stop.variables;
@@ -29,5 +29,5 @@ export namespace FlowUtils {
       fields = FlowFieldsUtils.set(fields, path, name, keys(name), value);
     }
     return { ...flow, fields: fields as ListFields };
-  }
-}
+  },
+};

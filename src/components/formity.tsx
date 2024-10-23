@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 
 import { useState, useMemo, useCallback } from "react";
@@ -49,7 +47,8 @@ export function Formity<T extends Parameters>({
     (formData: Variables) => {
       const next = controller.next(flow, formData);
       const result = FlowUtils.getResult(next, schema);
-      if (result.type === "return") onReturn(result.return, { ...flow, fields: next.fields });
+      if (result.type === "return")
+        onReturn(result.return, { ...flow, fields: next.fields });
       else setFlow(next);
     },
     [controller, flow, onReturn]
@@ -85,8 +84,19 @@ export function Formity<T extends Parameters>({
       onBack: handleBack,
       getFlow,
     }),
-    [flow.points.length, defaultValues, resolver, handleNext, handleBack, getFlow]
+    [
+      flow.points.length,
+      defaultValues,
+      resolver,
+      handleNext,
+      handleBack,
+      getFlow,
+    ]
   );
 
-  return <FormityContext.Provider value={values}>{render(values)}</FormityContext.Provider>;
+  return (
+    <FormityContext.Provider value={values}>
+      {render(values)}
+    </FormityContext.Provider>
+  );
 }

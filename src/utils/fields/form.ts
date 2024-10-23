@@ -2,8 +2,13 @@ import { Value } from "expry";
 
 import { FormFields } from "../../types/fields";
 
-export namespace FormFieldsUtils {
-  export function get(form: FormFields, name: string, keys: string[], defaultValue: Value): Value {
+export const FormFieldsUtils = {
+  get(
+    form: FormFields,
+    name: string,
+    keys: string[],
+    defaultValue: Value
+  ): Value {
     let current = form[name];
     for (const key of keys) {
       if (key in current.keys) {
@@ -12,14 +17,19 @@ export namespace FormFieldsUtils {
         return defaultValue;
       }
     }
-    if (current.data === null) return defaultValue;
+    if (current.data === null) {
+      return defaultValue;
+    }
     return current.data;
-  }
+  },
 
-  export function set(form: FormFields, name: string, keys: string[], data: Value): FormFields {
-    let updated =
+  set(form: FormFields, name: string, keys: string[], data: Value): FormFields {
+    const updated =
       name in form
-        ? { ...form, [name]: { data: form[name].data, keys: { ...form[name].keys } } }
+        ? {
+            ...form,
+            [name]: { data: form[name].data, keys: { ...form[name].keys } },
+          }
         : { ...form, [name]: { data: null, keys: {} } };
     let current = updated[name];
     for (const key of keys) {
@@ -36,5 +46,5 @@ export namespace FormFieldsUtils {
     }
     current.data = data;
     return updated;
-  }
-}
+  },
+};

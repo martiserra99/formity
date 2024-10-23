@@ -1,6 +1,11 @@
 import { Variables } from "expry";
 
-import { FlowSchema, ListSchema, FormSchema, VariablesSchema } from "../types/schema";
+import {
+  FlowSchema,
+  ListSchema,
+  FormSchema,
+  VariablesSchema,
+} from "../types/schema";
 import { Flow } from "../types/flow";
 import { Point } from "../types/point";
 import { Position } from "../types/position";
@@ -37,7 +42,10 @@ export class Controller {
     return null;
   }
 
-  private initialPathPosition(schema: FlowSchema, position: Position): Position[] | null {
+  private initialPathPosition(
+    schema: FlowSchema,
+    position: Position
+  ): Position[] | null {
     const item = FlowSchemaUtils.find(schema, [position]);
     if (FlowSchemaUtils.is(item)) {
       const path = this.initialPathSchema(item);
@@ -49,10 +57,21 @@ export class Controller {
 
   private nearestStopPoint(point: Point): Point {
     let current = point;
-    while (VariablesSchemaUtils.is(FlowSchemaUtils.find(this.schema, current.path))) {
-      const schema = FlowSchemaUtils.find(this.schema, current.path) as VariablesSchema;
-      const variables = VariablesSchemaUtils.variables(schema, current.variables);
-      current = { path: current.path, variables: { ...current.variables, ...variables } };
+    while (
+      VariablesSchemaUtils.is(FlowSchemaUtils.find(this.schema, current.path))
+    ) {
+      const schema = FlowSchemaUtils.find(
+        this.schema,
+        current.path
+      ) as VariablesSchema;
+      const variables = VariablesSchemaUtils.variables(
+        schema,
+        current.variables
+      );
+      current = {
+        path: current.path,
+        variables: { ...current.variables, ...variables },
+      };
       current = this.nextPoint(current);
     }
     return current;
@@ -75,8 +94,15 @@ export class Controller {
   }
 
   private nextFlowPointNext(point: Point): Point | null {
-    const flow = FlowSchemaUtils.find(this.schema, point.path.slice(0, -1)) as FlowSchema;
-    const position = FlowSchemaUtils.next(flow, point.path[point.path.length - 1], point.variables);
+    const flow = FlowSchemaUtils.find(
+      this.schema,
+      point.path.slice(0, -1)
+    ) as FlowSchema;
+    const position = FlowSchemaUtils.next(
+      flow,
+      point.path[point.path.length - 1],
+      point.variables
+    );
     if (position) {
       const path = [...point.path.slice(0, -1), position];
       return { path, variables: point.variables };
@@ -101,7 +127,8 @@ export class Controller {
   }
 
   private parentPoint(point: Point): Point {
-    if (point.path.length > 1) return { path: point.path.slice(0, -1), variables: point.variables };
+    if (point.path.length > 1)
+      return { path: point.path.slice(0, -1), variables: point.variables };
     throw new Error("The schema is malformed");
   }
 
@@ -124,7 +151,9 @@ export class Controller {
   private navigateNext(flow: Flow, fields: ListFields, formData: Variables) {
     const last = flow.points[flow.points.length - 1];
     const vars = { ...last.variables, ...formData };
-    const next = this.nearestStopPoint(this.nextPoint({ path: last.path, variables: vars }));
+    const next = this.nearestStopPoint(
+      this.nextPoint({ path: last.path, variables: vars })
+    );
     return { points: [...flow.points, next], fields };
   }
 
