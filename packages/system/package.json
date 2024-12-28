@@ -14,12 +14,12 @@
     "url": "https://github.com/martiserra99/formity"
   },
   "homepage": "https://formity.app/",
-  "main": "build/index.cjs.js",
-  "module": "build/index.esm.js",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
   "source": "src/index.ts",
-  "types": "build/index.d.ts",
+  "types": "dist/index.d.ts",
   "files": [
-    "build"
+    "dist"
   ],
   "scripts": {
     "lint": "eslint",

@@ -5,7 +5,7 @@
     "target": "es2018",
     "moduleResolution": "node",
     "jsx": "react",
-    "outDir": "./build",
+    "outDir": "./dist",
     "skipLibCheck": true,
     "declaration": true,
     "declarationMap": true,

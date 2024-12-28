@@ -4,7 +4,7 @@
     "module": "es2015",
     "target": "es2018",
     "moduleResolution": "node",
-    "outDir": "./build",
+    "outDir": "./dist",
     "skipLibCheck": true,
     "declaration": true,
     "declarationMap": true,

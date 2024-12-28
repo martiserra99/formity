@@ -5,11 +5,18 @@ import reactlint from "eslint-plugin-react";
 
 export default [
   {
-    ignores: ["build", "node_modules"],
+    ignores: ["dist", "node_modules"],
   },
   {
     languageOptions: {
       globals: globals.browser,
+    },
+  },
+  {
+    settings: {
+      react: {
+        version: "detect",
+      },
     },
   },
   eslint.configs.recommended,
