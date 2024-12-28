@@ -10,16 +10,19 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@formity/react": "^0.1.0",
     "@headlessui/react": "^2.1.10",
     "@heroicons/react": "^2.1.5",
+    "@hookform/resolvers": "^3.9.1",
     "clsx": "^2.1.1",
     "expry": "^2.0.7",
     "prism-react-renderer": "^2.4.0",
     "prismjs": "^1.29.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-hook-form": "^7.53.1",
-    "tailwind-merge": "^2.5.4"
+    "react-hook-form": "^7.54.2",
+    "tailwind-merge": "^2.5.4",
+    "zod": "^3.24.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",

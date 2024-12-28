@@ -1,19 +1,8 @@
-import type { Config } from "tailwindcss";
-import defaultTheme from "tailwindcss/defaultTheme";
-
-import tailwindcssForms from "@tailwindcss/forms";
-
-const config: Config = {
-  content: ["./src/**/*.{js,ts,jsx,tsx,mdx}"],
+/** @type {import('tailwindcss').Config} */
+export default {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {
-      fontFamily: {
-        sans: ["Plus Jakarta Sans", ...defaultTheme.fontFamily.sans],
-        mono: ["Spline Sans Mono", ...defaultTheme.fontFamily.mono],
-      },
-    },
+    extend: {},
   },
-  plugins: [tailwindcssForms],
+  plugins: [],
 };
-
-export default config;

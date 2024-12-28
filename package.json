@@ -15,8 +15,8 @@
   "homepage": "https://formity.app/",
   "scripts": {
     "preinstall": "only-allow npm",
-    "dev:react": "turbo run dev --lint",
     "build": "turbo run build",
+    "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "changeset": "changeset",
