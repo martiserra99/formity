@@ -1,4 +1,4 @@
-name: Check End To End
+name: Check End To End / React
 on: push
 jobs:
   check-end-to-end:
@@ -10,11 +10,21 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20.x
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-deps-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
-        run: npm install
+        run: npm ci
       - name: Cypress
         uses: cypress-io/github-action@v6
         with:
           start: npm run dev
           wait-on: "http://localhost:3000"
           wait-on-timeout: 120
+          config-file: apps/react/cypress.config.js
