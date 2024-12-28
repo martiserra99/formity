@@ -1,5 +1,5 @@
 {
-  "name": "react-example",
+  "name": "react-app",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -14,7 +14,6 @@
     "@heroicons/react": "^2.1.5",
     "clsx": "^2.1.1",
     "expry": "^2.0.7",
-    "formity": "file:..",
     "prism-react-renderer": "^2.4.0",
     "prismjs": "^1.29.0",
     "react": "^18.3.1",

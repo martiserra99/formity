@@ -5,7 +5,7 @@
   "license": "MIT",
   "workspaces": [
     "packages/*",
-    "examples/*"
+    "apps/*"
   ],
   "description": "A highly customizable React library for creating dynamic multi-step forms.",
   "repository": {
@@ -14,10 +14,11 @@
   },
   "homepage": "https://formity.app/",
   "scripts": {
+    "dev:react": "turbo run dev --lint",
+    "build": "turbo run build",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "build": "turbo run build",
-    "dev": "turbo run dev"
+    "clean": "pnpm -r --parallel exec rimraf dist .turbo node_modules"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
