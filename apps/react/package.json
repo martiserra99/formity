@@ -8,9 +8,8 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview --port 3000",
-    "end-to-end": "npm run build && npm run preview && cypress run",
-    "end-to-end:ui": "npm run build && npm run preview && cypress open",
-    "cypress:open": "cypress open"
+    "end-to-end": "cypress run",
+    "end-to-end:ui": "cypress open"
   },
   "dependencies": {
     "@formity/react": "^0.1.0",

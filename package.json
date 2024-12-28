@@ -19,6 +19,8 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
+    "end-to-end": "npm run end-to-end --workspace=react-app",
+    "end-to-end:ui": "npm run end-to-end:ui --workspace=react-app",
     "changeset": "changeset",
     "changeset:version": "changeset version",
     "changeset:publish": "changeset publish",
