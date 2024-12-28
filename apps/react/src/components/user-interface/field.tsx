@@ -6,6 +6,7 @@ interface FieldProps {
   label: string;
   labelClassName?: string;
   error: { message: string } | undefined;
+  cy?: string;
 }
 
 export default function Field({
@@ -14,9 +15,10 @@ export default function Field({
   label,
   labelClassName,
   error,
+  cy,
 }: FieldProps) {
   return (
-    <div className="space-y-1">
+    <div className="space-y-1" data-cy={cy}>
       <div className="relative">
         {children}
         <label

@@ -6,9 +6,10 @@ interface ListboxProps {
   name: string;
   label: string;
   options: { value: string; label: string }[];
+  cy?: string;
 }
 
-export default function Listbox({ name, label, options }: ListboxProps) {
+export default function Listbox({ name, label, options, cy }: ListboxProps) {
   const { control, formState } = useFormContext();
   const error = formState.errors[name] as { message: string } | undefined;
   return (
@@ -16,7 +17,14 @@ export default function Listbox({ name, label, options }: ListboxProps) {
       control={control}
       name={name}
       render={({ field }) => (
-        <BaseListbox label={label} value={field.value} onChange={field.onChange} options={options} error={error} />
+        <BaseListbox
+          label={label}
+          value={field.value}
+          onChange={field.onChange}
+          options={options}
+          error={error}
+          cy={cy}
+        />
       )}
     />
   );

@@ -4,10 +4,13 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3000",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview --port 3000",
+    "end-to-end": "npm run build && npm run preview && cypress run",
+    "end-to-end:ui": "npm run build && npm run preview && cypress open",
+    "cypress:open": "cypress open"
   },
   "dependencies": {
     "@formity/react": "^0.1.0",

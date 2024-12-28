@@ -7,9 +7,16 @@ interface MultiSelectProps {
   label: string;
   options: { value: string; label: string }[];
   direction: "x" | "y";
+  cy?: string;
 }
 
-export default function MultiSelect({ name, label, options, direction }: MultiSelectProps) {
+export default function MultiSelect({
+  name,
+  label,
+  options,
+  direction,
+  cy,
+}: MultiSelectProps) {
   const { control, formState } = useFormContext();
   const error = formState.errors[name] as { message: string } | undefined;
   return (
@@ -24,6 +31,7 @@ export default function MultiSelect({ name, label, options, direction }: MultiSe
           options={options}
           direction={direction}
           error={error}
+          cy={cy}
         />
       )}
     />

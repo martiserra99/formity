@@ -7,9 +7,16 @@ interface SelectProps {
   label: string;
   options: { value: string; label: string }[];
   direction: "x" | "y";
+  cy?: string;
 }
 
-export default function Select({ name, label, options, direction }: SelectProps) {
+export default function Select({
+  name,
+  label,
+  options,
+  direction,
+  cy,
+}: SelectProps) {
   const { control, formState } = useFormContext();
   const error = formState.errors[name] as { message: string } | undefined;
   return (
@@ -24,6 +31,7 @@ export default function Select({ name, label, options, direction }: SelectProps)
           options={options}
           direction={direction}
           error={error}
+          cy={cy}
         />
       )}
     />

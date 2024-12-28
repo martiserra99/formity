@@ -81,7 +81,7 @@ export const schema: Schema<Values> = [
       values: () => ({
         name: ["", []],
         surname: ["", []],
-        age: [20, []],
+        age: [0, []],
       }),
       render: ({ values, onNext }) => (
         <Screen key="name" progress={{ total: 3, current: 1 }}>
@@ -89,11 +89,17 @@ export const schema: Schema<Values> = [
             defaultValues={values}
             resolver={zodResolver(
               z.object({
-                name: z.string().min(1, { message: "Required" }),
-                surname: z.string().min(1, { message: "Required" }),
+                name: z
+                  .string()
+                  .min(1, { message: "Required" })
+                  .max(20, { message: "Max 20 chars" }),
+                surname: z
+                  .string()
+                  .min(1, { message: "Required" })
+                  .max(20, { message: "Max 20 chars" }),
                 age: z
                   .number()
-                  .min(18, { message: "Min. 18" })
+                  .min(10, { message: "Min. 10" })
                   .max(99, { message: "Max. 99" }),
               })
             )}
@@ -106,13 +112,23 @@ export const schema: Schema<Values> = [
                 <Row
                   key="name-surname"
                   items={[
-                    <TextField key="name" name="name" label="Name" />,
-                    <TextField key="surname" name="surname" label="Surname" />,
+                    <TextField
+                      key="name"
+                      name="name"
+                      label="Name"
+                      cy="field-name"
+                    />,
+                    <TextField
+                      key="surname"
+                      name="surname"
+                      label="Surname"
+                      cy="field-surname"
+                    />,
                   ]}
                 />,
-                <NumberField key="age" name="age" label="Age" />,
+                <NumberField key="age" name="age" label="Age" cy="field-age" />,
               ]}
-              button={<Next>Next</Next>}
+              button={<Next cy="next">Next</Next>}
             />
           </FormView>
         </Screen>
@@ -150,9 +166,10 @@ export const schema: Schema<Values> = [
                   key="softwareDeveloper"
                   name="softwareDeveloper"
                   label="Software Developer"
+                  cy="field-software-developer"
                 />,
               ]}
-              button={<Next>Next</Next>}
+              button={<Next cy="next">Next</Next>}
               back={<Back onBack={onBack} />}
             />
           </FormView>
@@ -209,9 +226,10 @@ export const schema: Schema<Values> = [
                         label="Languages"
                         options={inputs.languagesOptions}
                         direction="y"
+                        cy="field-languages"
                       />,
                     ]}
-                    button={<Next>Next</Next>}
+                    button={<Next cy="next">Next</Next>}
                     back={<Back onBack={onBack} />}
                   />
                 </FormView>
@@ -289,9 +307,10 @@ export const schema: Schema<Values> = [
                                 },
                               ]}
                               direction="y"
+                              cy="field-rating"
                             />,
                           ]}
-                          button={<Next>Next</Next>}
+                          button={<Next cy="next">Next</Next>}
                           back={<Back onBack={onBack} />}
                         />
                       </FormView>
@@ -370,9 +389,10 @@ export const schema: Schema<Values> = [
                             label: "No, it is not for me.",
                           },
                         ]}
+                        cy="field-interested"
                       />,
                     ]}
-                    button={<Next>Next</Next>}
+                    button={<Next cy="next">Next</Next>}
                     back={<Back onBack={onBack} />}
                   />
                 </FormView>

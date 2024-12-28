@@ -27,6 +27,7 @@ export default function Back({ onBack }: BackProps) {
         "focus:outline-none focus:ring-2 focus:ring-white/10 focus:ring-offset-2 focus:ring-offset-black",
         "disabled:bg-neutral-950 disabled:opacity-60"
       )}
+      data-cy="back"
     >
       <ChevronLeftIcon className="pointer-events-none size-5 fill-white" />
     </button>

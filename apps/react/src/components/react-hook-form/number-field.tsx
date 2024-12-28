@@ -5,9 +5,10 @@ import TextField from "../fields/text-field";
 interface NumberFieldProps {
   name: string;
   label: string;
+  cy?: string;
 }
 
-export default function NumberField({ name, label }: NumberFieldProps) {
+export default function NumberField({ name, label, cy }: NumberFieldProps) {
   const { control, formState } = useFormContext();
   const error = formState.errors[name] as { message: string } | undefined;
   return (
@@ -21,6 +22,7 @@ export default function NumberField({ name, label }: NumberFieldProps) {
           value={String(field.value)}
           onChange={(value) => field.onChange(value === "" ? 0 : Number(value))}
           error={error}
+          cy={cy}
         />
       )}
     />

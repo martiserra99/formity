@@ -5,9 +5,10 @@ import BaseTextField from "../fields/text-field";
 interface TextFieldProps {
   name: string;
   label: string;
+  cy?: string;
 }
 
-export default function TextField({ name, label }: TextFieldProps) {
+export default function TextField({ name, label, cy }: TextFieldProps) {
   const { control, formState } = useFormContext();
   const error = formState.errors[name] as { message: string } | undefined;
   return (
@@ -15,7 +16,14 @@ export default function TextField({ name, label }: TextFieldProps) {
       control={control}
       name={name}
       render={({ field }) => (
-        <BaseTextField type="text" label={label} value={field.value} onChange={field.onChange} error={error} />
+        <BaseTextField
+          type="text"
+          label={label}
+          value={field.value}
+          onChange={field.onChange}
+          error={error}
+          cy={cy}
+        />
       )}
     />
   );
