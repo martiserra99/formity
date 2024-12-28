@@ -14,11 +14,14 @@
   },
   "homepage": "https://formity.app/",
   "scripts": {
+    "preinstall": "npx only-allow npm",
     "dev:react": "turbo run dev --lint",
     "build": "turbo run build",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "release": "changeset publish",
+    "changeset": "changeset",
+    "changeset:version": "changeset version",
+    "changeset:publish": "changeset publish",
     "clean": "npm -r --parallel exec rimraf dist .turbo node_modules"
   },
   "devDependencies": {
