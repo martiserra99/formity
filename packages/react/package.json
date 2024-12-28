@@ -25,10 +25,11 @@
   "scripts": {
     "lint": "eslint",
     "test": "vitest run --passWithNoTests",
-    "build": "rollup -c",
-    "start": "npm run build && cd ./example && npm install && npm run dev",
-    "cypress:run": "cypress run",
-    "cypress:open": "cypress open"
+    "build": "rollup --config rollup.config.mjs",
+    "dev": "rollup --config rollup.config.mjs --watch"
+  },
+  "dependencies": {
+    "@formity/system": "^0.1.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.12"

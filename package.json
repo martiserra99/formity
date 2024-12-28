@@ -12,12 +12,14 @@
   },
   "homepage": "https://formity.app/",
   "scripts": {
-    "lint": "eslint",
-    "test": "vitest run --passWithNoTests",
-    "build": "rollup -c",
-    "start": "npm run build && cd ./example && npm install && npm run dev",
-    "cypress:run": "cypress run",
-    "cypress:open": "cypress open"
+    "lint:system": "npm run lint --workspace=@formity/system",
+    "lint:react": "npm run lint --workspace=@formity/react",
+    "test:system": "npm run test --workspace=@formity/system",
+    "test:react": "npm run test --workspace=@formity/react",
+    "build:system": "npm run build --workspace=@formity/system",
+    "build:react": "npm run build --workspace=@formity/react",
+    "dev:system": "npm run dev --workspace=@formity/system",
+    "dev:react": "npm run dev --workspace=@formity/react"
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",

@@ -14,14 +14,17 @@
     "url": "https://github.com/martiserra99/formity"
   },
   "homepage": "https://formity.app/",
+  "main": "build/index.cjs.js",
+  "module": "build/index.esm.js",
+  "source": "src/index.ts",
+  "types": "build/index.d.ts",
   "files": [
     "build"
   ],
-  "source": "src/index.ts",
-  "main": "dist/umd/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/esm/index.d.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint",
+    "test": "vitest run --passWithNoTests",
+    "build": "rollup --config rollup.config.mjs",
+    "dev": "rollup --config rollup.config.mjs --watch"
   }
 }

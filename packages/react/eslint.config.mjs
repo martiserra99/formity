@@ -5,7 +5,7 @@ import reactlint from "eslint-plugin-react";
 
 export default [
   {
-    ignores: ["example", "build", "node_modules"],
+    ignores: ["build", "node_modules"],
   },
   {
     languageOptions: {

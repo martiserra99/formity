@@ -18,5 +18,5 @@ export default {
     },
   ],
   plugins: [typescript({ sourceMap: true })],
-  external: ["react", "expry", "react-hook-form", "mapsy"],
+  external: ["react"],
 };

@@ -1,0 +1,68 @@
+import { useState, useCallback } from "react";
+import {
+  type Flow,
+  type Values,
+  type OnYield,
+  type OnReturn,
+  initFlow,
+  nextFlow,
+  prevFlow,
+  getForm,
+  getFlow,
+} from "@formity/system";
+
+import type { Schema } from "./schema";
+
+interface FormityProps<T extends Values, U extends object, V extends object> {
+  schema: Schema<T, U, V>;
+  inputs?: U;
+  params?: V;
+  onYield?: OnYield<T>;
+  onReturn?: OnReturn<T>;
+  initialFlow?: Flow;
+}
+
+export default function Formity<
+  T extends Values,
+  U extends object = Record<string, never>,
+  V extends object = Record<string, never>
+>({
+  schema,
+  inputs = {} as U,
+  params = {} as V,
+  onYield = () => {},
+  onReturn = () => {},
+  initialFlow,
+}: FormityProps<T, U, V>) {
+  const [flow, setFlow] = useState<Flow>(() => {
+    if (initialFlow) return initialFlow;
+    return initFlow(schema, inputs, onYield);
+  });
+
+  const onNext = useCallback(
+    (values: object) => {
+      setFlow((flow) => nextFlow(flow, schema, values, onYield, onReturn));
+    },
+    [schema, onYield, onReturn]
+  );
+
+  const onBack = useCallback(
+    (values: object) => {
+      setFlow((flow) => prevFlow(flow, schema, values));
+    },
+    [schema]
+  );
+
+  const obtainFlow = useCallback(
+    (values: object) => {
+      return getFlow(flow, schema, values);
+    },
+    [flow, schema]
+  );
+
+  const changeFlow = useCallback((flow: Flow) => {
+    setFlow(flow);
+  }, []);
+
+  return getForm(flow, schema, params, onNext, onBack, obtainFlow, changeFlow);
+}
