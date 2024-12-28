@@ -1,0 +1,39 @@
+{
+  "name": "@formity/react",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Formity - A highly customizable React library for creating dynamic multi-step forms.",
+  "keywords": [
+    "react",
+    "formity",
+    "form",
+    "multi-step form",
+    "dynamic form"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/martiserra99/formity"
+  },
+  "homepage": "https://formity.app/",
+  "main": "build/index.cjs.js",
+  "module": "build/index.esm.js",
+  "source": "src/index.ts",
+  "types": "build/index.d.ts",
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "lint": "eslint",
+    "test": "vitest run --passWithNoTests",
+    "build": "rollup -c",
+    "start": "npm run build && cd ./example && npm install && npm run dev",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12"
+  },
+  "peerDependencies": {
+    "react": ">=16"
+  }
+}

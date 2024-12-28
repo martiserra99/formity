@@ -1,0 +1,27 @@
+{
+  "name": "@formity/system",
+  "version": "0.1.0",
+  "license": "MIT",
+  "description": "Core system that powers the Formity library.",
+  "keywords": [
+    "formity",
+    "form",
+    "multi-step form",
+    "dynamic form"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/martiserra99/formity"
+  },
+  "homepage": "https://formity.app/",
+  "files": [
+    "build"
+  ],
+  "source": "src/index.ts",
+  "main": "dist/umd/index.js",
+  "module": "dist/esm/index.js",
+  "types": "dist/esm/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
