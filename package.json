@@ -31,6 +31,7 @@
     "@eslint/js": "^9.13.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.1",
+    "@swc/core": "^1.10.3",
     "cypress": "^13.17.0",
     "eslint": "^9.13.0",
     "eslint-plugin-react": "^7.37.1",
