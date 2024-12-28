@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "license": "MIT",
+  "type": "module",
   "workspaces": [
     "packages/*",
     "apps/*"
@@ -19,8 +20,8 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "end-to-end": "npm run end-to-end --workspace=react-app",
-    "end-to-end:ui": "npm run end-to-end:ui --workspace=react-app",
+    "end-to-end": "cypress run",
+    "end-to-end:ui": "cypress open",
     "changeset": "changeset",
     "changeset:version": "changeset version",
     "changeset:publish": "changeset publish",

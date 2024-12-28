@@ -1,4 +1,4 @@
-name: Check End To End / React
+name: Check End To End
 on: push
 jobs:
   check-end-to-end:
@@ -27,4 +27,3 @@ jobs:
           start: npm run dev
           wait-on: "http://localhost:3000"
           wait-on-timeout: 120
-          config-file: apps/react/cypress.config.js
