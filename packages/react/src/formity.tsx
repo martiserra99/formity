@@ -24,8 +24,8 @@ interface FormityProps<T extends Values, U extends object, V extends object> {
 
 export default function Formity<
   T extends Values,
-  U extends object = Record<string, never>,
-  V extends object = Record<string, never>
+  U extends object = object,
+  V extends object = object
 >({
   schema,
   inputs = {} as U,
