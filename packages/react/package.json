@@ -2,7 +2,7 @@
   "name": "@formity/react",
   "version": "0.1.0",
   "license": "MIT",
-  "description": "Formity - A highly customizable React library for creating dynamic multi-step forms.",
+  "description": "A highly customizable React library for creating advanced multi-step forms.",
   "keywords": [
     "react",
     "formity",

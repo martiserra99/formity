@@ -7,13 +7,9 @@
     </a>
 </div>
 
-## The Formity mono repo
+## @formity/react
 
-The Formity repository is the home of two packages:
-
-- `@formity/react`: [packages/react](./packages/react)
-
-- `@formity/system`: [packages/system](./packages/system)
+A highly customizable React library for creating advanced multi-step forms.
 
 ## Website
 
@@ -29,6 +25,8 @@ Formity is an advanced form-building package designed to help React developers c
 
 - Integrate your custom components seamlessly, with no restrictions or limitations.
 
+- Fully compatible with any form library of your choice.
+
 ## License
 
-These packages are licensed under the [MIT licensed](./LICENSE).
+This package is licensed under the [MIT licensed](../../LICENSE).
