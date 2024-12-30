@@ -1,21 +1,21 @@
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 
-import { Formity, OnYield, OnReturn } from "@formity/react";
+import { Formity, OnReturn, ReturnValues } from "@formity/react";
+
+import { Data } from "./components";
 
 import { schema, Values } from "./schema";
 
 export default function App() {
-  const onYield = useCallback<OnYield<Values>>((values) => {
-    console.log("yield");
-    console.log(values);
-  }, []);
+  const [values, setValues] = useState<ReturnValues<Values> | null>(null);
 
   const onReturn = useCallback<OnReturn<Values>>((values) => {
-    console.log("return");
-    console.log(values);
+    setValues(values);
   }, []);
 
-  return (
-    <Formity<Values> schema={schema} onYield={onYield} onReturn={onReturn} />
-  );
+  if (values) {
+    return <Data data={values} onStart={() => setValues(null)} />;
+  }
+
+  return <Formity<Values> schema={schema} onReturn={onReturn} />;
 }

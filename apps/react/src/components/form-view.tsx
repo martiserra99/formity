@@ -1,22 +1,23 @@
 import type { ReactElement } from "react";
-import type { OnNext } from "@formity/react";
+import type { UseFormProps } from "react-hook-form";
 
-import { FormProvider, useForm, UseFormProps } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
+
+import { useController } from "../controller";
 
 interface FormViewProps {
   defaultValues: UseFormProps["defaultValues"];
   resolver: UseFormProps["resolver"];
-  onNext: OnNext;
   children: ReactElement;
 }
 
 export default function FormView({
   defaultValues,
   resolver,
-  onNext,
   children,
 }: FormViewProps) {
   const form = useForm({ defaultValues, resolver });
+  const { onNext } = useController();
   return (
     <form onSubmit={form.handleSubmit(onNext)} className="h-full">
       <FormProvider {...form}>{children}</FormProvider>

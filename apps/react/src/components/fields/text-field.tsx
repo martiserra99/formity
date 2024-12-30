@@ -13,7 +13,6 @@ interface TextFieldProps {
   value: string;
   onChange: (value: string) => void;
   error: { message: string } | undefined;
-  cy?: string;
 }
 
 export default function TextField({
@@ -22,7 +21,6 @@ export default function TextField({
   value,
   onChange,
   error,
-  cy,
 }: TextFieldProps) {
   const id = useId();
   return (
@@ -34,19 +32,16 @@ export default function TextField({
         "peer-placeholder-shown:text-base peer-focus:-top-[11px] peer-focus:text-sm"
       )}
       error={error}
-      cy={cy}
     >
       <Input
         as="input"
-        props={{
-          id: id,
-          type: type,
-          value: value,
-          onChange: (e: ChangeEvent<HTMLInputElement>) => {
-            onChange(e.target.value);
-          },
-          placeholder: label,
+        id={id}
+        type={type}
+        value={value}
+        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+          onChange(e.target.value);
         }}
+        placeholder={label}
         className={cn(
           "peer placeholder-transparent focus:border-neutral-500 focus:outline-none focus:ring-transparent",
           { "border-red-500 focus:border-red-500": error }

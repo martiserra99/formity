@@ -13,7 +13,6 @@ interface CheckboxGroupProps {
   options: { value: string; label: string }[];
   direction: "x" | "y";
   error: { message: string } | undefined;
-  cy?: string;
 }
 
 export default function CheckboxGroup({
@@ -23,11 +22,10 @@ export default function CheckboxGroup({
   options,
   direction,
   error,
-  cy,
 }: CheckboxGroupProps) {
   const id = useId();
   return (
-    <Field id={id} label={label} error={error} cy={cy}>
+    <Field id={id} label={label} error={error}>
       <div
         className={cn("peer grid grid-cols-1 gap-4", {
           "grid-cols-[repeat(auto-fit,minmax(theme(spacing.40),1fr))]":
@@ -38,23 +36,20 @@ export default function CheckboxGroup({
           <Input
             key={option.value}
             as="button"
-            props={{
-              type: "button",
-              value: option.value,
-              onClick: () => {
-                if (value.includes(option.value)) {
-                  onChange(value.filter((v) => v !== option.value).sort());
-                } else {
-                  onChange([...value, option.value].sort());
-                }
-              },
+            type="button"
+            value={option.value}
+            onClick={() => {
+              if (value.includes(option.value)) {
+                onChange(value.filter((v) => v !== option.value).sort());
+              } else {
+                onChange([...value, option.value].sort());
+              }
             }}
             className={cn(
               "group flex cursor-pointer items-center gap-2 focus:outline-none",
               { "border-neutral-500": value.includes(option.value) },
               { "border-red-500": error }
             )}
-            data-cy="checkbox-group-option"
           >
             {option.label}
             <CheckIcon

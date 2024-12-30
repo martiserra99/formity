@@ -10,10 +10,9 @@ const options = [
 interface YesNoProps {
   name: string;
   label: string;
-  cy?: string;
 }
 
-export default function YesNo({ name, label, cy }: YesNoProps) {
+export default function YesNo({ name, label }: YesNoProps) {
   const { control, formState } = useFormContext();
   const error = formState.errors[name] as { message: string } | undefined;
   return (
@@ -28,7 +27,6 @@ export default function YesNo({ name, label, cy }: YesNoProps) {
           options={options}
           direction="x"
           error={error}
-          cy={cy}
         />
       )}
     />

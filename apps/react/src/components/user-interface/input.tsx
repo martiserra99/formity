@@ -1,23 +1,22 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ElementType } from "react";
+import type { ElementType, ComponentProps, ReactNode } from "react";
 
 import { cn } from "../../utils";
 
-interface InputProps<T extends ElementType> {
-  as: T;
-  props?: any;
-  children?: React.ReactNode;
-  className?: React.ReactNode;
-}
+type InputProps<E extends ElementType> = Omit<ComponentProps<E>, "as"> & {
+  as?: E;
+  children?: ReactNode;
+  className?: ReactNode;
+};
 
 export default function Input<T extends ElementType>({
-  as: Component,
-  props,
+  as,
   children,
   className,
+  ...props
 }: InputProps<T>) {
+  const As = as || "div";
   return (
-    <Component
+    <As
       className={cn(
         "block w-full rounded-full border border-neutral-800 bg-neutral-950 px-7 py-4 text-left text-base text-white",
         className
@@ -25,6 +24,6 @@ export default function Input<T extends ElementType>({
       {...props}
     >
       {children}
-    </Component>
+    </As>
   );
 }

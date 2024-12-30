@@ -14,7 +14,6 @@ interface RadioGroupProps {
   options: { value: string; label: string }[];
   direction: "x" | "y";
   error: { message: string } | undefined;
-  cy?: string;
 }
 
 export default function RadioGroup({
@@ -24,11 +23,10 @@ export default function RadioGroup({
   options,
   direction,
   error,
-  cy,
 }: RadioGroupProps) {
   const id = useId();
   return (
-    <Field id={id} label={label} error={error} cy={cy}>
+    <Field id={id} label={label} error={error}>
       <HeadlessRadioGroup
         value={value}
         onChange={onChange}
@@ -41,12 +39,11 @@ export default function RadioGroup({
           <Input
             key={option.value}
             as={Radio}
-            props={{ value: option.value }}
+            value={option.value}
             className={cn(
               "group flex cursor-pointer items-center gap-2 focus:outline-none data-[checked]:border-neutral-500",
               { "border-red-500 data-[checked]:border-red-500": error }
             )}
-            data-cy="radio-group-option"
           >
             {option.label}
             <CheckIcon className="pointer-events-none ml-auto size-5 fill-white/50 group-data-[checked]:fill-white/100" />

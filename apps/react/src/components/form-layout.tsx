@@ -16,18 +16,12 @@ export default function FormLayout({
   back,
 }: FormLayoutProps) {
   return (
-    <div className="relative flex h-full w-full items-center justify-center p-0 lg:p-8">
-      <div className="w-[115%] max-w-md shrink-0">
-        <h1
-          data-cy="heading"
-          className="mb-3 text-center text-3xl font-medium text-white"
-        >
+    <div className="relative flex h-full w-full items-center justify-center px-4 py-8">
+      <div className="w-full max-w-md shrink-0">
+        <h1 className="mb-3 text-center text-3xl font-medium text-white">
           {heading}
         </h1>
-        <p
-          data-cy="description"
-          className="mb-6 text-center text-base text-neutral-500"
-        >
+        <p className="mb-6 text-center text-base text-neutral-500">
           {description}
         </p>
         <div className="scrollbar-hide mb-4 max-h-96 overflow-auto">
@@ -35,9 +29,7 @@ export default function FormLayout({
         </div>
         {button}
       </div>
-      {back && (
-        <div className="absolute left-4 top-5 origin-top-left">{back}</div>
-      )}
+      {back && <div className="absolute left-4 top-5">{back}</div>}
     </div>
   );
 }
