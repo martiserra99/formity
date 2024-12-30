@@ -2,6 +2,7 @@
   "name": "@formity/system",
   "version": "0.1.0",
   "license": "MIT",
+  "private": false,
   "description": "Core system that powers the Formity library.",
   "keywords": [
     "formity",
