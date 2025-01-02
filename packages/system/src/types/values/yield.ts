@@ -1,3 +1,8 @@
+/**
+ * The `Yield` type accepts a generic parameter extending `ListValues` and evaluates
+ * to the union of all possible values that can be yielded by a multi-step form.
+ */
+
 import {
   ItemValues,
   ListValues,
