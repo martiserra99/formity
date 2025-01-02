@@ -1,3 +1,13 @@
+/**
+ * The `Schema` type accepts a generic parameter that must extend `ListValues`.
+ *
+ * `ListValues` is an array containing `ItemValues`, which is a union of specific types:
+ * `FlowValues`, `FormValues`, `YieldValues`, `ReturnValues`, and `VariablesValues`.
+ *
+ * By extending `ListValues`, we can define the structure of a multi-step form,
+ * with the values used in each step.
+ */
+
 export type ItemValues =
   | FlowValues
   | FormValues

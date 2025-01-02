@@ -52,7 +52,7 @@ export type ListSchema<
     ? Other extends ListValues
       ? [
           ItemSchema<Render, First, Inputs, Params>,
-          ...ListSchema<Render, Other, Merge<Inputs, ItemOutput<First>>, Params>
+          ...ListSchema<Render, Other, Join<Inputs, ItemOutput<First>>, Params>
         ]
       : never
     : never
@@ -120,7 +120,7 @@ export type VariablesSchema<
   variables: (inputs: Inputs) => Values["variables"];
 };
 
-type Merge<T extends object, U extends object> = Omit<T, keyof U> & U;
+type Join<T extends object, U extends object> = Omit<T, keyof U> & U;
 
 type ItemOutput<Values extends ItemValues> = Values extends FormValues
   ? FormOutput<Values>
