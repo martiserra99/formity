@@ -1,5 +1,5 @@
 /**
- * The `Schema` type accepts a generic parameter that must extend `ListValues`.
+ * The `ListSchema` type accepts a generic parameter that must extend `ListValues`.
  *
  * `ListValues` is an array containing `ItemValues`, which is a union of specific types:
  * `FlowValues`, `FormValues`, `YieldValues`, `ReturnValues`, and `VariablesValues`.
