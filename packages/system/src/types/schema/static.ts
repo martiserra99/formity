@@ -1,3 +1,8 @@
+/**
+ * The `ListSchema` type represents the overall structure and behavior of a multi-step form
+ * by defining an array of steps, each described by an `ItemSchema`.
+ */
+
 import type { OnNext, OnBack, GetFlow, SetFlow } from "../callbacks";
 
 export type ItemSchema =
