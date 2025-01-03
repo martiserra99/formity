@@ -13,6 +13,19 @@ import {
 
 import type { Schema } from "./schema";
 
+/**
+ * Props for the Formity component.
+ *
+ * @template T The structure and values of the multi-step form.
+ * @template U The input values of the multi-step form.
+ * @template V The parameter values of the multi-step form.
+ * @param schema The structure and behavior of the multi-step form.
+ * @param inputs The input values of the multi-step form.
+ * @param params The parameter values of the multi-step form.
+ * @param onYield Callback function invoked when the multi-step form yields values.
+ * @param onReturn Callback function invoked when the multi-step form returns values.
+ * @param initialFlow The initial state of the multi-step form.
+ */
 interface FormityProps<T extends Values, U extends object, V extends object> {
   schema: Schema<T, U, V>;
   inputs?: U;
