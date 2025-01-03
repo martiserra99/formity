@@ -23,13 +23,19 @@ import * as VariablesSchemaUtils from "./schema/variables";
 import * as FlowEntriesUtils from "./entries/flow";
 
 /**
- * Returns the initial state of the multi-step form, including the cursor pointing to the first form step.
- * If no form step is found, or if a return operation is encountered before reaching a form, an error is thrown.
+ * Initializes the multi-step form and returns its initial state, including a cursor
+ * pointing to the first form step. If no form step is found, or if a return operation
+ * is encountered before reaching a form, an error is thrown.
  *
- * @param schema The `ListSchema` object representing the multi-step form.
- * @param values An object containing the initial values for the multi-step form.
- * @param onYield A callback that is triggered when the multi-step form yields values.
- * @returns The initial state of the multi-step form.
+ * During traversal of the multi-step form, the `onYield` callback is triggered whenever
+ * a yield operation is encountered, allowing for intermediate values to be processed.
+ *
+ * @param schema The `ListSchema` object that defines the structure and behavior of the multi-step form.
+ * @param values An object containing the initial input values for the multi-step form.
+ * @param onYield A callback function triggered when the multi-step form yields values.
+ * @returns The initial state of the form as a `Flow` object.
+ *
+ * @throws An error if no form step is found or if a return operation is encountered before a form step.
  */
 export function initFlow<
   Render,
@@ -121,6 +127,23 @@ function initialForm(
   return currCursor;
 }
 
+/**
+ * Navigates to the next form step of the multi-step form and returns the updated state.
+ * If there is no next form step, the returned state contains the current form step.
+ *
+ * The `onYield` callback is triggered whenever a yield operation is encountered during traversal,
+ * allowing for intermediate values to be processed.
+ *
+ * The `onReturn` callback is triggered whenever a return operation is encountered during traversal,
+ * allowing for final values to be processed.
+ *
+ * @param flow The current state of the multi-step form.
+ * @param schema The `ListSchema` object representing the multi-step form.
+ * @param values An object containing the generated values within the multi-step form.
+ * @param onYield A callback function triggered when the multi-step form yields values.
+ * @param onReturn A callback function triggered when the multi-step form returns values.
+ * @returns The updated state of the multi-step form.
+ */
 export function nextFlow<
   Render,
   Values extends ListValues,
@@ -251,6 +274,15 @@ function overCursor(cursor: Cursor): Cursor | null {
   return null;
 }
 
+/**
+ * Navigates to the previous form step of the multi-step form and returns the updated state.
+ * If there is no previous form step, the returned state contains the current form step.
+ *
+ * @param flow The current state of the multi-step form.
+ * @param schema The `ListSchema` object representing the multi-step form.
+ * @param values An object containing the generated values within the multi-step form.
+ * @returns The updated state of the multi-step form.
+ */
 export function prevFlow<
   Render,
   Values extends ListValues,
