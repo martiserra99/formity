@@ -1,5 +1,5 @@
 /**
- * These types define the functions available within the `render` function of a `FormSchema`.
+ * These types define the callback functions available within the `render` function of a `FormSchema`.
  * They are essential for navigating and manipulating the flow of a multi-step form.
  */
 
