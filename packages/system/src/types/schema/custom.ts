@@ -32,6 +32,9 @@ import type {
 
 import type { OnNext, OnBack, GetFlow, SetFlow } from "../callbacks";
 
+/**
+ * Defines the structure and behavior of any element in a multi-step form.
+ */
 export type ItemSchema<
   Render,
   Values extends ItemValues,
@@ -49,6 +52,9 @@ export type ItemSchema<
   ? VariablesSchema<Values, Inputs>
   : never;
 
+/**
+ * Defines the structure and behavior of any flow element in a multi-step form.
+ */
 export type FlowSchema<
   Render,
   Values extends FlowValues,
@@ -62,6 +68,9 @@ export type FlowSchema<
   ? LoopSchema<Render, Values, Inputs, Params>
   : never;
 
+/**
+ * Defines the structure and behavior of a list element in a multi-step form.
+ */
 export type ListSchema<
   Render,
   Values extends ListValues,
@@ -78,6 +87,9 @@ export type ListSchema<
     : never
   : [];
 
+/**
+ * Defines the structure and behavior of a condition element in a multi-step form.
+ */
 export type CondSchema<
   Render,
   Values extends CondValues,
@@ -91,6 +103,9 @@ export type CondSchema<
   };
 };
 
+/**
+ * Defines the structure and behavior of a loop element in a multi-step form.
+ */
 export type LoopSchema<
   Render,
   Values extends LoopValues,
@@ -103,6 +118,9 @@ export type LoopSchema<
   };
 };
 
+/**
+ * Defines the structure and behavior of a form element in a multi-step form.
+ */
 export type FormSchema<
   Render,
   Values extends FormValues,
@@ -125,14 +143,23 @@ export type FormSchema<
   };
 };
 
+/**
+ * Defines the structure and behavior of a yield element in a multi-step form.
+ */
 export type YieldSchema<Values extends YieldValues, Inputs extends object> = {
   yield: (inputs: Inputs) => Values["yield"];
 };
 
+/**
+ * Defines the structure and behavior of a return element in a multi-step form.
+ */
 export type ReturnSchema<Values extends ReturnValues, Inputs extends object> = {
   return: (inputs: Inputs) => Values["return"];
 };
 
+/**
+ * Defines the structure and behavior of a variables element in a multi-step form.
+ */
 export type VariablesSchema<
   Values extends VariablesValues,
   Inputs extends object

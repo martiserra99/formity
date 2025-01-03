@@ -1,10 +1,8 @@
-/**
- * The `ListSchema` type represents the overall structure and behavior of a multi-step form
- * by defining an array of steps, each described by an `ItemSchema`.
- */
-
 import type { OnNext, OnBack, GetFlow, SetFlow } from "../callbacks";
 
+/**
+ * Defines the structure and behavior of any element in a multi-step form.
+ */
 export type ItemSchema =
   | FlowSchema
   | FormSchema
@@ -12,10 +10,19 @@ export type ItemSchema =
   | ReturnSchema
   | VariablesSchema;
 
+/**
+ * Defines the structure and behavior of any flow element in a multi-step form.
+ */
 export type FlowSchema = ListSchema | CondSchema | LoopSchema;
 
+/**
+ * Defines the structure and behavior of a list element in a multi-step form.
+ */
 export type ListSchema = ItemSchema[];
 
+/**
+ * Defines the structure and behavior of a condition element in a multi-step form.
+ */
 export type CondSchema = {
   cond: {
     if: (inputs: object) => boolean;
@@ -24,6 +31,9 @@ export type CondSchema = {
   };
 };
 
+/**
+ * Defines the structure and behavior of a loop element in a multi-step form.
+ */
 export type LoopSchema = {
   loop: {
     while: (inputs: object) => boolean;
@@ -31,6 +41,9 @@ export type LoopSchema = {
   };
 };
 
+/**
+ * Defines the structure and behavior of a form element in a multi-step form.
+ */
 export type FormSchema = {
   form: {
     values: (inputs: object) => Record<string, [unknown, PropertyKey[]]>;
@@ -46,14 +59,23 @@ export type FormSchema = {
   };
 };
 
+/**
+ * Defines the structure and behavior of a yield element in a multi-step form.
+ */
 export type YieldSchema = {
   yield: (inputs: object) => object;
 };
 
+/**
+ * Defines the structure and behavior of a return element in a multi-step form.
+ */
 export type ReturnSchema = {
   return: (inputs: object) => object;
 };
 
+/**
+ * Defines the structure and behavior of a variables element in a multi-step form.
+ */
 export type VariablesSchema = {
   variables: (inputs: object) => object;
 };
