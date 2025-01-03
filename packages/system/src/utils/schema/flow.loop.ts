@@ -50,6 +50,13 @@ export function next(
   return null;
 }
 
+/**
+ * Returns the `ItemSchema` object at the given position within the given `LoopSchema` object.
+ *
+ * @param schema The `LoopSchema` object
+ * @param position The position within the `LoopSchema` object
+ * @returns The `ItemSchema` object at the given position within the `LoopSchema` object
+ */
 export function at(schema: LoopSchema, position: Position): ItemSchema {
   const { slot } = position as LoopPosition;
   return schema.loop.do[slot];

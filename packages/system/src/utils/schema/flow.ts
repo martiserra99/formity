@@ -64,6 +64,13 @@ export function next(
   throw new Error("Invalid schema");
 }
 
+/**
+ * Returns the `ItemSchema` object at the given position within the given `FlowSchema` object.
+ *
+ * @param schema The `FlowSchema` object
+ * @param position The position within the `FlowSchema` object
+ * @returns The `ItemSchema` object at the given position within the `FlowSchema` object
+ */
 export function at(schema: FlowSchema, position: Position): ItemSchema {
   if (ListSchemaUtils.is(schema)) {
     return ListSchemaUtils.at(schema, position);
@@ -77,6 +84,13 @@ export function at(schema: FlowSchema, position: Position): ItemSchema {
   throw new Error("Invalid schema");
 }
 
+/**
+ * Returns the `ItemSchema` object at the given path within the given `FlowSchema` object.
+ *
+ * @param schema The `FlowSchema` object
+ * @param path The path within the `FlowSchema` object
+ * @returns The `ItemSchema` object at the given path within the `FlowSchema` object
+ */
 export function find(schema: FlowSchema, path: Position[]) {
   let current: ItemSchema = schema;
   for (const position of path) {

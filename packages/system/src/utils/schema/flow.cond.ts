@@ -46,6 +46,13 @@ export function next(schema: CondSchema, position: Position): Position | null {
   return null;
 }
 
+/**
+ * Returns the `ItemSchema` object at the given position within the given `CondSchema` object.
+ *
+ * @param schema The `CondSchema` object
+ * @param position The position within the `CondSchema` object
+ * @returns The `ItemSchema` object at the given position within the `CondSchema` object
+ */
 export function at(schema: CondSchema, position: Position): ItemSchema {
   const { path, slot } = position as CondPosition;
   return schema.cond[path][slot];

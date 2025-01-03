@@ -39,6 +39,13 @@ export function next(schema: ListSchema, position: Position): Position | null {
   return null;
 }
 
+/**
+ * Returns the `ItemSchema` object at the given position within the given `ListSchema` object.
+ *
+ * @param schema The `ListSchema` object
+ * @param position The position within the `ListSchema` object
+ * @returns The `ItemSchema` object at the given position within the `ListSchema` object
+ */
 export function at(schema: ListSchema, position: Position): ItemSchema {
   const { slot } = position as ListPosition;
   return schema[slot];
