@@ -11,6 +11,7 @@ import {
   Flow,
   initFlow,
   nextFlow,
+  prevFlow,
 } from "../src/index";
 
 describe("initFlow", () => {
@@ -1180,6 +1181,124 @@ describe("nextFlow", () => {
                   },
                 },
               },
+            },
+          },
+        },
+      },
+    };
+    expect(flow).toEqual(expected);
+  });
+});
+
+describe("prevFlow", () => {
+  it("navigates to the form that is previous to the current one", () => {
+    type Values = [Form<object>, Form<object>];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        form: {
+          values: () => ({}),
+          render: () => null,
+        },
+      },
+      {
+        form: {
+          values: () => ({}),
+          render: () => null,
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [
+        { path: [{ type: "list", slot: 0 }], values: {} },
+        { path: [{ type: "list", slot: 1 }], values: {} },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    const flow = prevFlow<null, Values, object, object>(current, schema, {});
+    const expected: Flow = {
+      cursors: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      entries: { type: "list", list: {} },
+    };
+    expect(flow).toEqual(expected);
+  });
+
+  it("doesn't navigate to any other form if the current form is the first one", () => {
+    type Values = [Form<object>];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        form: {
+          values: () => ({}),
+          render: () => null,
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      entries: { type: "list", list: {} },
+    };
+    const flow = prevFlow<null, Values, object, object>(current, schema, {});
+    const expected: Flow = {
+      cursors: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      entries: { type: "list", list: {} },
+    };
+    expect(flow).toEqual(expected);
+  });
+
+  it("saves the current form values when navigating to the previous step", () => {
+    type Values = [Form<{ a: number }>, Form<{ b: number }>];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        form: {
+          values: () => ({
+            a: [0, []],
+          }),
+          render: () => null,
+        },
+      },
+      {
+        form: {
+          values: () => ({
+            b: [0, []],
+          }),
+          render: () => null,
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [
+        { path: [{ type: "list", slot: 0 }], values: {} },
+        { path: [{ type: "list", slot: 1 }], values: { a: 1 } },
+      ],
+      entries: {
+        type: "list",
+        list: {
+          0: {
+            a: {
+              data: { here: true, data: 1 },
+              keys: {},
+            },
+          },
+        },
+      },
+    };
+    const flow = prevFlow<null, Values, object, object>(current, schema, {
+      b: 2,
+    });
+    const expected: Flow = {
+      cursors: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      entries: {
+        type: "list",
+        list: {
+          0: {
+            a: {
+              data: { here: true, data: 1 },
+              keys: {},
+            },
+          },
+          1: {
+            b: {
+              data: { here: true, data: 2 },
+              keys: {},
             },
           },
         },
