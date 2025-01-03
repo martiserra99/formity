@@ -10,18 +10,16 @@ import {
   Variables,
   Flow,
   initFlow,
+  nextFlow,
 } from "../src/index";
 
 describe("initFlow", () => {
   it("initializes the form state with the cursor pointing to the first position", () => {
-    type Values = [Form<{ name: string; age: number }>];
+    type Values = [Form<object>];
     const schema: Schema<null, Values, object, object> = [
       {
         form: {
-          values: () => ({
-            name: ["John", []],
-            age: [30, []],
-          }),
+          values: () => ({}),
           render: () => null,
         },
       },
@@ -35,20 +33,13 @@ describe("initFlow", () => {
   });
 
   it("initializes the form state with the cursor pointing to the last position", () => {
-    type Values = [
-      Variables<object>,
-      Variables<object>,
-      Form<{ name: string; age: number }>
-    ];
+    type Values = [Variables<object>, Variables<object>, Form<object>];
     const schema: Schema<null, Values, object, object> = [
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
         form: {
-          values: () => ({
-            name: ["John", []],
-            age: [30, []],
-          }),
+          values: () => ({}),
           render: () => null,
         },
       },
@@ -67,7 +58,7 @@ describe("initFlow", () => {
         then: [
           Cond<{
             then: [];
-            else: [Loop<[Form<{ name: string; age: number }>]>];
+            else: [Loop<[Form<object>]>];
           }>
         ];
         else: [];
@@ -89,10 +80,7 @@ describe("initFlow", () => {
                       do: [
                         {
                           form: {
-                            values: () => ({
-                              name: ["John", []],
-                              age: [30, []],
-                            }),
+                            values: () => ({}),
                             render: () => null,
                           },
                         },
@@ -133,10 +121,7 @@ describe("initFlow", () => {
         then: [
           Cond<{
             then: [];
-            else: [
-              Variables<object>,
-              Loop<[Variables<object>, Form<{ name: string; age: number }>]>
-            ];
+            else: [Variables<object>, Loop<[Variables<object>, Form<object>]>];
           }>
         ];
         else: [];
@@ -162,10 +147,7 @@ describe("initFlow", () => {
                         { variables: () => ({}) },
                         {
                           form: {
-                            values: () => ({
-                              name: ["John", []],
-                              age: [30, []],
-                            }),
+                            values: () => ({}),
                             render: () => null,
                           },
                         },
@@ -213,7 +195,7 @@ describe("initFlow", () => {
       Cond<{
         then: [
           Cond<{
-            then: [Form<{ name: string; age: number }>];
+            then: [Form<object>];
             else: [];
           }>
         ];
@@ -233,10 +215,7 @@ describe("initFlow", () => {
                 then: [
                   {
                     form: {
-                      values: () => ({
-                        name: ["John", []],
-                        age: [30, []],
-                      }),
+                      values: () => ({}),
                       render: () => null,
                     },
                   },
@@ -267,7 +246,7 @@ describe("initFlow", () => {
         ];
         else: [];
       }>,
-      Form<{ name: string; age: number }>
+      Form<object>
     ];
     const schema: Schema<null, Values, object, object> = [
       { variables: () => ({}) },
@@ -289,10 +268,7 @@ describe("initFlow", () => {
       },
       {
         form: {
-          values: () => ({
-            name: ["John", []],
-            age: [30, []],
-          }),
+          values: () => ({}),
           render: () => null,
         },
       },
@@ -309,10 +285,7 @@ describe("initFlow", () => {
         then: [
           Cond<{
             then: [];
-            else: [
-              Yield<{ y: number }>,
-              Loop<[Form<{ name: string; age: number }>]>
-            ];
+            else: [Yield<{ y: number }>, Loop<[Form<object>]>];
           }>
         ];
         else: [];
@@ -336,10 +309,7 @@ describe("initFlow", () => {
                       do: [
                         {
                           form: {
-                            values: () => ({
-                              name: ["John", []],
-                              age: [30, []],
-                            }),
+                            values: () => ({}),
                             render: () => null,
                           },
                         },
@@ -373,7 +343,7 @@ describe("initFlow", () => {
                 [
                   Variables<{ d: number }>,
                   Variables<{ e: number }>,
-                  Form<{ name: string; age: number }>
+                  Form<object>
                 ]
               >
             ];
@@ -402,10 +372,7 @@ describe("initFlow", () => {
                         { variables: () => ({ e: 5 }) },
                         {
                           form: {
-                            values: () => ({
-                              name: ["John", []],
-                              age: [30, []],
-                            }),
+                            values: () => ({}),
                             render: () => null,
                           },
                         },
@@ -439,15 +406,12 @@ describe("initFlow", () => {
   });
 
   it("initializes the values of the form state with the ones that have been provided", () => {
-    type Values = [Form<{ name: string; age: number }>];
+    type Values = [Form<object>];
     type Inputs = { a: number; b: number };
     const schema: Schema<null, Values, Inputs, object> = [
       {
         form: {
-          values: () => ({
-            name: ["John", []],
-            age: [30, []],
-          }),
+          values: () => ({}),
           render: () => null,
         },
       },
@@ -461,6 +425,765 @@ describe("initFlow", () => {
     const expected: Flow = {
       cursors: [{ path: [{ type: "list", slot: 0 }], values: { a: 1, b: 2 } }],
       entries: { type: "list", list: {} },
+    };
+    expect(flow).toEqual(expected);
+  });
+});
+
+describe("nextFlow", () => {
+  it("navigates to the form that is next to the current one", () => {
+    type Values = [Form<object>, Form<object>];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        form: {
+          values: () => ({}),
+          render: () => null,
+        },
+      },
+      {
+        form: {
+          values: () => ({}),
+          render: () => null,
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      entries: { type: "list", list: {} },
+    };
+    const flow = nextFlow<null, Values, object, object>(
+      current,
+      schema,
+      {},
+      () => {},
+      () => {}
+    );
+    const expected: Flow = {
+      cursors: [
+        { path: [{ type: "list", slot: 0 }], values: {} },
+        { path: [{ type: "list", slot: 1 }], values: {} },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    expect(flow).toEqual(expected);
+  });
+
+  it("navigates to the form that is next to the current one within the same flow element", () => {
+    type Values = [
+      Loop<[Cond<{ then: [Form<object>]; else: [] }>, Form<object>]>
+    ];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        loop: {
+          while: () => true,
+          do: [
+            {
+              cond: {
+                if: () => true,
+                then: [
+                  {
+                    form: {
+                      values: () => ({}),
+                      render: () => null,
+                    },
+                  },
+                ],
+                else: [],
+              },
+            },
+            {
+              form: {
+                values: () => ({}),
+                render: () => null,
+              },
+            },
+          ],
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 1 },
+          ],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    const flow = nextFlow<null, Values, object, object>(
+      current,
+      schema,
+      {},
+      () => {},
+      () => {}
+    );
+    const expected: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 1 },
+          ],
+          values: {},
+        },
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+            { type: "cond", path: "then", slot: 0 },
+          ],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    expect(flow).toEqual(expected);
+  });
+
+  it("navigates to the form that is next to the current one outside the current flow element", () => {
+    type Values = [
+      Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
+      Cond<{ then: []; else: [Form<object>] }>
+    ];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        loop: {
+          while: () => false,
+          do: [
+            {
+              cond: {
+                if: () => true,
+                then: [
+                  {
+                    form: {
+                      values: () => ({}),
+                      render: () => null,
+                    },
+                  },
+                ],
+                else: [],
+              },
+            },
+          ],
+        },
+      },
+      {
+        cond: {
+          if: () => false,
+          then: [],
+          else: [
+            {
+              form: {
+                values: () => ({}),
+                render: () => null,
+              },
+            },
+          ],
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+            { type: "cond", path: "then", slot: 0 },
+          ],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    const next = nextFlow<null, Values, object, object>(
+      current,
+      schema,
+      {},
+      () => {},
+      () => {}
+    );
+    const expected: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+            { type: "cond", path: "then", slot: 0 },
+          ],
+          values: {},
+        },
+        {
+          path: [
+            { type: "list", slot: 1 },
+            { type: "cond", path: "else", slot: 0 },
+          ],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    expect(next).toEqual(expected);
+  });
+
+  it("calls the onYield callback with the appropriate values every time values are yielded until it reaches a form", () => {
+    type Values = [
+      Loop<[Cond<{ then: [Form<object>, Yield<{ a: number }>]; else: [] }>]>,
+      Yield<{ b: number }>,
+      Cond<{ then: []; else: [Yield<{ c: number }>, Form<object>] }>
+    ];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        loop: {
+          while: () => false,
+          do: [
+            {
+              cond: {
+                if: () => true,
+                then: [
+                  {
+                    form: {
+                      values: () => ({}),
+                      render: () => null,
+                    },
+                  },
+                  { yield: () => ({ a: 1 }) },
+                ],
+                else: [],
+              },
+            },
+          ],
+        },
+      },
+      { yield: () => ({ b: 2 }) },
+      {
+        cond: {
+          if: () => false,
+          then: [],
+          else: [
+            { yield: () => ({ c: 3 }) },
+            {
+              form: {
+                values: () => ({}),
+                render: () => null,
+              },
+            },
+          ],
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+            { type: "cond", path: "then", slot: 0 },
+          ],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    const onYield = vi.fn();
+    nextFlow<null, Values, object, object>(
+      current,
+      schema,
+      {},
+      onYield,
+      () => {}
+    );
+    expect(onYield).toHaveBeenNthCalledWith(1, { a: 1 });
+    expect(onYield).toHaveBeenNthCalledWith(2, { b: 2 });
+    expect(onYield).toHaveBeenNthCalledWith(3, { c: 3 });
+  });
+
+  it("calls the onYield callback with the appropriate values every time values are yielded until it reaches a return", () => {
+    type Values = [
+      Loop<[Cond<{ then: [Form<object>, Yield<{ a: number }>]; else: [] }>]>,
+      Yield<{ b: number }>,
+      Cond<{ then: []; else: [Yield<{ c: number }>, Return<object>] }>
+    ];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        loop: {
+          while: () => false,
+          do: [
+            {
+              cond: {
+                if: () => true,
+                then: [
+                  {
+                    form: {
+                      values: () => ({}),
+                      render: () => null,
+                    },
+                  },
+                  { yield: () => ({ a: 1 }) },
+                ],
+                else: [],
+              },
+            },
+          ],
+        },
+      },
+      { yield: () => ({ b: 2 }) },
+      {
+        cond: {
+          if: () => false,
+          then: [],
+          else: [{ yield: () => ({ c: 3 }) }, { return: () => ({}) }],
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+            { type: "cond", path: "then", slot: 0 },
+          ],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    const onYield = vi.fn();
+    nextFlow<null, Values, object, object>(
+      current,
+      schema,
+      {},
+      onYield,
+      () => {}
+    );
+    expect(onYield).toHaveBeenNthCalledWith(1, { a: 1 });
+    expect(onYield).toHaveBeenNthCalledWith(2, { b: 2 });
+    expect(onYield).toHaveBeenNthCalledWith(3, { c: 3 });
+  });
+
+  it("calls the onYield callback with the appropriate values every time values are yielded until it reaches the end of the schema", () => {
+    type Values = [
+      Loop<[Cond<{ then: [Form<object>, Yield<{ a: number }>]; else: [] }>]>,
+      Yield<{ b: number }>,
+      Cond<{ then: []; else: [Yield<{ c: number }>] }>
+    ];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        loop: {
+          while: () => false,
+          do: [
+            {
+              cond: {
+                if: () => true,
+                then: [
+                  {
+                    form: {
+                      values: () => ({}),
+                      render: () => null,
+                    },
+                  },
+                  { yield: () => ({ a: 1 }) },
+                ],
+                else: [],
+              },
+            },
+          ],
+        },
+      },
+      { yield: () => ({ b: 2 }) },
+      {
+        cond: {
+          if: () => false,
+          then: [],
+          else: [{ yield: () => ({ c: 3 }) }],
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+            { type: "cond", path: "then", slot: 0 },
+          ],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    const onYield = vi.fn();
+    nextFlow<null, Values, object, object>(
+      current,
+      schema,
+      {},
+      onYield,
+      () => {}
+    );
+    expect(onYield).toHaveBeenNthCalledWith(1, { a: 1 });
+    expect(onYield).toHaveBeenNthCalledWith(2, { b: 2 });
+    expect(onYield).toHaveBeenNthCalledWith(3, { c: 3 });
+  });
+
+  it("calls the onReturn callback with the appropriate values when a return is encountered", () => {
+    type Values = [
+      Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
+      Cond<{ then: []; else: [Return<{ a: number; b: number }>] }>
+    ];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        loop: {
+          while: () => false,
+          do: [
+            {
+              cond: {
+                if: () => true,
+                then: [
+                  {
+                    form: {
+                      values: () => ({}),
+                      render: () => null,
+                    },
+                  },
+                ],
+                else: [],
+              },
+            },
+          ],
+        },
+      },
+
+      {
+        cond: {
+          if: () => false,
+          then: [],
+          else: [{ return: () => ({ a: 1, b: 2 }) }],
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+            { type: "cond", path: "then", slot: 0 },
+          ],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    const onReturn = vi.fn();
+    nextFlow<null, Values, object, object>(
+      current,
+      schema,
+      {},
+      () => {},
+      onReturn
+    );
+    expect(onReturn).toBeCalledWith({ a: 1, b: 2 });
+  });
+
+  it("doesn't navigate to any form that is after a return", () => {
+    type Values = [
+      Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
+      Cond<{ then: []; else: [Return<object>] }>,
+      Form<object>
+    ];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        loop: {
+          while: () => false,
+          do: [
+            {
+              cond: {
+                if: () => true,
+                then: [
+                  {
+                    form: {
+                      values: () => ({}),
+                      render: () => null,
+                    },
+                  },
+                ],
+                else: [],
+              },
+            },
+          ],
+        },
+      },
+      {
+        cond: {
+          if: () => false,
+          then: [],
+          else: [{ return: () => ({}) }],
+        },
+      },
+      {
+        form: {
+          values: () => ({}),
+          render: () => null,
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+            { type: "cond", path: "then", slot: 0 },
+          ],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    const next = nextFlow<null, Values, object, object>(
+      current,
+      schema,
+      {},
+      () => {},
+      () => {}
+    );
+    const expected: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+            { type: "cond", path: "then", slot: 0 },
+          ],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    expect(next).toEqual(expected);
+  });
+
+  it("doesn't navigate to any other form if the current form is the last one", () => {
+    type Values = [
+      Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
+      Cond<{ then: []; else: [] }>
+    ];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        loop: {
+          while: () => false,
+          do: [
+            {
+              cond: {
+                if: () => true,
+                then: [
+                  {
+                    form: {
+                      values: () => ({}),
+                      render: () => null,
+                    },
+                  },
+                ],
+                else: [],
+              },
+            },
+          ],
+        },
+      },
+      {
+        cond: {
+          if: () => false,
+          then: [],
+          else: [],
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+            { type: "cond", path: "then", slot: 0 },
+          ],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    const next = nextFlow<null, Values, object, object>(
+      current,
+      schema,
+      {},
+      () => {},
+      () => {}
+    );
+    const expected: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+            { type: "cond", path: "then", slot: 0 },
+          ],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    expect(next).toEqual(expected);
+  });
+
+  it("generates new values from the current form when navigating to the next step", () => {
+    type Values = [Form<{ a: number; b: number }>, Form<object>];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        form: {
+          values: () => ({
+            a: [0, []],
+            b: [0, []],
+          }),
+          render: () => null,
+        },
+      },
+      {
+        form: {
+          values: () => ({}),
+          render: () => null,
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      entries: { type: "list", list: {} },
+    };
+    const flow = nextFlow<null, Values, object, object>(
+      current,
+      schema,
+      { a: 1, b: 2 },
+      () => {},
+      () => {}
+    );
+    const expected: Flow = {
+      cursors: [
+        { path: [{ type: "list", slot: 0 }], values: {} },
+        { path: [{ type: "list", slot: 1 }], values: { a: 1, b: 2 } },
+      ],
+      entries: {
+        type: "list",
+        list: {
+          0: {
+            a: { data: { here: true, data: 1 }, keys: {} },
+            b: { data: { here: true, data: 2 }, keys: {} },
+          },
+        },
+      },
+    };
+    expect(flow).toEqual(expected);
+  });
+
+  it("saves the current form values when navigating to the next step", () => {
+    type Values = [Loop<[Form<{ a: number; b: number }>]>, Form<object>];
+    const schema: Schema<null, Values, object, object> = [
+      {
+        loop: {
+          while: () => false,
+          do: [
+            {
+              form: {
+                values: () => ({
+                  a: [0, ["x", "y"]],
+                  b: [0, ["x", "y"]],
+                }),
+                render: () => null,
+              },
+            },
+          ],
+        },
+      },
+      {
+        form: {
+          values: () => ({}),
+          render: () => null,
+        },
+      },
+    ];
+    const current: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+          ],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    const flow = nextFlow<null, Values, object, object>(
+      current,
+      schema,
+      { a: 1, b: 2 },
+      () => {},
+      () => {}
+    );
+    const expected: Flow = {
+      cursors: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+          ],
+          values: {},
+        },
+        {
+          path: [{ type: "list", slot: 1 }],
+          values: { a: 1, b: 2 },
+        },
+      ],
+      entries: {
+        type: "list",
+        list: {
+          0: {
+            type: "loop",
+            list: {
+              0: {
+                a: {
+                  data: { here: false },
+                  keys: {
+                    x: {
+                      data: { here: false },
+                      keys: {
+                        y: {
+                          data: { here: true, data: 1 },
+                          keys: {},
+                        },
+                      },
+                    },
+                  },
+                },
+                b: {
+                  data: { here: false },
+                  keys: {
+                    x: {
+                      data: { here: false },
+                      keys: {
+                        y: {
+                          data: { here: true, data: 2 },
+                          keys: {},
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     };
     expect(flow).toEqual(expected);
   });
