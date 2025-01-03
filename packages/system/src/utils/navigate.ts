@@ -22,6 +22,15 @@ import * as VariablesSchemaUtils from "./schema/variables";
 
 import * as FlowEntriesUtils from "./entries/flow";
 
+/**
+ * Returns the initial state of the multi-step form, including the cursor pointing to the first form step.
+ * If no form step is found, or if a return operation is encountered before reaching a form, an error is thrown.
+ *
+ * @param schema The `ListSchema` object representing the multi-step form.
+ * @param values An object containing the initial values for the multi-step form.
+ * @param onYield A callback that is triggered when the multi-step form yields values.
+ * @returns The initial state of the multi-step form.
+ */
 export function initFlow<
   Render,
   Values extends ListValues,
