@@ -9,9 +9,12 @@ import { schema, Values } from "./schema";
 export default function App() {
   const [values, setValues] = useState<ReturnValues<Values> | null>(null);
 
-  const onReturn = useCallback<OnReturn<Values>>((values) => {
-    setValues(values);
-  }, []);
+  const onReturn = useCallback<OnReturn<Values>>(
+    (values: ReturnValues<Values>) => {
+      setValues(values);
+    },
+    []
+  );
 
   if (values) {
     return <Data data={values} onStart={() => setValues(null)} />;
