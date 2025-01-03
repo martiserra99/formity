@@ -1,11 +1,8 @@
-/**
- * These utility types are designed to simplify and enhance the process of defining types
- * that extend `ListValues`. By using these types, you can create more readable and concise
- * code when structuring a multi-step form.
- */
-
 import { ListValues } from "./values";
 
+/**
+ * Utility type that defines the structure and values of a condition element in a multi-step form.
+ */
 export type Cond<Values extends { then: ListValues; else: ListValues }> = {
   type: "cond";
   cond: {
@@ -14,6 +11,9 @@ export type Cond<Values extends { then: ListValues; else: ListValues }> = {
   };
 };
 
+/**
+ * Utility type that defines the structure and values of a loop element in a multi-step form.
+ */
 export type Loop<Values extends ListValues> = {
   type: "loop";
   loop: {
@@ -21,21 +21,33 @@ export type Loop<Values extends ListValues> = {
   };
 };
 
+/**
+ * Utility type that defines the values of a form element in a multi-step form.
+ */
 export type Form<Values extends object> = {
   type: "form";
   form: Values;
 };
 
+/**
+ * Utility type that defines the values of a yield element in a multi-step form.
+ */
 export type Yield<Values extends object> = {
   type: "yield";
   yield: Values;
 };
 
+/**
+ * Utility type that defines the values of a return element in a multi-step form.
+ */
 export type Return<Values extends object> = {
   type: "return";
   return: Values;
 };
 
+/**
+ * Utility type that defines the values of a variables element in a multi-step form.
+ */
 export type Variables<Values extends object> = {
   type: "variables";
   variables: Values;
