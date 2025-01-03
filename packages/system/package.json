@@ -24,7 +24,7 @@
   ],
   "scripts": {
     "lint": "eslint",
-    "test": "vitest run --passWithNoTests",
+    "test": "vitest --run --passWithNoTests",
     "build": "rollup --config rollup.config.mjs",
     "dev": "rollup --config rollup.config.mjs --watch"
   }
