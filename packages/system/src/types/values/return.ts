@@ -1,8 +1,3 @@
-/**
- * The `Return` type accepts a generic parameter extending `ListValues` and evaluates
- * to the union of all possible values that can be returned by a multi-step form.
- */
-
 import {
   ItemValues,
   ListValues,
@@ -11,6 +6,9 @@ import {
   ReturnValues,
 } from "../values";
 
+/**
+ * Returns the union of all possible values that can be returned by a multi-step form.
+ */
 export type Return<Values extends ListValues> = ListData<
   Values,
   never
