@@ -25,8 +25,8 @@ export function getFlow<
   schema: CustomListSchema<Render, Values, Inputs, Params>,
   values: object
 ): Flow {
-  const iSchema = schema as ListSchema;
-  return internalGetFlow(flow, iSchema, values);
+  const sSchema = schema as ListSchema;
+  return internalGetFlow(flow, sSchema, values);
 }
 
 function internalGetFlow(flow: Flow, schema: ListSchema, values: object): Flow {

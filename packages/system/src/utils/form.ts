@@ -33,12 +33,12 @@ export function getForm<
   getFlow: GetFlow,
   setFlow: SetFlow
 ): Render {
-  const iSchema = schema as ListSchema;
-  const iParams = params as object;
+  const sSchema = schema as ListSchema;
+  const sParams = params as object;
   return internalGetForm(
     flow,
-    iSchema,
-    iParams,
+    sSchema,
+    sParams,
     onNext,
     onBack,
     getFlow,
