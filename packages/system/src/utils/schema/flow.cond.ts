@@ -11,6 +11,13 @@ export function is(schema: ItemSchema): schema is CondSchema {
   return "cond" in schema;
 }
 
+/**
+ * Returns the initial position for the given `CondSchema` object if there is an initial position, otherwise it returns `null`.
+ *
+ * @param schema A `CondSchema` object
+ * @param values An object containing the generated values within the multi-step form
+ * @returns A `Position` object representing the initial position, or `null` if there is no initial position
+ */
 export function into(schema: CondSchema, values: object): Position | null {
   if (schema.cond.if(values)) {
     if (schema.cond.then.length > 0) {
@@ -24,6 +31,13 @@ export function into(schema: CondSchema, values: object): Position | null {
   return null;
 }
 
+/**
+ * Returns the next position for the given `CondSchema` object if there is a next position, otherwise it returns `null`.
+ *
+ * @param schema A `CondSchema` object
+ * @param position A `Position` object representing the current position
+ * @returns A `Position` object representing the next position, or `null` if there is no next position
+ */
 export function next(schema: CondSchema, position: Position): Position | null {
   const { path, slot } = position as CondPosition;
   if (slot < schema.cond[path].length - 1) {

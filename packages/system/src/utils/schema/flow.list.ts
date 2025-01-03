@@ -11,6 +11,12 @@ export function is(schema: ItemSchema): schema is ListSchema {
   return Array.isArray(schema);
 }
 
+/**
+ * Returns the initial position for the given `ListSchema` object if there is an initial position, otherwise it returns `null`.
+ *
+ * @param schema A `ListSchema` object
+ * @returns A `Position` object representing the initial position, or `null` if there is no initial position
+ */
 export function into(schema: ListSchema): Position | null {
   if (schema.length > 0) {
     return { type: "list", slot: 0 };
@@ -18,6 +24,13 @@ export function into(schema: ListSchema): Position | null {
   return null;
 }
 
+/**
+ * Returns the next position for the given `ListSchema` object if there is a next position, otherwise it returns `null`.
+ *
+ * @param schema A `ListSchema` object
+ * @param position A `Position` object representing the current position
+ * @returns A `Position` object representing the next position, or `null` if there is no next position
+ */
 export function next(schema: ListSchema, position: Position): Position | null {
   const { slot } = position as ListPosition;
   if (slot < schema.length - 1) {

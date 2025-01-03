@@ -19,6 +19,13 @@ export function is(schema: ItemSchema): schema is FlowSchema {
   );
 }
 
+/**
+ * Returns the initial position for the given `FlowSchema` object if there is an initial position, otherwise it returns `null`.
+ *
+ * @param schema A `FlowSchema` object
+ * @param values An object containing the generated values within the multi-step form
+ * @returns A `Position` object representing the initial position, or `null` if there is no initial position
+ */
 export function into(schema: FlowSchema, values: object): Position | null {
   if (ListSchemaUtils.is(schema)) {
     return ListSchemaUtils.into(schema);
@@ -32,6 +39,14 @@ export function into(schema: FlowSchema, values: object): Position | null {
   throw new Error("Invalid schema");
 }
 
+/**
+ * Returns the next position for the given `FlowSchema` object if there is a next position, otherwise it returns `null`.
+ *
+ * @param schema A `FlowSchema` object
+ * @param position A `Position` object representing the current position
+ * @param values An object containing the generated values within the multi-step form
+ * @returns A `Position` object representing the next position, or `null` if there is no next position
+ */
 export function next(
   schema: FlowSchema,
   position: Position,
