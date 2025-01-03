@@ -1,7 +1,6 @@
 /**
- * These types define the values entered at each step of a multi-step form.
- * They ensure that values are preserved when navigating back to a previously
- * completed step.
+ * These types define the values entered at each step of a multi-step form. They ensure that
+ * values are preserved when navigating back to a previously completed step.
  */
 
 export type ItemEntries = FlowEntries | FormEntries;

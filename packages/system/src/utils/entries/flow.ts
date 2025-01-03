@@ -11,6 +11,21 @@ import * as CondEntriesUtils from "./flow.cond";
 import * as LoopEntriesUtils from "./flow.loop";
 import * as FormEntriesUtils from "./form";
 
+/**
+ * Returns the value that is in the given `FlowEntries` object using the following parameters:
+ *
+ * - `path`: The path within the `FlowEntries` object that contains a `FormEntries` object.
+ * - `name`: The name of the value within the `FormEntries` object.
+ * - `keys`: The list of keys that is used to access the value within the `FormEntries` object.
+ * - `defaultValue`: The default value to return if the value is not found.
+ *
+ * @param flow The `FlowEntries` object.
+ * @param path The path within the `FlowEntries` object that contains a `FormEntries` object.
+ * @param name The name of the value within the `FormEntries` object.
+ * @param keys The list of keys that is used to access the value within the `FormEntries` object.
+ * @param defaultValue The default value to return if the value is not found.
+ * @returns The value that is in the given `FlowEntries` object or the default value if the value is not found.
+ */
 export function get(
   flow: FlowEntries,
   path: Position[],
@@ -29,12 +44,27 @@ export function get(
   return FormEntriesUtils.get(form, name, keys, defaultValue);
 }
 
+/**
+ * Sets the value in the given `FlowEntries` object using the following parameters:
+ *
+ * - `path`: The path within the `FlowEntries` object that contains a `FormEntries` object.
+ * - `name`: The name of the value within the `FormEntries` object.
+ * - `keys`: The list of keys that is used to access the value within the `FormEntries` object.
+ * - `value`: The value to set.
+ *
+ * @param flow The `FlowEntries` object.
+ * @param path The path within the `FlowEntries` object that contains a `FormEntries` object.
+ * @param name The name of the value within the `FormEntries` object.
+ * @param keys The list of keys that is used to access the value within the `FormEntries` object.
+ * @param data The value to set.
+ * @returns The updated `FlowEntries` object.
+ */
 export function set(
   flow: FlowEntries,
   path: Position[],
   name: string,
   keys: PropertyKey[],
-  value: unknown
+  data: unknown
 ): FlowEntries {
   const updated: FlowEntries = clone(flow);
   let current: FlowEntries = updated;
@@ -56,10 +86,10 @@ export function set(
   const item = getItem(current, position);
   if (item) {
     const form = item as FormEntries;
-    setItem(current, position, FormEntriesUtils.set(form, name, keys, value));
+    setItem(current, position, FormEntriesUtils.set(form, name, keys, data));
   } else {
     const form: FormEntries = { [name]: { data: { here: false }, keys: {} } };
-    setItem(current, position, FormEntriesUtils.set(form, name, keys, value));
+    setItem(current, position, FormEntriesUtils.set(form, name, keys, data));
   }
   return updated;
 }
