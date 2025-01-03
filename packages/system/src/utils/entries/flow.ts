@@ -64,6 +64,11 @@ export function set(
   return updated;
 }
 
+/**
+ * Creates a `FlowEntries` object.
+ *
+ * @returns The created `FlowEntries` object.
+ */
 export function create(position: Position): FlowEntries {
   switch (position.type) {
     case "list":
@@ -75,6 +80,12 @@ export function create(position: Position): FlowEntries {
   }
 }
 
+/**
+ * Clones a `FlowEntries` object.
+ *
+ * @param flow A `FlowEntries` object.
+ * @returns The cloned `FlowEntries` object.
+ */
 export function clone(flow: FlowEntries): FlowEntries {
   switch (flow.type) {
     case "list":
@@ -86,6 +97,13 @@ export function clone(flow: FlowEntries): FlowEntries {
   }
 }
 
+/**
+ * Returns the `ItemEntries` object at the given position within the given `FlowEntries` object, or `null` if there is no item at the given position.
+ *
+ * @param flow The `FlowEntries` object.
+ * @param position The position within the `FlowEntries` object.
+ * @returns The `ItemEntries` object at the given position within the `FlowEntries` object, or `null` if there is no item at the given position.
+ */
 export function getItem(
   flow: FlowEntries,
   position: Position
@@ -100,6 +118,13 @@ export function getItem(
   }
 }
 
+/**
+ * Sets the `ItemEntries` object at the given position within the given `FlowEntries` object.
+ *
+ * @param flow The `FlowEntries` object.
+ * @param position The position within the `FlowEntries` object.
+ * @param item The `ItemEntries` object to set.
+ */
 export function setItem(
   flow: FlowEntries,
   position: Position,
