@@ -5,6 +5,12 @@ import * as ListSchemaUtils from "./flow.list";
 import * as CondSchemaUtils from "./flow.cond";
 import * as LoopSchemaUtils from "./flow.loop";
 
+/**
+ * Type guard for `FlowSchema` objects
+ *
+ * @param schema An `ItemSchema` object
+ * @returns A boolean indicating whether the `schema` is a `FlowSchema` object
+ */
 export function is(schema: ItemSchema): schema is FlowSchema {
   return (
     ListSchemaUtils.is(schema) ||

@@ -1,6 +1,12 @@
 import type { ItemSchema, ListSchema } from "../../types/schema/static";
 import type { Position, ListPosition } from "../../types/flow/position";
 
+/**
+ * Type guard for `ListSchema` objects
+ *
+ * @param schema An `ItemSchema` object
+ * @returns A boolean indicating whether the `schema` is a `ListSchema` object
+ */
 export function is(schema: ItemSchema): schema is ListSchema {
   return Array.isArray(schema);
 }

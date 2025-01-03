@@ -1,6 +1,12 @@
 import type { ItemSchema, LoopSchema } from "../../types/schema/static";
 import type { Position, LoopPosition } from "../../types/flow/position";
 
+/**
+ * Type guard for `LoopSchema` objects
+ *
+ * @param schema An `ItemSchema` object
+ * @returns A boolean indicating whether the `schema` is a `LoopSchema` object
+ */
 export function is(schema: ItemSchema): schema is LoopSchema {
   return "loop" in schema;
 }

@@ -1,6 +1,12 @@
 import type { ItemSchema, CondSchema } from "../../types/schema/static";
 import type { Position, CondPosition } from "../../types/flow/position";
 
+/**
+ * Type guard for `CondSchema` objects
+ *
+ * @param schema An `ItemSchema` object
+ * @returns A boolean indicating whether the `schema` is a `CondSchema` object
+ */
 export function is(schema: ItemSchema): schema is CondSchema {
   return "cond" in schema;
 }
