@@ -7,6 +7,18 @@ import type { OnNext, OnBack, GetFlow, SetFlow } from "../types/callbacks";
 import * as FlowSchemaUtils from "./schema/flow";
 import * as FlowEntriesUtils from "./entries/flow";
 
+/**
+ * Returns the rendered form for the current step of the multi-step form.
+ *
+ * @param flow The current state of the multi-step form.
+ * @param schema The `ListSchema` object representing the multi-step form.
+ * @param params An object containing the parameters for the form.
+ * @param onNext A callback function used to navigate to the next step of the multi-step form.
+ * @param onBack A callback function used to navigate to the previous step of the multi-step form.
+ * @param getFlow A callback function used to get the current state of the multi-step form.
+ * @param setFlow A callback function used to set the current state of the multi-step form.
+ * @returns The rendered form for the current step of the multi-step form.
+ */
 export function getForm<
   Render,
   Values extends ListValues,
@@ -21,12 +33,12 @@ export function getForm<
   getFlow: GetFlow,
   setFlow: SetFlow
 ): Render {
-  const sSchema = schema as ListSchema;
-  const sParams = params as object;
+  const iSchema = schema as ListSchema;
+  const iParams = params as object;
   return internalGetForm(
     flow,
-    sSchema,
-    sParams,
+    iSchema,
+    iParams,
     onNext,
     onBack,
     getFlow,

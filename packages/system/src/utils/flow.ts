@@ -7,6 +7,14 @@ import type { FlowEntries, ListEntries } from "../types/flow/entries";
 import * as FlowSchemaUtils from "./schema/flow";
 import * as FlowEntriesUtils from "./entries/flow";
 
+/**
+ * Returns the current state of the multi-step form after updating the values of the current form.
+ *
+ * @param flow The current state of the multi-step form.
+ * @param schema The `ListSchema` object representing the multi-step form.
+ * @param values An object containing the values of the current form.
+ * @returns The current state of the multi-step form after updating the values of the current form.
+ */
 export function getFlow<
   Render,
   Values extends ListValues,
@@ -17,8 +25,8 @@ export function getFlow<
   schema: CustomListSchema<Render, Values, Inputs, Params>,
   values: object
 ): Flow {
-  const sSchema = schema as ListSchema;
-  return internalGetFlow(flow, sSchema, values);
+  const iSchema = schema as ListSchema;
+  return internalGetFlow(flow, iSchema, values);
 }
 
 function internalGetFlow(flow: Flow, schema: ListSchema, values: object): Flow {
