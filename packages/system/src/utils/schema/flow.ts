@@ -6,10 +6,10 @@ import * as CondSchemaUtils from "./flow.cond";
 import * as LoopSchemaUtils from "./flow.loop";
 
 /**
- * Type guard for `FlowSchema` objects
+ * Type guard for `FlowSchema` objects.
  *
- * @param schema An `ItemSchema` object
- * @returns A boolean indicating whether the `schema` is a `FlowSchema` object
+ * @param schema An `ItemSchema` object.
+ * @returns A boolean indicating whether the `schema` is a `FlowSchema` object.
  */
 export function is(schema: ItemSchema): schema is FlowSchema {
   return (
@@ -22,9 +22,9 @@ export function is(schema: ItemSchema): schema is FlowSchema {
 /**
  * Returns the initial position for the given `FlowSchema` object if there is an initial position, otherwise it returns `null`.
  *
- * @param schema A `FlowSchema` object
- * @param values An object containing the generated values within the multi-step form
- * @returns A `Position` object representing the initial position, or `null` if there is no initial position
+ * @param schema A `FlowSchema` object.
+ * @param values An object containing the generated values within the multi-step form.
+ * @returns A `Position` object representing the initial position, or `null` if there is no initial position.
  */
 export function into(schema: FlowSchema, values: object): Position | null {
   if (ListSchemaUtils.is(schema)) {
@@ -42,10 +42,10 @@ export function into(schema: FlowSchema, values: object): Position | null {
 /**
  * Returns the next position for the given `FlowSchema` object if there is a next position, otherwise it returns `null`.
  *
- * @param schema A `FlowSchema` object
- * @param position A `Position` object representing the current position
- * @param values An object containing the generated values within the multi-step form
- * @returns A `Position` object representing the next position, or `null` if there is no next position
+ * @param schema A `FlowSchema` object.
+ * @param position A `Position` object representing the current position.
+ * @param values An object containing the generated values within the multi-step form.
+ * @returns A `Position` object representing the next position, or `null` if there is no next position.
  */
 export function next(
   schema: FlowSchema,
@@ -67,9 +67,9 @@ export function next(
 /**
  * Returns the `ItemSchema` object at the given position within the given `FlowSchema` object.
  *
- * @param schema The `FlowSchema` object
- * @param position The position within the `FlowSchema` object
- * @returns The `ItemSchema` object at the given position within the `FlowSchema` object
+ * @param schema The `FlowSchema` object.
+ * @param position The position within the `FlowSchema` object.
+ * @returns The `ItemSchema` object at the given position within the `FlowSchema` object.
  */
 export function at(schema: FlowSchema, position: Position): ItemSchema {
   if (ListSchemaUtils.is(schema)) {
@@ -87,9 +87,9 @@ export function at(schema: FlowSchema, position: Position): ItemSchema {
 /**
  * Returns the `ItemSchema` object at the given path within the given `FlowSchema` object.
  *
- * @param schema The `FlowSchema` object
- * @param path The path within the `FlowSchema` object
- * @returns The `ItemSchema` object at the given path within the `FlowSchema` object
+ * @param schema The `FlowSchema` object.
+ * @param path The path within the `FlowSchema` object.
+ * @returns The `ItemSchema` object at the given path within the `FlowSchema` object.
  */
 export function find(schema: FlowSchema, path: Position[]) {
   let current: ItemSchema = schema;
