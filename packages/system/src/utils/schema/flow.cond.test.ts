@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import type { CondSchema } from "../../types/schema/static";
+import type { CondSchema, ReturnSchema } from "../../types/schema/static";
 import type { Position } from "src/types/flow/position";
 
-import { into, next } from "./flow.cond";
+import { into, next, at } from "./flow.cond";
 
 describe("CondSchema", () => {
   describe("into", () => {
@@ -143,6 +143,36 @@ describe("CondSchema", () => {
       const current: Position = { type: "cond", path: "then", slot: 0 };
       const position = next(schema, current);
       expect(position).toEqual(null);
+    });
+  });
+
+  describe("at", () => {
+    it("retrieves the item at the specified position in the `then` path of the `CondSchema` object", () => {
+      const item: ReturnSchema = { return: () => ({}) };
+      const schema: CondSchema = {
+        cond: {
+          if: () => true,
+          then: [{ variables: () => ({}) }, item],
+          else: [],
+        },
+      };
+      const position: Position = { type: "cond", path: "then", slot: 1 };
+      const result = at(schema, position);
+      expect(result).toEqual(item);
+    });
+
+    it("retrieves the item at the specified position in the `else` path of the `CondSchema` object", () => {
+      const item: ReturnSchema = { return: () => ({}) };
+      const schema: CondSchema = {
+        cond: {
+          if: () => false,
+          then: [],
+          else: [{ variables: () => ({}) }, item],
+        },
+      };
+      const position: Position = { type: "cond", path: "else", slot: 1 };
+      const result = at(schema, position);
+      expect(result).toEqual(item);
     });
   });
 });

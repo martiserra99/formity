@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import type { LoopSchema } from "../../types/schema/static";
+import type { LoopSchema, ReturnSchema } from "../../types/schema/static";
 import type { Position } from "src/types/flow/position";
 
-import { into, next } from "./flow.loop";
+import { into, next, at } from "./flow.loop";
 
 describe("LoopSchema", () => {
   describe("into", () => {
@@ -130,5 +130,20 @@ describe("LoopSchema", () => {
       const position = next(schema, current, {});
       expect(position).toEqual(null);
     });
+  });
+});
+
+describe("at", () => {
+  it("retrieves the item at the specified position in the `LoopSchema` object", () => {
+    const item: ReturnSchema = { return: () => ({}) };
+    const schema: LoopSchema = {
+      loop: {
+        while: () => true,
+        do: [{ variables: () => ({}) }, item],
+      },
+    };
+    const position: Position = { type: "loop", slot: 1 };
+    const result = at(schema, position);
+    expect(result).toEqual(item);
   });
 });
