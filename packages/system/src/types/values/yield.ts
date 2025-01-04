@@ -27,10 +27,10 @@ type ItemData<Values extends ItemValues, Data> = Values extends ListValues
   : Values extends SwitchValues
   ? SwitchData<Values, Data>
   : Values extends YieldValues
-  ? [Data | Values["yield"], "F"]
+  ? [Data | Values["yield"], false]
   : Values extends ReturnValues
-  ? [Data, "T"]
-  : [Data, "F"];
+  ? [Data, true]
+  : [Data, false];
 
 type ListData<Values extends ListValues, Data> = Values extends [
   infer First,
@@ -39,13 +39,13 @@ type ListData<Values extends ListValues, Data> = Values extends [
   ? First extends ItemValues
     ? Other extends ListValues
       ? ItemData<First, Data> extends [infer Next, infer Return]
-        ? Return extends "T"
-          ? [Next, "T"]
+        ? Return extends true
+          ? [Next, true]
           : ListData<Other, Next>
         : never
       : never
     : never
-  : [Data, "F"];
+  : [Data, false];
 
 type CondData<Values extends CondValues, Data> = ListData<
   Values["cond"]["then"],
@@ -55,9 +55,9 @@ type CondData<Values extends CondValues, Data> = ListData<
       infer ElseNext,
       infer ElseReturn
     ]
-    ? [ThenReturn, ElseReturn] extends ["T", "T"]
-      ? [ThenNext | ElseNext, "T"]
-      : [ThenNext | ElseNext, "F"]
+    ? [ThenReturn, ElseReturn] extends [true, true]
+      ? [ThenNext | ElseNext, true]
+      : [ThenNext | ElseNext, false]
     : never
   : never;
 
@@ -65,7 +65,7 @@ type LoopData<Values extends LoopValues, Data> = ListData<
   Values["loop"]["do"],
   Data
 > extends [infer Next, unknown]
-  ? [Next, "F"]
+  ? [Next, false]
   : never;
 
 type SwitchData<Values extends SwitchValues, Data> = RoutesData<
@@ -76,13 +76,13 @@ type SwitchData<Values extends SwitchValues, Data> = RoutesData<
 type RoutesData<
   Values extends ListValues[],
   Data,
-  RoutesReturn = "T"
+  RoutesReturn = true
 > = Values extends [infer First, ...infer Other]
   ? First extends ListValues
     ? Other extends ListValues[]
       ? ListData<First, Data> extends [infer Next, infer Return]
-        ? RoutesReturn extends "F"
-          ? RoutesData<Other, Next, "F">
+        ? RoutesReturn extends false
+          ? RoutesData<Other, Next, false>
           : RoutesData<Other, Next, Return>
         : never
       : never
