@@ -131,20 +131,34 @@ export type SwitchSchema<
   Params extends object
 > = {
   switch: {
-    branches: {
-      [Index in keyof Values["switch"]["branches"]]: {
-        case: (inputs: object) => boolean;
-        then: ListSchema<
-          Render,
-          Values["switch"]["branches"][Index] & ListValues,
-          Inputs,
-          Params
-        >;
-      };
-    };
+    branches: SwitchBranchesSchema<
+      Render,
+      Values["switch"]["branches"],
+      Inputs,
+      Params
+    >;
     default: ListSchema<Render, Values["switch"]["default"], Inputs, Params>;
   };
 };
+
+type SwitchBranchesSchema<
+  Render,
+  Values extends ListValues[],
+  Inputs extends object,
+  Params extends object
+> = Values extends [infer First, ...infer Other]
+  ? First extends ListValues
+    ? Other extends ListValues[]
+      ? [
+          {
+            case: (inputs: Inputs) => boolean;
+            then: ListSchema<Render, First, Inputs, Params>;
+          },
+          ...SwitchBranchesSchema<Render, Other, Inputs, Params>
+        ]
+      : never
+    : never
+  : [];
 
 /**
  * Defines the structure and behavior of a form element in a multi-step form.
