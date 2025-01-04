@@ -107,4 +107,40 @@ describe("getForm", () => {
       },
     });
   });
+
+  it("uses the params that have been provided", () => {
+    type Values = [Form<object>];
+    type Params = { hello: string };
+    const schema: Schema<object, Values, object, Params> = [
+      {
+        form: {
+          values: () => ({}),
+          render: ({ params }) => ({
+            hello: params.hello,
+          }),
+        },
+      },
+    ];
+    const flow: Flow = {
+      cursors: [
+        {
+          path: [{ type: "list", slot: 0 }],
+          values: {},
+        },
+      ],
+      entries: { type: "list", list: {} },
+    };
+    const form = getForm<object, Values, object, Params>(
+      flow,
+      schema,
+      { hello: "world" },
+      () => {},
+      () => {},
+      () => flow,
+      () => {}
+    );
+    expect(form).toEqual({
+      hello: "world",
+    });
+  });
 });
