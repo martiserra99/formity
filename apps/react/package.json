@@ -10,7 +10,7 @@
     "preview": "vite preview --port 3000"
   },
   "dependencies": {
-    "@formity/react": "^0.1.0",
+    "@formity/react": "^0.2.0",
     "@headlessui/react": "^2.1.10",
     "@heroicons/react": "^2.1.5",
     "@hookform/resolvers": "^3.9.1",
