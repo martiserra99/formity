@@ -6,6 +6,7 @@ export type { YieldValues, ReturnValues } from "@formity/system";
 export type {
   Cond,
   Loop,
+  Switch,
   Form,
   Yield,
   Return,
