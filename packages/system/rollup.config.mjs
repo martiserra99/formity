@@ -1,3 +1,4 @@
+import resolve from "@rollup/plugin-node-resolve";
 import typescript from "@rollup/plugin-typescript";
 import terser from "@rollup/plugin-terser";
 
@@ -17,6 +18,6 @@ export default {
       sourcemap: true,
     },
   ],
-  plugins: [typescript({ sourceMap: true })],
+  plugins: [resolve(), typescript({ sourceMap: true })],
   external: [],
 };
