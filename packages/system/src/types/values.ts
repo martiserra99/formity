@@ -11,7 +11,7 @@ export type ItemValues =
 /**
  * This type is meant to be extended and is used to define the structure and values of any flow element in a multi-step form.
  */
-export type FlowValues = ListValues | CondValues | LoopValues;
+export type FlowValues = ListValues | CondValues | LoopValues | SwitchValues;
 
 /**
  * This type is meant to be extended and is used to define the structure and values of a list element in a multi-step form.
@@ -36,6 +36,17 @@ export type LoopValues = {
   type: "loop";
   loop: {
     do: ListValues;
+  };
+};
+
+/**
+ * This type is meant to be extended and is used to define the structure and values of a switch element in a multi-step form.
+ */
+export type SwitchValues = {
+  type: "switch";
+  switch: {
+    branches: ListValues[];
+    default: ListValues;
   };
 };
 

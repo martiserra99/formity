@@ -6,7 +6,11 @@ export type ItemEntries = FlowEntries | FormEntries;
 /**
  * Values entered for the forms that are within any flow control structure.
  */
-export type FlowEntries = ListEntries | CondEntries | LoopEntries;
+export type FlowEntries =
+  | ListEntries
+  | CondEntries
+  | LoopEntries
+  | SwitchEntries;
 
 /**
  * Values entered for the forms that are within a list.
@@ -31,6 +35,15 @@ export type CondEntries = {
 export type LoopEntries = {
   type: "loop";
   list: { [position: number]: ItemEntries };
+};
+
+/**
+ * Values entered for the forms that are within a switch.
+ */
+export type SwitchEntries = {
+  type: "switch";
+  branches: { [position: number]: { [position: number]: ItemEntries } };
+  default: { [position: number]: ItemEntries };
 };
 
 /**

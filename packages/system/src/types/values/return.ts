@@ -3,6 +3,7 @@ import {
   ListValues,
   CondValues,
   LoopValues,
+  SwitchValues,
   ReturnValues,
 } from "../values";
 
@@ -22,6 +23,8 @@ type ItemData<Values extends ItemValues, Data> = Values extends ListValues
   ? CondData<Values, Data>
   : Values extends LoopValues
   ? LoopData<Values, Data>
+  : Values extends SwitchValues
+  ? SwitchData<Values, Data>
   : Values extends ReturnValues
   ? [Data | Values["return"], "T"]
   : [Data, "F"];
@@ -61,3 +64,30 @@ type LoopData<Values extends LoopValues, Data> = ListData<
 > extends [infer Next, unknown]
   ? [Next, "F"]
   : never;
+
+type SwitchData<Values extends SwitchValues, Data> = Join<
+  [
+    ...({
+      [Index in keyof Values["switch"]["branches"]]: ListData<
+        Values["switch"]["branches"][Index] & ListValues,
+        Data
+      >;
+    } extends infer Branches
+      ? Branches extends unknown[]
+        ? Branches
+        : never
+      : never),
+    ListData<Values["switch"]["default"], Data>
+  ]
+>;
+
+type Join<List, CurrentData = never, CurrentReturn = "T"> = List extends [
+  infer First,
+  ...infer Other
+]
+  ? First extends [infer Data, infer Return]
+    ? Return extends "F"
+      ? Join<Other, CurrentData | Data, "F">
+      : Join<Other, CurrentData | Data, "T">
+    : never
+  : [CurrentData, CurrentReturn];

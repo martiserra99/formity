@@ -22,6 +22,19 @@ export type Loop<Values extends ListValues> = {
 };
 
 /**
+ * Utility type that defines the structure and values of a switch element in a multi-step form.
+ */
+export type Switch<
+  Values extends { branches: ListValues[]; default: ListValues }
+> = {
+  type: "switch";
+  switch: {
+    branches: Values["branches"];
+    default: Values["default"];
+  };
+};
+
+/**
  * Utility type that defines the values of a form element in a multi-step form.
  */
 export type Form<Values extends object> = {

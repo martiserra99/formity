@@ -13,7 +13,7 @@ export type ItemSchema =
 /**
  * Defines the structure and behavior of any flow element in a multi-step form.
  */
-export type FlowSchema = ListSchema | CondSchema | LoopSchema;
+export type FlowSchema = ListSchema | CondSchema | LoopSchema | SwitchSchema;
 
 /**
  * Defines the structure and behavior of a list element in a multi-step form.
@@ -38,6 +38,19 @@ export type LoopSchema = {
   loop: {
     while: (inputs: object) => boolean;
     do: ListSchema;
+  };
+};
+
+/**
+ * Defines the structure and behavior of a switch element in a multi-step form.
+ */
+export type SwitchSchema = {
+  switch: {
+    branches: {
+      case: (inputs: object) => boolean;
+      then: ListSchema;
+    }[];
+    default: ListSchema;
   };
 };
 

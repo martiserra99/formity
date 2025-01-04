@@ -24,6 +24,7 @@ import type {
   ListValues,
   CondValues,
   LoopValues,
+  SwitchValues,
   FormValues,
   YieldValues,
   ReturnValues,
@@ -66,6 +67,8 @@ export type FlowSchema<
   ? CondSchema<Render, Values, Inputs, Params>
   : Values extends LoopValues
   ? LoopSchema<Render, Values, Inputs, Params>
+  : Values extends SwitchValues
+  ? SwitchSchema<Render, Values, Inputs, Params>
   : never;
 
 /**
@@ -115,6 +118,31 @@ export type LoopSchema<
   loop: {
     while: (inputs: Inputs) => boolean;
     do: ListSchema<Render, Values["loop"]["do"], Inputs, Params>;
+  };
+};
+
+/**
+ * Defines the structure and behavior of a switch element in a multi-step form.
+ */
+export type SwitchSchema<
+  Render,
+  Values extends SwitchValues,
+  Inputs extends object,
+  Params extends object
+> = {
+  switch: {
+    branches: {
+      [Index in keyof Values["switch"]["branches"]]: {
+        case: (inputs: object) => boolean;
+        then: ListSchema<
+          Render,
+          Values["switch"]["branches"][Index] & ListValues,
+          Inputs,
+          Params
+        >;
+      };
+    };
+    default: ListSchema<Render, Values["switch"]["default"], Inputs, Params>;
   };
 };
 
