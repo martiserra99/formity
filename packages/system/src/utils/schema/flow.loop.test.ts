@@ -144,6 +144,6 @@ describe("at", () => {
     };
     const position: Position = { type: "loop", slot: 1 };
     const result = at(schema, position);
-    expect(result).toEqual(item);
+    expect(result).toBe(item);
   });
 });

@@ -158,7 +158,7 @@ describe("CondSchema", () => {
       };
       const position: Position = { type: "cond", path: "then", slot: 1 };
       const result = at(schema, position);
-      expect(result).toEqual(item);
+      expect(result).toBe(item);
     });
 
     it("retrieves the item at the specified position in the `else` path of the `CondSchema` object", () => {
@@ -172,7 +172,7 @@ describe("CondSchema", () => {
       };
       const position: Position = { type: "cond", path: "else", slot: 1 };
       const result = at(schema, position);
-      expect(result).toEqual(item);
+      expect(result).toBe(item);
     });
   });
 });

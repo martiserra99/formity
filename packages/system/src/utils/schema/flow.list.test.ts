@@ -70,6 +70,6 @@ describe("at", () => {
     const schema: ListSchema = [{ variables: () => ({}) }, item];
     const position: Position = { type: "list", slot: 1 };
     const result = at(schema, position);
-    expect(result).toEqual(item);
+    expect(result).toBe(item);
   });
 });
