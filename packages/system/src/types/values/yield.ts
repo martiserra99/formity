@@ -47,19 +47,10 @@ type ListData<Values extends ListValues, Data> = Values extends [
     : never
   : [Data, false];
 
-type CondData<Values extends CondValues, Data> = ListData<
-  Values["cond"]["then"],
+type CondData<Values extends CondValues, Data> = RoutesData<
+  [Values["cond"]["then"], Values["cond"]["else"]],
   Data
-> extends [infer ThenNext, infer ThenReturn]
-  ? ListData<Values["cond"]["else"], Data> extends [
-      infer ElseNext,
-      infer ElseReturn
-    ]
-    ? [ThenReturn, ElseReturn] extends [true, true]
-      ? [ThenNext | ElseNext, true]
-      : [ThenNext | ElseNext, false]
-    : never
-  : never;
+>;
 
 type LoopData<Values extends LoopValues, Data> = ListData<
   Values["loop"]["do"],
