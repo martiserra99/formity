@@ -1,23 +1,22 @@
 import { describe, expect, it, vi } from "vitest";
 
-import {
-  Schema,
+import type { ListSchema } from "src/types/schema/custom";
+import type {
   Form,
   Cond,
   Loop,
   Yield,
   Return,
   Variables,
-  Flow,
-  initFlow,
-  nextFlow,
-  prevFlow,
-} from "../src/index";
+} from "src/types/utils";
+import type { Flow } from "src/types/flow/flow";
+
+import { initFlow, nextFlow, prevFlow } from "./navigate";
 
 describe("initFlow", () => {
   it("initializes the form state with the cursor pointing to the first position", () => {
     type Values = [Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         form: {
           values: () => ({}),
@@ -35,7 +34,7 @@ describe("initFlow", () => {
 
   it("initializes the form state with the cursor pointing to the last position", () => {
     type Values = [Variables<object>, Variables<object>, Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
@@ -65,7 +64,7 @@ describe("initFlow", () => {
         else: [];
       }>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         cond: {
           if: () => true,
@@ -128,7 +127,7 @@ describe("initFlow", () => {
         else: [];
       }>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
@@ -183,7 +182,7 @@ describe("initFlow", () => {
 
   it("throws an error when the schema is empty", () => {
     type Values = [];
-    const schema: Schema<null, Values, object, object> = [];
+    const schema: ListSchema<null, Values, object, object> = [];
     expect(() =>
       initFlow<null, Values, object, object>(schema, {}, () => {})
     ).toThrow();
@@ -203,7 +202,7 @@ describe("initFlow", () => {
         else: [];
       }>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
@@ -249,7 +248,7 @@ describe("initFlow", () => {
       }>,
       Form<object>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
@@ -292,7 +291,7 @@ describe("initFlow", () => {
         else: [];
       }>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       { yield: () => ({ x: 1 }) },
       {
         cond: {
@@ -353,7 +352,7 @@ describe("initFlow", () => {
         else: [];
       }>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       { variables: () => ({ a: 1, b: 2 }) },
       {
         cond: {
@@ -409,7 +408,7 @@ describe("initFlow", () => {
   it("initializes the values of the form state with the ones that have been provided", () => {
     type Values = [Form<object>];
     type Inputs = { a: number; b: number };
-    const schema: Schema<null, Values, Inputs, object> = [
+    const schema: ListSchema<null, Values, Inputs, object> = [
       {
         form: {
           values: () => ({}),
@@ -434,7 +433,7 @@ describe("initFlow", () => {
 describe("nextFlow", () => {
   it("navigates to the form that is next to the current one", () => {
     type Values = [Form<object>, Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         form: {
           values: () => ({}),
@@ -473,7 +472,7 @@ describe("nextFlow", () => {
     type Values = [
       Loop<[Cond<{ then: [Form<object>]; else: [] }>, Form<object>]>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         loop: {
           while: () => true,
@@ -549,7 +548,7 @@ describe("nextFlow", () => {
       Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
       Cond<{ then: []; else: [Form<object>] }>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -635,7 +634,7 @@ describe("nextFlow", () => {
       Yield<{ b: number }>,
       Cond<{ then: []; else: [Yield<{ c: number }>, Form<object>] }>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -707,7 +706,7 @@ describe("nextFlow", () => {
       Yield<{ b: number }>,
       Cond<{ then: []; else: [Yield<{ c: number }>, Return<object>] }>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -771,7 +770,7 @@ describe("nextFlow", () => {
       Yield<{ b: number }>,
       Cond<{ then: []; else: [Yield<{ c: number }>] }>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -834,7 +833,7 @@ describe("nextFlow", () => {
       Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
       Cond<{ then: []; else: [Return<{ a: number; b: number }>] }>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -895,7 +894,7 @@ describe("nextFlow", () => {
       Cond<{ then: []; else: [Return<object>] }>,
       Form<object>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -972,7 +971,7 @@ describe("nextFlow", () => {
       Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
       Cond<{ then: []; else: [] }>
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -1040,7 +1039,7 @@ describe("nextFlow", () => {
 
   it("generates new values from the current form when navigating to the next step", () => {
     type Values = [Form<{ a: number; b: number }>, Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         form: {
           values: () => ({
@@ -1088,7 +1087,7 @@ describe("nextFlow", () => {
 
   it("saves the current form values when navigating to the next step", () => {
     type Values = [Loop<[Form<{ a: number; b: number }>]>, Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -1193,7 +1192,7 @@ describe("nextFlow", () => {
 describe("prevFlow", () => {
   it("navigates to the form that is previous to the current one", () => {
     type Values = [Form<object>, Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         form: {
           values: () => ({}),
@@ -1224,7 +1223,7 @@ describe("prevFlow", () => {
 
   it("doesn't navigate to any other form if the current form is the first one", () => {
     type Values = [Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         form: {
           values: () => ({}),
@@ -1246,7 +1245,7 @@ describe("prevFlow", () => {
 
   it("saves the current form values when navigating to the previous step", () => {
     type Values = [Form<{ a: number }>, Form<{ b: number }>];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: ListSchema<null, Values, object, object> = [
       {
         form: {
           values: () => ({

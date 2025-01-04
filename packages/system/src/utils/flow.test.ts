@@ -1,14 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import {
-  Schema,
-  Variables,
-  Form,
-  Cond,
-  Loop,
-  Flow,
-  getFlow,
-} from "../src/index";
+import type { ListSchema } from "src/types/schema/custom";
+import type { Form, Cond, Loop, Variables } from "src/types/utils";
+import type { Flow } from "src/types/flow/flow";
+
+import { getFlow } from "./flow";
 
 describe("getFlow", () => {
   it("returns the current state of the multi-step form after updating the values of the current form.", () => {
@@ -16,7 +12,7 @@ describe("getFlow", () => {
       Variables<object>,
       Cond<{ then: [Loop<[Form<{ a: number; b: number }>]>]; else: [] }>
     ];
-    const schema: Schema<object, Values, object, object> = [
+    const schema: ListSchema<object, Values, object, object> = [
       { variables: () => ({}) },
       {
         cond: {
