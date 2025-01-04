@@ -87,4 +87,4 @@ type RoutesData<
         : never
       : never
     : never
-  : never;
+  : [Data, RoutesReturn];
