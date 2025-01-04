@@ -68,29 +68,23 @@ type LoopData<Values extends LoopValues, Data> = ListData<
   ? [Next, "F"]
   : never;
 
-type SwitchData<Values extends SwitchValues, Data> = Join<
-  [
-    ...({
-      [Index in keyof Values["switch"]["branches"]]: ListData<
-        Values["switch"]["branches"][Index] & ListValues,
-        Data
-      >;
-    } extends infer Branches
-      ? Branches extends unknown[]
-        ? Branches
-        : never
-      : never),
-    ListData<Values["switch"]["default"], Data>
-  ]
+type SwitchData<Values extends SwitchValues, Data> = RoutesData<
+  [...Values["switch"]["branches"], Values["switch"]["default"]],
+  Data
 >;
 
-type Join<List, CurrentData = never, CurrentReturn = "T"> = List extends [
-  infer First,
-  ...infer Other
-]
-  ? First extends [infer Data, infer Return]
-    ? Return extends "F"
-      ? Join<Other, CurrentData | Data, "F">
-      : Join<Other, CurrentData | Data, "T">
+type RoutesData<
+  Values extends ListValues[],
+  Data,
+  RoutesReturn = "T"
+> = Values extends [infer First, ...infer Other]
+  ? First extends ListValues
+    ? Other extends ListValues[]
+      ? ListData<First, Data> extends [infer Next, infer Return]
+        ? RoutesReturn extends "F"
+          ? RoutesData<Other, Next, "F">
+          : RoutesData<Other, Next, Return>
+        : never
+      : never
     : never
-  : [CurrentData, CurrentReturn];
+  : never;
