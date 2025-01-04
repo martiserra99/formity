@@ -4,6 +4,7 @@ import type { Position } from "../../types/flow/position";
 import * as ListSchemaUtils from "./flow.list";
 import * as CondSchemaUtils from "./flow.cond";
 import * as LoopSchemaUtils from "./flow.loop";
+import * as SwitchSchemaUtils from "./flow.switch";
 
 /**
  * Type guard for `FlowSchema` objects.
@@ -15,7 +16,8 @@ export function is(schema: ItemSchema): schema is FlowSchema {
   return (
     ListSchemaUtils.is(schema) ||
     CondSchemaUtils.is(schema) ||
-    LoopSchemaUtils.is(schema)
+    LoopSchemaUtils.is(schema) ||
+    SwitchSchemaUtils.is(schema)
   );
 }
 
@@ -35,6 +37,9 @@ export function into(schema: FlowSchema, values: object): Position | null {
   }
   if (LoopSchemaUtils.is(schema)) {
     return LoopSchemaUtils.into(schema, values);
+  }
+  if (SwitchSchemaUtils.is(schema)) {
+    return SwitchSchemaUtils.into(schema, values);
   }
   throw new Error("Invalid schema");
 }
@@ -61,6 +66,9 @@ export function next(
   if (LoopSchemaUtils.is(schema)) {
     return LoopSchemaUtils.next(schema, position, values);
   }
+  if (SwitchSchemaUtils.is(schema)) {
+    return SwitchSchemaUtils.next(schema, position);
+  }
   throw new Error("Invalid schema");
 }
 
@@ -80,6 +88,9 @@ export function at(schema: FlowSchema, position: Position): ItemSchema {
   }
   if (LoopSchemaUtils.is(schema)) {
     return LoopSchemaUtils.at(schema, position);
+  }
+  if (SwitchSchemaUtils.is(schema)) {
+    return SwitchSchemaUtils.at(schema, position);
   }
   throw new Error("Invalid schema");
 }
