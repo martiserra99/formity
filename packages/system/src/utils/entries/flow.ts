@@ -9,6 +9,7 @@ import type { Position } from "../../types/flow/position";
 import * as ListEntriesUtils from "./flow.list";
 import * as CondEntriesUtils from "./flow.cond";
 import * as LoopEntriesUtils from "./flow.loop";
+import * as SwitchEntriesUtils from "./flow.switch";
 import * as FormEntriesUtils from "./form";
 
 /**
@@ -107,6 +108,8 @@ export function create(position: Position): FlowEntries {
       return CondEntriesUtils.create();
     case "loop":
       return LoopEntriesUtils.create();
+    case "switch":
+      return SwitchEntriesUtils.create();
   }
 }
 
@@ -124,6 +127,8 @@ export function clone(flow: FlowEntries): FlowEntries {
       return CondEntriesUtils.clone(flow);
     case "loop":
       return LoopEntriesUtils.clone(flow);
+    case "switch":
+      return SwitchEntriesUtils.clone(flow);
   }
 }
 
@@ -145,6 +150,8 @@ export function getItem(
       return CondEntriesUtils.getItem(flow, position);
     case "loop":
       return LoopEntriesUtils.getItem(flow, position);
+    case "switch":
+      return SwitchEntriesUtils.getItem(flow, position);
   }
 }
 
@@ -167,5 +174,7 @@ export function setItem(
       return CondEntriesUtils.setItem(flow, position, item);
     case "loop":
       return LoopEntriesUtils.setItem(flow, position, item);
+    case "switch":
+      return SwitchEntriesUtils.setItem(flow, position, item);
   }
 }
