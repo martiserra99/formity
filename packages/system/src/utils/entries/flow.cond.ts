@@ -37,9 +37,7 @@ export function getItem(
   position: Position
 ): ItemEntries | null {
   const { path, slot } = position as CondPosition;
-  if (path in flow) {
-    if (slot in flow[path]) return flow[path][slot];
-  }
+  if (slot in flow[path]) return flow[path][slot];
   return null;
 }
 
@@ -56,6 +54,5 @@ export function setItem(
   item: ItemEntries
 ): void {
   const { path, slot } = position as CondPosition;
-  if (path in flow) flow[path][slot] = item;
-  else flow[path] = { [slot]: item };
+  flow[path][slot] = item;
 }
