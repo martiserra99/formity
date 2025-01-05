@@ -17,6 +17,7 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
+      data-cy="button"
       type={type}
       className={cn(
         "block w-full rounded-full bg-indigo-500 px-6 py-4 text-base text-white hover:bg-indigo-400",

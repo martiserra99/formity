@@ -3,6 +3,7 @@ import type {
   Cond,
   Loop,
   Form,
+  Yield,
   Return,
   Variables,
 } from "@formity/react";
@@ -28,7 +29,9 @@ import { Controller } from "./controller";
 
 export type MainValues = [
   Form<{ name: string; surname: string; age: number }>,
+  Yield<{ name: string; surname: string; age: number }>,
   Form<{ softwareDeveloper: boolean }>,
+  Yield<{ softwareDeveloper: boolean }>,
   Cond<{
     then: [
       Variables<{
@@ -36,6 +39,7 @@ export type MainValues = [
         questions: Record<string, string>;
       }>,
       Form<{ languages: string[] }>,
+      Yield<{ languages: string[] }>,
       Variables<{
         i: number;
         languagesRatings: { name: string; rating: string }[];
@@ -45,6 +49,7 @@ export type MainValues = [
           Variables<{ language: string }>,
           Variables<{ question: string }>,
           Form<{ rating: string }>,
+          Yield<{ rating: string }>,
           Variables<{
             i: number;
             languagesRatings: { name: string; rating: string }[];
@@ -60,6 +65,7 @@ export type MainValues = [
     ];
     else: [
       Form<{ interested: string }>,
+      Yield<{ interested: string }>,
       Return<{
         fullName: string;
         age: number;
@@ -126,6 +132,13 @@ export const mainSchema: Schema<MainValues> = [
     },
   },
   {
+    yield: ({ name, surname, age }) => ({
+      name,
+      surname,
+      age,
+    }),
+  },
+  {
     form: {
       values: () => ({
         softwareDeveloper: [true, []],
@@ -163,6 +176,11 @@ export const mainSchema: Schema<MainValues> = [
         </Controller>
       ),
     },
+  },
+  {
+    yield: ({ softwareDeveloper }) => ({
+      softwareDeveloper,
+    }),
   },
   {
     cond: {
@@ -222,6 +240,11 @@ export const mainSchema: Schema<MainValues> = [
               </Controller>
             ),
           },
+        },
+        {
+          yield: ({ languages }) => ({
+            languages,
+          }),
         },
         {
           variables: () => ({
@@ -305,6 +328,11 @@ export const mainSchema: Schema<MainValues> = [
                 },
               },
               {
+                yield: ({ rating }) => ({
+                  rating,
+                }),
+              },
+              {
                 variables: ({ i, languagesRatings, language, rating }) => ({
                   i: i + 1,
                   languagesRatings: [
@@ -384,6 +412,11 @@ export const mainSchema: Schema<MainValues> = [
               </Controller>
             ),
           },
+        },
+        {
+          yield: ({ interested }) => ({
+            interested,
+          }),
         },
         {
           return: ({ name, surname, age, softwareDeveloper, interested }) => ({

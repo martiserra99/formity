@@ -9,6 +9,7 @@ export default function Back() {
   const { onBack } = useController();
   return (
     <button
+      data-cy="back"
       type="button"
       onClick={() => onBack(getValues())}
       className={cn(

@@ -18,6 +18,14 @@ export default function Form<T extends Values>({
   schema,
   onYield,
   onReturn,
+  initialFlow,
 }: FormProps<T>) {
-  return <Formity<T> schema={schema} onYield={onYield} onReturn={onReturn} />;
+  return (
+    <Formity<T>
+      schema={schema}
+      onYield={onYield}
+      onReturn={onReturn}
+      initialFlow={initialFlow}
+    />
+  );
 }
