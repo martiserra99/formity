@@ -19,6 +19,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Enforce package manager
+        run: npx only-allow npm
       - name: Cypress
         uses: cypress-io/github-action@v6
         with:
