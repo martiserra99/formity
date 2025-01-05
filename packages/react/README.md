@@ -29,4 +29,4 @@ Formity is an advanced form-building package designed to help React developers c
 
 ## License
 
-This package is licensed under the [MIT licensed](../../LICENSE).
+This package is licensed under the [MIT license](../../LICENSE).
