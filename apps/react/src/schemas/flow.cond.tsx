@@ -1,4 +1,4 @@
-import type { Schema, Form, Cond, Return } from "@formity/react";
+import type { Schema, Cond, Form, Return } from "@formity/react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -6,16 +6,16 @@ import { z } from "zod";
 import {
   FormView,
   FormLayout,
-  YesNo,
   MultiSelect,
   Listbox,
+  YesNo,
   Next,
   Back,
 } from "../components";
 
 import { Controller } from "../controller";
 
-export type Values = [
+export type CondValues = [
   Form<{ softwareDeveloper: boolean }>,
   Cond<{
     then: [
@@ -35,7 +35,7 @@ export type Values = [
   }>
 ];
 
-export const schema: Schema<Values> = [
+export const condSchema: Schema<CondValues> = [
   {
     form: {
       values: () => ({

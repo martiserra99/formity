@@ -1,17 +1,10 @@
-import Form from "./form";
+import { Form } from "./form";
 
-import {
-  mainSchema,
-  MainValues,
-  listSchema,
-  ListValues,
-  condSchema,
-  CondValues,
-  loopSchema,
-  LoopValues,
-  switchSchema,
-  SwitchValues,
-} from "./form.cy.schemas";
+import { mainSchema, MainValues } from "./schemas/main";
+import { listSchema, ListValues } from "./schemas/flow.list";
+import { condSchema, CondValues } from "./schemas/flow.cond";
+import { loopSchema, LoopValues } from "./schemas/flow.loop";
+import { switchSchema, SwitchValues } from "./schemas/flow.switch";
 
 describe("<Formity />", () => {
   it("renders the multi-step form with the initial state", () => {

@@ -1,18 +1,22 @@
 import { useCallback, useState } from "react";
 
 import {
-  Formity,
+  Schema,
+  Values,
   OnYield,
   YieldValues,
   OnReturn,
   ReturnValues,
 } from "@formity/react";
 
-import { Data } from "../components";
+import { Form } from "./form";
+import { Data } from "./components";
 
-import { schema, Values } from "./item.variables.schema";
+interface AppProps<T extends Values> {
+  schema: Schema<T>;
+}
 
-export default function Variables() {
+export default function App<T extends Values>({ schema }: AppProps<T>) {
   const [values, setValues] = useState<ReturnValues<Values> | null>(null);
 
   const onYield = useCallback<OnYield<Values>>(
@@ -33,7 +37,5 @@ export default function Variables() {
     return <Data data={values} onStart={() => setValues(null)} />;
   }
 
-  return (
-    <Formity<Values> schema={schema} onYield={onYield} onReturn={onReturn} />
-  );
+  return <Form<T> schema={schema} onYield={onYield} onReturn={onReturn} />;
 }

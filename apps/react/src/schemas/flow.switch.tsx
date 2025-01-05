@@ -14,7 +14,7 @@ import {
 
 import { Controller } from "../controller";
 
-export type Values = [
+export type SwitchValues = [
   Form<{ interested: string }>,
   Switch<{
     branches: [
@@ -38,7 +38,7 @@ export type Values = [
   }>
 ];
 
-export const schema: Schema<Values> = [
+export const switchSchema: Schema<SwitchValues> = [
   {
     form: {
       values: () => ({

@@ -1,4 +1,4 @@
-import type { Schema, Form, Loop, Return, Variables } from "@formity/react";
+import type { Schema, Loop, Form, Return, Variables } from "@formity/react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -7,7 +7,7 @@ import { FormView, FormLayout, Select, Next, Back } from "../components";
 
 import { Controller } from "../controller";
 
-export type Values = [
+export type LoopValues = [
   Variables<{ languages: { value: string; question: string }[] }>,
   Variables<{
     i: number;
@@ -26,7 +26,7 @@ export type Values = [
   Return<{ languagesRatings: { name: string; rating: string }[] }>
 ];
 
-export const schema: Schema<Values> = [
+export const loopSchema: Schema<LoopValues> = [
   {
     variables: () => ({
       languages: [

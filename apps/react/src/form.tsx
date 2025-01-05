@@ -14,7 +14,7 @@ interface FormProps<T extends Values> {
   initialFlow?: Flow;
 }
 
-export default function Form<T extends Values>({
+export function Form<T extends Values>({
   schema,
   onYield,
   onReturn,
