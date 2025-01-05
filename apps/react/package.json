@@ -7,7 +7,9 @@
     "dev": "vite --port 3000",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview --port 3000"
+    "preview": "vite preview --port 3000",
+    "cy:run": "cypress run --component",
+    "cy:open": "cypress open"
   },
   "dependencies": {
     "@formity/react": "^0.2.0",
