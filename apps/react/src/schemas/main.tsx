@@ -194,9 +194,10 @@ export const mainSchema: Schema<MainValues> = [
               { value: "go", label: "Go" },
             ],
             questions: {
-              javascript: "What rating would you give to JavaScript?",
-              python: "What rating would you give to Python?",
-              go: "What rating would you give to Go?",
+              javascript:
+                "What rating would you give to the JavaScript language?",
+              python: "What rating would you give to the Python language?",
+              go: "What rating would you give to the Go language?",
             },
           }),
         },

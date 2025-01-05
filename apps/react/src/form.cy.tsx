@@ -143,13 +143,13 @@ describe("<Formity />", () => {
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What rating would you give to JavaScript?"
+      "What rating would you give to the JavaScript language?"
     );
     cy.get("[data-cy=input]").eq(0).click();
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What rating would you give to Python?"
+      "What rating would you give to the Python language?"
     );
     cy.get("[data-cy=input]").eq(1).click();
     cy.get("[data-cy=button]").click();
@@ -239,12 +239,12 @@ describe("<Formity />", () => {
     cy.get("[data-cy=input]").eq(1).click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What rating would you give to Python?"
+      "What rating would you give to the Python language?"
     );
     cy.get("[data-cy=back]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What rating would you give to JavaScript?"
+      "What rating would you give to the JavaScript language?"
     );
     cy.get("[data-cy=back]").click();
     cy.get("[data-cy=heading]").should(
