@@ -1,6 +1,11 @@
 import Form from "./form";
 
-import { mainSchema, MainValues } from "./form.cy.schemas";
+import {
+  mainSchema,
+  MainValues,
+  listSchema,
+  ListValues,
+} from "./form.cy.schemas";
 
 describe("<Formity />", () => {
   it("renders the multi-step form with the initial state", () => {
@@ -297,8 +302,16 @@ describe("<Formity />", () => {
     });
   });
 
-  it("navigates through steps in a list of the multi-step form", () => {
-    cy.mount(<Form<MainValues> schema={mainSchema} />);
+  it("navigates through steps in a list of the multi-step form until it reaches a return", () => {
+    const onReturn = cy.spy().as("onReturn");
+    cy.mount(<Form<ListValues> schema={listSchema} onReturn={onReturn} />);
+    cy.get("[data-cy=heading]").should("have.text", "Tell us your name");
+    cy.get("[data-cy=input]").eq(0).type("John");
+    cy.get("[data-cy=input]").eq(1).type("Doe");
+    cy.get("[data-cy=button]").click();
+    cy.get("@onReturn").should("have.been.calledWith", {
+      fullName: "John Doe",
+    });
   });
 
   it("navigates through steps in a condition of the multi-step form", () => {
