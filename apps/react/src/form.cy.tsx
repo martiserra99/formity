@@ -5,6 +5,10 @@ import {
   MainValues,
   listSchema,
   ListValues,
+  condSchema,
+  CondValues,
+  loopSchema,
+  LoopValues,
 } from "./form.cy.schemas";
 
 describe("<Formity />", () => {
@@ -315,11 +319,66 @@ describe("<Formity />", () => {
   });
 
   it("navigates through steps in a condition of the multi-step form", () => {
-    cy.mount(<Form<MainValues> schema={mainSchema} />);
+    const onReturn = cy.spy().as("onReturn");
+    cy.mount(<Form<CondValues> schema={condSchema} onReturn={onReturn} />);
+    cy.get("[data-cy=heading]").should(
+      "have.text",
+      "Are you a software developer?"
+    );
+    cy.get("[data-cy=input]").eq(1).click();
+    cy.get("[data-cy=button]").click();
+    cy.get("[data-cy=heading]").should(
+      "have.text",
+      "Would you be interested in learning how to code?"
+    );
+    cy.get("[data-cy=back]").click();
+    cy.get("[data-cy=heading]").should(
+      "have.text",
+      "Are you a software developer?"
+    );
+    cy.get("[data-cy=input]").eq(0).click();
+    cy.get("[data-cy=button]").click();
+    cy.get("[data-cy=heading]").should(
+      "have.text",
+      "What are your favourite programming languages?"
+    );
+    cy.get("[data-cy=input]").eq(0).click();
+    cy.get("[data-cy=input]").eq(1).click();
+    cy.get("[data-cy=button]").click();
+    cy.get("@onReturn").should("have.been.calledWith", {
+      softwareDeveloper: true,
+      languages: ["javascript", "python"],
+    });
   });
 
   it("navigates through steps in a loop of the multi-step form", () => {
-    cy.mount(<Form<MainValues> schema={mainSchema} />);
+    const onReturn = cy.spy().as("onReturn");
+    cy.mount(<Form<LoopValues> schema={loopSchema} onReturn={onReturn} />);
+    cy.get("[data-cy=heading]").should(
+      "have.text",
+      "What rating would you give to the JavaScript language?"
+    );
+    cy.get("[data-cy=input]").eq(0).click();
+    cy.get("[data-cy=button]").click();
+    cy.get("[data-cy=heading]").should(
+      "have.text",
+      "What rating would you give to the Python language?"
+    );
+    cy.get("[data-cy=input]").eq(1).click();
+    cy.get("[data-cy=button]").click();
+    cy.get("[data-cy=heading]").should(
+      "have.text",
+      "What rating would you give to the Go language?"
+    );
+    cy.get("[data-cy=input]").eq(2).click();
+    cy.get("[data-cy=button]").click();
+    cy.get("@onReturn").should("have.been.calledWith", {
+      languagesRatings: [
+        { name: "javascript", rating: "love-it" },
+        { name: "python", rating: "like-it-a-lot" },
+        { name: "go", rating: "it-is-okay" },
+      ],
+    });
   });
 
   it("navigates through steps in a switch flow of the multi-step form", () => {
