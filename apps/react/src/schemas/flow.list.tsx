@@ -3,14 +3,7 @@ import type { Schema, Form, Return, Variables } from "@formity/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import {
-  FormView,
-  FormLayout,
-  Row,
-  TextField,
-  Next,
-  Back,
-} from "../components";
+import { FormView, FormLayout, Row, TextField, Next } from "../components";
 
 import { Controller } from "../controller";
 
@@ -73,7 +66,6 @@ export const listSchema: Schema<ListValues> = [
                   />,
                 ]}
                 button={<Next>Next</Next>}
-                back={<Back />}
               />
             </FormView>
           </Controller>

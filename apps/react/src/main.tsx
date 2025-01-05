@@ -29,7 +29,7 @@ createRoot(document.getElementById("root")!).render(
           element={<App<LoopValues> schema={loopSchema} />}
         />
         <Route
-          path="/switch"
+          path="/flow/switch"
           element={<App<SwitchValues> schema={switchSchema} />}
         />
       </Routes>
