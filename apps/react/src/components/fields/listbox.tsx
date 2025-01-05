@@ -59,7 +59,9 @@ export default function Listbox({
               className="group relative z-10 flex cursor-default select-none items-center gap-2 rounded-full px-3 py-2 data-[focus]:bg-white/10"
             >
               <CheckIcon className="invisible size-4 fill-white group-data-[selected]:visible" />
-              <div className="text-sm text-white">{option.label}</div>
+              <div data-cy="listbox-option" className="text-sm text-white">
+                {option.label}
+              </div>
             </ListboxOption>
           ))}
         </ListboxOptions>

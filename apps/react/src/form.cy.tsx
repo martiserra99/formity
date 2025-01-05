@@ -9,6 +9,8 @@ import {
   CondValues,
   loopSchema,
   LoopValues,
+  switchSchema,
+  SwitchValues,
 } from "./form.cy.schemas";
 
 describe("<Formity />", () => {
@@ -318,7 +320,7 @@ describe("<Formity />", () => {
     });
   });
 
-  it("navigates through steps in a condition of the multi-step form", () => {
+  it("navigates through steps in a condition of the multi-step form until it reaches a return", () => {
     const onReturn = cy.spy().as("onReturn");
     cy.mount(<Form<CondValues> schema={condSchema} onReturn={onReturn} />);
     cy.get("[data-cy=heading]").should(
@@ -351,7 +353,7 @@ describe("<Formity />", () => {
     });
   });
 
-  it("navigates through steps in a loop of the multi-step form", () => {
+  it("navigates through steps in a loop of the multi-step form until it reaches a return", () => {
     const onReturn = cy.spy().as("onReturn");
     cy.mount(<Form<LoopValues> schema={loopSchema} onReturn={onReturn} />);
     cy.get("[data-cy=heading]").should(
@@ -381,7 +383,43 @@ describe("<Formity />", () => {
     });
   });
 
-  it("navigates through steps in a switch flow of the multi-step form", () => {
-    cy.mount(<Form<MainValues> schema={mainSchema} />);
+  it("navigates through steps in a switch of the multi-step form until it reaches a return", () => {
+    const onReturn = cy.spy().as("onReturn");
+    cy.mount(<Form<SwitchValues> schema={switchSchema} onReturn={onReturn} />);
+    cy.get("[data-cy=heading]").should(
+      "have.text",
+      "Would you be interested in learning how to code?"
+    );
+    cy.get("[data-cy=input]").click();
+    cy.get("[data-cy=listbox-option]").eq(0).click();
+    cy.get("[data-cy=button]").click();
+    cy.get("[data-cy=heading]").should("have.text", "Why are you interested?");
+    cy.get("[data-cy=back]").click();
+    cy.get("[data-cy=heading]").should(
+      "have.text",
+      "Would you be interested in learning how to code?"
+    );
+    cy.get("[data-cy=input]").click();
+    cy.get("[data-cy=listbox-option]").eq(2).click();
+    cy.get("[data-cy=button]").click();
+    cy.get("[data-cy=heading]").should(
+      "have.text",
+      "Why are you maybe interested?"
+    );
+    cy.get("[data-cy=back]").click();
+    cy.get("[data-cy=heading]").should(
+      "have.text",
+      "Would you be interested in learning how to code?"
+    );
+    cy.get("[data-cy=input]").click();
+    cy.get("[data-cy=listbox-option]").eq(3).click();
+    cy.get("[data-cy=button]").click();
+    cy.get("[data-cy=heading]").should("have.text", "Why are you not sure?");
+    cy.get("[data-cy=input]").type("Because it takes time");
+    cy.get("[data-cy=button]").click();
+    cy.get("@onReturn").should("have.been.calledWith", {
+      interested: "not-sure",
+      whyNotSure: "Because it takes time",
+    });
   });
 });
