@@ -41,14 +41,8 @@ export const condSchema: Schema<CondValues> = [
       values: () => ({
         softwareDeveloper: [true, []],
       }),
-      render: ({ values, onNext, onBack, getFlow, setFlow }) => (
-        <Controller
-          step="softwareDeveloper"
-          onNext={onNext}
-          onBack={onBack}
-          getFlow={getFlow}
-          setFlow={setFlow}
-        >
+      render: ({ values, ...rest }) => (
+        <Controller step="softwareDeveloper" {...rest}>
           <FormView
             defaultValues={values}
             resolver={zodResolver(
@@ -83,14 +77,8 @@ export const condSchema: Schema<CondValues> = [
             values: () => ({
               languages: [[], []],
             }),
-            render: ({ values, onNext, onBack, getFlow, setFlow }) => (
-              <Controller
-                step="languages"
-                onNext={onNext}
-                onBack={onBack}
-                getFlow={getFlow}
-                setFlow={setFlow}
-              >
+            render: ({ values, ...rest }) => (
+              <Controller step="languages" {...rest}>
                 <FormView
                   defaultValues={values}
                   resolver={zodResolver(
@@ -136,14 +124,8 @@ export const condSchema: Schema<CondValues> = [
             values: () => ({
               interested: ["maybe", []],
             }),
-            render: ({ values, onNext, onBack, getFlow, setFlow }) => (
-              <Controller
-                step="interested"
-                onNext={onNext}
-                onBack={onBack}
-                getFlow={getFlow}
-                setFlow={setFlow}
-              >
+            render: ({ values, ...rest }) => (
+              <Controller step="interested" {...rest}>
                 <FormView
                   defaultValues={values}
                   resolver={zodResolver(

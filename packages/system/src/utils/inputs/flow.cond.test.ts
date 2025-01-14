@@ -1,20 +1,20 @@
 import { describe, expect, it } from "vitest";
 
-import type { CondEntries, FormEntries } from "src/types/flow/entries";
-import type { Position } from "src/types/flow/position";
+import type { CondInputs, FormInputs } from "src/types/state/inputs";
+import type { Position } from "src/types/state/position";
 
 import { getItem, setItem } from "./flow.cond";
 
-describe("CondEntries", () => {
+describe("CondInputs", () => {
   describe("getItem", () => {
-    it("returns the item at the given `then` position within the given `CondEntries` object", () => {
-      const item: FormEntries = {
+    it("returns the item at the given `then` position within the given `CondInputs` object", () => {
+      const item: FormInputs = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const flow: CondEntries = {
+      const flow: CondInputs = {
         type: "cond",
         then: {
           1: item,
@@ -26,14 +26,14 @@ describe("CondEntries", () => {
       expect(result).toBe(item);
     });
 
-    it("returns the item at the given `else` position within the given `CondEntries` object", () => {
-      const item: FormEntries = {
+    it("returns the item at the given `else` position within the given `CondInputs` object", () => {
+      const item: FormInputs = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const flow: CondEntries = {
+      const flow: CondInputs = {
         type: "cond",
         then: {},
         else: {
@@ -45,14 +45,14 @@ describe("CondEntries", () => {
       expect(result).toBe(item);
     });
 
-    it("returns null when trying to get an item from a position that doesn't exist in the given `CondEntries` object", () => {
-      const item: FormEntries = {
+    it("returns null when trying to get an item from a position that doesn't exist in the given `CondInputs` object", () => {
+      const item: FormInputs = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const flow: CondEntries = {
+      const flow: CondInputs = {
         type: "cond",
         then: {},
         else: {
@@ -66,21 +66,21 @@ describe("CondEntries", () => {
   });
 
   describe("setItem", () => {
-    it("sets the item at the given `then` position within the given `CondEntries` object", () => {
-      const flow: CondEntries = {
+    it("sets the item at the given `then` position within the given `CondInputs` object", () => {
+      const flow: CondInputs = {
         type: "cond",
         then: {},
         else: {},
       };
       const position: Position = { type: "cond", path: "then", slot: 1 };
-      const item: FormEntries = {
+      const item: FormInputs = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
       setItem(flow, position, item);
-      const expected: CondEntries = {
+      const expected: CondInputs = {
         type: "cond",
         then: {
           1: item,
@@ -90,21 +90,21 @@ describe("CondEntries", () => {
       expect(flow).toEqual(expected);
     });
 
-    it("sets the item at the given `else` position within the given `CondEntries` object", () => {
-      const flow: CondEntries = {
+    it("sets the item at the given `else` position within the given `CondInputs` object", () => {
+      const flow: CondInputs = {
         type: "cond",
         then: {},
         else: {},
       };
       const position: Position = { type: "cond", path: "else", slot: 1 };
-      const item: FormEntries = {
+      const item: FormInputs = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
       setItem(flow, position, item);
-      const expected: CondEntries = {
+      const expected: CondInputs = {
         type: "cond",
         then: {},
         else: {

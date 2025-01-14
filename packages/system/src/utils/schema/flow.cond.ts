@@ -1,5 +1,5 @@
-import type { ItemSchema, CondSchema } from "../../types/schema/static";
-import type { Position, CondPosition } from "../../types/flow/position";
+import type { ItemSchema, CondSchema } from "../../types/schema/basic";
+import type { Position, CondPosition } from "../../types/state/position";
 
 /**
  * Type guard for `CondSchema` objects.

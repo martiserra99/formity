@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
 
-import type { ListSchema } from "src/types/schema/custom";
+import type { ListSchema } from "src/types/schema/typed";
 import type { Form, Cond, Loop, Variables } from "src/types/utils";
-import type { Flow } from "src/types/flow/flow";
+import type { State } from "src/types/state/state";
 
 import { getForm } from "./form";
 
@@ -38,8 +38,8 @@ describe("getForm", () => {
         },
       },
     ];
-    const flow: Flow = {
-      cursors: [
+    const state: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 1 },
@@ -49,15 +49,15 @@ describe("getForm", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
     const form = getForm<object, Values, object, object>(
-      flow,
+      state,
       schema,
       {},
       () => {},
       () => {},
-      () => flow,
+      () => state,
       () => {}
     );
     expect(form).toEqual({ hello: "world" });
@@ -79,22 +79,22 @@ describe("getForm", () => {
         },
       },
     ];
-    const flow: Flow = {
-      cursors: [
+    const state: State = {
+      points: [
         {
           path: [{ type: "list", slot: 0 }],
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
     const form = getForm<object, Values, object, object>(
-      flow,
+      state,
       schema,
       {},
       () => {},
       () => {},
-      () => flow,
+      () => state,
       () => {}
     );
     expect(form).toEqual({
@@ -117,22 +117,22 @@ describe("getForm", () => {
         },
       },
     ];
-    const flow: Flow = {
-      cursors: [
+    const state: State = {
+      points: [
         {
           path: [{ type: "list", slot: 0 }],
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
     const form = getForm<object, Values, object, Params>(
-      flow,
+      state,
       schema,
       { hello: "world" },
       () => {},
       () => {},
-      () => flow,
+      () => state,
       () => {}
     );
     expect(form).toEqual({

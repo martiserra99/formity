@@ -44,14 +44,8 @@ export const switchSchema: Schema<SwitchValues> = [
       values: () => ({
         interested: ["yes", []],
       }),
-      render: ({ values, onNext, onBack, getFlow, setFlow }) => (
-        <Controller
-          step="interested"
-          onNext={onNext}
-          onBack={onBack}
-          getFlow={getFlow}
-          setFlow={setFlow}
-        >
+      render: ({ values, ...rest }) => (
+        <Controller step="interested" {...rest}>
           <FormView
             defaultValues={values}
             resolver={zodResolver(
@@ -106,14 +100,8 @@ export const switchSchema: Schema<SwitchValues> = [
                 values: () => ({
                   whyYes: ["", []],
                 }),
-                render: ({ values, onNext, onBack, getFlow, setFlow }) => (
-                  <Controller
-                    step="whyYes"
-                    onNext={onNext}
-                    onBack={onBack}
-                    getFlow={getFlow}
-                    setFlow={setFlow}
-                  >
+                render: ({ values, ...rest }) => (
+                  <Controller step="whyYes" {...rest}>
                     <FormView
                       defaultValues={values}
                       resolver={zodResolver(
@@ -152,14 +140,8 @@ export const switchSchema: Schema<SwitchValues> = [
                 values: () => ({
                   whyNot: ["", []],
                 }),
-                render: ({ values, onNext, onBack, getFlow, setFlow }) => (
-                  <Controller
-                    step="whyNot"
-                    onNext={onNext}
-                    onBack={onBack}
-                    getFlow={getFlow}
-                    setFlow={setFlow}
-                  >
+                render: ({ values, ...rest }) => (
+                  <Controller step="whyNot" {...rest}>
                     <FormView
                       defaultValues={values}
                       resolver={zodResolver(
@@ -198,14 +180,8 @@ export const switchSchema: Schema<SwitchValues> = [
                 values: () => ({
                   whyMaybe: ["", []],
                 }),
-                render: ({ values, onNext, onBack, getFlow, setFlow }) => (
-                  <Controller
-                    step="whyMaybe"
-                    onNext={onNext}
-                    onBack={onBack}
-                    getFlow={getFlow}
-                    setFlow={setFlow}
-                  >
+                render: ({ values, ...rest }) => (
+                  <Controller step="whyMaybe" {...rest}>
                     <FormView
                       defaultValues={values}
                       resolver={zodResolver(
@@ -247,14 +223,8 @@ export const switchSchema: Schema<SwitchValues> = [
             values: () => ({
               whyNotSure: ["", []],
             }),
-            render: ({ values, onNext, onBack, getFlow, setFlow }) => (
-              <Controller
-                step="whyNotSure"
-                onNext={onNext}
-                onBack={onBack}
-                getFlow={getFlow}
-                setFlow={setFlow}
-              >
+            render: ({ values, ...rest }) => (
+              <Controller step="whyNotSure" {...rest}>
                 <FormView
                   defaultValues={values}
                   resolver={zodResolver(

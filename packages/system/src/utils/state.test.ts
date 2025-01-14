@@ -1,12 +1,12 @@
 import { describe, expect, it } from "vitest";
 
-import type { ListSchema } from "src/types/schema/custom";
+import type { ListSchema } from "src/types/schema/typed";
 import type { Form, Cond, Loop, Variables } from "src/types/utils";
-import type { Flow } from "src/types/flow/flow";
+import type { State } from "src/types/state/state";
 
-import { getFlow } from "./flow";
+import { getState } from "./state";
 
-describe("getFlow", () => {
+describe("getState", () => {
   it("returns the current state of the multi-step form after updating the values of the current form.", () => {
     type Values = [
       Variables<object>,
@@ -39,8 +39,8 @@ describe("getFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [
+    const current: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 1 },
@@ -50,15 +50,15 @@ describe("getFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
-    const flow: Flow = getFlow<object, Values, object, object>(
+    const state: State = getState<object, Values, object, object>(
       current,
       schema,
       { a: 1, b: 2 }
     );
-    const expected: Flow = {
-      cursors: [
+    const expected: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 1 },
@@ -68,7 +68,7 @@ describe("getFlow", () => {
           values: {},
         },
       ],
-      entries: {
+      inputs: {
         type: "list",
         list: {
           1: {
@@ -95,6 +95,6 @@ describe("getFlow", () => {
         },
       },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 });

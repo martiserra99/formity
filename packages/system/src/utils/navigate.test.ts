@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import type { ListSchema } from "src/types/schema/custom";
+import type { ListSchema } from "src/types/schema/typed";
 import type {
   Form,
   Cond,
@@ -9,12 +9,12 @@ import type {
   Return,
   Variables,
 } from "src/types/utils";
-import type { Flow } from "src/types/flow/flow";
+import type { State } from "src/types/state/state";
 
-import { initFlow, nextFlow, prevFlow } from "./navigate";
+import { initState, nextState, prevState } from "./navigate";
 
-describe("initFlow", () => {
-  it("initializes the form state with the cursor pointing to the first position", () => {
+describe("initState", () => {
+  it("initializes the form state with the point pointing to the first position", () => {
     type Values = [Form<object>];
     const schema: ListSchema<null, Values, object, object> = [
       {
@@ -24,15 +24,15 @@ describe("initFlow", () => {
         },
       },
     ];
-    const flow = initFlow<null, Values, object, object>(schema, {}, () => {});
-    const expected: Flow = {
-      cursors: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      entries: { type: "list", list: {} },
+    const state = initState<null, Values, object, object>(schema, {}, () => {});
+    const expected: State = {
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      inputs: { type: "list", list: {} },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 
-  it("initializes the form state with the cursor pointing to the last position", () => {
+  it("initializes the form state with the point pointing to the last position", () => {
     type Values = [Variables<object>, Variables<object>, Form<object>];
     const schema: ListSchema<null, Values, object, object> = [
       { variables: () => ({}) },
@@ -44,15 +44,15 @@ describe("initFlow", () => {
         },
       },
     ];
-    const flow = initFlow<null, Values, object, object>(schema, {}, () => {});
-    const expected: Flow = {
-      cursors: [{ path: [{ type: "list", slot: 2 }], values: {} }],
-      entries: { type: "list", list: {} },
+    const state = initState<null, Values, object, object>(schema, {}, () => {});
+    const expected: State = {
+      points: [{ path: [{ type: "list", slot: 2 }], values: {} }],
+      inputs: { type: "list", list: {} },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 
-  it("initializes the form state with the cursor pointing to a deeply nested position from the first position", () => {
+  it("initializes the form state with the point pointing to a deeply nested position from the first position", () => {
     type Values = [
       Cond<{
         then: [
@@ -95,9 +95,9 @@ describe("initFlow", () => {
         },
       },
     ];
-    const flow = initFlow<null, Values, object, object>(schema, {}, () => {});
-    const expected: Flow = {
-      cursors: [
+    const state = initState<null, Values, object, object>(schema, {}, () => {});
+    const expected: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -108,12 +108,12 @@ describe("initFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 
-  it("initializes the form state with the cursor pointing to a deeply nested position from the last position", () => {
+  it("initializes the form state with the point pointing to a deeply nested position from the last position", () => {
     type Values = [
       Variables<object>,
       Variables<object>,
@@ -162,9 +162,9 @@ describe("initFlow", () => {
         },
       },
     ];
-    const flow = initFlow<null, Values, object, object>(schema, {}, () => {});
-    const expected: Flow = {
-      cursors: [
+    const state = initState<null, Values, object, object>(schema, {}, () => {});
+    const expected: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 2 },
@@ -175,16 +175,16 @@ describe("initFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 
   it("throws an error when the schema is empty", () => {
     type Values = [];
     const schema: ListSchema<null, Values, object, object> = [];
     expect(() =>
-      initFlow<null, Values, object, object>(schema, {}, () => {})
+      initState<null, Values, object, object>(schema, {}, () => {})
     ).toThrow();
   });
 
@@ -229,7 +229,7 @@ describe("initFlow", () => {
       },
     ];
     expect(() =>
-      initFlow<null, Values, object, object>(schema, {}, () => {})
+      initState<null, Values, object, object>(schema, {}, () => {})
     ).toThrow();
   });
 
@@ -274,7 +274,7 @@ describe("initFlow", () => {
       },
     ];
     expect(() =>
-      initFlow<null, Values, object, object>(schema, {}, () => {})
+      initState<null, Values, object, object>(schema, {}, () => {})
     ).toThrow();
   });
 
@@ -325,7 +325,7 @@ describe("initFlow", () => {
       },
     ];
     const onYield = vi.fn();
-    initFlow<null, Values, object, object>(schema, {}, onYield);
+    initState<null, Values, object, object>(schema, {}, onYield);
     expect(onYield).toHaveBeenNthCalledWith(1, { x: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { y: 2 });
   });
@@ -387,9 +387,9 @@ describe("initFlow", () => {
         },
       },
     ];
-    const flow = initFlow<null, Values, object, object>(schema, {}, () => {});
-    const expected: Flow = {
-      cursors: [
+    const state = initState<null, Values, object, object>(schema, {}, () => {});
+    const expected: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 1 },
@@ -400,9 +400,9 @@ describe("initFlow", () => {
           values: { a: 1, b: 2, c: 3, d: 4, e: 5 },
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 
   it("initializes the values of the form state with the ones that have been provided", () => {
@@ -417,16 +417,16 @@ describe("initFlow", () => {
       },
     ];
     const inputs: Inputs = { a: 1, b: 2 };
-    const flow = initFlow<null, Values, Inputs, object>(
+    const state = initState<null, Values, Inputs, object>(
       schema,
       inputs,
       () => {}
     );
-    const expected: Flow = {
-      cursors: [{ path: [{ type: "list", slot: 0 }], values: { a: 1, b: 2 } }],
-      entries: { type: "list", list: {} },
+    const expected: State = {
+      points: [{ path: [{ type: "list", slot: 0 }], values: { a: 1, b: 2 } }],
+      inputs: { type: "list", list: {} },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 });
 
@@ -447,25 +447,25 @@ describe("nextFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      entries: { type: "list", list: {} },
+    const current: State = {
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      inputs: { type: "list", list: {} },
     };
-    const flow = nextFlow<null, Values, object, object>(
+    const state = nextState<null, Values, object, object>(
       current,
       schema,
       {},
       () => {},
       () => {}
     );
-    const expected: Flow = {
-      cursors: [
+    const expected: State = {
+      points: [
         { path: [{ type: "list", slot: 0 }], values: {} },
         { path: [{ type: "list", slot: 1 }], values: {} },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 
   it("navigates to the form that is next to the current one within the same flow element", () => {
@@ -501,8 +501,8 @@ describe("nextFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [
+    const current: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -511,17 +511,17 @@ describe("nextFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
-    const flow = nextFlow<null, Values, object, object>(
+    const state = nextState<null, Values, object, object>(
       current,
       schema,
       {},
       () => {},
       () => {}
     );
-    const expected: Flow = {
-      cursors: [
+    const expected: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -538,9 +538,9 @@ describe("nextFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 
   it("navigates to the form that is next to the current one outside the current flow element", () => {
@@ -585,8 +585,8 @@ describe("nextFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [
+    const current: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -596,17 +596,17 @@ describe("nextFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
-    const next = nextFlow<null, Values, object, object>(
+    const next = nextState<null, Values, object, object>(
       current,
       schema,
       {},
       () => {},
       () => {}
     );
-    const expected: Flow = {
-      cursors: [
+    const expected: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -623,7 +623,7 @@ describe("nextFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
     expect(next).toEqual(expected);
   });
@@ -674,8 +674,8 @@ describe("nextFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [
+    const current: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -685,10 +685,10 @@ describe("nextFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    nextFlow<null, Values, object, object>(
+    nextState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -738,8 +738,8 @@ describe("nextFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [
+    const current: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -749,10 +749,10 @@ describe("nextFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    nextFlow<null, Values, object, object>(
+    nextState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -802,8 +802,8 @@ describe("nextFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [
+    const current: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -813,10 +813,10 @@ describe("nextFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    nextFlow<null, Values, object, object>(
+    nextState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -864,8 +864,8 @@ describe("nextFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [
+    const current: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -875,10 +875,10 @@ describe("nextFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
     const onReturn = vi.fn();
-    nextFlow<null, Values, object, object>(
+    nextState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -930,8 +930,8 @@ describe("nextFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [
+    const current: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -941,17 +941,17 @@ describe("nextFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
-    const next = nextFlow<null, Values, object, object>(
+    const next = nextState<null, Values, object, object>(
       current,
       schema,
       {},
       () => {},
       () => {}
     );
-    const expected: Flow = {
-      cursors: [
+    const expected: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -961,7 +961,7 @@ describe("nextFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
     expect(next).toEqual(expected);
   });
@@ -1001,8 +1001,8 @@ describe("nextFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [
+    const current: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -1012,17 +1012,17 @@ describe("nextFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
-    const next = nextFlow<null, Values, object, object>(
+    const next = nextState<null, Values, object, object>(
       current,
       schema,
       {},
       () => {},
       () => {}
     );
-    const expected: Flow = {
-      cursors: [
+    const expected: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -1032,7 +1032,7 @@ describe("nextFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
     expect(next).toEqual(expected);
   });
@@ -1056,23 +1056,23 @@ describe("nextFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      entries: { type: "list", list: {} },
+    const current: State = {
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      inputs: { type: "list", list: {} },
     };
-    const flow = nextFlow<null, Values, object, object>(
+    const state = nextState<null, Values, object, object>(
       current,
       schema,
       { a: 1, b: 2 },
       () => {},
       () => {}
     );
-    const expected: Flow = {
-      cursors: [
+    const expected: State = {
+      points: [
         { path: [{ type: "list", slot: 0 }], values: {} },
         { path: [{ type: "list", slot: 1 }], values: { a: 1, b: 2 } },
       ],
-      entries: {
+      inputs: {
         type: "list",
         list: {
           0: {
@@ -1082,7 +1082,7 @@ describe("nextFlow", () => {
         },
       },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 
   it("saves the current form values when navigating to the next step", () => {
@@ -1111,8 +1111,8 @@ describe("nextFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [
+    const current: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -1121,17 +1121,17 @@ describe("nextFlow", () => {
           values: {},
         },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
-    const flow = nextFlow<null, Values, object, object>(
+    const state = nextState<null, Values, object, object>(
       current,
       schema,
       { a: 1, b: 2 },
       () => {},
       () => {}
     );
-    const expected: Flow = {
-      cursors: [
+    const expected: State = {
+      points: [
         {
           path: [
             { type: "list", slot: 0 },
@@ -1144,7 +1144,7 @@ describe("nextFlow", () => {
           values: { a: 1, b: 2 },
         },
       ],
-      entries: {
+      inputs: {
         type: "list",
         list: {
           0: {
@@ -1185,7 +1185,7 @@ describe("nextFlow", () => {
         },
       },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 });
 
@@ -1206,19 +1206,19 @@ describe("prevFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [
+    const current: State = {
+      points: [
         { path: [{ type: "list", slot: 0 }], values: {} },
         { path: [{ type: "list", slot: 1 }], values: {} },
       ],
-      entries: { type: "list", list: {} },
+      inputs: { type: "list", list: {} },
     };
-    const flow = prevFlow<null, Values, object, object>(current, schema, {});
-    const expected: Flow = {
-      cursors: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      entries: { type: "list", list: {} },
+    const state = prevState<null, Values, object, object>(current, schema, {});
+    const expected: State = {
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      inputs: { type: "list", list: {} },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 
   it("doesn't navigate to any other form if the current form is the first one", () => {
@@ -1231,16 +1231,16 @@ describe("prevFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      entries: { type: "list", list: {} },
+    const current: State = {
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      inputs: { type: "list", list: {} },
     };
-    const flow = prevFlow<null, Values, object, object>(current, schema, {});
-    const expected: Flow = {
-      cursors: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      entries: { type: "list", list: {} },
+    const state = prevState<null, Values, object, object>(current, schema, {});
+    const expected: State = {
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      inputs: { type: "list", list: {} },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 
   it("saves the current form values when navigating to the previous step", () => {
@@ -1263,12 +1263,12 @@ describe("prevFlow", () => {
         },
       },
     ];
-    const current: Flow = {
-      cursors: [
+    const current: State = {
+      points: [
         { path: [{ type: "list", slot: 0 }], values: {} },
         { path: [{ type: "list", slot: 1 }], values: { a: 1 } },
       ],
-      entries: {
+      inputs: {
         type: "list",
         list: {
           0: {
@@ -1280,12 +1280,12 @@ describe("prevFlow", () => {
         },
       },
     };
-    const flow = prevFlow<null, Values, object, object>(current, schema, {
+    const state = prevState<null, Values, object, object>(current, schema, {
       b: 2,
     });
-    const expected: Flow = {
-      cursors: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      entries: {
+    const expected: State = {
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      inputs: {
         type: "list",
         list: {
           0: {
@@ -1303,6 +1303,6 @@ describe("prevFlow", () => {
         },
       },
     };
-    expect(flow).toEqual(expected);
+    expect(state).toEqual(expected);
   });
 });

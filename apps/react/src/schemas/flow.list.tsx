@@ -26,14 +26,8 @@ export const listSchema: Schema<ListValues> = [
           name: ["", []],
           surname: ["", []],
         }),
-        render: ({ values, onNext, onBack, getFlow, setFlow }) => (
-          <Controller
-            step="name-surname"
-            onNext={onNext}
-            onBack={onBack}
-            getFlow={getFlow}
-            setFlow={setFlow}
-          >
+        render: ({ values, ...rest }) => (
+          <Controller step="name-surname" {...rest}>
             <FormView
               defaultValues={values}
               resolver={zodResolver(

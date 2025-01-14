@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import type { ListSchema, ReturnSchema } from "../../types/schema/static";
-import type { Position } from "src/types/flow/position";
+import type { ListSchema, ReturnSchema } from "../../types/schema/basic";
+import type { Position } from "src/types/state/position";
 
 import { find } from "./flow";
 

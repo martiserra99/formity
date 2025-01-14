@@ -1,5 +1,5 @@
-import type { ItemSchema, FlowSchema } from "../../types/schema/static";
-import type { Position } from "../../types/flow/position";
+import type { ItemSchema, FlowSchema } from "../../types/schema/basic";
+import type { Position } from "../../types/state/position";
 
 import * as ListSchemaUtils from "./flow.list";
 import * as CondSchemaUtils from "./flow.cond";

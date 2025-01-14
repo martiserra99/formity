@@ -7,9 +7,7 @@ export function useController(): ControllerValue {
   const context = useContext(ControllerContext);
 
   if (!context) {
-    throw new Error(
-      "useController must be used within a ControllerContext.Provider"
-    );
+    throw new Error("useController must be used within a Controller");
   }
 
   return context;

@@ -1,20 +1,20 @@
 import { describe, expect, it } from "vitest";
 
-import type { ListEntries, FormEntries } from "src/types/flow/entries";
-import type { Position } from "src/types/flow/position";
+import type { ListInputs, FormInputs } from "src/types/state/inputs";
+import type { Position } from "src/types/state/position";
 
 import { getItem, setItem } from "./flow.list";
 
-describe("ListEntries", () => {
+describe("ListInputs", () => {
   describe("getItem", () => {
-    it("returns the item at the given position within the given `ListEntries` object", () => {
-      const item: FormEntries = {
+    it("returns the item at the given position within the given `ListInputs` object", () => {
+      const item: FormInputs = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const flow: ListEntries = {
+      const flow: ListInputs = {
         type: "list",
         list: {
           1: item,
@@ -25,14 +25,14 @@ describe("ListEntries", () => {
       expect(result).toBe(item);
     });
 
-    it("returns null when trying to get an item from a position that doesn't exist in the given `ListEntries` object", () => {
-      const item: FormEntries = {
+    it("returns null when trying to get an item from a position that doesn't exist in the given `ListInputs` object", () => {
+      const item: FormInputs = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const flow: ListEntries = {
+      const flow: ListInputs = {
         type: "list",
         list: {
           0: item,
@@ -45,20 +45,20 @@ describe("ListEntries", () => {
   });
 
   describe("setItem", () => {
-    it("sets the item at the given position within the given `ListEntries` object", () => {
-      const flow: ListEntries = {
+    it("sets the item at the given position within the given `ListInputs` object", () => {
+      const flow: ListInputs = {
         type: "list",
         list: {},
       };
       const position: Position = { type: "list", slot: 1 };
-      const item: FormEntries = {
+      const item: FormInputs = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
       setItem(flow, position, item);
-      const expected: ListEntries = {
+      const expected: ListInputs = {
         type: "list",
         list: {
           1: item,

@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 
-import type { FlowEntries } from "src/types/flow/entries";
-import type { Position } from "src/types/flow/position";
+import type { FlowInputs } from "src/types/state/inputs";
+import type { Position } from "src/types/state/position";
 
 import { get, set } from "./flow";
 
-describe("FlowEntries", () => {
+describe("FlowInputs", () => {
   describe("get", () => {
-    it("returns the value that is in the given `FlowEntries` object", () => {
-      const flow: FlowEntries = {
+    it("returns the value that is in the given `FlowInputs` object", () => {
+      const flow: FlowInputs = {
         type: "list",
         list: {
           1: {
@@ -52,8 +52,8 @@ describe("FlowEntries", () => {
       expect(result).toEqual(1);
     });
 
-    it("returns the default value if the path is not encountered in the given `FlowEntries` object", () => {
-      const flow: FlowEntries = {
+    it("returns the default value if the path is not encountered in the given `FlowInputs` object", () => {
+      const flow: FlowInputs = {
         type: "list",
         list: {
           1: {
@@ -97,8 +97,8 @@ describe("FlowEntries", () => {
       expect(result).toEqual(2);
     });
 
-    it("returns the default value if the keys are not encountered in the given `FlowEntries` object", () => {
-      const flow: FlowEntries = {
+    it("returns the default value if the keys are not encountered in the given `FlowInputs` object", () => {
+      const flow: FlowInputs = {
         type: "list",
         list: {
           1: {
@@ -144,8 +144,8 @@ describe("FlowEntries", () => {
   });
 
   describe("set", () => {
-    it("sets the value in the given `FlowEntries` object", () => {
-      const flow: FlowEntries = { type: "list", list: {} };
+    it("sets the value in the given `FlowInputs` object", () => {
+      const flow: FlowInputs = { type: "list", list: {} };
       const path: Position[] = [
         { type: "list", slot: 1 },
         { type: "cond", path: "else", slot: 0 },
@@ -155,7 +155,7 @@ describe("FlowEntries", () => {
       const keys: PropertyKey[] = ["x", "y"];
       const data: unknown = 1;
       const result = set(flow, path, name, keys, data);
-      const expected: FlowEntries = {
+      const expected: FlowInputs = {
         type: "list",
         list: {
           1: {

@@ -1,16 +1,14 @@
-import type { Flow } from "../types/flow/flow";
-import type { Cursor } from "../types/flow/cursor";
-import type { Position } from "../types/flow/position";
-import type { ListEntries, FlowEntries } from "../types/flow/entries";
+import type { State } from "../types/state/state";
+import type { Point } from "../types/state/point";
+import type { Position } from "../types/state/position";
+import type { ListInputs, FlowInputs } from "../types/state/inputs";
 
-import type { ListSchema as CustomListSchema } from "../types/schema/custom";
-import type { OnYield as CustomOnYield } from "../types/callbacks/custom";
-import type { OnReturn as CustomOnReturn } from "../types/callbacks/custom";
+import type { ListSchema as TypedListSchema } from "../types/schema/typed";
+import type { OnYield as TypedOnYield } from "../types/handlers/typed";
+import type { OnReturn as TypedOnReturn } from "../types/handlers/typed";
 
-import type { ListSchema } from "../types/schema/static";
-import type { FlowSchema } from "../types/schema/static";
-import type { FormSchema } from "../types/schema/static";
-import type { OnYield, OnReturn } from "../types/callbacks/static";
+import type { ListSchema, FlowSchema, FormSchema } from "../types/schema/basic";
+import type { OnYield, OnReturn } from "../types/handlers/basic";
 
 import type { ListValues } from "../types/values";
 
@@ -20,10 +18,10 @@ import * as YieldSchemaUtils from "./schema/yield";
 import * as ReturnSchemaUtils from "./schema/return";
 import * as VariablesSchemaUtils from "./schema/variables";
 
-import * as FlowEntriesUtils from "./entries/flow";
+import * as FlowInputsUtils from "./inputs/flow";
 
 /**
- * Initializes the multi-step form and returns its initial state, including a cursor
+ * Initializes the multi-step form and returns its initial state, including a point
  * pointing to the first form step. If no form step is found, or if a return operation
  * is encountered before reaching a form, an error is thrown.
  *
@@ -37,31 +35,30 @@ import * as FlowEntriesUtils from "./entries/flow";
  *
  * @throws An error if no form step is found or if a return operation is encountered before a form step.
  */
-export function initFlow<
+export function initState<
   Render,
   Values extends ListValues,
   Inputs extends object,
   Params extends object
 >(
-  schema: CustomListSchema<Render, Values, Inputs, Params>,
+  schema: TypedListSchema<Render, Values, Inputs, Params>,
   values: Inputs,
-  onYield: CustomOnYield<Values>
-): Flow {
-  const sSchema = schema as ListSchema;
-  const sValues = values as object;
-  const sOnYield = onYield as OnYield;
-  return internalInitFlow(sSchema, sValues, sOnYield);
+  onYield: TypedOnYield<Values>
+): State {
+  const basicSchema = schema as ListSchema;
+  const basicValues = values as object;
+  const basicOnYield = onYield as OnYield;
+  return basicInitState(basicSchema, basicValues, basicOnYield);
 }
 
-function internalInitFlow(
+function basicInitState(
   schema: ListSchema,
   values: object,
   onYield: OnYield
-): Flow {
+): State {
   const path = initialPath(schema, values);
   const form = initialForm(schema, { path, values }, onYield);
-  const entries: ListEntries = { type: "list", list: {} };
-  return { cursors: [form], entries };
+  return { points: [form], inputs: { type: "list", list: {} } };
 }
 
 function initialPath(schema: ListSchema, values: object): Position[] {
@@ -99,32 +96,32 @@ function initialPathFromPosition(
 
 function initialForm(
   schema: ListSchema,
-  cursor: Cursor,
+  point: Point,
   onYield: OnYield
-): Cursor {
-  let currCursor: Cursor | null = cursor;
-  let currValues = currCursor.values;
-  let currSchema = FlowSchemaUtils.find(schema, currCursor.path);
-  while (!FormSchemaUtils.is(currSchema)) {
-    if (ReturnSchemaUtils.is(currSchema)) {
+): Point {
+  let currentPoint: Point | null = point;
+  let currentValues = currentPoint.values;
+  let currentSchema = FlowSchemaUtils.find(schema, currentPoint.path);
+  while (!FormSchemaUtils.is(currentSchema)) {
+    if (ReturnSchemaUtils.is(currentSchema)) {
       throw new Error("Invalid schema");
-    } else if (YieldSchemaUtils.is(currSchema)) {
-      const values = currSchema["yield"](currValues);
+    } else if (YieldSchemaUtils.is(currentSchema)) {
+      const values = currentSchema["yield"](currentValues);
       onYield(values);
-    } else if (VariablesSchemaUtils.is(currSchema)) {
-      const variables = currSchema["variables"](currValues);
-      currValues = { ...currValues, ...variables };
+    } else if (VariablesSchemaUtils.is(currentSchema)) {
+      const variables = currentSchema["variables"](currentValues);
+      currentValues = { ...currentValues, ...variables };
     }
-    currCursor = nextCursor(schema, {
-      path: currCursor.path,
-      values: currValues,
+    currentPoint = nextPoint(schema, {
+      path: currentPoint.path,
+      values: currentValues,
     });
-    if (!currCursor) {
+    if (!currentPoint) {
       throw new Error("Invalid schema");
     }
-    currSchema = FlowSchemaUtils.find(schema, currCursor.path);
+    currentSchema = FlowSchemaUtils.find(schema, currentPoint.path);
   }
-  return currCursor;
+  return currentPoint;
 }
 
 /**
@@ -137,139 +134,139 @@ function initialForm(
  * The `onReturn` callback is triggered whenever a return operation is encountered during traversal,
  * allowing for final values to be processed.
  *
- * @param flow The current state of the multi-step form.
+ * @param state The current state of the multi-step form.
  * @param schema The `ListSchema` object representing the multi-step form.
  * @param values An object containing the generated values within the multi-step form.
  * @param onYield A callback function triggered when the multi-step form yields values.
  * @param onReturn A callback function triggered when the multi-step form returns values.
  * @returns The updated state of the multi-step form.
  */
-export function nextFlow<
+export function nextState<
   Render,
   Values extends ListValues,
   Inputs extends object,
   Params extends object
 >(
-  flow: Flow,
-  schema: CustomListSchema<Render, Values, Inputs, Params>,
+  state: State,
+  schema: TypedListSchema<Render, Values, Inputs, Params>,
   values: object,
-  onYield: CustomOnYield<Values>,
-  onReturn: CustomOnReturn<Values>
+  onYield: TypedOnYield<Values>,
+  onReturn: TypedOnReturn<Values>
 ) {
-  const sSchema = schema as ListSchema;
-  const sOnYield = onYield as OnYield;
-  const sOnReturn = onReturn as OnReturn;
-  return internalNextFlow(flow, sSchema, values, sOnYield, sOnReturn);
+  const basicSchema = schema as ListSchema;
+  const basicOnYield = onYield as OnYield;
+  const basicOnReturn = onReturn as OnReturn;
+  return basicNextState(
+    state,
+    basicSchema,
+    values,
+    basicOnYield,
+    basicOnReturn
+  );
 }
 
-function internalNextFlow(
-  flow: Flow,
+function basicNextState(
+  state: State,
   schema: ListSchema,
   values: object,
   onYield: OnYield,
   onReturn: OnReturn
-): Flow {
-  const last = flow.cursors[flow.cursors.length - 1];
-  const next = advanceForm(schema, last, values, onYield, onReturn);
-  const cursors = next ? [...flow.cursors, next] : flow.cursors;
-  const entries = updateEntries(flow, schema, values);
-  return { cursors, entries };
+): State {
+  const lastPoint = state.points[state.points.length - 1];
+  const nextPoint = advanceForm(schema, lastPoint, values, onYield, onReturn);
+  const points = nextPoint ? [...state.points, nextPoint] : state.points;
+  const inputs = updateInputs(state, schema, values);
+  return { points, inputs };
 }
 
 function advanceForm(
   schema: ListSchema,
-  cursor: Cursor,
+  point: Point,
   values: object,
   onYield: OnYield,
   onReturn: OnReturn
-): Cursor | null {
-  let currCursor: Cursor | null = nextCursor(schema, {
-    path: cursor.path,
-    values: { ...cursor.values, ...values },
+): Point | null {
+  let currentPoint: Point | null = nextPoint(schema, {
+    path: point.path,
+    values: { ...point.values, ...values },
   });
-  if (!currCursor) {
+  if (!currentPoint) {
     return null;
   }
-  let currValues = currCursor.values;
-  let currSchema = FlowSchemaUtils.find(schema, currCursor.path);
-  while (!FormSchemaUtils.is(currSchema)) {
-    if (ReturnSchemaUtils.is(currSchema)) {
-      const values = currSchema["return"](currValues);
+  let currentValues = currentPoint.values;
+  let currentSchema = FlowSchemaUtils.find(schema, currentPoint.path);
+  while (!FormSchemaUtils.is(currentSchema)) {
+    if (ReturnSchemaUtils.is(currentSchema)) {
+      const values = currentSchema["return"](currentValues);
       onReturn(values);
       return null;
-    } else if (YieldSchemaUtils.is(currSchema)) {
-      const values = currSchema["yield"](currValues);
+    } else if (YieldSchemaUtils.is(currentSchema)) {
+      const values = currentSchema["yield"](currentValues);
       onYield(values);
-    } else if (VariablesSchemaUtils.is(currSchema)) {
-      const variables = currSchema["variables"](currValues);
-      currValues = { ...currValues, ...variables };
+    } else if (VariablesSchemaUtils.is(currentSchema)) {
+      const variables = currentSchema["variables"](currentValues);
+      currentValues = { ...currentValues, ...variables };
     }
-    currCursor = nextCursor(schema, {
-      path: currCursor.path,
-      values: currValues,
+    currentPoint = nextPoint(schema, {
+      path: currentPoint.path,
+      values: currentValues,
     });
-    if (!currCursor) {
+    if (!currentPoint) {
       return null;
     }
-    currSchema = FlowSchemaUtils.find(schema, currCursor.path);
+    currentSchema = FlowSchemaUtils.find(schema, currentPoint.path);
   }
-  return currCursor;
+  return currentPoint;
 }
 
-function nextCursor(schema: ListSchema, cursor: Cursor): Cursor | null {
-  const next = nextCursorInFlow(schema, cursor);
+function nextPoint(schema: ListSchema, point: Point): Point | null {
+  const next = nextPointInFlow(schema, point);
   if (next) return next;
-  const over = overCursor(cursor);
-  if (over) return nextCursor(schema, over);
+  const over = overPoint(point);
+  if (over) return nextPoint(schema, over);
   return null;
 }
 
-function nextCursorInFlow(schema: ListSchema, cursor: Cursor): Cursor | null {
-  const next = nextCursorInSameFlow(schema, cursor);
+function nextPointInFlow(schema: ListSchema, point: Point): Point | null {
+  const next = nextPointInSameFlow(schema, point);
   if (next) {
-    const into = nextCursorInsideFlow(schema, next);
+    const into = nextPointInsideFlow(schema, next);
     if (into) return into;
-    return nextCursorInFlow(schema, next);
+    return nextPointInFlow(schema, next);
   }
   return null;
 }
 
-function nextCursorInSameFlow(
-  schema: ListSchema,
-  cursor: Cursor
-): Cursor | null {
-  const path = cursor.path.slice(0, -1);
+function nextPointInSameFlow(schema: ListSchema, point: Point): Point | null {
+  const path = point.path.slice(0, -1);
   const flow = FlowSchemaUtils.find(schema, path) as FlowSchema;
-  const curr = cursor.path[cursor.path.length - 1];
-  const next = FlowSchemaUtils.next(flow, curr, cursor.values);
+  const curr = point.path[point.path.length - 1];
+  const next = FlowSchemaUtils.next(flow, curr, point.values);
   if (next) {
-    return { path: [...path, next], values: cursor.values };
+    return { path: [...path, next], values: point.values };
   }
   return null;
 }
 
-function nextCursorInsideFlow(
-  schema: ListSchema,
-  cursor: Cursor
-): Cursor | null {
-  const item = FlowSchemaUtils.find(schema, cursor.path);
+function nextPointInsideFlow(schema: ListSchema, point: Point): Point | null {
+  const item = FlowSchemaUtils.find(schema, point.path);
   if (FlowSchemaUtils.is(item)) {
-    const position = FlowSchemaUtils.into(item, cursor.values);
+    const position = FlowSchemaUtils.into(item, point.values);
     if (position) {
-      const path = [...cursor.path, position];
-      const next = { path, values: cursor.values };
-      const into = nextCursorInsideFlow(schema, next);
+      const path = [...point.path, position];
+      const next = { path, values: point.values };
+      const into = nextPointInsideFlow(schema, next);
       if (into) return into;
-      return nextCursorInFlow(schema, next);
+      return nextPointInFlow(schema, next);
     }
     return null;
   }
-  return cursor;
+  return point;
 }
 
-function overCursor(cursor: Cursor): Cursor | null {
-  if (cursor.path.length > 1) {
-    return { path: cursor.path.slice(0, -1), values: cursor.values };
+function overPoint(point: Point): Point | null {
+  if (point.path.length > 1) {
+    return { path: point.path.slice(0, -1), values: point.values };
   }
   return null;
 }
@@ -278,48 +275,48 @@ function overCursor(cursor: Cursor): Cursor | null {
  * Navigates to the previous form step of the multi-step form and returns the updated state.
  * If there is no previous form step, the returned state contains the current form step.
  *
- * @param flow The current state of the multi-step form.
+ * @param state The current state of the multi-step form.
  * @param schema The `ListSchema` object representing the multi-step form.
  * @param values An object containing the generated values within the multi-step form.
  * @returns The updated state of the multi-step form.
  */
-export function prevFlow<
+export function prevState<
   Render,
   Values extends ListValues,
   Inputs extends object,
   Params extends object
 >(
-  flow: Flow,
-  schema: CustomListSchema<Render, Values, Inputs, Params>,
+  state: State,
+  schema: TypedListSchema<Render, Values, Inputs, Params>,
   values: object
-): Flow {
-  const sSchema = schema as ListSchema;
-  return internalPrevFlow(flow, sSchema, values);
+): State {
+  const basicSchema = schema as ListSchema;
+  return basicPrevState(state, basicSchema, values);
 }
 
-function internalPrevFlow(
-  flow: Flow,
+function basicPrevState(
+  state: State,
   schema: ListSchema,
   values: object
-): Flow {
-  const current = flow.cursors;
-  const cursors = current.length > 1 ? current.slice(0, -1) : current;
-  const entries = updateEntries(flow, schema, values);
-  return { cursors, entries };
+): State {
+  const current = state.points;
+  const points = current.length > 1 ? current.slice(0, -1) : current;
+  const inputs = updateInputs(state, schema, values);
+  return { points, inputs };
 }
 
-function updateEntries(
-  flow: Flow,
+function updateInputs(
+  state: State,
   schema: ListSchema,
   values: object
-): ListEntries {
-  const cursor = flow.cursors[flow.cursors.length - 1];
-  const form = FlowSchemaUtils.find(schema, cursor.path) as FormSchema;
-  const vals = form["form"]["values"](cursor.values);
-  let curr: FlowEntries = flow.entries;
+): ListInputs {
+  const last = state.points[state.points.length - 1];
+  const form = FlowSchemaUtils.find(schema, last.path) as FormSchema;
+  const vals = form["form"]["values"](last.values);
+  let curr: FlowInputs = state.inputs;
   for (const [name, value] of Object.entries(values)) {
     const key = name as keyof typeof vals;
-    curr = FlowEntriesUtils.set(curr, cursor.path, name, vals[key][1], value);
+    curr = FlowInputsUtils.set(curr, last.path, name, vals[key][1], value);
   }
-  return curr as ListEntries;
+  return curr as ListInputs;
 }

@@ -1,5 +1,5 @@
-import type { ItemSchema, ListSchema } from "../../types/schema/static";
-import type { Position, ListPosition } from "../../types/flow/position";
+import type { ItemSchema, ListSchema } from "../../types/schema/basic";
+import type { Position, ListPosition } from "../../types/state/position";
 
 /**
  * Type guard for `ListSchema` objects.

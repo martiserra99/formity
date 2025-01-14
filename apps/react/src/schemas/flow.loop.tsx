@@ -65,14 +65,8 @@ export const loopSchema: Schema<LoopValues> = [
             values: ({ language }) => ({
               rating: ["love-it", [language.value]],
             }),
-            render: ({ inputs, values, onNext, onBack, getFlow, setFlow }) => (
-              <Controller
-                step={`rating-${inputs.language.value}`}
-                onNext={onNext}
-                onBack={onBack}
-                getFlow={getFlow}
-                setFlow={setFlow}
-              >
+            render: ({ inputs, values, ...rest }) => (
+              <Controller step={`rating-${inputs.language.value}`} {...rest}>
                 <FormView
                   defaultValues={values}
                   resolver={zodResolver(

@@ -1,4 +1,4 @@
-import type { ItemSchema, YieldSchema } from "../../types/schema/static";
+import type { ItemSchema, YieldSchema } from "../../types/schema/basic";
 
 /**
  * Type guard for `YieldSchema` objects.

@@ -12,5 +12,5 @@ export type {
   Return,
   Variables,
 } from "@formity/system";
-export type { OnNext, OnBack, GetFlow, SetFlow } from "@formity/system";
-export type { Flow } from "@formity/system";
+export type { OnNext, OnBack, GetState, SetState } from "@formity/system";
+export type { State } from "@formity/system";

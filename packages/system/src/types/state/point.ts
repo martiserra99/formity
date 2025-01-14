@@ -6,7 +6,7 @@ import type { Position } from "./position";
  * @property path An array of `Position` objects that define the position within the multi-step form.
  * @property values An object containing the values associated with the position.
  */
-export type Cursor = {
+export type Point = {
   path: Position[];
   values: object;
 };

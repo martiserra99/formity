@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import type { FormEntries } from "src/types/flow/entries";
+import type { FormInputs } from "src/types/state/inputs";
 
 import { get, set } from "./form";
 
-describe("FormEntries", () => {
+describe("FormInputs", () => {
   describe("get", () => {
-    it("returns the value that is in the given `FormEntries` object", () => {
-      const form: FormEntries = {
+    it("returns the value that is in the given `FormInputs` object", () => {
+      const form: FormInputs = {
         a: {
           data: { here: false },
           keys: {
@@ -30,8 +30,8 @@ describe("FormEntries", () => {
       expect(result).toEqual(1);
     });
 
-    it("returns the default value if the keys are not encountered in the given `FormEntries` object", () => {
-      const form: FormEntries = {
+    it("returns the default value if the keys are not encountered in the given `FormInputs` object", () => {
+      const form: FormInputs = {
         a: {
           data: { here: false },
           keys: {
@@ -56,13 +56,13 @@ describe("FormEntries", () => {
   });
 
   describe("set", () => {
-    it("sets the value in the given `FormEntries` object", () => {
-      const flow: FormEntries = {};
+    it("sets the value in the given `FormInputs` object", () => {
+      const flow: FormInputs = {};
       const name: string = "a";
       const keys: PropertyKey[] = ["x", "y"];
       const data: unknown = 1;
       const result = set(flow, name, keys, data);
-      const expected: FormEntries = {
+      const expected: FormInputs = {
         a: {
           data: { here: false },
           keys: {

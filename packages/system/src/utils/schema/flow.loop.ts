@@ -1,5 +1,5 @@
-import type { ItemSchema, LoopSchema } from "../../types/schema/static";
-import type { Position, LoopPosition } from "../../types/flow/position";
+import type { ItemSchema, LoopSchema } from "../../types/schema/basic";
+import type { Position, LoopPosition } from "../../types/state/position";
 
 /**
  * Type guard for `LoopSchema` objects.

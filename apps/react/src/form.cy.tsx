@@ -16,8 +16,8 @@ describe("<Formity />", () => {
     cy.mount(
       <Form<MainValues>
         schema={mainSchema}
-        initialFlow={{
-          cursors: [
+        initialState={{
+          points: [
             {
               path: [
                 {
@@ -60,7 +60,7 @@ describe("<Formity />", () => {
               },
             },
           ],
-          entries: {
+          inputs: {
             type: "list",
             list: {
               "0": {

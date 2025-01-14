@@ -1,4 +1,4 @@
-import type { OnNext, OnBack, GetFlow, SetFlow } from "../callbacks";
+import type { OnNext, OnBack, GetState, SetState } from "../controls";
 
 /**
  * Defines the structure and behavior of any element in a multi-step form.
@@ -66,8 +66,8 @@ export type FormSchema = {
       params: object;
       onNext: OnNext;
       onBack: OnBack;
-      getFlow: GetFlow;
-      setFlow: SetFlow;
+      getState: GetState;
+      setState: SetState;
     }) => unknown;
   };
 };

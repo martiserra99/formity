@@ -1,14 +1,14 @@
 import { useState, useCallback } from "react";
 import {
-  type Flow,
+  type State,
   type Values,
   type OnYield,
   type OnReturn,
-  initFlow,
-  nextFlow,
-  prevFlow,
+  initState,
+  nextState,
+  prevState,
   getForm,
-  getFlow,
+  getState,
 } from "@formity/system";
 
 import type { Schema } from "./schema";
@@ -24,7 +24,7 @@ import type { Schema } from "./schema";
  * @param params The parameter values of the multi-step form.
  * @param onYield Callback function invoked when the multi-step form yields values.
  * @param onReturn Callback function invoked when the multi-step form returns values.
- * @param initialFlow The initial state of the multi-step form.
+ * @param initialState The initial state of the multi-step form.
  */
 interface FormityProps<T extends Values, U extends object, V extends object> {
   schema: Schema<T, U, V>;
@@ -32,7 +32,7 @@ interface FormityProps<T extends Values, U extends object, V extends object> {
   params?: V;
   onYield?: OnYield<T>;
   onReturn?: OnReturn<T>;
-  initialFlow?: Flow;
+  initialState?: State;
 }
 
 export default function Formity<
@@ -45,37 +45,45 @@ export default function Formity<
   params = {} as V,
   onYield = () => {},
   onReturn = () => {},
-  initialFlow,
+  initialState,
 }: FormityProps<T, U, V>) {
-  const [flow, setFlow] = useState<Flow>(() => {
-    if (initialFlow) return initialFlow;
-    return initFlow(schema, inputs, onYield);
+  const [state, setState] = useState<State>(() => {
+    if (initialState) return initialState;
+    return initState(schema, inputs, onYield);
   });
 
   const onNext = useCallback(
     (values: object) => {
-      setFlow((flow) => nextFlow(flow, schema, values, onYield, onReturn));
+      setState((state) => nextState(state, schema, values, onYield, onReturn));
     },
     [schema, onYield, onReturn]
   );
 
   const onBack = useCallback(
     (values: object) => {
-      setFlow((flow) => prevFlow(flow, schema, values));
+      setState((state) => prevState(state, schema, values));
     },
     [schema]
   );
 
-  const obtainFlow = useCallback(
+  const obtainState = useCallback(
     (values: object) => {
-      return getFlow(flow, schema, values);
+      return getState(state, schema, values);
     },
-    [flow, schema]
+    [state, schema]
   );
 
-  const changeFlow = useCallback((flow: Flow) => {
-    setFlow(flow);
+  const changeState = useCallback((state: State) => {
+    setState(state);
   }, []);
 
-  return getForm(flow, schema, params, onNext, onBack, obtainFlow, changeFlow);
+  return getForm(
+    state,
+    schema,
+    params,
+    onNext,
+    onBack,
+    obtainState,
+    changeState
+  );
 }

@@ -1,22 +1,22 @@
-import type { Flow } from "../types/flow/flow";
-import type { ListSchema as CustomListSchema } from "../types/schema/custom";
-import type { ListSchema, FormSchema } from "../types/schema/static";
+import type { State } from "../types/state/state";
+import type { ListSchema as TypedListSchema } from "../types/schema/typed";
+import type { ListSchema, FormSchema } from "../types/schema/basic";
 import type { ListValues } from "../types/values";
-import type { OnNext, OnBack, GetFlow, SetFlow } from "../types/callbacks";
+import type { OnNext, OnBack, GetState, SetState } from "../types/controls";
 
 import * as FlowSchemaUtils from "./schema/flow";
-import * as FlowEntriesUtils from "./entries/flow";
+import * as FlowInputsUtils from "./inputs/flow";
 
 /**
  * Returns the rendered form for the current step of the multi-step form.
  *
- * @param flow The current state of the multi-step form.
+ * @param state The current state of the multi-step form.
  * @param schema The `ListSchema` object representing the multi-step form.
  * @param params An object containing the parameters for the form.
  * @param onNext A callback function used to navigate to the next step of the multi-step form.
  * @param onBack A callback function used to navigate to the previous step of the multi-step form.
- * @param getFlow A callback function used to get the current state of the multi-step form.
- * @param setFlow A callback function used to set the current state of the multi-step form.
+ * @param getState A callback function used to get the current state of the multi-step form.
+ * @param setState A callback function used to set the current state of the multi-step form.
  * @returns The rendered form for the current step of the multi-step form.
  */
 export function getForm<
@@ -25,45 +25,45 @@ export function getForm<
   Inputs extends object,
   Params extends object
 >(
-  flow: Flow,
-  schema: CustomListSchema<Render, Values, Inputs, Params>,
+  state: State,
+  schema: TypedListSchema<Render, Values, Inputs, Params>,
   params: Params,
   onNext: OnNext,
   onBack: OnBack,
-  getFlow: GetFlow,
-  setFlow: SetFlow
+  getState: GetState,
+  setState: SetState
 ): Render {
-  const sSchema = schema as ListSchema;
-  const sParams = params as object;
-  return internalGetForm(
-    flow,
-    sSchema,
-    sParams,
+  const basicSchema = schema as ListSchema;
+  const basicParams = params as object;
+  return basicGetForm(
+    state,
+    basicSchema,
+    basicParams,
     onNext,
     onBack,
-    getFlow,
-    setFlow
+    getState,
+    setState
   ) as Render;
 }
 
-function internalGetForm(
-  flow: Flow,
+function basicGetForm(
+  state: State,
   schema: ListSchema,
   params: object,
   onNext: OnNext,
   onBack: OnBack,
-  getFlow: GetFlow,
-  setFlow: SetFlow
+  getState: GetState,
+  setState: SetState
 ): unknown {
-  const cursor = flow.cursors[flow.cursors.length - 1];
-  const form = FlowSchemaUtils.find(schema, cursor.path) as FormSchema;
-  const inputs = cursor.values;
+  const point = state.points[state.points.length - 1];
+  const form = FlowSchemaUtils.find(schema, point.path) as FormSchema;
+  const inputs = point.values;
   const values = Object.fromEntries(
-    Object.entries(form["form"]["values"](cursor.values)).map(
+    Object.entries(form["form"]["values"](point.values)).map(
       ([name, [value, keys]]) => {
         return [
           name,
-          FlowEntriesUtils.get(flow.entries, cursor.path, name, keys, value),
+          FlowInputsUtils.get(state.inputs, point.path, name, keys, value),
         ];
       }
     )
@@ -74,7 +74,7 @@ function internalGetForm(
     params,
     onNext,
     onBack,
-    getFlow,
-    setFlow,
+    getState,
+    setState,
   });
 }

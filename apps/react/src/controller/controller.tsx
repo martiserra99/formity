@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { OnNext, OnBack, GetFlow, SetFlow } from "@formity/react";
+import type { OnNext, OnBack, GetState, SetState } from "@formity/react";
 
 import { useMemo } from "react";
 
@@ -9,8 +9,8 @@ interface ControllerProps {
   step: string;
   onNext: OnNext;
   onBack: OnBack;
-  getFlow: GetFlow;
-  setFlow: SetFlow;
+  getState: GetState;
+  setState: SetState;
   children: ReactNode;
 }
 
@@ -18,20 +18,19 @@ export function Controller({
   step,
   onNext,
   onBack,
-  getFlow,
-  setFlow,
+  getState,
+  setState,
   children,
 }: ControllerProps) {
   const values = useMemo(
     () => ({
       onNext,
       onBack,
-      getFlow,
-      setFlow,
+      getState,
+      setState,
     }),
-    [onNext, onBack, getFlow, setFlow]
+    [onNext, onBack, getState, setState]
   );
-
   return (
     <ControllerContext.Provider value={values}>
       <div key={step} className="h-full">

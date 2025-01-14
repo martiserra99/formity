@@ -1,5 +1,5 @@
-import type { ItemSchema, SwitchSchema } from "../../types/schema/static";
-import type { Position, SwitchPosition } from "../../types/flow/position";
+import type { ItemSchema, SwitchSchema } from "../../types/schema/basic";
+import type { Position, SwitchPosition } from "../../types/state/position";
 
 /**
  * Type guard for `SwitchSchema` objects.
