@@ -1,6 +1,6 @@
 {
   "name": "@formity/system",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "license": "MIT",
   "private": false,
   "description": "Core system that powers the Formity library.",
