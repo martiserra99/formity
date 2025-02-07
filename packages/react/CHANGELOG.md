@@ -1,5 +1,11 @@
 # @formity/react
 
+## 0.3.1
+
+### Patch Changes
+
+- Solved bug about nextState being called twice in strict mode
+
 ## 0.3.0
 
 ### Minor Changes
