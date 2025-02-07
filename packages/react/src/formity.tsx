@@ -54,16 +54,18 @@ export default function Formity<
 
   const onNext = useCallback(
     (values: object) => {
-      setState((state) => nextState(state, schema, values, onYield, onReturn));
+      const updatedState = nextState(state, schema, values, onYield, onReturn);
+      setState(updatedState);
     },
-    [schema, onYield, onReturn]
+    [state, schema, onYield, onReturn]
   );
 
   const onBack = useCallback(
     (values: object) => {
-      setState((state) => prevState(state, schema, values));
+      const updatedState = prevState(state, schema, values);
+      setState(updatedState);
     },
-    [schema]
+    [state, schema]
   );
 
   const obtainState = useCallback(
