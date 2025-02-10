@@ -45,13 +45,13 @@ export function initState<
   values: Inputs,
   onYield: TypedOnYield<Values>
 ): State {
-  const basicSchema = schema as ListSchema;
-  const basicValues = values as object;
-  const basicOnYield = onYield as OnYield;
-  return basicInitState(basicSchema, basicValues, basicOnYield);
+  const _schema = schema as ListSchema;
+  const _values = values as object;
+  const _onYield = onYield as OnYield;
+  return _initState(_schema, _values, _onYield);
 }
 
-function basicInitState(
+function _initState(
   schema: ListSchema,
   values: object,
   onYield: OnYield
@@ -152,20 +152,14 @@ export function nextState<
   values: object,
   onYield: TypedOnYield<Values>,
   onReturn: TypedOnReturn<Values>
-) {
-  const basicSchema = schema as ListSchema;
-  const basicOnYield = onYield as OnYield;
-  const basicOnReturn = onReturn as OnReturn;
-  return basicNextState(
-    state,
-    basicSchema,
-    values,
-    basicOnYield,
-    basicOnReturn
-  );
+): State {
+  const _schema = schema as ListSchema;
+  const _onYield = onYield as OnYield;
+  const _onReturn = onReturn as OnReturn;
+  return _nextState(state, _schema, values, _onYield, _onReturn);
 }
 
-function basicNextState(
+function _nextState(
   state: State,
   schema: ListSchema,
   values: object,
@@ -290,15 +284,11 @@ export function prevState<
   schema: TypedListSchema<Render, Values, Inputs, Params>,
   values: object
 ): State {
-  const basicSchema = schema as ListSchema;
-  return basicPrevState(state, basicSchema, values);
+  const _schema = schema as ListSchema;
+  return _prevState(state, _schema, values);
 }
 
-function basicPrevState(
-  state: State,
-  schema: ListSchema,
-  values: object
-): State {
+function _prevState(state: State, schema: ListSchema, values: object): State {
   const current = state.points;
   const points = current.length > 1 ? current.slice(0, -1) : current;
   const inputs = updateInputs(state, schema, values);
