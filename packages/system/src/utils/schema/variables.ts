@@ -1,4 +1,4 @@
-import type { ItemSchema, VariablesSchema } from "../../types/schema/basic";
+import type { ItemSchema, VariablesSchema } from "../../types/schema/untyped";
 
 /**
  * Type guard for `VariablesSchema` objects.

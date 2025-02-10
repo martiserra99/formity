@@ -1,4 +1,4 @@
-import type { ItemSchema, LoopSchema } from "../../types/schema/basic";
+import type { ItemSchema, LoopSchema } from "../../types/schema/untyped";
 import type { Position, LoopPosition } from "../../types/state/position";
 
 /**

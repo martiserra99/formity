@@ -1,6 +1,6 @@
 import type { State } from "../types/state/state";
 import type { ListSchema as TypedListSchema } from "../types/schema/typed";
-import type { ListSchema, FormSchema } from "../types/schema/basic";
+import type { ListSchema, FormSchema } from "../types/schema/untyped";
 import type { ListValues } from "../types/values";
 import type { FlowInputs, ListInputs } from "../types/state/inputs";
 
@@ -25,15 +25,11 @@ export function getState<
   schema: TypedListSchema<Render, Values, Inputs, Params>,
   values: object
 ): State {
-  const basicSchema = schema as ListSchema;
-  return basicGetState(state, basicSchema, values);
+  const _schema = schema as ListSchema;
+  return _getState(state, _schema, values);
 }
 
-function basicGetState(
-  state: State,
-  schema: ListSchema,
-  values: object
-): State {
+function _getState(state: State, schema: ListSchema, values: object): State {
   const last = state.points[state.points.length - 1];
   const form = FlowSchemaUtils.find(schema, last.path) as FormSchema;
   const vals = form["form"]["values"](last.values);

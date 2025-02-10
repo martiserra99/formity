@@ -1,4 +1,4 @@
-import type { ItemSchema, SwitchSchema } from "../../types/schema/basic";
+import type { ItemSchema, SwitchSchema } from "../../types/schema/untyped";
 import type { Position, SwitchPosition } from "../../types/state/position";
 
 /**

@@ -7,8 +7,12 @@ import type { ListSchema as TypedListSchema } from "../types/schema/typed";
 import type { OnYield as TypedOnYield } from "../types/handlers/typed";
 import type { OnReturn as TypedOnReturn } from "../types/handlers/typed";
 
-import type { ListSchema, FlowSchema, FormSchema } from "../types/schema/basic";
-import type { OnYield, OnReturn } from "../types/handlers/basic";
+import type {
+  ListSchema,
+  FlowSchema,
+  FormSchema,
+} from "../types/schema/untyped";
+import type { OnYield, OnReturn } from "../types/handlers/untyped";
 
 import type { ListValues } from "../types/values";
 

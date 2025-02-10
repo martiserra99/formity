@@ -1,4 +1,4 @@
-import type { ItemSchema, ReturnSchema } from "../../types/schema/basic";
+import type { ItemSchema, ReturnSchema } from "../../types/schema/untyped";
 
 /**
  * Type guard for `ReturnSchema` objects.

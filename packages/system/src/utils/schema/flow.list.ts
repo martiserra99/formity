@@ -1,4 +1,4 @@
-import type { ItemSchema, ListSchema } from "../../types/schema/basic";
+import type { ItemSchema, ListSchema } from "../../types/schema/untyped";
 import type { Position, ListPosition } from "../../types/state/position";
 
 /**

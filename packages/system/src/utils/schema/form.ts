@@ -1,4 +1,4 @@
-import type { ItemSchema, FormSchema } from "../../types/schema/basic";
+import type { ItemSchema, FormSchema } from "../../types/schema/untyped";
 
 /**
  * Type guard for `FormSchema` objects.

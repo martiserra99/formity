@@ -1,6 +1,6 @@
 import type { State } from "../types/state/state";
 import type { ListSchema as TypedListSchema } from "../types/schema/typed";
-import type { ListSchema, FormSchema } from "../types/schema/basic";
+import type { ListSchema, FormSchema } from "../types/schema/untyped";
 import type { ListValues } from "../types/values";
 import type { OnNext, OnBack, GetState, SetState } from "../types/controls";
 
@@ -33,12 +33,12 @@ export function getForm<
   getState: GetState,
   setState: SetState
 ): Render {
-  const basicSchema = schema as ListSchema;
-  const basicParams = params as object;
-  return basicGetForm(
+  const _schema = schema as ListSchema;
+  const _params = params as object;
+  return _getForm(
     state,
-    basicSchema,
-    basicParams,
+    _schema,
+    _params,
     onNext,
     onBack,
     getState,
@@ -46,7 +46,7 @@ export function getForm<
   ) as Render;
 }
 
-function basicGetForm(
+function _getForm(
   state: State,
   schema: ListSchema,
   params: object,
