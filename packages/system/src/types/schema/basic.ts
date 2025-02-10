@@ -76,7 +76,10 @@ export type FormSchema = {
  * Defines the structure and behavior of a yield element in a multi-step form.
  */
 export type YieldSchema = {
-  yield: (inputs: object) => object;
+  yield: {
+    next: (inputs: object) => object[];
+    back: (inputs: object) => object[];
+  };
 };
 
 /**

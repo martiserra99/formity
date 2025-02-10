@@ -27,7 +27,7 @@ type ItemData<Values extends ItemValues, Data> = Values extends ListValues
   : Values extends SwitchValues
   ? SwitchData<Values, Data>
   : Values extends YieldValues
-  ? [Data | Values["yield"], false]
+  ? [Data | Values["yield"]["next"] | Values["yield"]["back"], false]
   : Values extends ReturnValues
   ? [Data, true]
   : [Data, false];

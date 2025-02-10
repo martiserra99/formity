@@ -106,7 +106,7 @@ function initialForm(
     if (ReturnSchemaUtils.is(currentSchema)) {
       throw new Error("Invalid schema");
     } else if (YieldSchemaUtils.is(currentSchema)) {
-      const values = currentSchema["yield"](currentValues);
+      const values = currentSchema["yield"]["next"](currentValues);
       onYield(values);
     } else if (VariablesSchemaUtils.is(currentSchema)) {
       const variables = currentSchema["variables"](currentValues);
@@ -201,7 +201,7 @@ function advanceForm(
       onReturn(values);
       return null;
     } else if (YieldSchemaUtils.is(currentSchema)) {
-      const values = currentSchema["yield"](currentValues);
+      const values = currentSchema["yield"]["next"](currentValues);
       onYield(values);
     } else if (VariablesSchemaUtils.is(currentSchema)) {
       const variables = currentSchema["variables"](currentValues);

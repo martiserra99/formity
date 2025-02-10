@@ -45,9 +45,12 @@ export type Form<Values extends object> = {
 /**
  * Utility type that defines the values of a yield element in a multi-step form.
  */
-export type Yield<Values extends object> = {
+export type Yield<Values extends { next: object[]; back: object[] }> = {
   type: "yield";
-  yield: Values;
+  yield: {
+    next: Values["next"];
+    back: Values["back"];
+  };
 };
 
 /**
