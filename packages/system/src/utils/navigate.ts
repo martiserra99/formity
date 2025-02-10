@@ -61,8 +61,8 @@ function _initState(
   onYield: OnYield
 ): State {
   const path = initialPath(schema, values);
-  const form = initialForm(schema, { path, values }, onYield);
-  return { points: [form], inputs: { type: "list", list: {} } };
+  const points = initialPoints(schema, { path, values }, onYield);
+  return { points, inputs: { type: "list", list: {} } };
 }
 
 function initialPath(schema: ListSchema, values: object): Position[] {
@@ -98,34 +98,37 @@ function initialPathFromPosition(
   return [position];
 }
 
-function initialForm(
+function initialPoints(
   schema: ListSchema,
   point: Point,
   onYield: OnYield
-): Point {
-  let currentPoint: Point | null = point;
-  let currentValues = currentPoint.values;
-  let currentSchema = FlowSchemaUtils.find(schema, currentPoint.path);
-  while (!FormSchemaUtils.is(currentSchema)) {
-    if (ReturnSchemaUtils.is(currentSchema)) {
+): Point[] {
+  const points = [];
+  let currPoint: Point | null = point;
+  let currPointValues = point.values;
+  let currPointSchema = FlowSchemaUtils.find(schema, point.path);
+  while (!FormSchemaUtils.is(currPointSchema)) {
+    if (ReturnSchemaUtils.is(currPointSchema)) {
       throw new Error("Invalid schema");
-    } else if (YieldSchemaUtils.is(currentSchema)) {
-      const values = currentSchema["yield"]["next"](currentValues);
-      onYield(values);
-    } else if (VariablesSchemaUtils.is(currentSchema)) {
-      const variables = currentSchema["variables"](currentValues);
-      currentValues = { ...currentValues, ...variables };
+    } else if (YieldSchemaUtils.is(currPointSchema)) {
+      const listValues = currPointSchema["yield"]["next"](currPointValues);
+      listValues.forEach((values) => onYield(values));
+      points.push(currPoint);
+    } else if (VariablesSchemaUtils.is(currPointSchema)) {
+      const variables = currPointSchema["variables"](currPointValues);
+      currPointValues = { ...currPointValues, ...variables };
     }
-    currentPoint = nextPoint(schema, {
-      path: currentPoint.path,
-      values: currentValues,
+    currPoint = nextPoint(schema, {
+      path: currPoint.path,
+      values: currPointValues,
     });
-    if (!currentPoint) {
+    if (!currPoint) {
       throw new Error("Invalid schema");
     }
-    currentSchema = FlowSchemaUtils.find(schema, currentPoint.path);
+    currPointSchema = FlowSchemaUtils.find(schema, currPoint.path);
   }
-  return currentPoint;
+  points.push(currPoint);
+  return points;
 }
 
 /**
@@ -170,9 +173,8 @@ function _nextState(
   onYield: OnYield,
   onReturn: OnReturn
 ): State {
-  const lastPoint = state.points[state.points.length - 1];
-  const nextPoint = advanceForm(schema, lastPoint, values, onYield, onReturn);
-  const points = nextPoint ? [...state.points, nextPoint] : state.points;
+  const point = state.points[state.points.length - 1];
+  const points = advanceForm(schema, point, values, onYield, onReturn);
   const inputs = updateInputs(state, schema, values);
   return { points, inputs };
 }
@@ -183,38 +185,41 @@ function advanceForm(
   values: object,
   onYield: OnYield,
   onReturn: OnReturn
-): Point | null {
-  let currentPoint: Point | null = nextPoint(schema, {
+): Point[] {
+  let currPoint: Point | null = nextPoint(schema, {
     path: point.path,
     values: { ...point.values, ...values },
   });
-  if (!currentPoint) {
-    return null;
+  if (!currPoint) {
+    return [];
   }
-  let currentValues = currentPoint.values;
-  let currentSchema = FlowSchemaUtils.find(schema, currentPoint.path);
-  while (!FormSchemaUtils.is(currentSchema)) {
-    if (ReturnSchemaUtils.is(currentSchema)) {
-      const values = currentSchema["return"](currentValues);
+  const points: Point[] = [];
+  let currPointValues = currPoint.values;
+  let currPointSchema = FlowSchemaUtils.find(schema, currPoint.path);
+  while (!FormSchemaUtils.is(currPointSchema)) {
+    if (ReturnSchemaUtils.is(currPointSchema)) {
+      const values = currPointSchema["return"](currPointValues);
       onReturn(values);
-      return null;
-    } else if (YieldSchemaUtils.is(currentSchema)) {
-      const values = currentSchema["yield"]["next"](currentValues);
-      onYield(values);
-    } else if (VariablesSchemaUtils.is(currentSchema)) {
-      const variables = currentSchema["variables"](currentValues);
-      currentValues = { ...currentValues, ...variables };
+      return [];
+    } else if (YieldSchemaUtils.is(currPointSchema)) {
+      const listValues = currPointSchema["yield"]["next"](currPointValues);
+      listValues.forEach((values) => onYield(values));
+      points.push(currPoint);
+    } else if (VariablesSchemaUtils.is(currPointSchema)) {
+      const variables = currPointSchema["variables"](currPointValues);
+      currPointValues = { ...currPointValues, ...variables };
     }
-    currentPoint = nextPoint(schema, {
-      path: currentPoint.path,
-      values: currentValues,
+    currPoint = nextPoint(schema, {
+      path: currPoint.path,
+      values: currPointValues,
     });
-    if (!currentPoint) {
-      return null;
+    if (!currPoint) {
+      return [];
     }
-    currentSchema = FlowSchemaUtils.find(schema, currentPoint.path);
+    currPointSchema = FlowSchemaUtils.find(schema, currPoint.path);
   }
-  return currentPoint;
+  points.push(currPoint);
+  return points;
 }
 
 function nextPoint(schema: ListSchema, point: Point): Point | null {
@@ -286,17 +291,36 @@ export function prevState<
 >(
   state: State,
   schema: TypedListSchema<Render, Values, Inputs, Params>,
-  values: object
+  values: object,
+  onYield: TypedOnYield<Values>
 ): State {
   const _schema = schema as ListSchema;
-  return _prevState(state, _schema, values);
+  const _onYield = onYield as OnYield;
+  return _prevState(state, _schema, values, _onYield);
 }
 
-function _prevState(state: State, schema: ListSchema, values: object): State {
-  const current = state.points;
-  const points = current.length > 1 ? current.slice(0, -1) : current;
+function _prevState(
+  state: State,
+  schema: ListSchema,
+  values: object,
+  onYield: OnYield
+): State {
+  const points = [...state.points];
+  while (points.length > 0) {
+    const currPoint = points[points.length - 1];
+    const currPointSchema = FlowSchemaUtils.find(schema, currPoint.path);
+    if (FormSchemaUtils.is(currPointSchema)) {
+      const inputs = updateInputs(state, schema, values);
+      return { points, inputs };
+    }
+    if (YieldSchemaUtils.is(currPointSchema)) {
+      const listValues = currPointSchema["yield"]["back"](currPoint.values);
+      listValues.forEach((values) => onYield(values));
+    }
+    points.pop();
+  }
   const inputs = updateInputs(state, schema, values);
-  return { points, inputs };
+  return { points: state.points, inputs };
 }
 
 function updateInputs(
@@ -304,13 +328,13 @@ function updateInputs(
   schema: ListSchema,
   values: object
 ): ListInputs {
-  const last = state.points[state.points.length - 1];
-  const form = FlowSchemaUtils.find(schema, last.path) as FormSchema;
-  const vals = form["form"]["values"](last.values);
-  let curr: FlowInputs = state.inputs;
+  const point = state.points[state.points.length - 1];
+  const formSchema = FlowSchemaUtils.find(schema, point.path) as FormSchema;
+  const formValues = formSchema["form"]["values"](point.values);
+  let currInputs: FlowInputs = state.inputs;
   for (const [name, value] of Object.entries(values)) {
-    const key = name as keyof typeof vals;
-    curr = FlowInputsUtils.set(curr, last.path, name, vals[key][1], value);
+    const keys = formValues[name as keyof typeof formValues][1];
+    currInputs = FlowInputsUtils.set(currInputs, point.path, name, keys, value);
   }
-  return curr as ListInputs;
+  return currInputs as ListInputs;
 }
