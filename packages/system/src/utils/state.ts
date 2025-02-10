@@ -30,13 +30,13 @@ export function getState<
 }
 
 function _getState(state: State, schema: ListSchema, values: object): State {
-  const last = state.points[state.points.length - 1];
-  const form = FlowSchemaUtils.find(schema, last.path) as FormSchema;
-  const vals = form["form"]["values"](last.values);
-  let curr: FlowInputs = state.inputs;
+  const point = state.points[state.points.length - 1];
+  const formSchema = FlowSchemaUtils.find(schema, point.path) as FormSchema;
+  const formValues = formSchema["form"]["values"](point.values);
+  let currInputs: FlowInputs = state.inputs;
   for (const [name, value] of Object.entries(values)) {
-    const key = name as keyof typeof vals;
-    curr = FlowInputsUtils.set(curr, last.path, name, vals[key][1], value);
+    const keys = formValues[name as keyof typeof formValues][1];
+    currInputs = FlowInputsUtils.set(currInputs, point.path, name, keys, value);
   }
-  return { points: state.points, inputs: curr as ListInputs };
+  return { points: state.points, inputs: currInputs as ListInputs };
 }
