@@ -3,9 +3,9 @@ import type { Schema, Loop, Form, Return, Variables } from "@formity/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { FormView, FormLayout, Select, Next, Back } from "../components";
+import { Step, Layout, Select, NextButton, BackButton } from "../components";
 
-import { Controller } from "../controller";
+import { MultiStep } from "../multi-step";
 
 export type LoopValues = [
   Variables<{ languages: { value: string; question: string }[] }>,
@@ -66,8 +66,8 @@ export const loopSchema: Schema<LoopValues> = [
               rating: ["love-it", [language.value]],
             }),
             render: ({ inputs, values, ...rest }) => (
-              <Controller step={`rating-${inputs.language.value}`} {...rest}>
-                <FormView
+              <MultiStep step={`rating-${inputs.language.value}`} {...rest}>
+                <Step
                   defaultValues={values}
                   resolver={zodResolver(
                     z.object({
@@ -75,7 +75,7 @@ export const loopSchema: Schema<LoopValues> = [
                     })
                   )}
                 >
-                  <FormLayout
+                  <Layout
                     heading={inputs.language.question}
                     description="We would like to know how much you like it"
                     fields={[
@@ -91,11 +91,11 @@ export const loopSchema: Schema<LoopValues> = [
                         direction="y"
                       />,
                     ]}
-                    button={<Next>Next</Next>}
-                    back={inputs.i > 0 ? <Back /> : undefined}
+                    button={<NextButton>Next</NextButton>}
+                    back={inputs.i > 0 ? <BackButton /> : undefined}
                   />
-                </FormView>
-              </Controller>
+                </Step>
+              </MultiStep>
             ),
           },
         },

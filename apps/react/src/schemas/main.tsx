@@ -12,8 +12,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import {
-  FormView,
-  FormLayout,
+  Step,
+  Layout,
   Row,
   TextField,
   NumberField,
@@ -21,11 +21,11 @@ import {
   Listbox,
   Select,
   YesNo,
-  Next,
-  Back,
+  NextButton,
+  BackButton,
 } from "../components";
 
-import { Controller } from "../controller";
+import { MultiStep } from "../multi-step";
 
 export type MainValues = [
   Form<{ name: string; surname: string; age: number }>,
@@ -108,8 +108,8 @@ export const mainSchema: Schema<MainValues> = [
         age: [20, []],
       }),
       render: ({ values, ...rest }) => (
-        <Controller step="name" {...rest}>
-          <FormView
+        <MultiStep step="name" {...rest}>
+          <Step
             defaultValues={values}
             resolver={zodResolver(
               z.object({
@@ -128,7 +128,7 @@ export const mainSchema: Schema<MainValues> = [
               })
             )}
           >
-            <FormLayout
+            <Layout
               heading="Tell us about yourself"
               description="We would want to know a little bit more about you"
               fields={[
@@ -141,10 +141,10 @@ export const mainSchema: Schema<MainValues> = [
                 />,
                 <NumberField key="age" name="age" label="Age" />,
               ]}
-              button={<Next>Next</Next>}
+              button={<NextButton>Next</NextButton>}
             />
-          </FormView>
-        </Controller>
+          </Step>
+        </MultiStep>
       ),
     },
   },
@@ -168,8 +168,8 @@ export const mainSchema: Schema<MainValues> = [
         softwareDeveloper: [true, []],
       }),
       render: ({ values, ...rest }) => (
-        <Controller step="softwareDeveloper" {...rest}>
-          <FormView
+        <MultiStep step="softwareDeveloper" {...rest}>
+          <Step
             defaultValues={values}
             resolver={zodResolver(
               z.object({
@@ -177,7 +177,7 @@ export const mainSchema: Schema<MainValues> = [
               })
             )}
           >
-            <FormLayout
+            <Layout
               heading="Are you a software developer?"
               description="We would like to know if you are a software developer"
               fields={[
@@ -187,11 +187,11 @@ export const mainSchema: Schema<MainValues> = [
                   label="Software Developer"
                 />,
               ]}
-              button={<Next>Next</Next>}
-              back={<Back />}
+              button={<NextButton>Next</NextButton>}
+              back={<BackButton />}
             />
-          </FormView>
-        </Controller>
+          </Step>
+        </MultiStep>
       ),
     },
   },
@@ -230,8 +230,8 @@ export const mainSchema: Schema<MainValues> = [
               languages: [[], []],
             }),
             render: ({ inputs, values, ...rest }) => (
-              <Controller step="languages" {...rest}>
-                <FormView
+              <MultiStep step="languages" {...rest}>
+                <Step
                   defaultValues={values}
                   resolver={zodResolver(
                     z.object({
@@ -239,7 +239,7 @@ export const mainSchema: Schema<MainValues> = [
                     })
                   )}
                 >
-                  <FormLayout
+                  <Layout
                     heading="What are your favourite programming languages?"
                     description="We would like to know which of the following programming languages you like the most"
                     fields={[
@@ -251,11 +251,11 @@ export const mainSchema: Schema<MainValues> = [
                         direction="y"
                       />,
                     ]}
-                    button={<Next>Next</Next>}
-                    back={<Back />}
+                    button={<NextButton>Next</NextButton>}
+                    back={<BackButton />}
                   />
-                </FormView>
-              </Controller>
+                </Step>
+              </MultiStep>
             ),
           },
         },
@@ -291,8 +291,8 @@ export const mainSchema: Schema<MainValues> = [
                     rating: ["love-it", [language]],
                   }),
                   render: ({ inputs, values, ...rest }) => (
-                    <Controller step={`rating-${inputs.language}`} {...rest}>
-                      <FormView
+                    <MultiStep step={`rating-${inputs.language}`} {...rest}>
+                      <Step
                         defaultValues={values}
                         resolver={zodResolver(
                           z.object({
@@ -300,7 +300,7 @@ export const mainSchema: Schema<MainValues> = [
                           })
                         )}
                       >
-                        <FormLayout
+                        <Layout
                           heading={inputs.question}
                           description="Since you said it is one of your favourite languages, we would like to know how much you like it"
                           fields={[
@@ -325,11 +325,11 @@ export const mainSchema: Schema<MainValues> = [
                               direction="y"
                             />,
                           ]}
-                          button={<Next>Next</Next>}
-                          back={<Back />}
+                          button={<NextButton>Next</NextButton>}
+                          back={<BackButton />}
                         />
-                      </FormView>
-                    </Controller>
+                      </Step>
+                    </MultiStep>
                   ),
                 },
               },
@@ -373,8 +373,8 @@ export const mainSchema: Schema<MainValues> = [
               interested: ["maybe", []],
             }),
             render: ({ values, ...rest }) => (
-              <Controller step="interested" {...rest}>
-                <FormView
+              <MultiStep step="interested" {...rest}>
+                <Step
                   defaultValues={values}
                   resolver={zodResolver(
                     z.object({
@@ -382,7 +382,7 @@ export const mainSchema: Schema<MainValues> = [
                     })
                   )}
                 >
-                  <FormLayout
+                  <Layout
                     heading="Would you be interested in learning how to code?"
                     description="Having coding skills can be very beneficial"
                     fields={[
@@ -406,11 +406,11 @@ export const mainSchema: Schema<MainValues> = [
                         ]}
                       />,
                     ]}
-                    button={<Next>Next</Next>}
-                    back={<Back />}
+                    button={<NextButton>Next</NextButton>}
+                    back={<BackButton />}
                   />
-                </FormView>
-              </Controller>
+                </Step>
+              </MultiStep>
             ),
           },
         },

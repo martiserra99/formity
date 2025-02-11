@@ -4,15 +4,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import {
-  FormView,
-  FormLayout,
+  Step,
+  Layout,
   TextField,
   Listbox,
-  Next,
-  Back,
+  NextButton,
+  BackButton,
 } from "../components";
 
-import { Controller } from "../controller";
+import { MultiStep } from "../multi-step";
 
 export type SwitchValues = [
   Form<{ interested: string }>,
@@ -45,8 +45,8 @@ export const switchSchema: Schema<SwitchValues> = [
         interested: ["yes", []],
       }),
       render: ({ values, ...rest }) => (
-        <Controller step="interested" {...rest}>
-          <FormView
+        <MultiStep step="interested" {...rest}>
+          <Step
             defaultValues={values}
             resolver={zodResolver(
               z.object({
@@ -54,7 +54,7 @@ export const switchSchema: Schema<SwitchValues> = [
               })
             )}
           >
-            <FormLayout
+            <Layout
               heading="Would you be interested in learning how to code?"
               description="Having coding skills can be very beneficial"
               fields={[
@@ -82,10 +82,10 @@ export const switchSchema: Schema<SwitchValues> = [
                   ]}
                 />,
               ]}
-              button={<Next>Next</Next>}
+              button={<NextButton>Next</NextButton>}
             />
-          </FormView>
-        </Controller>
+          </Step>
+        </MultiStep>
       ),
     },
   },
@@ -101,8 +101,8 @@ export const switchSchema: Schema<SwitchValues> = [
                   whyYes: ["", []],
                 }),
                 render: ({ values, ...rest }) => (
-                  <Controller step="whyYes" {...rest}>
-                    <FormView
+                  <MultiStep step="whyYes" {...rest}>
+                    <Step
                       defaultValues={values}
                       resolver={zodResolver(
                         z.object({
@@ -110,17 +110,17 @@ export const switchSchema: Schema<SwitchValues> = [
                         })
                       )}
                     >
-                      <FormLayout
+                      <Layout
                         heading="Why are you interested?"
                         description="We would like to know why you are interested"
                         fields={[
                           <TextField key="whyYes" name="whyYes" label="Why?" />,
                         ]}
-                        button={<Next>Next</Next>}
-                        back={<Back />}
+                        button={<NextButton>Next</NextButton>}
+                        back={<BackButton />}
                       />
-                    </FormView>
-                  </Controller>
+                    </Step>
+                  </MultiStep>
                 ),
               },
             },
@@ -141,8 +141,8 @@ export const switchSchema: Schema<SwitchValues> = [
                   whyNot: ["", []],
                 }),
                 render: ({ values, ...rest }) => (
-                  <Controller step="whyNot" {...rest}>
-                    <FormView
+                  <MultiStep step="whyNot" {...rest}>
+                    <Step
                       defaultValues={values}
                       resolver={zodResolver(
                         z.object({
@@ -150,17 +150,17 @@ export const switchSchema: Schema<SwitchValues> = [
                         })
                       )}
                     >
-                      <FormLayout
+                      <Layout
                         heading="Why are you not interested?"
                         description="We would like to know why you are not interested"
                         fields={[
                           <TextField key="whyNot" name="whyNot" label="Why?" />,
                         ]}
-                        button={<Next>Next</Next>}
-                        back={<Back />}
+                        button={<NextButton>Next</NextButton>}
+                        back={<BackButton />}
                       />
-                    </FormView>
-                  </Controller>
+                    </Step>
+                  </MultiStep>
                 ),
               },
             },
@@ -181,8 +181,8 @@ export const switchSchema: Schema<SwitchValues> = [
                   whyMaybe: ["", []],
                 }),
                 render: ({ values, ...rest }) => (
-                  <Controller step="whyMaybe" {...rest}>
-                    <FormView
+                  <MultiStep step="whyMaybe" {...rest}>
+                    <Step
                       defaultValues={values}
                       resolver={zodResolver(
                         z.object({
@@ -190,7 +190,7 @@ export const switchSchema: Schema<SwitchValues> = [
                         })
                       )}
                     >
-                      <FormLayout
+                      <Layout
                         heading="Why are you maybe interested?"
                         description="We would like to know why you are maybe interested"
                         fields={[
@@ -200,11 +200,11 @@ export const switchSchema: Schema<SwitchValues> = [
                             label="Why?"
                           />,
                         ]}
-                        button={<Next>Next</Next>}
-                        back={<Back />}
+                        button={<NextButton>Next</NextButton>}
+                        back={<BackButton />}
                       />
-                    </FormView>
-                  </Controller>
+                    </Step>
+                  </MultiStep>
                 ),
               },
             },
@@ -224,8 +224,8 @@ export const switchSchema: Schema<SwitchValues> = [
               whyNotSure: ["", []],
             }),
             render: ({ values, ...rest }) => (
-              <Controller step="whyNotSure" {...rest}>
-                <FormView
+              <MultiStep step="whyNotSure" {...rest}>
+                <Step
                   defaultValues={values}
                   resolver={zodResolver(
                     z.object({
@@ -233,7 +233,7 @@ export const switchSchema: Schema<SwitchValues> = [
                     })
                   )}
                 >
-                  <FormLayout
+                  <Layout
                     heading="Why are you not sure?"
                     description="We would like to know why you are not sure"
                     fields={[
@@ -243,11 +243,11 @@ export const switchSchema: Schema<SwitchValues> = [
                         label="Why?"
                       />,
                     ]}
-                    button={<Next>Next</Next>}
-                    back={<Back />}
+                    button={<NextButton>Next</NextButton>}
+                    back={<BackButton />}
                   />
-                </FormView>
-              </Controller>
+                </Step>
+              </MultiStep>
             ),
           },
         },

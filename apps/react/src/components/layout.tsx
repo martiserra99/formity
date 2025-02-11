@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-interface FormLayoutProps {
+interface LayoutProps {
   heading: string;
   description: string;
   fields: ReactNode[];
@@ -8,13 +8,13 @@ interface FormLayoutProps {
   back?: ReactNode;
 }
 
-export default function FormLayout({
+export default function Layout({
   heading,
   description,
   fields,
   button,
   back,
-}: FormLayoutProps) {
+}: LayoutProps) {
   return (
     <div className="relative flex h-full w-full items-center justify-center px-4 py-8">
       <div className="w-full max-w-md shrink-0">

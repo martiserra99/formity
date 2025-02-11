@@ -3,9 +3,9 @@ import type { Schema, Form, Return, Variables } from "@formity/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { FormView, FormLayout, Row, TextField, Next } from "../components";
+import { Step, Layout, Row, TextField, NextButton } from "../components";
 
-import { Controller } from "../controller";
+import { MultiStep } from "../multi-step";
 
 export type ListValues = [
   Variables<{ fullName: string }>,
@@ -27,8 +27,8 @@ export const listSchema: Schema<ListValues> = [
           surname: ["", []],
         }),
         render: ({ values, ...rest }) => (
-          <Controller step="name-surname" {...rest}>
-            <FormView
+          <MultiStep step="name-surname" {...rest}>
+            <Step
               defaultValues={values}
               resolver={zodResolver(
                 z.object({
@@ -43,7 +43,7 @@ export const listSchema: Schema<ListValues> = [
                 })
               )}
             >
-              <FormLayout
+              <Layout
                 heading="Tell us your name"
                 description="We would want to know your name"
                 fields={[
@@ -59,10 +59,10 @@ export const listSchema: Schema<ListValues> = [
                     ]}
                   />,
                 ]}
-                button={<Next>Next</Next>}
+                button={<NextButton>Next</NextButton>}
               />
-            </FormView>
-          </Controller>
+            </Step>
+          </MultiStep>
         ),
       },
     },

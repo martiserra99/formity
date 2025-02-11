@@ -4,16 +4,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import {
-  FormView,
-  FormLayout,
+  Step,
+  Layout,
   MultiSelect,
   Listbox,
   YesNo,
-  Next,
-  Back,
+  NextButton,
+  BackButton,
 } from "../components";
 
-import { Controller } from "../controller";
+import { MultiStep } from "../multi-step";
 
 export type CondValues = [
   Form<{ softwareDeveloper: boolean }>,
@@ -42,8 +42,8 @@ export const condSchema: Schema<CondValues> = [
         softwareDeveloper: [true, []],
       }),
       render: ({ values, ...rest }) => (
-        <Controller step="softwareDeveloper" {...rest}>
-          <FormView
+        <MultiStep step="softwareDeveloper" {...rest}>
+          <Step
             defaultValues={values}
             resolver={zodResolver(
               z.object({
@@ -51,7 +51,7 @@ export const condSchema: Schema<CondValues> = [
               })
             )}
           >
-            <FormLayout
+            <Layout
               heading="Are you a software developer?"
               description="We would like to know if you are a software developer"
               fields={[
@@ -61,10 +61,10 @@ export const condSchema: Schema<CondValues> = [
                   label="Software Developer"
                 />,
               ]}
-              button={<Next>Next</Next>}
+              button={<NextButton>Next</NextButton>}
             />
-          </FormView>
-        </Controller>
+          </Step>
+        </MultiStep>
       ),
     },
   },
@@ -78,8 +78,8 @@ export const condSchema: Schema<CondValues> = [
               languages: [[], []],
             }),
             render: ({ values, ...rest }) => (
-              <Controller step="languages" {...rest}>
-                <FormView
+              <MultiStep step="languages" {...rest}>
+                <Step
                   defaultValues={values}
                   resolver={zodResolver(
                     z.object({
@@ -87,7 +87,7 @@ export const condSchema: Schema<CondValues> = [
                     })
                   )}
                 >
-                  <FormLayout
+                  <Layout
                     heading="What are your favourite programming languages?"
                     description="We would like to know which of the following programming languages you like the most"
                     fields={[
@@ -103,11 +103,11 @@ export const condSchema: Schema<CondValues> = [
                         direction="y"
                       />,
                     ]}
-                    button={<Next>Next</Next>}
-                    back={<Back />}
+                    button={<NextButton>Next</NextButton>}
+                    back={<BackButton />}
                   />
-                </FormView>
-              </Controller>
+                </Step>
+              </MultiStep>
             ),
           },
         },
@@ -125,8 +125,8 @@ export const condSchema: Schema<CondValues> = [
               interested: ["maybe", []],
             }),
             render: ({ values, ...rest }) => (
-              <Controller step="interested" {...rest}>
-                <FormView
+              <MultiStep step="interested" {...rest}>
+                <Step
                   defaultValues={values}
                   resolver={zodResolver(
                     z.object({
@@ -134,7 +134,7 @@ export const condSchema: Schema<CondValues> = [
                     })
                   )}
                 >
-                  <FormLayout
+                  <Layout
                     heading="Would you be interested in learning how to code?"
                     description="Having coding skills can be very beneficial"
                     fields={[
@@ -158,11 +158,11 @@ export const condSchema: Schema<CondValues> = [
                         ]}
                       />,
                     ]}
-                    button={<Next>Next</Next>}
-                    back={<Back />}
+                    button={<NextButton>Next</NextButton>}
+                    back={<BackButton />}
                   />
-                </FormView>
-              </Controller>
+                </Step>
+              </MultiStep>
             ),
           },
         },

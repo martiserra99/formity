@@ -2,10 +2,10 @@ import type { ReactNode } from "react";
 
 import Button from "../user-interface/button";
 
-interface ButtonProps {
+interface NextButtonProps {
   children: ReactNode;
 }
 
-export default function Next({ children }: ButtonProps) {
+export default function NextButton({ children }: NextButtonProps) {
   return <Button>{children}</Button>;
 }
