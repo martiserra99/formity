@@ -1,5 +1,16 @@
 # @formity/react
 
+## 0.4.0
+
+### Minor Changes
+
+- Updated Yield schema element to yield values when navigating to previous steps
+
+### Patch Changes
+
+- Updated dependencies
+  - @formity/system@0.4.0
+
 ## 0.3.1
 
 ### Patch Changes

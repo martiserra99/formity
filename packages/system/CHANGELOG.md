@@ -1,5 +1,11 @@
 # @formity/system
 
+## 0.4.0
+
+### Minor Changes
+
+- Updated Yield schema element to yield values when navigating to previous steps
+
 ## 0.3.0
 
 ### Minor Changes
