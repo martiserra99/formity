@@ -27,7 +27,7 @@ export type SwitchValues = [
     ];
     default: [
       Form<{ whyNotSure: string }>,
-      Return<{ interested: "not-sure"; whyNotSure: string }>
+      Return<{ interested: "notSure"; whyNotSure: string }>
     ];
   }>
 ];
@@ -70,7 +70,7 @@ export const switchSchema: Schema<SwitchValues> = [
                       label: "Maybe in another time.",
                     },
                     {
-                      value: "not-sure",
+                      value: "notSure",
                       label: "I am not sure.",
                     },
                   ]}
@@ -247,7 +247,7 @@ export const switchSchema: Schema<SwitchValues> = [
         },
         {
           return: ({ whyNotSure }) => ({
-            interested: "not-sure",
+            interested: "notSure",
             whyNotSure,
           }),
         },

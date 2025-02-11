@@ -468,7 +468,7 @@ describe("<Formity />", () => {
     cy.get("[data-cy=input]").type("Because it takes time");
     cy.get("[data-cy=button]").click();
     cy.get("@onReturn").should("have.been.calledOnceWithExactly", {
-      interested: "not-sure",
+      interested: "notSure",
       whyNotSure: "Because it takes time",
     });
   });
