@@ -79,7 +79,7 @@ export type MainValues = [
       Return<{
         fullName: string;
         age: number;
-        softwareDeveloper: boolean;
+        softwareDeveloper: true;
         languages: { name: string; rating: string }[];
       }>
     ];
@@ -92,7 +92,7 @@ export type MainValues = [
       Return<{
         fullName: string;
         age: number;
-        softwareDeveloper: boolean;
+        softwareDeveloper: false;
         interested: string;
       }>
     ];
@@ -352,16 +352,10 @@ export const mainSchema: Schema<MainValues> = [
           },
         },
         {
-          return: ({
-            name,
-            surname,
-            age,
-            softwareDeveloper,
-            languagesRatings,
-          }) => ({
+          return: ({ name, surname, age, languagesRatings }) => ({
             fullName: `${name} ${surname}`,
             age,
-            softwareDeveloper,
+            softwareDeveloper: true,
             languages: languagesRatings,
           }),
         },
@@ -421,10 +415,10 @@ export const mainSchema: Schema<MainValues> = [
           },
         },
         {
-          return: ({ name, surname, age, softwareDeveloper, interested }) => ({
+          return: ({ name, surname, age, interested }) => ({
             fullName: `${name} ${surname}`,
             age,
-            softwareDeveloper,
+            softwareDeveloper: false,
             interested,
           }),
         },

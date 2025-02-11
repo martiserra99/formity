@@ -21,14 +21,14 @@ export type CondValues = [
     then: [
       Form<{ languages: string[] }>,
       Return<{
-        softwareDeveloper: boolean;
+        softwareDeveloper: true;
         languages: string[];
       }>
     ];
     else: [
       Form<{ interested: string }>,
       Return<{
-        softwareDeveloper: boolean;
+        softwareDeveloper: false;
         interested: string;
       }>
     ];
@@ -112,8 +112,8 @@ export const condSchema: Schema<CondValues> = [
           },
         },
         {
-          return: ({ softwareDeveloper, languages }) => ({
-            softwareDeveloper,
+          return: ({ languages }) => ({
+            softwareDeveloper: true,
             languages,
           }),
         },
@@ -167,8 +167,8 @@ export const condSchema: Schema<CondValues> = [
           },
         },
         {
-          return: ({ softwareDeveloper, interested }) => ({
-            softwareDeveloper,
+          return: ({ interested }) => ({
+            softwareDeveloper: false,
             interested,
           }),
         },

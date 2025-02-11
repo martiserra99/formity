@@ -18,22 +18,16 @@ export type SwitchValues = [
   Form<{ interested: string }>,
   Switch<{
     branches: [
-      [
-        Form<{ whyYes: string }>,
-        Return<{ interested: string; whyYes: string }>
-      ],
-      [
-        Form<{ whyNot: string }>,
-        Return<{ interested: string; whyNot: string }>
-      ],
+      [Form<{ whyYes: string }>, Return<{ interested: "yes"; whyYes: string }>],
+      [Form<{ whyNot: string }>, Return<{ interested: "not"; whyNot: string }>],
       [
         Form<{ whyMaybe: string }>,
-        Return<{ interested: string; whyMaybe: string }>
+        Return<{ interested: "maybe"; whyMaybe: string }>
       ]
     ];
     default: [
       Form<{ whyNotSure: string }>,
-      Return<{ interested: string; whyNotSure: string }>
+      Return<{ interested: "not-sure"; whyNotSure: string }>
     ];
   }>
 ];
@@ -68,7 +62,7 @@ export const switchSchema: Schema<SwitchValues> = [
                       label: "Yes, that sounds good.",
                     },
                     {
-                      value: "no",
+                      value: "not",
                       label: "No, it is not for me.",
                     },
                     {
@@ -125,15 +119,15 @@ export const switchSchema: Schema<SwitchValues> = [
               },
             },
             {
-              return: ({ interested, whyYes }) => ({
-                interested,
+              return: ({ whyYes }) => ({
+                interested: "yes",
                 whyYes,
               }),
             },
           ],
         },
         {
-          case: ({ interested }) => interested === "no",
+          case: ({ interested }) => interested === "not",
           then: [
             {
               form: {
@@ -165,8 +159,8 @@ export const switchSchema: Schema<SwitchValues> = [
               },
             },
             {
-              return: ({ interested, whyNot }) => ({
-                interested,
+              return: ({ whyNot }) => ({
+                interested: "not",
                 whyNot,
               }),
             },
@@ -209,8 +203,8 @@ export const switchSchema: Schema<SwitchValues> = [
               },
             },
             {
-              return: ({ interested, whyMaybe }) => ({
-                interested,
+              return: ({ whyMaybe }) => ({
+                interested: "maybe",
                 whyMaybe,
               }),
             },
@@ -252,8 +246,8 @@ export const switchSchema: Schema<SwitchValues> = [
           },
         },
         {
-          return: ({ interested, whyNotSure }) => ({
-            interested,
+          return: ({ whyNotSure }) => ({
+            interested: "not-sure",
             whyNotSure,
           }),
         },

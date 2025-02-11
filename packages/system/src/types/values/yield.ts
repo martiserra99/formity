@@ -27,7 +27,7 @@ type ItemData<Values extends ItemValues, Data> = Values extends ListValues
   : Values extends SwitchValues
   ? SwitchData<Values, Data>
   : Values extends YieldValues
-  ? [Data | Values["yield"]["next"] | Values["yield"]["back"], false]
+  ? YieldData<Values, Data>
   : Values extends ReturnValues
   ? [Data, true]
   : [Data, false];
@@ -63,6 +63,11 @@ type SwitchData<Values extends SwitchValues, Data> = RoutesData<
   [...Values["switch"]["branches"], Values["switch"]["default"]],
   Data
 >;
+
+type YieldData<Values extends YieldValues, Data> = [
+  Data | Values["yield"]["next"][number] | Values["yield"]["back"][number],
+  false
+];
 
 type RoutesData<
   Values extends ListValues[],
