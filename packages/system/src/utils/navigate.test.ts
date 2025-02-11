@@ -280,13 +280,19 @@ describe("initState", () => {
 
   it("calls the onYield callback with the appropriate values every time values are yielded until it reaches a form", () => {
     type Values = [
-      Yield<{ next: [{ x: number }]; back: [] }>,
+      Yield<{
+        next: [{ x: number }, { y: number }];
+        back: [{ a: number }, { b: number }];
+      }>,
       Cond<{
         then: [
           Cond<{
             then: [];
             else: [
-              Yield<{ next: [{ y: number }]; back: [] }>,
+              Yield<{
+                next: [{ z: number }];
+                back: [{ c: number }];
+              }>,
               Loop<[Form<object>]>
             ];
           }>
@@ -297,8 +303,8 @@ describe("initState", () => {
     const schema: ListSchema<null, Values, object, object> = [
       {
         yield: {
-          next: () => [{ x: 1 }],
-          back: () => [],
+          next: () => [{ x: 1 }, { y: 2 }],
+          back: () => [{ a: 1 }, { b: 2 }],
         },
       },
       {
@@ -312,8 +318,8 @@ describe("initState", () => {
                 else: [
                   {
                     yield: {
-                      next: () => [{ y: 2 }],
-                      back: () => [],
+                      next: () => [{ z: 3 }],
+                      back: () => [{ c: 3 }],
                     },
                   },
                   {
@@ -341,6 +347,10 @@ describe("initState", () => {
     initState<null, Values, object, object>(schema, {}, onYield);
     expect(onYield).toHaveBeenNthCalledWith(1, { x: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { y: 2 });
+    expect(onYield).toHaveBeenNthCalledWith(3, { z: 3 });
+    expect(onYield).not.toHaveBeenCalledWith({ a: 1 });
+    expect(onYield).not.toHaveBeenCalledWith({ b: 2 });
+    expect(onYield).not.toHaveBeenCalledWith({ c: 3 });
   });
 
   it("generates values every time it encounters a variables element", () => {
@@ -646,15 +656,21 @@ describe("nextState", () => {
       Loop<
         [
           Cond<{
-            then: [Form<object>, Yield<{ next: [{ a: number }]; back: [] }>];
+            then: [
+              Form<object>,
+              Yield<{ next: [{ x: number }]; back: [{ a: number }] }>
+            ];
             else: [];
           }>
         ]
       >,
-      Yield<{ next: [{ b: number }]; back: [] }>,
+      Yield<{ next: [{ y: number }]; back: [{ b: number }] }>,
       Cond<{
         then: [];
-        else: [Yield<{ next: [{ c: number }]; back: [] }>, Form<object>];
+        else: [
+          Yield<{ next: [{ z: number }]; back: [{ c: number }] }>,
+          Form<object>
+        ];
       }>
     ];
     const schema: ListSchema<null, Values, object, object> = [
@@ -674,8 +690,8 @@ describe("nextState", () => {
                   },
                   {
                     yield: {
-                      next: () => [{ a: 1 }],
-                      back: () => [],
+                      next: () => [{ x: 1 }],
+                      back: () => [{ a: 1 }],
                     },
                   },
                 ],
@@ -687,8 +703,8 @@ describe("nextState", () => {
       },
       {
         yield: {
-          next: () => [{ b: 2 }],
-          back: () => [],
+          next: () => [{ y: 2 }],
+          back: () => [{ b: 2 }],
         },
       },
       {
@@ -698,8 +714,8 @@ describe("nextState", () => {
           else: [
             {
               yield: {
-                next: () => [{ c: 3 }],
-                back: () => [],
+                next: () => [{ z: 3 }],
+                back: () => [{ c: 3 }],
               },
             },
             {
@@ -733,9 +749,12 @@ describe("nextState", () => {
       onYield,
       () => {}
     );
-    expect(onYield).toHaveBeenNthCalledWith(1, { a: 1 });
-    expect(onYield).toHaveBeenNthCalledWith(2, { b: 2 });
-    expect(onYield).toHaveBeenNthCalledWith(3, { c: 3 });
+    expect(onYield).toHaveBeenNthCalledWith(1, { x: 1 });
+    expect(onYield).toHaveBeenNthCalledWith(2, { y: 2 });
+    expect(onYield).toHaveBeenNthCalledWith(3, { z: 3 });
+    expect(onYield).not.toHaveBeenCalledWith({ a: 1 });
+    expect(onYield).not.toHaveBeenCalledWith({ b: 2 });
+    expect(onYield).not.toHaveBeenCalledWith({ c: 3 });
   });
 
   it("calls the onYield callback with the appropriate values every time values are yielded until it reaches a return", () => {
@@ -743,15 +762,21 @@ describe("nextState", () => {
       Loop<
         [
           Cond<{
-            then: [Form<object>, Yield<{ next: [{ a: number }]; back: [] }>];
+            then: [
+              Form<object>,
+              Yield<{ next: [{ x: number }]; back: [{ a: number }] }>
+            ];
             else: [];
           }>
         ]
       >,
-      Yield<{ next: [{ b: number }]; back: [] }>,
+      Yield<{ next: [{ y: number }]; back: [{ b: number }] }>,
       Cond<{
         then: [];
-        else: [Yield<{ next: [{ c: number }]; back: [] }>, Return<object>];
+        else: [
+          Yield<{ next: [{ z: number }]; back: [{ c: number }] }>,
+          Return<object>
+        ];
       }>
     ];
     const schema: ListSchema<null, Values, object, object> = [
@@ -771,8 +796,8 @@ describe("nextState", () => {
                   },
                   {
                     yield: {
-                      next: () => [{ a: 1 }],
-                      back: () => [],
+                      next: () => [{ x: 1 }],
+                      back: () => [{ a: 1 }],
                     },
                   },
                 ],
@@ -784,8 +809,8 @@ describe("nextState", () => {
       },
       {
         yield: {
-          next: () => [{ b: 2 }],
-          back: () => [],
+          next: () => [{ y: 2 }],
+          back: () => [{ b: 2 }],
         },
       },
       {
@@ -795,8 +820,8 @@ describe("nextState", () => {
           else: [
             {
               yield: {
-                next: () => [{ c: 3 }],
-                back: () => [],
+                next: () => [{ z: 3 }],
+                back: () => [{ c: 3 }],
               },
             },
             { return: () => ({}) },
@@ -825,9 +850,12 @@ describe("nextState", () => {
       onYield,
       () => {}
     );
-    expect(onYield).toHaveBeenNthCalledWith(1, { a: 1 });
-    expect(onYield).toHaveBeenNthCalledWith(2, { b: 2 });
-    expect(onYield).toHaveBeenNthCalledWith(3, { c: 3 });
+    expect(onYield).toHaveBeenNthCalledWith(1, { x: 1 });
+    expect(onYield).toHaveBeenNthCalledWith(2, { y: 2 });
+    expect(onYield).toHaveBeenNthCalledWith(3, { z: 3 });
+    expect(onYield).not.toHaveBeenCalledWith({ a: 1 });
+    expect(onYield).not.toHaveBeenCalledWith({ b: 2 });
+    expect(onYield).not.toHaveBeenCalledWith({ c: 3 });
   });
 
   it("calls the onYield callback with the appropriate values every time values are yielded until it reaches the end of the schema", () => {
@@ -835,13 +863,19 @@ describe("nextState", () => {
       Loop<
         [
           Cond<{
-            then: [Form<object>, Yield<{ next: [{ a: number }]; back: [] }>];
+            then: [
+              Form<object>,
+              Yield<{ next: [{ x: number }]; back: [{ a: number }] }>
+            ];
             else: [];
           }>
         ]
       >,
-      Yield<{ next: [{ b: number }]; back: [] }>,
-      Cond<{ then: []; else: [Yield<{ next: [{ c: number }]; back: [] }>] }>
+      Yield<{ next: [{ y: number }]; back: [{ b: number }] }>,
+      Cond<{
+        then: [];
+        else: [Yield<{ next: [{ z: number }]; back: [{ c: number }] }>];
+      }>
     ];
     const schema: ListSchema<null, Values, object, object> = [
       {
@@ -860,8 +894,8 @@ describe("nextState", () => {
                   },
                   {
                     yield: {
-                      next: () => [{ a: 1 }],
-                      back: () => [],
+                      next: () => [{ x: 1 }],
+                      back: () => [{ a: 1 }],
                     },
                   },
                 ],
@@ -873,8 +907,8 @@ describe("nextState", () => {
       },
       {
         yield: {
-          next: () => [{ b: 2 }],
-          back: () => [],
+          next: () => [{ y: 2 }],
+          back: () => [{ b: 2 }],
         },
       },
       {
@@ -884,8 +918,8 @@ describe("nextState", () => {
           else: [
             {
               yield: {
-                next: () => [{ c: 3 }],
-                back: () => [],
+                next: () => [{ z: 3 }],
+                back: () => [{ c: 3 }],
               },
             },
           ],
@@ -913,9 +947,12 @@ describe("nextState", () => {
       onYield,
       () => {}
     );
-    expect(onYield).toHaveBeenNthCalledWith(1, { a: 1 });
-    expect(onYield).toHaveBeenNthCalledWith(2, { b: 2 });
-    expect(onYield).toHaveBeenNthCalledWith(3, { c: 3 });
+    expect(onYield).toHaveBeenNthCalledWith(1, { x: 1 });
+    expect(onYield).toHaveBeenNthCalledWith(2, { y: 2 });
+    expect(onYield).toHaveBeenNthCalledWith(3, { z: 3 });
+    expect(onYield).not.toHaveBeenCalledWith({ a: 1 });
+    expect(onYield).not.toHaveBeenCalledWith({ b: 2 });
+    expect(onYield).not.toHaveBeenCalledWith({ c: 3 });
   });
 
   it("calls the onReturn callback with the appropriate values when a return is encountered", () => {
@@ -975,7 +1012,7 @@ describe("nextState", () => {
       () => {},
       onReturn
     );
-    expect(onReturn).toBeCalledWith({ a: 1, b: 2 });
+    expect(onReturn).toHaveBeenCalledWith({ a: 1, b: 2 });
   });
 
   it("doesn't navigate to any form that is after a return", () => {
@@ -1407,5 +1444,221 @@ describe("prevState", () => {
       },
     };
     expect(state).toEqual(expected);
+  });
+
+  it("calls the onYield callback with the appropriate values every time values are yielded until it reaches the start of the schema", () => {
+    type Values = [
+      Yield<{
+        next: [{ x: number }, { y: number }];
+        back: [{ a: number }, { b: number }];
+      }>,
+      Cond<{
+        then: [
+          Cond<{
+            then: [];
+            else: [
+              Yield<{
+                next: [{ z: number }];
+                back: [{ c: number }];
+              }>,
+              Loop<[Form<object>]>
+            ];
+          }>
+        ];
+        else: [];
+      }>
+    ];
+    const schema: ListSchema<null, Values, object, object> = [
+      {
+        yield: {
+          next: () => [{ x: 1 }, { y: 2 }],
+          back: () => [{ a: 1 }, { b: 2 }],
+        },
+      },
+      {
+        cond: {
+          if: () => true,
+          then: [
+            {
+              cond: {
+                if: () => false,
+                then: [],
+                else: [
+                  {
+                    yield: {
+                      next: () => [{ z: 3 }],
+                      back: () => [{ c: 3 }],
+                    },
+                  },
+                  {
+                    loop: {
+                      while: () => true,
+                      do: [
+                        {
+                          form: {
+                            values: () => ({}),
+                            render: () => null,
+                          },
+                        },
+                      ],
+                    },
+                  },
+                ],
+              },
+            },
+          ],
+          else: [],
+        },
+      },
+    ];
+    const onYield = vi.fn();
+    const current: State = {
+      points: [
+        { path: [{ type: "list", slot: 0 }], values: {} },
+        {
+          path: [
+            { type: "list", slot: 1 },
+            { type: "cond", path: "then", slot: 0 },
+            { type: "cond", path: "else", slot: 0 },
+          ],
+          values: {},
+        },
+        {
+          path: [
+            { type: "list", slot: 1 },
+            { type: "cond", path: "then", slot: 0 },
+            { type: "cond", path: "else", slot: 1 },
+            { type: "loop", slot: 0 },
+          ],
+          values: {},
+        },
+      ],
+      inputs: { type: "list", list: {} },
+    };
+    prevState<null, Values, object, object>(current, schema, {}, onYield);
+    expect(onYield).toHaveBeenNthCalledWith(1, { c: 3 });
+    expect(onYield).toHaveBeenNthCalledWith(2, { a: 1 });
+    expect(onYield).toHaveBeenNthCalledWith(3, { b: 2 });
+    expect(onYield).not.toHaveBeenCalledWith({ x: 1 });
+    expect(onYield).not.toHaveBeenCalledWith({ y: 2 });
+    expect(onYield).not.toHaveBeenCalledWith({ z: 3 });
+  });
+
+  it("calls the onYield callback with the appropriate values every time values are yielded until it reaches the previous form", () => {
+    type Values = [
+      Loop<
+        [
+          Cond<{
+            then: [
+              Form<object>,
+              Yield<{ next: [{ x: number }]; back: [{ a: number }] }>
+            ];
+            else: [];
+          }>
+        ]
+      >,
+      Yield<{ next: [{ y: number }]; back: [{ b: number }] }>,
+      Cond<{
+        then: [];
+        else: [
+          Yield<{ next: [{ z: number }]; back: [{ c: number }] }>,
+          Form<object>
+        ];
+      }>
+    ];
+    const schema: ListSchema<null, Values, object, object> = [
+      {
+        loop: {
+          while: () => false,
+          do: [
+            {
+              cond: {
+                if: () => true,
+                then: [
+                  {
+                    form: {
+                      values: () => ({}),
+                      render: () => null,
+                    },
+                  },
+                  {
+                    yield: {
+                      next: () => [{ x: 1 }],
+                      back: () => [{ a: 1 }],
+                    },
+                  },
+                ],
+                else: [],
+              },
+            },
+          ],
+        },
+      },
+      {
+        yield: {
+          next: () => [{ y: 2 }],
+          back: () => [{ b: 2 }],
+        },
+      },
+      {
+        cond: {
+          if: () => false,
+          then: [],
+          else: [
+            {
+              yield: {
+                next: () => [{ z: 3 }],
+                back: () => [{ c: 3 }],
+              },
+            },
+            {
+              form: {
+                values: () => ({}),
+                render: () => null,
+              },
+            },
+          ],
+        },
+      },
+    ];
+    const onYield = vi.fn();
+    const current: State = {
+      points: [
+        {
+          path: [
+            { type: "list", slot: 0 },
+            { type: "loop", slot: 0 },
+            { type: "cond", path: "then", slot: 1 },
+          ],
+          values: {},
+        },
+        {
+          path: [{ type: "list", slot: 1 }],
+          values: {},
+        },
+        {
+          path: [
+            { type: "list", slot: 2 },
+            { type: "cond", path: "else", slot: 0 },
+          ],
+          values: {},
+        },
+        {
+          path: [
+            { type: "list", slot: 2 },
+            { type: "cond", path: "else", slot: 1 },
+          ],
+          values: {},
+        },
+      ],
+      inputs: { type: "list", list: {} },
+    };
+    prevState<null, Values, object, object>(current, schema, {}, onYield);
+    expect(onYield).toHaveBeenNthCalledWith(1, { c: 3 });
+    expect(onYield).toHaveBeenNthCalledWith(2, { b: 2 });
+    expect(onYield).toHaveBeenNthCalledWith(3, { a: 1 });
+    expect(onYield).not.toHaveBeenCalledWith({ x: 1 });
+    expect(onYield).not.toHaveBeenCalledWith({ y: 2 });
+    expect(onYield).not.toHaveBeenCalledWith({ z: 3 });
   });
 });
