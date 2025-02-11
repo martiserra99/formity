@@ -133,7 +133,7 @@ export const mainSchema: Schema<MainValues> = [
               description="We would want to know a little bit more about you"
               fields={[
                 <Row
-                  key="name-surname"
+                  key="nameSurname"
                   items={[
                     <TextField key="name" name="name" label="Name" />,
                     <TextField key="surname" name="surname" label="Surname" />,

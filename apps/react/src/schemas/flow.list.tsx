@@ -27,7 +27,7 @@ export const listSchema: Schema<ListValues> = [
           surname: ["", []],
         }),
         render: ({ values, ...rest }) => (
-          <MultiStep step="name-surname" {...rest}>
+          <MultiStep step="nameSurname" {...rest}>
             <Step
               defaultValues={values}
               resolver={zodResolver(
@@ -48,7 +48,7 @@ export const listSchema: Schema<ListValues> = [
                 description="We would want to know your name"
                 fields={[
                   <Row
-                    key="name-surname"
+                    key="nameSurname"
                     items={[
                       <TextField key="name" name="name" label="Name" />,
                       <TextField
