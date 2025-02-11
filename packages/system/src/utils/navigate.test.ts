@@ -280,19 +280,27 @@ describe("initState", () => {
 
   it("calls the onYield callback with the appropriate values every time values are yielded until it reaches a form", () => {
     type Values = [
-      Yield<{ x: number }>,
+      Yield<{ next: [{ x: number }]; back: [] }>,
       Cond<{
         then: [
           Cond<{
             then: [];
-            else: [Yield<{ y: number }>, Loop<[Form<object>]>];
+            else: [
+              Yield<{ next: [{ y: number }]; back: [] }>,
+              Loop<[Form<object>]>
+            ];
           }>
         ];
         else: [];
       }>
     ];
     const schema: ListSchema<null, Values, object, object> = [
-      { yield: () => ({ x: 1 }) },
+      {
+        yield: {
+          next: () => [{ x: 1 }],
+          back: () => [],
+        },
+      },
       {
         cond: {
           if: () => true,
@@ -302,7 +310,12 @@ describe("initState", () => {
                 if: () => false,
                 then: [],
                 else: [
-                  { yield: () => ({ y: 2 }) },
+                  {
+                    yield: {
+                      next: () => [{ y: 2 }],
+                      back: () => [],
+                    },
+                  },
                   {
                     loop: {
                       while: () => true,
@@ -430,7 +443,7 @@ describe("initState", () => {
   });
 });
 
-describe("nextFlow", () => {
+describe("nextState", () => {
   it("navigates to the form that is next to the current one", () => {
     type Values = [Form<object>, Form<object>];
     const schema: ListSchema<null, Values, object, object> = [
@@ -630,9 +643,19 @@ describe("nextFlow", () => {
 
   it("calls the onYield callback with the appropriate values every time values are yielded until it reaches a form", () => {
     type Values = [
-      Loop<[Cond<{ then: [Form<object>, Yield<{ a: number }>]; else: [] }>]>,
-      Yield<{ b: number }>,
-      Cond<{ then: []; else: [Yield<{ c: number }>, Form<object>] }>
+      Loop<
+        [
+          Cond<{
+            then: [Form<object>, Yield<{ next: [{ a: number }]; back: [] }>];
+            else: [];
+          }>
+        ]
+      >,
+      Yield<{ next: [{ b: number }]; back: [] }>,
+      Cond<{
+        then: [];
+        else: [Yield<{ next: [{ c: number }]; back: [] }>, Form<object>];
+      }>
     ];
     const schema: ListSchema<null, Values, object, object> = [
       {
@@ -649,7 +672,12 @@ describe("nextFlow", () => {
                       render: () => null,
                     },
                   },
-                  { yield: () => ({ a: 1 }) },
+                  {
+                    yield: {
+                      next: () => [{ a: 1 }],
+                      back: () => [],
+                    },
+                  },
                 ],
                 else: [],
               },
@@ -657,13 +685,23 @@ describe("nextFlow", () => {
           ],
         },
       },
-      { yield: () => ({ b: 2 }) },
+      {
+        yield: {
+          next: () => [{ b: 2 }],
+          back: () => [],
+        },
+      },
       {
         cond: {
           if: () => false,
           then: [],
           else: [
-            { yield: () => ({ c: 3 }) },
+            {
+              yield: {
+                next: () => [{ c: 3 }],
+                back: () => [],
+              },
+            },
             {
               form: {
                 values: () => ({}),
@@ -702,9 +740,19 @@ describe("nextFlow", () => {
 
   it("calls the onYield callback with the appropriate values every time values are yielded until it reaches a return", () => {
     type Values = [
-      Loop<[Cond<{ then: [Form<object>, Yield<{ a: number }>]; else: [] }>]>,
-      Yield<{ b: number }>,
-      Cond<{ then: []; else: [Yield<{ c: number }>, Return<object>] }>
+      Loop<
+        [
+          Cond<{
+            then: [Form<object>, Yield<{ next: [{ a: number }]; back: [] }>];
+            else: [];
+          }>
+        ]
+      >,
+      Yield<{ next: [{ b: number }]; back: [] }>,
+      Cond<{
+        then: [];
+        else: [Yield<{ next: [{ c: number }]; back: [] }>, Return<object>];
+      }>
     ];
     const schema: ListSchema<null, Values, object, object> = [
       {
@@ -721,7 +769,12 @@ describe("nextFlow", () => {
                       render: () => null,
                     },
                   },
-                  { yield: () => ({ a: 1 }) },
+                  {
+                    yield: {
+                      next: () => [{ a: 1 }],
+                      back: () => [],
+                    },
+                  },
                 ],
                 else: [],
               },
@@ -729,12 +782,25 @@ describe("nextFlow", () => {
           ],
         },
       },
-      { yield: () => ({ b: 2 }) },
+      {
+        yield: {
+          next: () => [{ b: 2 }],
+          back: () => [],
+        },
+      },
       {
         cond: {
           if: () => false,
           then: [],
-          else: [{ yield: () => ({ c: 3 }) }, { return: () => ({}) }],
+          else: [
+            {
+              yield: {
+                next: () => [{ c: 3 }],
+                back: () => [],
+              },
+            },
+            { return: () => ({}) },
+          ],
         },
       },
     ];
@@ -766,9 +832,16 @@ describe("nextFlow", () => {
 
   it("calls the onYield callback with the appropriate values every time values are yielded until it reaches the end of the schema", () => {
     type Values = [
-      Loop<[Cond<{ then: [Form<object>, Yield<{ a: number }>]; else: [] }>]>,
-      Yield<{ b: number }>,
-      Cond<{ then: []; else: [Yield<{ c: number }>] }>
+      Loop<
+        [
+          Cond<{
+            then: [Form<object>, Yield<{ next: [{ a: number }]; back: [] }>];
+            else: [];
+          }>
+        ]
+      >,
+      Yield<{ next: [{ b: number }]; back: [] }>,
+      Cond<{ then: []; else: [Yield<{ next: [{ c: number }]; back: [] }>] }>
     ];
     const schema: ListSchema<null, Values, object, object> = [
       {
@@ -785,7 +858,12 @@ describe("nextFlow", () => {
                       render: () => null,
                     },
                   },
-                  { yield: () => ({ a: 1 }) },
+                  {
+                    yield: {
+                      next: () => [{ a: 1 }],
+                      back: () => [],
+                    },
+                  },
                 ],
                 else: [],
               },
@@ -793,12 +871,24 @@ describe("nextFlow", () => {
           ],
         },
       },
-      { yield: () => ({ b: 2 }) },
+      {
+        yield: {
+          next: () => [{ b: 2 }],
+          back: () => [],
+        },
+      },
       {
         cond: {
           if: () => false,
           then: [],
-          else: [{ yield: () => ({ c: 3 }) }],
+          else: [
+            {
+              yield: {
+                next: () => [{ c: 3 }],
+                back: () => [],
+              },
+            },
+          ],
         },
       },
     ];
@@ -1189,7 +1279,7 @@ describe("nextFlow", () => {
   });
 });
 
-describe("prevFlow", () => {
+describe("prevState", () => {
   it("navigates to the form that is previous to the current one", () => {
     type Values = [Form<object>, Form<object>];
     const schema: ListSchema<null, Values, object, object> = [
@@ -1213,7 +1303,12 @@ describe("prevFlow", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const state = prevState<null, Values, object, object>(current, schema, {});
+    const state = prevState<null, Values, object, object>(
+      current,
+      schema,
+      {},
+      () => {}
+    );
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
@@ -1235,7 +1330,12 @@ describe("prevFlow", () => {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
     };
-    const state = prevState<null, Values, object, object>(current, schema, {});
+    const state = prevState<null, Values, object, object>(
+      current,
+      schema,
+      {},
+      () => {}
+    );
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
@@ -1280,9 +1380,12 @@ describe("prevFlow", () => {
         },
       },
     };
-    const state = prevState<null, Values, object, object>(current, schema, {
-      b: 2,
-    });
+    const state = prevState<null, Values, object, object>(
+      current,
+      schema,
+      { b: 2 },
+      () => {}
+    );
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: {

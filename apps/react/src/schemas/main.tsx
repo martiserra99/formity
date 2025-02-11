@@ -29,9 +29,9 @@ import { Controller } from "../controller";
 
 export type MainValues = [
   Form<{ name: string; surname: string; age: number }>,
-  Yield<{ name: string; surname: string; age: number }>,
+  Yield<{ next: [{ name: string; surname: string; age: number }]; back: [] }>,
   Form<{ softwareDeveloper: boolean }>,
-  Yield<{ softwareDeveloper: boolean }>,
+  Yield<{ next: [{ softwareDeveloper: boolean }]; back: [] }>,
   Cond<{
     then: [
       Variables<{
@@ -39,7 +39,7 @@ export type MainValues = [
         questions: Record<string, string>;
       }>,
       Form<{ languages: string[] }>,
-      Yield<{ languages: string[] }>,
+      Yield<{ next: [{ languages: string[] }]; back: [] }>,
       Variables<{
         i: number;
         languagesRatings: { name: string; rating: string }[];
@@ -49,7 +49,7 @@ export type MainValues = [
           Variables<{ language: string }>,
           Variables<{ question: string }>,
           Form<{ rating: string }>,
-          Yield<{ rating: string }>,
+          Yield<{ next: [{ rating: string }]; back: [] }>,
           Variables<{
             i: number;
             languagesRatings: { name: string; rating: string }[];
@@ -65,7 +65,7 @@ export type MainValues = [
     ];
     else: [
       Form<{ interested: string }>,
-      Yield<{ interested: string }>,
+      Yield<{ next: [{ interested: string }]; back: [] }>,
       Return<{
         fullName: string;
         age: number;
@@ -126,11 +126,16 @@ export const mainSchema: Schema<MainValues> = [
     },
   },
   {
-    yield: ({ name, surname, age }) => ({
-      name,
-      surname,
-      age,
-    }),
+    yield: {
+      next: ({ name, surname, age }) => [
+        {
+          name,
+          surname,
+          age,
+        },
+      ],
+      back: () => [],
+    },
   },
   {
     form: {
@@ -166,9 +171,10 @@ export const mainSchema: Schema<MainValues> = [
     },
   },
   {
-    yield: ({ softwareDeveloper }) => ({
-      softwareDeveloper,
-    }),
+    yield: {
+      next: ({ softwareDeveloper }) => [{ softwareDeveloper }],
+      back: () => [],
+    },
   },
   {
     cond: {
@@ -225,9 +231,10 @@ export const mainSchema: Schema<MainValues> = [
           },
         },
         {
-          yield: ({ languages }) => ({
-            languages,
-          }),
+          yield: {
+            next: ({ languages }) => [{ languages }],
+            back: () => [],
+          },
         },
         {
           variables: () => ({
@@ -298,9 +305,10 @@ export const mainSchema: Schema<MainValues> = [
                 },
               },
               {
-                yield: ({ rating }) => ({
-                  rating,
-                }),
+                yield: {
+                  next: ({ rating }) => [{ rating }],
+                  back: () => [],
+                },
               },
               {
                 variables: ({ i, languagesRatings, language, rating }) => ({
@@ -378,9 +386,10 @@ export const mainSchema: Schema<MainValues> = [
           },
         },
         {
-          yield: ({ interested }) => ({
-            interested,
-          }),
+          yield: {
+            next: ({ interested }) => [{ interested }],
+            back: () => [],
+          },
         },
         {
           return: ({ name, surname, age, softwareDeveloper, interested }) => ({

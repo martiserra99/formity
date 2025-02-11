@@ -176,7 +176,7 @@ function _nextState(
   const point = state.points[state.points.length - 1];
   const points = advanceForm(schema, point, values, onYield, onReturn);
   const inputs = updateInputs(state, schema, values);
-  return { points, inputs };
+  return { points: [...state.points, ...points], inputs };
 }
 
 function advanceForm(
@@ -305,7 +305,7 @@ function _prevState(
   values: object,
   onYield: OnYield
 ): State {
-  const points = [...state.points];
+  const points = state.points.slice(0, -1);
   while (points.length > 0) {
     const currPoint = points[points.length - 1];
     const currPointSchema = FlowSchemaUtils.find(schema, currPoint.path);
