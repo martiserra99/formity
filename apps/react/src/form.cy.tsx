@@ -162,30 +162,30 @@ describe("<Formity />", () => {
     cy.get("[data-cy=input]").eq(1).type("Doe");
     cy.get("[data-cy=input]").eq(2).type("{backspace}5");
     cy.get("[data-cy=button]").click();
-    cy.get("@onYieldSpy").should("have.been.calledWith", {
+    cy.get("@onYieldSpy").should("have.been.calledWithExactly", {
       name: "John",
       surname: "Doe",
       age: 25,
     });
     cy.get("[data-cy=input]").eq(0).click();
     cy.get("[data-cy=button]").click();
-    cy.get("@onYieldSpy").should("have.been.calledWith", {
+    cy.get("@onYieldSpy").should("have.been.calledWithExactly", {
       softwareDeveloper: true,
     });
     cy.get("[data-cy=input]").eq(0).click();
     cy.get("[data-cy=input]").eq(1).click();
     cy.get("[data-cy=button]").click();
-    cy.get("@onYieldSpy").should("have.been.calledWith", {
+    cy.get("@onYieldSpy").should("have.been.calledWithExactly", {
       languages: ["javascript", "python"],
     });
     cy.get("[data-cy=input]").eq(0).click();
     cy.get("[data-cy=button]").click();
-    cy.get("@onYieldSpy").should("have.been.calledWith", {
+    cy.get("@onYieldSpy").should("have.been.calledWithExactly", {
       rating: "love-it",
     });
     cy.get("[data-cy=input]").eq(1).click();
     cy.get("[data-cy=button]").click();
-    cy.get("@onYieldSpy").should("have.been.calledWith", {
+    cy.get("@onYieldSpy").should("have.been.calledWithExactly", {
       rating: "like-it-a-lot",
     });
   });
@@ -206,7 +206,7 @@ describe("<Formity />", () => {
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=input]").eq(1).click();
     cy.get("[data-cy=button]").click();
-    cy.get("@onReturn").should("have.been.calledWith", {
+    cy.get("@onReturn").should("have.been.calledOnceWithExactly", {
       fullName: "John Doe",
       age: 25,
       softwareDeveloper: true,
@@ -284,7 +284,7 @@ describe("<Formity />", () => {
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=button]").click();
-    cy.get("@onReturn").should("have.been.calledWith", {
+    cy.get("@onReturn").should("have.been.calledOnceWithExactly", {
       fullName: "John Doe",
       age: 25,
       softwareDeveloper: true,
@@ -308,7 +308,7 @@ describe("<Formity />", () => {
     cy.get("[data-cy=input]").eq(0).type("John");
     cy.get("[data-cy=input]").eq(1).type("Doe");
     cy.get("[data-cy=button]").click();
-    cy.get("@onReturn").should("have.been.calledWith", {
+    cy.get("@onReturn").should("have.been.calledOnceWithExactly", {
       fullName: "John Doe",
     });
   });
@@ -340,7 +340,7 @@ describe("<Formity />", () => {
     cy.get("[data-cy=input]").eq(0).click();
     cy.get("[data-cy=input]").eq(1).click();
     cy.get("[data-cy=button]").click();
-    cy.get("@onReturn").should("have.been.calledWith", {
+    cy.get("@onReturn").should("have.been.calledOnceWithExactly", {
       softwareDeveloper: true,
       languages: ["javascript", "python"],
     });
@@ -367,7 +367,7 @@ describe("<Formity />", () => {
     );
     cy.get("[data-cy=input]").eq(2).click();
     cy.get("[data-cy=button]").click();
-    cy.get("@onReturn").should("have.been.calledWith", {
+    cy.get("@onReturn").should("have.been.calledOnceWithExactly", {
       languagesRatings: [
         { name: "javascript", rating: "love-it" },
         { name: "python", rating: "like-it-a-lot" },
@@ -410,7 +410,7 @@ describe("<Formity />", () => {
     cy.get("[data-cy=heading]").should("have.text", "Why are you not sure?");
     cy.get("[data-cy=input]").type("Because it takes time");
     cy.get("[data-cy=button]").click();
-    cy.get("@onReturn").should("have.been.calledWith", {
+    cy.get("@onReturn").should("have.been.calledOnceWithExactly", {
       interested: "not-sure",
       whyNotSure: "Because it takes time",
     });
