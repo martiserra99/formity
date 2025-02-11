@@ -155,74 +155,6 @@ describe("<Formity />", () => {
     cy.get("[data-cy=button]").click();
   });
 
-  it("invokes the onYield callback function every time the multi-step form yields values", () => {
-    const onYieldSpy = cy.spy().as("onYieldSpy");
-    cy.mount(<Form<MainValues> schema={mainSchema} onYield={onYieldSpy} />);
-    cy.get("[data-cy=input]").eq(0).type("John");
-    cy.get("[data-cy=input]").eq(1).type("Doe");
-    cy.get("[data-cy=input]").eq(2).type("{backspace}5");
-    cy.get("[data-cy=button]").click();
-    cy.get("@onYieldSpy").should("have.been.calledWithExactly", {
-      name: "John",
-      surname: "Doe",
-      age: 25,
-    });
-    cy.get("[data-cy=input]").eq(0).click();
-    cy.get("[data-cy=button]").click();
-    cy.get("@onYieldSpy").should("have.been.calledWithExactly", {
-      softwareDeveloper: true,
-    });
-    cy.get("[data-cy=input]").eq(0).click();
-    cy.get("[data-cy=input]").eq(1).click();
-    cy.get("[data-cy=button]").click();
-    cy.get("@onYieldSpy").should("have.been.calledWithExactly", {
-      languages: ["javascript", "python"],
-    });
-    cy.get("[data-cy=input]").eq(0).click();
-    cy.get("[data-cy=button]").click();
-    cy.get("@onYieldSpy").should("have.been.calledWithExactly", {
-      rating: "love-it",
-    });
-    cy.get("[data-cy=input]").eq(1).click();
-    cy.get("[data-cy=button]").click();
-    cy.get("@onYieldSpy").should("have.been.calledWithExactly", {
-      rating: "like-it-a-lot",
-    });
-  });
-
-  it("invokes the onReturn callback function when the multi-step form returns values", () => {
-    const onReturn = cy.spy().as("onReturn");
-    cy.mount(<Form<MainValues> schema={mainSchema} onReturn={onReturn} />);
-    cy.get("[data-cy=input]").eq(0).type("John");
-    cy.get("[data-cy=input]").eq(1).type("Doe");
-    cy.get("[data-cy=input]").eq(2).type("{backspace}5");
-    cy.get("[data-cy=button]").click();
-    cy.get("[data-cy=input]").eq(0).click();
-    cy.get("[data-cy=button]").click();
-    cy.get("[data-cy=input]").eq(0).click();
-    cy.get("[data-cy=input]").eq(1).click();
-    cy.get("[data-cy=button]").click();
-    cy.get("[data-cy=input]").eq(0).click();
-    cy.get("[data-cy=button]").click();
-    cy.get("[data-cy=input]").eq(1).click();
-    cy.get("[data-cy=button]").click();
-    cy.get("@onReturn").should("have.been.calledOnceWithExactly", {
-      fullName: "John Doe",
-      age: 25,
-      softwareDeveloper: true,
-      languages: [
-        {
-          name: "javascript",
-          rating: "love-it",
-        },
-        {
-          name: "python",
-          rating: "like-it-a-lot",
-        },
-      ],
-    });
-  });
-
   it("navigates to the previous steps of the multi-step form", () => {
     cy.mount(<Form<MainValues> schema={mainSchema} />);
     cy.get("[data-cy=input]").eq(0).type("John");
@@ -258,6 +190,131 @@ describe("<Formity />", () => {
     );
     cy.get("[data-cy=back]").click();
     cy.get("[data-cy=heading]").should("have.text", "Tell us about yourself");
+  });
+
+  it("invokes the onYield callback function every time the multi-step form yields values", () => {
+    const onYieldSpy = cy.spy().as("onYieldSpy");
+    cy.mount(<Form<MainValues> schema={mainSchema} onYield={onYieldSpy} />);
+    cy.get("[data-cy=input]").eq(0).type("John");
+    cy.get("[data-cy=input]").eq(1).type("Doe");
+    cy.get("[data-cy=input]").eq(2).type("{backspace}5");
+    cy.get("[data-cy=button]").click();
+    cy.then(() => {
+      expect(onYieldSpy.getCall(0)).to.have.been.calledWithExactly({
+        type: "next",
+        data: { name: "John" },
+      });
+      expect(onYieldSpy.getCall(1)).to.have.been.calledWithExactly({
+        type: "next",
+        data: { surname: "Doe" },
+      });
+      expect(onYieldSpy.getCall(2)).to.have.been.calledWithExactly({
+        type: "next",
+        data: { age: 25 },
+      });
+    });
+    cy.get("[data-cy=input]").eq(0).click();
+    cy.get("[data-cy=button]").click();
+    cy.then(() => {
+      expect(onYieldSpy.getCall(3)).to.have.been.calledWithExactly({
+        type: "next",
+        data: { softwareDeveloper: true },
+      });
+    });
+    cy.get("[data-cy=input]").eq(0).click();
+    cy.get("[data-cy=input]").eq(1).click();
+    cy.get("[data-cy=button]").click();
+    cy.then(() => {
+      expect(onYieldSpy.getCall(4)).to.have.been.calledWithExactly({
+        type: "next",
+        data: { languages: ["javascript", "python"] },
+      });
+    });
+    cy.get("[data-cy=input]").eq(0).click();
+    cy.get("[data-cy=button]").click();
+    cy.then(() => {
+      expect(onYieldSpy.getCall(5)).to.have.been.calledWithExactly({
+        type: "next",
+        data: { rating: "love-it" },
+      });
+    });
+    cy.get("[data-cy=input]").eq(1).click();
+    cy.get("[data-cy=button]").click();
+    cy.then(() => {
+      expect(onYieldSpy.getCall(6)).to.have.been.calledWithExactly({
+        type: "next",
+        data: { rating: "like-it-a-lot" },
+      });
+    });
+    cy.get("[data-cy=back]").click();
+    cy.then(() => {
+      expect(onYieldSpy.getCall(7)).to.have.been.calledWithExactly({
+        type: "back",
+        data: { rating: "love-it" },
+      });
+    });
+    cy.get("[data-cy=back]").click();
+    cy.then(() => {
+      expect(onYieldSpy.getCall(8)).to.have.been.calledWithExactly({
+        type: "back",
+        data: { languages: ["javascript", "python"] },
+      });
+    });
+    cy.get("[data-cy=back]").click();
+    cy.then(() => {
+      expect(onYieldSpy.getCall(9)).to.have.been.calledWithExactly({
+        type: "back",
+        data: { softwareDeveloper: true },
+      });
+    });
+    cy.get("[data-cy=back]").click();
+    cy.then(() => {
+      expect(onYieldSpy.getCall(10)).to.have.been.calledWithExactly({
+        type: "back",
+        data: { name: "John" },
+      });
+      expect(onYieldSpy.getCall(11)).to.have.been.calledWithExactly({
+        type: "back",
+        data: { surname: "Doe" },
+      });
+      expect(onYieldSpy.getCall(12)).to.have.been.calledWithExactly({
+        type: "back",
+        data: { age: 25 },
+      });
+    });
+  });
+
+  it("invokes the onReturn callback function when the multi-step form returns values", () => {
+    const onReturn = cy.spy().as("onReturn");
+    cy.mount(<Form<MainValues> schema={mainSchema} onReturn={onReturn} />);
+    cy.get("[data-cy=input]").eq(0).type("John");
+    cy.get("[data-cy=input]").eq(1).type("Doe");
+    cy.get("[data-cy=input]").eq(2).type("{backspace}5");
+    cy.get("[data-cy=button]").click();
+    cy.get("[data-cy=input]").eq(0).click();
+    cy.get("[data-cy=button]").click();
+    cy.get("[data-cy=input]").eq(0).click();
+    cy.get("[data-cy=input]").eq(1).click();
+    cy.get("[data-cy=button]").click();
+    cy.get("[data-cy=input]").eq(0).click();
+    cy.get("[data-cy=button]").click();
+    cy.get("[data-cy=input]").eq(1).click();
+    cy.get("[data-cy=button]").click();
+    cy.get("@onReturn").should("have.been.calledOnceWithExactly", {
+      fullName: "John Doe",
+      age: 25,
+      softwareDeveloper: true,
+      languages: [
+        {
+          name: "javascript",
+          rating: "love-it",
+        },
+        {
+          name: "python",
+          rating: "like-it-a-lot",
+        },
+      ],
+    });
   });
 
   it("saves the values previously introduced in each form of the multi-step form", () => {

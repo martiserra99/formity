@@ -29,9 +29,23 @@ import { Controller } from "../controller";
 
 export type MainValues = [
   Form<{ name: string; surname: string; age: number }>,
-  Yield<{ next: [{ name: string; surname: string; age: number }]; back: [] }>,
+  Yield<{
+    next: [
+      { type: "next"; data: { name: string } },
+      { type: "next"; data: { surname: string } },
+      { type: "next"; data: { age: number } }
+    ];
+    back: [
+      { type: "back"; data: { name: string } },
+      { type: "back"; data: { surname: string } },
+      { type: "back"; data: { age: number } }
+    ];
+  }>,
   Form<{ softwareDeveloper: boolean }>,
-  Yield<{ next: [{ softwareDeveloper: boolean }]; back: [] }>,
+  Yield<{
+    next: [{ type: "next"; data: { softwareDeveloper: boolean } }];
+    back: [{ type: "back"; data: { softwareDeveloper: boolean } }];
+  }>,
   Cond<{
     then: [
       Variables<{
@@ -39,7 +53,10 @@ export type MainValues = [
         questions: Record<string, string>;
       }>,
       Form<{ languages: string[] }>,
-      Yield<{ next: [{ languages: string[] }]; back: [] }>,
+      Yield<{
+        next: [{ type: "next"; data: { languages: string[] } }];
+        back: [{ type: "back"; data: { languages: string[] } }];
+      }>,
       Variables<{
         i: number;
         languagesRatings: { name: string; rating: string }[];
@@ -49,7 +66,10 @@ export type MainValues = [
           Variables<{ language: string }>,
           Variables<{ question: string }>,
           Form<{ rating: string }>,
-          Yield<{ next: [{ rating: string }]; back: [] }>,
+          Yield<{
+            next: [{ type: "next"; data: { rating: string } }];
+            back: [{ type: "back"; data: { rating: string } }];
+          }>,
           Variables<{
             i: number;
             languagesRatings: { name: string; rating: string }[];
@@ -65,7 +85,10 @@ export type MainValues = [
     ];
     else: [
       Form<{ interested: string }>,
-      Yield<{ next: [{ interested: string }]; back: [] }>,
+      Yield<{
+        next: [{ type: "next"; data: { interested: string } }];
+        back: [{ type: "back"; data: { interested: string } }];
+      }>,
       Return<{
         fullName: string;
         age: number;
@@ -128,13 +151,15 @@ export const mainSchema: Schema<MainValues> = [
   {
     yield: {
       next: ({ name, surname, age }) => [
-        {
-          name,
-          surname,
-          age,
-        },
+        { type: "next", data: { name } },
+        { type: "next", data: { surname } },
+        { type: "next", data: { age } },
       ],
-      back: () => [],
+      back: ({ name, surname, age }) => [
+        { type: "back", data: { name } },
+        { type: "back", data: { surname } },
+        { type: "back", data: { age } },
+      ],
     },
   },
   {
@@ -172,8 +197,12 @@ export const mainSchema: Schema<MainValues> = [
   },
   {
     yield: {
-      next: ({ softwareDeveloper }) => [{ softwareDeveloper }],
-      back: () => [],
+      next: ({ softwareDeveloper }) => [
+        { type: "next", data: { softwareDeveloper } },
+      ],
+      back: ({ softwareDeveloper }) => [
+        { type: "back", data: { softwareDeveloper } },
+      ],
     },
   },
   {
@@ -232,8 +261,8 @@ export const mainSchema: Schema<MainValues> = [
         },
         {
           yield: {
-            next: ({ languages }) => [{ languages }],
-            back: () => [],
+            next: ({ languages }) => [{ type: "next", data: { languages } }],
+            back: ({ languages }) => [{ type: "back", data: { languages } }],
           },
         },
         {
@@ -306,8 +335,8 @@ export const mainSchema: Schema<MainValues> = [
               },
               {
                 yield: {
-                  next: ({ rating }) => [{ rating }],
-                  back: () => [],
+                  next: ({ rating }) => [{ type: "next", data: { rating } }],
+                  back: ({ rating }) => [{ type: "back", data: { rating } }],
                 },
               },
               {
@@ -387,8 +416,8 @@ export const mainSchema: Schema<MainValues> = [
         },
         {
           yield: {
-            next: ({ interested }) => [{ interested }],
-            back: () => [],
+            next: ({ interested }) => [{ type: "next", data: { interested } }],
+            back: ({ interested }) => [{ type: "back", data: { interested } }],
           },
         },
         {
