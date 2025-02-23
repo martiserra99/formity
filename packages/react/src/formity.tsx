@@ -35,7 +35,7 @@ interface FormityProps<T extends Values, U extends object, V extends object> {
   initialState?: State;
 }
 
-export default function Formity<
+export function Formity<
   T extends Values,
   U extends object = object,
   V extends object = object
@@ -46,7 +46,7 @@ export default function Formity<
   onYield = () => {},
   onReturn = () => {},
   initialState,
-}: FormityProps<T, U, V>) {
+}: FormityProps<T, U, V>): React.ReactNode {
   const [state, setState] = useState<State>(() => {
     if (initialState) return initialState;
     return initState(schema, inputs, onYield);

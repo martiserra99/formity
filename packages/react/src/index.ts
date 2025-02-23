@@ -1,4 +1,4 @@
-export { default as Formity } from "./formity";
+export { Formity } from "./formity";
 export type { Schema } from "./schema";
 export type { Values } from "@formity/system";
 export type { OnYield, OnReturn } from "@formity/system";

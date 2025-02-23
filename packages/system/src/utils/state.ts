@@ -33,10 +33,13 @@ function _getState(state: State, schema: ListSchema, values: object): State {
   const point = state.points[state.points.length - 1];
   const formSchema = FlowSchemaUtils.find(schema, point.path) as FormSchema;
   const formValues = formSchema["form"]["values"](point.values);
-  let currInputs: FlowInputs = state.inputs;
+  let inputs: FlowInputs = state.inputs;
   for (const [name, value] of Object.entries(values)) {
-    const keys = formValues[name as keyof typeof formValues][1];
-    currInputs = FlowInputsUtils.set(currInputs, point.path, name, keys, value);
+    if (name in formValues) {
+      const keys = formValues[name][1];
+      const path = point.path;
+      inputs = FlowInputsUtils.set(inputs, path, name, keys, value);
+    }
   }
-  return { points: state.points, inputs: currInputs as ListInputs };
+  return { points: state.points, inputs: inputs as ListInputs };
 }
