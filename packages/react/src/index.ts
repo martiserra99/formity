@@ -14,3 +14,19 @@ export type {
 } from "@formity/system";
 export type { OnNext, OnBack, GetState, SetState } from "@formity/system";
 export type { State } from "@formity/system";
+export type { Point } from "@formity/system";
+export type { Position } from "@formity/system";
+export type {
+  ListPosition,
+  CondPosition,
+  LoopPosition,
+  SwitchPosition,
+} from "@formity/system";
+export type { ItemInputs, FlowInputs } from "@formity/system";
+export type {
+  ListInputs,
+  CondInputs,
+  LoopInputs,
+  SwitchInputs,
+} from "@formity/system";
+export type { FormInputs, NameInputs } from "@formity/system";

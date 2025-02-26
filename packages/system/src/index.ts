@@ -14,6 +14,22 @@ export type {
 } from "./types/utils";
 export type { OnNext, OnBack, GetState, SetState } from "./types/controls";
 export type { State } from "./types/state/state";
+export type { Point } from "./types/state/point";
+export type { Position } from "./types/state/position";
+export type {
+  ListPosition,
+  CondPosition,
+  LoopPosition,
+  SwitchPosition,
+} from "./types/state/position";
+export type { ItemInputs, FlowInputs } from "./types/state/inputs";
+export type {
+  ListInputs,
+  CondInputs,
+  LoopInputs,
+  SwitchInputs,
+} from "./types/state/inputs";
+export type { FormInputs, NameInputs } from "./types/state/inputs";
 
 export { initState, nextState, prevState } from "./utils/navigate";
 export { getForm } from "./utils/form";
