@@ -1,5 +1,13 @@
 # @formity/react
 
+## 0.4.1
+
+### Patch Changes
+
+- Allow users to submit values that are not handled by the values function (it is needed if we want to jump to specific steps)
+- Updated dependencies
+  - @formity/system@0.4.1
+
 ## 0.4.0
 
 ### Minor Changes
