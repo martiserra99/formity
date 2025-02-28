@@ -28,10 +28,7 @@ export function is(schema: ItemSchema): schema is FlowSchema {
  * @param values An object containing the generated values within the multi-step form.
  * @returns A `Position` object representing the initial position, or `null` if there is no initial position.
  */
-export function into(
-  schema: FlowSchema,
-  values: Record<string, unknown>
-): Position | null {
+export function into(schema: FlowSchema, values: object): Position | null {
   if (ListSchemaUtils.is(schema)) {
     return ListSchemaUtils.into(schema);
   }
@@ -58,7 +55,7 @@ export function into(
 export function next(
   schema: FlowSchema,
   position: Position,
-  values: Record<string, unknown>
+  values: object
 ): Position | null {
   if (ListSchemaUtils.is(schema)) {
     return ListSchemaUtils.next(schema, position);

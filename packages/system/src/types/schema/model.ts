@@ -3,14 +3,14 @@ import type { OnNext, OnBack, GetState, SetState } from "../controls";
 /**
  * Defines the structure and behavior of a multi-step form.
  */
-export type Schema<R = unknown> = ListSchema<R>;
+export type Schema<T = unknown> = ListSchema<T>;
 
 /**
  * Defines the structure and behavior of any element in a multi-step form.
  */
-export type ItemSchema<R = unknown> =
-  | FlowSchema<R>
-  | FormSchema<R>
+export type ItemSchema<T = unknown> =
+  | FlowSchema<T>
+  | FormSchema<T>
   | YieldSchema
   | ReturnSchema
   | VariablesSchema;
@@ -18,68 +18,66 @@ export type ItemSchema<R = unknown> =
 /**
  * Defines the structure and behavior of any flow element in a multi-step form.
  */
-export type FlowSchema<R = unknown> =
-  | ListSchema<R>
-  | CondSchema<R>
-  | LoopSchema<R>
-  | SwitchSchema<R>;
+export type FlowSchema<T = unknown> =
+  | ListSchema<T>
+  | CondSchema<T>
+  | LoopSchema<T>
+  | SwitchSchema<T>;
 
 /**
  * Defines the structure and behavior of a list element in a multi-step form.
  */
-export type ListSchema<R = unknown> = ItemSchema<R>[];
+export type ListSchema<T = unknown> = ItemSchema<T>[];
 
 /**
  * Defines the structure and behavior of a condition element in a multi-step form.
  */
-export type CondSchema<R = unknown> = {
+export type CondSchema<T = unknown> = {
   cond: {
-    if: (inputs: Record<string, unknown>) => boolean;
-    then: ListSchema<R>;
-    else: ListSchema<R>;
+    if: (inputs: object) => boolean;
+    then: ListSchema<T>;
+    else: ListSchema<T>;
   };
 };
 
 /**
  * Defines the structure and behavior of a loop element in a multi-step form.
  */
-export type LoopSchema<R = unknown> = {
+export type LoopSchema<T = unknown> = {
   loop: {
-    while: (inputs: Record<string, unknown>) => boolean;
-    do: ListSchema<R>;
+    while: (inputs: object) => boolean;
+    do: ListSchema<T>;
   };
 };
 
 /**
  * Defines the structure and behavior of a switch element in a multi-step form.
  */
-export type SwitchSchema<R = unknown> = {
+export type SwitchSchema<T = unknown> = {
   switch: {
     branches: {
-      case: (inputs: Record<string, unknown>) => boolean;
-      then: ListSchema<R>;
+      case: (inputs: object) => boolean;
+      then: ListSchema<T>;
     }[];
-    default: ListSchema<R>;
+    default: ListSchema<T>;
   };
 };
 
 /**
  * Defines the structure and behavior of a form element in a multi-step form.
  */
-export type FormSchema<R = unknown> = {
+export type FormSchema<T = unknown> = {
   form: {
-    values: (
-      inputs: Record<string, unknown>
-    ) => Record<string, [unknown, PropertyKey[]]>;
+    values: (inputs: object) => Record<string, [unknown, PropertyKey[]]>;
     render: (args: {
-      inputs: Record<string, unknown>;
-      values: Record<string, unknown>;
-      params: Record<string, unknown>;
+      inputs: object;
+      values: object;
+      params: object;
       onNext: OnNext;
       onBack: OnBack;
       getState: GetState;
       setState: SetState;
-    }) => R;
+    }) => T;
   };
 };
 
@@ -88,8 +86,8 @@ export type FormSchema<R = unknown> = {
  */
 export type YieldSchema = {
   yield: {
-    next: (inputs: Record<string, unknown>) => unknown[];
-    back: (inputs: Record<string, unknown>) => unknown[];
+    next: (inputs: object) => object[];
+    back: (inputs: object) => object[];
   };
 };
 
@@ -97,12 +95,12 @@ export type YieldSchema = {
  * Defines the structure and behavior of a return element in a multi-step form.
  */
 export type ReturnSchema = {
-  return: (inputs: Record<string, unknown>) => unknown;
+  return: (inputs: object) => object;
 };
 
 /**
  * Defines the structure and behavior of a variables element in a multi-step form.
  */
 export type VariablesSchema = {
-  variables: (inputs: Record<string, unknown>) => Record<string, unknown>;
+  variables: (inputs: object) => object;
 };

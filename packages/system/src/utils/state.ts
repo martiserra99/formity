@@ -20,22 +20,14 @@ import * as FlowInputsUtils from "./inputs/flow";
 export function getState<
   R,
   V extends Values,
-  I extends Record<string, unknown>,
-  P extends Record<string, unknown>
->(
-  state: State,
-  schema: TypedSchema<R, V, I, P>,
-  values: Record<string, unknown>
-): State {
+  I extends object,
+  P extends object
+>(state: State, schema: TypedSchema<R, V, I, P>, values: object): State {
   const _schema = schema as Schema;
   return _getState(state, _schema, values);
 }
 
-function _getState(
-  state: State,
-  schema: Schema,
-  values: Record<string, unknown>
-): State {
+function _getState(state: State, schema: Schema, values: object): State {
   const point = state.points[state.points.length - 1];
   const formSchema = FlowSchemaUtils.find(schema, point.path) as FormSchema;
   const formValues = formSchema["form"]["values"](point.values);

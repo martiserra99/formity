@@ -37,7 +37,7 @@ export type Switch<
 /**
  * Utility type that defines the values of a form element in a multi-step form.
  */
-export type Form<Values extends Record<string, unknown>> = {
+export type Form<Values extends object> = {
   type: "form";
   form: Values;
 };
@@ -45,7 +45,7 @@ export type Form<Values extends Record<string, unknown>> = {
 /**
  * Utility type that defines the values of a yield element in a multi-step form.
  */
-export type Yield<Values extends { next: unknown[]; back: unknown[] }> = {
+export type Yield<Values extends { next: object[]; back: object[] }> = {
   type: "yield";
   yield: {
     next: Values["next"];
@@ -56,7 +56,7 @@ export type Yield<Values extends { next: unknown[]; back: unknown[] }> = {
 /**
  * Utility type that defines the values of a return element in a multi-step form.
  */
-export type Return<Values> = {
+export type Return<Values extends object> = {
   type: "return";
   return: Values;
 };
@@ -64,7 +64,7 @@ export type Return<Values> = {
 /**
  * Utility type that defines the values of a variables element in a multi-step form.
  */
-export type Variables<Values extends Record<string, unknown>> = {
+export type Variables<Values extends object> = {
   type: "variables";
   variables: Values;
 };

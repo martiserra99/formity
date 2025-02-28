@@ -25,8 +25,8 @@ import * as FlowInputsUtils from "./inputs/flow";
 export function getForm<
   R,
   V extends Values,
-  I extends Record<string, unknown>,
-  P extends Record<string, unknown>
+  I extends object,
+  P extends object
 >(
   state: State,
   schema: TypedSchema<R, V, I, P>,
@@ -37,7 +37,7 @@ export function getForm<
   setState: SetState
 ): R {
   const _schema = schema as Schema;
-  const _params = params as Record<string, unknown>;
+  const _params = params as object;
   return _getForm(
     state,
     _schema,
@@ -52,7 +52,7 @@ export function getForm<
 function _getForm(
   state: State,
   schema: Schema,
-  params: Record<string, unknown>,
+  params: object,
   onNext: OnNext,
   onBack: OnBack,
   getState: GetState,

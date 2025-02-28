@@ -18,10 +18,7 @@ export function is(schema: ItemSchema): schema is CondSchema {
  * @param values An object containing the generated values within the multi-step form.
  * @returns A `Position` object representing the initial position, or `null` if there is no initial position.
  */
-export function into(
-  schema: CondSchema,
-  values: Record<string, unknown>
-): Position | null {
+export function into(schema: CondSchema, values: object): Position | null {
   if (schema.cond.if(values)) {
     if (schema.cond.then.length > 0) {
       return { type: "cond", path: "then", slot: 0 };

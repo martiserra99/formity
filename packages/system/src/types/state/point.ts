@@ -8,5 +8,5 @@ import type { Position } from "./position";
  */
 export type Point = {
   path: Position[];
-  values: Record<string, unknown>;
+  values: object;
 };
