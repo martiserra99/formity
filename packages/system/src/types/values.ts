@@ -60,7 +60,7 @@ export type SwitchValues = {
  */
 export type FormValues = {
   type: "form";
-  form: object;
+  form: Record<string, unknown>;
 };
 
 /**
@@ -69,8 +69,8 @@ export type FormValues = {
 export type YieldValues = {
   type: "yield";
   yield: {
-    next: object[];
-    back: object[];
+    next: unknown[];
+    back: unknown[];
   };
 };
 
@@ -79,7 +79,7 @@ export type YieldValues = {
  */
 export type ReturnValues = {
   type: "return";
-  return: object;
+  return: unknown;
 };
 
 /**
@@ -87,5 +87,5 @@ export type ReturnValues = {
  */
 export type VariablesValues = {
   type: "variables";
-  variables: object;
+  variables: Record<string, unknown>;
 };

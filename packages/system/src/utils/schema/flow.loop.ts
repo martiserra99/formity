@@ -18,7 +18,10 @@ export function is(schema: ItemSchema): schema is LoopSchema {
  * @param values An object containing the generated values within the multi-step form.
  * @returns A `Position` object representing the initial position, or `null` if there is no initial position.
  */
-export function into(schema: LoopSchema, values: object): Position | null {
+export function into(
+  schema: LoopSchema,
+  values: Record<string, unknown>
+): Position | null {
   if (schema.loop.while(values)) {
     if (schema.loop.do.length > 0) {
       return { type: "loop", slot: 0 };
@@ -38,7 +41,7 @@ export function into(schema: LoopSchema, values: object): Position | null {
 export function next(
   schema: LoopSchema,
   position: Position,
-  values: object
+  values: Record<string, unknown>
 ): Position | null {
   const { slot } = position as LoopPosition;
   if (slot < schema.loop.do.length - 1) {

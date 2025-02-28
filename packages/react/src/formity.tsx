@@ -24,7 +24,11 @@ import type { Schema } from "./schema";
  * @param onReturn Callback function invoked when the multi-step form returns values.
  * @param initialState The initial state of the multi-step form.
  */
-interface FormityProps<V extends Values, I extends object, P extends object> {
+interface FormityProps<
+  V extends Values,
+  I extends Record<string, unknown>,
+  P extends Record<string, unknown>
+> {
   schema: Schema<V, I, P>;
   inputs?: I;
   params?: P;
@@ -38,8 +42,8 @@ interface FormityProps<V extends Values, I extends object, P extends object> {
  */
 export function Formity<
   V extends Values,
-  I extends object = object,
-  P extends object = object
+  I extends Record<string, unknown> = Record<string, unknown>,
+  P extends Record<string, unknown> = Record<string, unknown>
 >({
   schema,
   inputs = {} as I,
@@ -54,7 +58,7 @@ export function Formity<
   });
 
   const onNext = useCallback(
-    (values: object) => {
+    (values: Record<string, unknown>) => {
       const updated = getNextState(state, schema, values, onYield, onReturn);
       setState(updated);
     },
@@ -62,7 +66,7 @@ export function Formity<
   );
 
   const onBack = useCallback(
-    (values: object) => {
+    (values: Record<string, unknown>) => {
       const updated = getPreviousState(state, schema, values, onYield);
       setState(updated);
     },
@@ -70,7 +74,7 @@ export function Formity<
   );
 
   const _getState = useCallback(
-    (values: object) => {
+    (values: Record<string, unknown>) => {
       return getState(state, schema, values);
     },
     [state, schema]

@@ -9,10 +9,15 @@ import { getForm } from "./form";
 describe("getForm", () => {
   it("renders the form from the schema that is in the current position", () => {
     type Values = [
-      Variables<object>,
-      Cond<{ then: [Loop<[Form<object>]>]; else: [] }>
+      Variables<Record<string, unknown>>,
+      Cond<{ then: [Loop<[Form<Record<string, never>>]>]; else: [] }>
     ];
-    const schema: Schema<object, Values, object, object> = [
+    const schema: Schema<
+      Record<string, unknown>,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       { variables: () => ({}) },
       {
         cond: {
@@ -51,7 +56,12 @@ describe("getForm", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const form = getForm<object, Values, object, object>(
+    const form = getForm<
+      Record<string, unknown>,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(
       state,
       schema,
       {},
@@ -65,7 +75,12 @@ describe("getForm", () => {
 
   it("uses the values from the form defined in the schema", () => {
     type Values = [Form<{ name: string }>];
-    const schema: Schema<object, Values, object, object> = [
+    const schema: Schema<
+      Record<string, unknown>,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         form: {
           values: () => ({
@@ -88,7 +103,12 @@ describe("getForm", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const form = getForm<object, Values, object, object>(
+    const form = getForm<
+      Record<string, unknown>,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(
       state,
       schema,
       {},
@@ -105,9 +125,14 @@ describe("getForm", () => {
   });
 
   it("uses the params that have been provided", () => {
-    type Values = [Form<object>];
+    type Values = [Form<Record<string, unknown>>];
     type Params = { hello: string };
-    const schema: Schema<object, Values, object, Params> = [
+    const schema: Schema<
+      Record<string, unknown>,
+      Values,
+      Record<string, unknown>,
+      Params
+    > = [
       {
         form: {
           values: () => ({}),
@@ -126,7 +151,12 @@ describe("getForm", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const form = getForm<object, Values, object, Params>(
+    const form = getForm<
+      Record<string, unknown>,
+      Values,
+      Record<string, unknown>,
+      Params
+    >(
       state,
       schema,
       { hello: "world" },

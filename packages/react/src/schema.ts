@@ -59,8 +59,8 @@ import type {
  */
 export type Schema<
   V extends Values,
-  I extends object,
-  P extends object
+  I extends Record<string, unknown> = Record<string, unknown>,
+  P extends Record<string, unknown> = Record<string, unknown>
 > = SystemSchema<ReactNode, V, I, P>;
 
 /**
@@ -77,8 +77,8 @@ export type Schema<
  */
 export type ItemSchema<
   Values extends ItemValues,
-  Inputs extends object,
-  Params extends object
+  Inputs extends Record<string, unknown>,
+  Params extends Record<string, unknown>
 > = SystemItemSchema<ReactNode, Values, Inputs, Params>;
 
 /**
@@ -95,8 +95,8 @@ export type ItemSchema<
  */
 export type FlowSchema<
   Values extends FlowValues,
-  Inputs extends object,
-  Params extends object
+  Inputs extends Record<string, unknown>,
+  Params extends Record<string, unknown>
 > = SystemFlowSchema<ReactNode, Values, Inputs, Params>;
 
 /**
@@ -113,8 +113,8 @@ export type FlowSchema<
  */
 export type ListSchema<
   Values extends ListValues,
-  Inputs extends object,
-  Params extends object
+  Inputs extends Record<string, unknown>,
+  Params extends Record<string, unknown>
 > = SystemListSchema<ReactNode, Values, Inputs, Params>;
 
 /**
@@ -131,8 +131,8 @@ export type ListSchema<
  */
 export type CondSchema<
   Values extends CondValues,
-  Inputs extends object,
-  Params extends object
+  Inputs extends Record<string, unknown>,
+  Params extends Record<string, unknown>
 > = SystemCondSchema<ReactNode, Values, Inputs, Params>;
 
 /**
@@ -149,8 +149,8 @@ export type CondSchema<
  */
 export type LoopSchema<
   Values extends LoopValues,
-  Inputs extends object,
-  Params extends object
+  Inputs extends Record<string, unknown>,
+  Params extends Record<string, unknown>
 > = SystemLoopSchema<ReactNode, Values, Inputs, Params>;
 
 /**
@@ -167,8 +167,8 @@ export type LoopSchema<
  */
 export type SwitchSchema<
   Values extends SwitchValues,
-  Inputs extends object,
-  Params extends object
+  Inputs extends Record<string, unknown>,
+  Params extends Record<string, unknown>
 > = SystemSwitchSchema<ReactNode, Values, Inputs, Params>;
 
 /**
@@ -184,8 +184,8 @@ export type SwitchSchema<
  */
 export type FormSchema<
   Values extends FormValues,
-  Inputs extends object,
-  Params extends object
+  Inputs extends Record<string, unknown>,
+  Params extends Record<string, unknown>
 > = SystemFormSchema<ReactNode, Values, Inputs, Params>;
 
 /**
@@ -198,7 +198,7 @@ export type FormSchema<
  */
 export type YieldSchema<
   Values extends YieldValues,
-  Inputs extends object
+  Inputs extends Record<string, unknown>
 > = SystemYieldSchema<Values, Inputs>;
 
 /**
@@ -211,7 +211,7 @@ export type YieldSchema<
  */
 export type ReturnSchema<
   Values extends ReturnValues,
-  Inputs extends object
+  Inputs extends Record<string, unknown>
 > = SystemReturnSchema<Values, Inputs>;
 
 /**
@@ -224,7 +224,7 @@ export type ReturnSchema<
  */
 export type VariablesSchema<
   Values extends VariablesValues,
-  Inputs extends object
+  Inputs extends Record<string, unknown>
 > = SystemVariablesSchema<Values, Inputs>;
 
 /**
