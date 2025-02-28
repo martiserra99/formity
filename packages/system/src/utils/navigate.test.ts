@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
 
-import type { ListSchema } from "src/types/schema/typed";
+import type { Schema } from "src/types/schema/typed";
 import type {
   Form,
   Cond,
@@ -11,12 +11,12 @@ import type {
 } from "src/types/utils";
 import type { State } from "src/types/state/state";
 
-import { initState, nextState, prevState } from "./navigate";
+import { getInitialState, getNextState, getPreviousState } from "./navigate";
 
-describe("initState", () => {
+describe("getInitialState", () => {
   it("initializes the form state with the point pointing to the first position", () => {
     type Values = [Form<object>];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         form: {
           values: () => ({}),
@@ -24,7 +24,11 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState<null, Values, object, object>(schema, {}, () => {});
+    const state = getInitialState<null, Values, object, object>(
+      schema,
+      {},
+      () => {}
+    );
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
@@ -34,7 +38,7 @@ describe("initState", () => {
 
   it("initializes the form state with the point pointing to the last position", () => {
     type Values = [Variables<object>, Variables<object>, Form<object>];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
@@ -44,7 +48,11 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState<null, Values, object, object>(schema, {}, () => {});
+    const state = getInitialState<null, Values, object, object>(
+      schema,
+      {},
+      () => {}
+    );
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 2 }], values: {} }],
       inputs: { type: "list", list: {} },
@@ -64,7 +72,7 @@ describe("initState", () => {
         else: [];
       }>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         cond: {
           if: () => true,
@@ -95,7 +103,11 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState<null, Values, object, object>(schema, {}, () => {});
+    const state = getInitialState<null, Values, object, object>(
+      schema,
+      {},
+      () => {}
+    );
     const expected: State = {
       points: [
         {
@@ -127,7 +139,7 @@ describe("initState", () => {
         else: [];
       }>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
@@ -162,7 +174,11 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState<null, Values, object, object>(schema, {}, () => {});
+    const state = getInitialState<null, Values, object, object>(
+      schema,
+      {},
+      () => {}
+    );
     const expected: State = {
       points: [
         {
@@ -182,9 +198,9 @@ describe("initState", () => {
 
   it("throws an error when the schema is empty", () => {
     type Values = [];
-    const schema: ListSchema<null, Values, object, object> = [];
+    const schema: Schema<null, Values, object, object> = [];
     expect(() =>
-      initState<null, Values, object, object>(schema, {}, () => {})
+      getInitialState<null, Values, object, object>(schema, {}, () => {})
     ).toThrow();
   });
 
@@ -202,7 +218,7 @@ describe("initState", () => {
         else: [];
       }>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
@@ -229,7 +245,7 @@ describe("initState", () => {
       },
     ];
     expect(() =>
-      initState<null, Values, object, object>(schema, {}, () => {})
+      getInitialState<null, Values, object, object>(schema, {}, () => {})
     ).toThrow();
   });
 
@@ -248,7 +264,7 @@ describe("initState", () => {
       }>,
       Form<object>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
@@ -274,7 +290,7 @@ describe("initState", () => {
       },
     ];
     expect(() =>
-      initState<null, Values, object, object>(schema, {}, () => {})
+      getInitialState<null, Values, object, object>(schema, {}, () => {})
     ).toThrow();
   });
 
@@ -300,7 +316,7 @@ describe("initState", () => {
         else: [];
       }>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         yield: {
           next: () => [{ an: 1 }, { bn: 2 }],
@@ -344,7 +360,7 @@ describe("initState", () => {
       },
     ];
     const onYield = vi.fn();
-    initState<null, Values, object, object>(schema, {}, onYield);
+    getInitialState<null, Values, object, object>(schema, {}, onYield);
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -375,7 +391,7 @@ describe("initState", () => {
         else: [];
       }>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       { variables: () => ({ a: 1, b: 2 }) },
       {
         cond: {
@@ -410,7 +426,11 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState<null, Values, object, object>(schema, {}, () => {});
+    const state = getInitialState<null, Values, object, object>(
+      schema,
+      {},
+      () => {}
+    );
     const expected: State = {
       points: [
         {
@@ -431,7 +451,7 @@ describe("initState", () => {
   it("initializes the values of the form state with the ones that have been provided", () => {
     type Values = [Form<object>];
     type Inputs = { a: number; b: number };
-    const schema: ListSchema<null, Values, Inputs, object> = [
+    const schema: Schema<null, Values, Inputs, object> = [
       {
         form: {
           values: () => ({}),
@@ -440,7 +460,7 @@ describe("initState", () => {
       },
     ];
     const inputs: Inputs = { a: 1, b: 2 };
-    const state = initState<null, Values, Inputs, object>(
+    const state = getInitialState<null, Values, Inputs, object>(
       schema,
       inputs,
       () => {}
@@ -453,10 +473,10 @@ describe("initState", () => {
   });
 });
 
-describe("nextState", () => {
+describe("getNextState", () => {
   it("navigates to the form that is next to the current one", () => {
     type Values = [Form<object>, Form<object>];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         form: {
           values: () => ({}),
@@ -474,7 +494,7 @@ describe("nextState", () => {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
     };
-    const state = nextState<null, Values, object, object>(
+    const state = getNextState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -495,7 +515,7 @@ describe("nextState", () => {
     type Values = [
       Loop<[Cond<{ then: [Form<object>]; else: [] }>, Form<object>]>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         loop: {
           while: () => true,
@@ -536,7 +556,7 @@ describe("nextState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const state = nextState<null, Values, object, object>(
+    const state = getNextState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -571,7 +591,7 @@ describe("nextState", () => {
       Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
       Cond<{ then: []; else: [Form<object>] }>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -621,7 +641,7 @@ describe("nextState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const next = nextState<null, Values, object, object>(
+    const next = getNextState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -676,7 +696,7 @@ describe("nextState", () => {
         ];
       }>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -745,7 +765,7 @@ describe("nextState", () => {
       inputs: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    nextState<null, Values, object, object>(
+    getNextState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -787,7 +807,7 @@ describe("nextState", () => {
         ];
       }>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -851,7 +871,7 @@ describe("nextState", () => {
       inputs: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    nextState<null, Values, object, object>(
+    getNextState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -890,7 +910,7 @@ describe("nextState", () => {
         else: [Yield<{ next: [{ dn: number }]; back: [{ db: number }] }>];
       }>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -953,7 +973,7 @@ describe("nextState", () => {
       inputs: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    nextState<null, Values, object, object>(
+    getNextState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -975,7 +995,7 @@ describe("nextState", () => {
       Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
       Cond<{ then: []; else: [Return<{ a: number; b: number }>] }>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -1020,7 +1040,7 @@ describe("nextState", () => {
       inputs: { type: "list", list: {} },
     };
     const onReturn = vi.fn();
-    nextState<null, Values, object, object>(
+    getNextState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -1036,7 +1056,7 @@ describe("nextState", () => {
       Cond<{ then: []; else: [Return<object>] }>,
       Form<object>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -1085,7 +1105,7 @@ describe("nextState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const next = nextState<null, Values, object, object>(
+    const next = getNextState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -1113,7 +1133,7 @@ describe("nextState", () => {
       Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
       Cond<{ then: []; else: [] }>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -1156,7 +1176,7 @@ describe("nextState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const next = nextState<null, Values, object, object>(
+    const next = getNextState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -1181,7 +1201,7 @@ describe("nextState", () => {
 
   it("generates new values from the current form when navigating to the next step", () => {
     type Values = [Form<{ a: number; b: number }>, Form<object>];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         form: {
           values: () => ({
@@ -1202,7 +1222,7 @@ describe("nextState", () => {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
     };
-    const state = nextState<null, Values, object, object>(
+    const state = getNextState<null, Values, object, object>(
       current,
       schema,
       { a: 1, b: 2 },
@@ -1229,7 +1249,7 @@ describe("nextState", () => {
 
   it("saves the current form values when navigating to the next step", () => {
     type Values = [Loop<[Form<{ a: number; b: number }>]>, Form<object>];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -1265,7 +1285,7 @@ describe("nextState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const state = nextState<null, Values, object, object>(
+    const state = getNextState<null, Values, object, object>(
       current,
       schema,
       { a: 1, b: 2 },
@@ -1331,10 +1351,10 @@ describe("nextState", () => {
   });
 });
 
-describe("prevState", () => {
+describe("getPreviousState", () => {
   it("navigates to the form that is previous to the current one", () => {
     type Values = [Form<object>, Form<object>];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         form: {
           values: () => ({}),
@@ -1355,7 +1375,7 @@ describe("prevState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const state = prevState<null, Values, object, object>(
+    const state = getPreviousState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -1370,7 +1390,7 @@ describe("prevState", () => {
 
   it("doesn't navigate to any other form if the current form is the first one", () => {
     type Values = [Form<object>];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         form: {
           values: () => ({}),
@@ -1382,7 +1402,7 @@ describe("prevState", () => {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
     };
-    const state = prevState<null, Values, object, object>(
+    const state = getPreviousState<null, Values, object, object>(
       current,
       schema,
       {},
@@ -1397,7 +1417,7 @@ describe("prevState", () => {
 
   it("saves the current form values when navigating to the previous step", () => {
     type Values = [Form<{ a: number }>, Form<{ b: number }>];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         form: {
           values: () => ({
@@ -1432,7 +1452,7 @@ describe("prevState", () => {
         },
       },
     };
-    const state = prevState<null, Values, object, object>(
+    const state = getPreviousState<null, Values, object, object>(
       current,
       schema,
       { b: 2 },
@@ -1483,7 +1503,7 @@ describe("prevState", () => {
         else: [];
       }>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         yield: {
           next: () => [{ an: 1 }, { bn: 2 }],
@@ -1550,7 +1570,12 @@ describe("prevState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    prevState<null, Values, object, object>(current, schema, {}, onYield);
+    getPreviousState<null, Values, object, object>(
+      current,
+      schema,
+      {},
+      onYield
+    );
     expect(onYield).toHaveBeenNthCalledWith(1, { cb: 3 });
     expect(onYield).toHaveBeenNthCalledWith(2, { ab: 1 });
     expect(onYield).toHaveBeenNthCalledWith(3, { bb: 2 });
@@ -1584,7 +1609,7 @@ describe("prevState", () => {
         ];
       }>
     ];
-    const schema: ListSchema<null, Values, object, object> = [
+    const schema: Schema<null, Values, object, object> = [
       {
         loop: {
           while: () => false,
@@ -1671,7 +1696,12 @@ describe("prevState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    prevState<null, Values, object, object>(current, schema, {}, onYield);
+    getPreviousState<null, Values, object, object>(
+      current,
+      schema,
+      {},
+      onYield
+    );
     expect(onYield).toHaveBeenNthCalledWith(1, { db: 4 });
     expect(onYield).toHaveBeenNthCalledWith(2, { cb: 3 });
     expect(onYield).toHaveBeenNthCalledWith(3, { ab: 1 });

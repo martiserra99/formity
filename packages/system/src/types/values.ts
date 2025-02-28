@@ -1,4 +1,9 @@
 /**
+ * This type is meant to be extended and is used to define the structure and values of a multi-step form.
+ */
+export type Values = ListValues;
+
+/**
  * This type is meant to be extended and is used to define the structure and values of any element in a multi-step form.
  */
 export type ItemValues =

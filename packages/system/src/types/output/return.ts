@@ -1,4 +1,6 @@
-import {
+import type { Values } from "../values";
+
+import type {
   ItemValues,
   ListValues,
   CondValues,
@@ -10,10 +12,10 @@ import {
 /**
  * Returns the union of all possible values that can be returned by a multi-step form.
  */
-export type ReturnOutput<Values extends ListValues> = ListData<
-  Values,
-  never
-> extends [infer Next, unknown]
+export type ReturnOutput<V extends Values> = ListData<V, never> extends [
+  infer Next,
+  unknown
+]
   ? Next
   : never;
 

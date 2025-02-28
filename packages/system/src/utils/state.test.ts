@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { ListSchema } from "src/types/schema/typed";
+import type { Schema } from "src/types/schema/typed";
 import type { Form, Cond, Loop, Variables } from "src/types/utils";
 import type { State } from "src/types/state/state";
 
@@ -12,7 +12,7 @@ describe("getState", () => {
       Variables<object>,
       Cond<{ then: [Loop<[Form<{ a: number; b: number }>]>]; else: [] }>
     ];
-    const schema: ListSchema<object, Values, object, object> = [
+    const schema: Schema<object, Values, object, object> = [
       { variables: () => ({}) },
       {
         cond: {

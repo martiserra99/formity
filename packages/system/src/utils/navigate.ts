@@ -1,16 +1,17 @@
+import type { Values } from "../types/values";
+
+import type { Schema as TypedSchema } from "../types/schema/typed";
+import type { Schema } from "../types/schema/model";
+import type { ListSchema, FlowSchema, FormSchema } from "../types/schema/model";
+
+import type { OnYield as TypedOnYield } from "../types/handlers/typed";
+import type { OnReturn as TypedOnReturn } from "../types/handlers/typed";
+import type { OnYield, OnReturn } from "../types/handlers/model";
+
 import type { State } from "../types/state/state";
 import type { Point } from "../types/state/point";
 import type { Position } from "../types/state/position";
-import type { ListInputs, FlowInputs } from "../types/state/inputs";
-
-import type { ListSchema as TypedListSchema } from "../types/schema/typed";
-import type { OnYield as TypedOnYield } from "../types/handlers/typed";
-import type { OnReturn as TypedOnReturn } from "../types/handlers/typed";
-
-import type { ListSchema, FlowSchema, FormSchema } from "../types/schema/model";
-import type { OnYield, OnReturn } from "../types/handlers/model";
-
-import type { ListValues } from "../types/values";
+import type { Inputs, FlowInputs } from "../types/state/inputs";
 
 import * as FlowSchemaUtils from "./schema/flow";
 import * as FormSchemaUtils from "./schema/form";
@@ -28,31 +29,27 @@ import * as FlowInputsUtils from "./inputs/flow";
  * During traversal of the multi-step form, the `onYield` callback is triggered whenever
  * a yield operation is encountered, allowing for intermediate values to be processed.
  *
- * @param schema The `ListSchema` object that defines the structure and behavior of the multi-step form.
+ * @param schema The `Schema` object that defines the structure and behavior of the multi-step form.
  * @param values An object containing the initial input values for the multi-step form.
  * @param onYield A callback function triggered when the multi-step form yields values.
- * @returns The initial state of the form as a `Flow` object.
+ * @returns The initial state of the form as a `State` object.
  *
  * @throws An error if no form step is found or if a return operation is encountered before a form step.
  */
-export function initState<
-  Render,
-  Values extends ListValues,
-  Inputs extends object,
-  Params extends object
->(
-  schema: TypedListSchema<Render, Values, Inputs, Params>,
-  values: Inputs,
-  onYield: TypedOnYield<Values>
-): State {
-  const _schema = schema as ListSchema;
+export function getInitialState<
+  R,
+  V extends Values,
+  I extends object,
+  P extends object
+>(schema: TypedSchema<R, V, I, P>, values: I, onYield: TypedOnYield<V>): State {
+  const _schema = schema as Schema;
   const _values = values as object;
   const _onYield = onYield as OnYield;
-  return _initState(_schema, _values, _onYield);
+  return _getInitialState(_schema, _values, _onYield);
 }
 
-function _initState(
-  schema: ListSchema,
+function _getInitialState(
+  schema: Schema,
   values: object,
   onYield: OnYield
 ): State {
@@ -138,33 +135,33 @@ function initialPoints(
  * allowing for final values to be processed.
  *
  * @param state The current state of the multi-step form.
- * @param schema The `ListSchema` object representing the multi-step form.
+ * @param schema The `Schema` object representing the multi-step form.
  * @param values An object containing the generated values within the multi-step form.
  * @param onYield A callback function triggered when the multi-step form yields values.
  * @param onReturn A callback function triggered when the multi-step form returns values.
  * @returns The updated state of the multi-step form.
  */
-export function nextState<
-  Render,
-  Values extends ListValues,
-  Inputs extends object,
-  Params extends object
+export function getNextState<
+  R,
+  V extends Values,
+  I extends object,
+  P extends object
 >(
   state: State,
-  schema: TypedListSchema<Render, Values, Inputs, Params>,
+  schema: TypedSchema<R, V, I, P>,
   values: object,
-  onYield: TypedOnYield<Values>,
-  onReturn: TypedOnReturn<Values>
+  onYield: TypedOnYield<V>,
+  onReturn: TypedOnReturn<V>
 ): State {
-  const _schema = schema as ListSchema;
+  const _schema = schema as Schema;
   const _onYield = onYield as OnYield;
   const _onReturn = onReturn as OnReturn;
-  return _nextState(state, _schema, values, _onYield, _onReturn);
+  return _getNextState(state, _schema, values, _onYield, _onReturn);
 }
 
-function _nextState(
+function _getNextState(
   state: State,
-  schema: ListSchema,
+  schema: Schema,
   values: object,
   onYield: OnYield,
   onReturn: OnReturn
@@ -275,29 +272,29 @@ function overPoint(point: Point): Point | null {
  * If there is no previous form step, the returned state contains the current form step.
  *
  * @param state The current state of the multi-step form.
- * @param schema The `ListSchema` object representing the multi-step form.
+ * @param schema The `Schema` object representing the multi-step form.
  * @param values An object containing the generated values within the multi-step form.
  * @returns The updated state of the multi-step form.
  */
-export function prevState<
-  Render,
-  Values extends ListValues,
-  Inputs extends object,
-  Params extends object
+export function getPreviousState<
+  R,
+  V extends Values,
+  I extends object,
+  P extends object
 >(
   state: State,
-  schema: TypedListSchema<Render, Values, Inputs, Params>,
+  schema: TypedSchema<R, V, I, P>,
   values: object,
-  onYield: TypedOnYield<Values>
+  onYield: TypedOnYield<V>
 ): State {
-  const _schema = schema as ListSchema;
+  const _schema = schema as Schema;
   const _onYield = onYield as OnYield;
-  return _prevState(state, _schema, values, _onYield);
+  return _getPreviousState(state, _schema, values, _onYield);
 }
 
-function _prevState(
+function _getPreviousState(
   state: State,
-  schema: ListSchema,
+  schema: Schema,
   values: object,
   onYield: OnYield
 ): State {
@@ -319,11 +316,7 @@ function _prevState(
   return { points: state.points, inputs };
 }
 
-function updateInputs(
-  state: State,
-  schema: ListSchema,
-  values: object
-): ListInputs {
+function updateInputs(state: State, schema: Schema, values: object): Inputs {
   const point = state.points[state.points.length - 1];
   const formSchema = FlowSchemaUtils.find(schema, point.path) as FormSchema;
   const formValues = formSchema["form"]["values"](point.values);
@@ -335,5 +328,5 @@ function updateInputs(
       inputs = FlowInputsUtils.set(inputs, path, name, keys, value);
     }
   }
-  return inputs as ListInputs;
+  return inputs as Inputs;
 }

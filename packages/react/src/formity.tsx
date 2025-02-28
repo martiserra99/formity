@@ -1,12 +1,10 @@
+import type { Values, OnYield, OnReturn, State } from "@formity/system";
+
 import { useState, useCallback } from "react";
 import {
-  type State,
-  type Values,
-  type OnYield,
-  type OnReturn,
-  initState,
-  nextState,
-  prevState,
+  getInitialState,
+  getNextState,
+  getPreviousState,
   getForm,
   getState,
 } from "@formity/system";
@@ -14,11 +12,11 @@ import {
 import type { Schema } from "./schema";
 
 /**
- * Props for the Formity component.
+ * The properties of the multi-step form.
  *
- * @template T The structure and values of the multi-step form.
- * @template U The input values of the multi-step form.
- * @template V The parameter values of the multi-step form.
+ * @template V The structure and values of the multi-step form.
+ * @template I The input values of the multi-step form.
+ * @template P The parameter values of the multi-step form.
  * @param schema The structure and behavior of the multi-step form.
  * @param inputs The input values of the multi-step form.
  * @param params The parameter values of the multi-step form.
@@ -26,66 +24,61 @@ import type { Schema } from "./schema";
  * @param onReturn Callback function invoked when the multi-step form returns values.
  * @param initialState The initial state of the multi-step form.
  */
-interface FormityProps<T extends Values, U extends object, V extends object> {
-  schema: Schema<T, U, V>;
-  inputs?: U;
-  params?: V;
-  onYield?: OnYield<T>;
-  onReturn?: OnReturn<T>;
+interface FormityProps<V extends Values, I extends object, P extends object> {
+  schema: Schema<V, I, P>;
+  inputs?: I;
+  params?: P;
+  onYield?: OnYield<V>;
+  onReturn?: OnReturn<V>;
   initialState?: State;
 }
 
+/**
+ * Renders a multi-step form.
+ */
 export function Formity<
-  T extends Values,
-  U extends object = object,
-  V extends object = object
+  V extends Values,
+  I extends object = object,
+  P extends object = object
 >({
   schema,
-  inputs = {} as U,
-  params = {} as V,
+  inputs = {} as I,
+  params = {} as P,
   onYield = () => {},
   onReturn = () => {},
   initialState,
-}: FormityProps<T, U, V>): React.ReactNode {
+}: FormityProps<V, I, P>): React.ReactNode {
   const [state, setState] = useState<State>(() => {
     if (initialState) return initialState;
-    return initState(schema, inputs, onYield);
+    return getInitialState(schema, inputs, onYield);
   });
 
   const onNext = useCallback(
     (values: object) => {
-      const updatedState = nextState(state, schema, values, onYield, onReturn);
-      setState(updatedState);
+      const updated = getNextState(state, schema, values, onYield, onReturn);
+      setState(updated);
     },
     [state, schema, onYield, onReturn]
   );
 
   const onBack = useCallback(
     (values: object) => {
-      const updatedState = prevState(state, schema, values, onYield);
-      setState(updatedState);
+      const updated = getPreviousState(state, schema, values, onYield);
+      setState(updated);
     },
     [state, schema]
   );
 
-  const obtainState = useCallback(
+  const _getState = useCallback(
     (values: object) => {
       return getState(state, schema, values);
     },
     [state, schema]
   );
 
-  const changeState = useCallback((state: State) => {
+  const _setState = useCallback((state: State) => {
     setState(state);
   }, []);
 
-  return getForm(
-    state,
-    schema,
-    params,
-    onNext,
-    onBack,
-    obtainState,
-    changeState
-  );
+  return getForm(state, schema, params, onNext, onBack, _getState, _setState);
 }

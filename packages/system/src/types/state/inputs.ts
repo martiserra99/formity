@@ -1,15 +1,20 @@
 /**
+ * Values entered in the forms that are within a multi-step form.
+ */
+export type Inputs = ListInputs;
+
+/**
  * Union of `FlowInputs` and `FormInputs`.
  */
 export type ItemInputs = FlowInputs | FormInputs;
 
 /**
- * Values entered for the forms that are within any flow control structure.
+ * Values entered in the forms that are within any flow control structure.
  */
 export type FlowInputs = ListInputs | CondInputs | LoopInputs | SwitchInputs;
 
 /**
- * Values entered for the forms that are within a list.
+ * Values entered in the forms that are within a list.
  */
 export type ListInputs = {
   type: "list";
@@ -17,7 +22,7 @@ export type ListInputs = {
 };
 
 /**
- * Values entered for the forms that are within a condition.
+ * Values entered in the forms that are within a condition.
  */
 export type CondInputs = {
   type: "cond";
@@ -26,7 +31,7 @@ export type CondInputs = {
 };
 
 /**
- * Values entered for the forms that are within a loop.
+ * Values entered in the forms that are within a loop.
  */
 export type LoopInputs = {
   type: "loop";
@@ -34,7 +39,7 @@ export type LoopInputs = {
 };
 
 /**
- * Values entered for the forms that are within a switch.
+ * Values entered in the forms that are within a switch.
  */
 export type SwitchInputs = {
   type: "switch";
@@ -43,12 +48,12 @@ export type SwitchInputs = {
 };
 
 /**
- * Values entered for a form.
+ * Values entered in a form.
  */
 export type FormInputs = { [key: string]: NameInputs };
 
 /**
- * Values entered for a single form value.
+ * Values entered in a single form field.
  */
 export type NameInputs = {
   data: { here: true; data: unknown } | { here: false };

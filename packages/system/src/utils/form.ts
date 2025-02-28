@@ -1,7 +1,10 @@
+import type { Values } from "../types/values";
+
+import type { Schema as TypedSchema } from "../types/schema/typed";
+import type { Schema, FormSchema } from "../types/schema/model";
+
 import type { State } from "../types/state/state";
-import type { ListSchema as TypedListSchema } from "../types/schema/typed";
-import type { ListSchema, FormSchema } from "../types/schema/model";
-import type { ListValues } from "../types/values";
+
 import type { OnNext, OnBack, GetState, SetState } from "../types/controls";
 
 import * as FlowSchemaUtils from "./schema/flow";
@@ -11,7 +14,7 @@ import * as FlowInputsUtils from "./inputs/flow";
  * Returns the rendered form for the current step of the multi-step form.
  *
  * @param state The current state of the multi-step form.
- * @param schema The `ListSchema` object representing the multi-step form.
+ * @param schema The `Schema` object representing the multi-step form.
  * @param params An object containing the parameters for the form.
  * @param onNext A callback function used to navigate to the next step of the multi-step form.
  * @param onBack A callback function used to navigate to the previous step of the multi-step form.
@@ -20,20 +23,20 @@ import * as FlowInputsUtils from "./inputs/flow";
  * @returns The rendered form for the current step of the multi-step form.
  */
 export function getForm<
-  Render,
-  Values extends ListValues,
-  Inputs extends object,
-  Params extends object
+  R,
+  V extends Values,
+  I extends object,
+  P extends object
 >(
   state: State,
-  schema: TypedListSchema<Render, Values, Inputs, Params>,
-  params: Params,
+  schema: TypedSchema<R, V, I, P>,
+  params: P,
   onNext: OnNext,
   onBack: OnBack,
   getState: GetState,
   setState: SetState
-): Render {
-  const _schema = schema as ListSchema;
+): R {
+  const _schema = schema as Schema;
   const _params = params as object;
   return _getForm(
     state,
@@ -43,12 +46,12 @@ export function getForm<
     onBack,
     getState,
     setState
-  ) as Render;
+  ) as R;
 }
 
 function _getForm(
   state: State,
-  schema: ListSchema,
+  schema: Schema,
   params: object,
   onNext: OnNext,
   onBack: OnBack,

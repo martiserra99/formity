@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { ListSchema } from "src/types/schema/typed";
+import type { Schema } from "src/types/schema/typed";
 import type { Form, Cond, Loop, Variables } from "src/types/utils";
 import type { State } from "src/types/state/state";
 
@@ -12,7 +12,7 @@ describe("getForm", () => {
       Variables<object>,
       Cond<{ then: [Loop<[Form<object>]>]; else: [] }>
     ];
-    const schema: ListSchema<object, Values, object, object> = [
+    const schema: Schema<object, Values, object, object> = [
       { variables: () => ({}) },
       {
         cond: {
@@ -65,7 +65,7 @@ describe("getForm", () => {
 
   it("uses the values from the form defined in the schema", () => {
     type Values = [Form<{ name: string }>];
-    const schema: ListSchema<object, Values, object, object> = [
+    const schema: Schema<object, Values, object, object> = [
       {
         form: {
           values: () => ({
@@ -107,7 +107,7 @@ describe("getForm", () => {
   it("uses the params that have been provided", () => {
     type Values = [Form<object>];
     type Params = { hello: string };
-    const schema: ListSchema<object, Values, object, Params> = [
+    const schema: Schema<object, Values, object, Params> = [
       {
         form: {
           values: () => ({}),

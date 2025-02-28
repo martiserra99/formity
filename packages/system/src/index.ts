@@ -90,6 +90,10 @@ export type {
   VariablesValues,
 } from "./types/values";
 
-export { initState, nextState, prevState } from "./utils/navigate";
+export {
+  getInitialState,
+  getNextState,
+  getPreviousState,
+} from "./utils/navigate";
 export { getForm } from "./utils/form";
 export { getState } from "./utils/state";
