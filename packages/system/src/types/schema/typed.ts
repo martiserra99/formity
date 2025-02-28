@@ -33,8 +33,8 @@ import type { OnNext, OnBack, GetState, SetState } from "../controls";
 export type Schema<
   R,
   V extends Values,
-  I extends object,
-  P extends object
+  I extends object = object,
+  P extends object = object
 > = ListSchema<R, V, I, P>;
 
 /**

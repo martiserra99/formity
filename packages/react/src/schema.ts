@@ -59,8 +59,8 @@ import type {
  */
 export type Schema<
   V extends Values,
-  I extends object,
-  P extends object
+  I extends object = object,
+  P extends object = object
 > = SystemSchema<ReactNode, V, I, P>;
 
 /**
