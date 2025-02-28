@@ -1,6 +1,6 @@
 {
   "name": "@formity/react",
-  "version": "0.5.0",
+  "version": "1.0.0",
   "license": "MIT",
   "private": false,
   "description": "A highly customizable React library for creating advanced multi-step forms.",
@@ -30,7 +30,7 @@
     "dev": "rollup --config rollup.config.mjs --watch"
   },
   "dependencies": {
-    "@formity/system": "^0.5.0"
+    "@formity/system": "^1.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.12"

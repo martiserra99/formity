@@ -1,5 +1,11 @@
 # @formity/system
 
+## 1.0.0
+
+### Major Changes
+
+- This release is a version bump from 0.5.0 to 1.0.0. Although no changes in functionality have been made, we believe the project has reached a level of maturity and stability suitable for production use. All features and behaviors remain as in 0.5.0, and this version number now signals a stable API.
+
 ## 0.5.0
 
 ### Minor Changes
