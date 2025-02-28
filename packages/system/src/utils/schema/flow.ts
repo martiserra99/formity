@@ -1,4 +1,4 @@
-import type { ItemSchema, FlowSchema } from "../../types/schema/untyped";
+import type { ItemSchema, FlowSchema } from "../../types/schema/model";
 import type { Position } from "../../types/state/position";
 
 import * as ListSchemaUtils from "./flow.list";

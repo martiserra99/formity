@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { SwitchSchema, ReturnSchema } from "../../types/schema/untyped";
+import type { SwitchSchema, ReturnSchema } from "../../types/schema/model";
 import type { Position } from "src/types/state/position";
 
 import { into, next, at } from "./flow.switch";

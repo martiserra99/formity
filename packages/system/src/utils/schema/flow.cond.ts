@@ -1,4 +1,4 @@
-import type { ItemSchema, CondSchema } from "../../types/schema/untyped";
+import type { ItemSchema, CondSchema } from "../../types/schema/model";
 import type { Position, CondPosition } from "../../types/state/position";
 
 /**

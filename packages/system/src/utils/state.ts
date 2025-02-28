@@ -1,6 +1,6 @@
 import type { State } from "../types/state/state";
 import type { ListSchema as TypedListSchema } from "../types/schema/typed";
-import type { ListSchema, FormSchema } from "../types/schema/untyped";
+import type { ListSchema, FormSchema } from "../types/schema/model";
 import type { ListValues } from "../types/values";
 import type { FlowInputs, ListInputs } from "../types/state/inputs";
 
