@@ -1,5 +1,13 @@
 # @formity/system
 
+## 0.5.0
+
+### Minor Changes
+
+- Renamed functions to getInitialState, getNextState and getPreviousState
+- Renamed ReturnValues and YieldValues to ReturnOutput and YieldOutput
+- Exported additional Formity types
+
 ## 0.4.1
 
 ### Patch Changes
