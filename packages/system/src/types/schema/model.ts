@@ -86,8 +86,8 @@ export type FormSchema<T = unknown> = {
  */
 export type YieldSchema = {
   yield: {
-    next: (inputs: object) => object[];
-    back: (inputs: object) => object[];
+    next: (inputs: object) => unknown[];
+    back: (inputs: object) => unknown[];
   };
 };
 
@@ -95,7 +95,7 @@ export type YieldSchema = {
  * Defines the structure and behavior of a return element in a multi-step form.
  */
 export type ReturnSchema = {
-  return: (inputs: object) => object;
+  return: (inputs: object) => unknown;
 };
 
 /**

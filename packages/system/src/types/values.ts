@@ -69,8 +69,8 @@ export type FormValues = {
 export type YieldValues = {
   type: "yield";
   yield: {
-    next: object[];
-    back: object[];
+    next: unknown[];
+    back: unknown[];
   };
 };
 
@@ -79,7 +79,7 @@ export type YieldValues = {
  */
 export type ReturnValues = {
   type: "return";
-  return: object;
+  return: unknown;
 };
 
 /**
