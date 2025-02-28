@@ -4,9 +4,9 @@ import {
   Schema,
   Values,
   OnYield,
-  YieldValues,
   OnReturn,
-  ReturnValues,
+  YieldOutput,
+  ReturnOutput,
 } from "@formity/react";
 
 import { Form } from "./form";
@@ -17,17 +17,17 @@ interface AppProps<T extends Values> {
 }
 
 export default function App<T extends Values>({ schema }: AppProps<T>) {
-  const [values, setValues] = useState<ReturnValues<Values> | null>(null);
+  const [values, setValues] = useState<ReturnOutput<Values> | null>(null);
 
   const onYield = useCallback<OnYield<Values>>(
-    (values: YieldValues<Values>) => {
+    (values: YieldOutput<Values>) => {
       console.log(values);
     },
     []
   );
 
   const onReturn = useCallback<OnReturn<Values>>(
-    (values: ReturnValues<Values>) => {
+    (values: ReturnOutput<Values>) => {
       setValues(values);
     },
     []

@@ -2,7 +2,7 @@ export { Formity } from "./formity";
 export type { Schema } from "./schema";
 export type { Values } from "@formity/system";
 export type { OnYield, OnReturn } from "@formity/system";
-export type { YieldValues, ReturnValues } from "@formity/system";
+export type { YieldOutput, ReturnOutput } from "@formity/system";
 export type {
   Cond,
   Loop,

@@ -4,13 +4,14 @@ import {
   CondValues,
   LoopValues,
   SwitchValues,
+  YieldValues,
   ReturnValues,
 } from "../values";
 
 /**
- * Returns the union of all possible values that can be returned by a multi-step form.
+ * Returns the union of all possible values that can be yielded by a multi-step form.
  */
-export type Return<Values extends ListValues> = ListData<
+export type YieldOutput<Values extends ListValues> = ListData<
   Values,
   never
 > extends [infer Next, unknown]
@@ -25,8 +26,10 @@ type ItemData<Values extends ItemValues, Data> = Values extends ListValues
   ? LoopData<Values, Data>
   : Values extends SwitchValues
   ? SwitchData<Values, Data>
+  : Values extends YieldValues
+  ? YieldData<Values, Data>
   : Values extends ReturnValues
-  ? [Data | Values["return"], true]
+  ? [Data, true]
   : [Data, false];
 
 type ListData<Values extends ListValues, Data> = Values extends [
@@ -60,6 +63,11 @@ type SwitchData<Values extends SwitchValues, Data> = RoutesData<
   [...Values["switch"]["branches"], Values["switch"]["default"]],
   Data
 >;
+
+type YieldData<Values extends YieldValues, Data> = [
+  Data | Values["yield"]["next"][number] | Values["yield"]["back"][number],
+  false
+];
 
 type RoutesData<
   Values extends ListValues[],

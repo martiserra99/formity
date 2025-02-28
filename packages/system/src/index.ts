@@ -1,8 +1,8 @@
 export type { ListSchema as Schema } from "./types/schema/typed";
 export type { ListValues as Values } from "./types/values";
 export type { OnYield, OnReturn } from "./types/handlers/typed";
-export type { Yield as YieldValues } from "./types/values/yield";
-export type { Return as ReturnValues } from "./types/values/return";
+export type { YieldOutput as YieldOutput } from "./types/output/yield";
+export type { ReturnOutput as ReturnOutput } from "./types/output/return";
 export type {
   Cond,
   Loop,
