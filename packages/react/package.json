@@ -3,13 +3,15 @@
   "version": "1.0.0",
   "license": "MIT",
   "private": false,
-  "description": "A highly customizable React library for creating advanced multi-step forms.",
+  "description": "React multi-step forms where logic has no limits - for any use case",
   "keywords": [
     "react",
-    "formity",
+    "forms",
     "form",
-    "multi-step form",
-    "dynamic form"
+    "multi-step",
+    "multi-step-form",
+    "multi-step-forms",
+    "formity"
   ],
   "repository": {
     "type": "git",

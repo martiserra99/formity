@@ -3,12 +3,14 @@
   "version": "1.0.0",
   "license": "MIT",
   "private": false,
-  "description": "Core system that powers the Formity library.",
+  "description": "Core system that powers Formity",
   "keywords": [
-    "formity",
+    "forms",
     "form",
-    "multi-step form",
-    "dynamic form"
+    "multi-step",
+    "multi-step-form",
+    "multi-step-forms",
+    "formity"
   ],
   "repository": {
     "type": "git",
