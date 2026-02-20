@@ -1,33 +1,49 @@
-<!-- markdownlint-disable MD033 -->
-<!-- markdownlint-disable MD041 -->
+<!-- img here -->
 
 <div align="center">
-    <a href="https://formity.app/" title="Formity - Build The Most Powerful Forms, Without The Hassle">
-        <img src="https://raw.githubusercontent.com/martiserra99/formity/main/image.svg" alt="Formity Logo" />
-    </a>
+
+Formity is a React library that treats multi-step forms as programs — giving you the full power of code to build dynamic forms that adapt to every user, from onboarding flows to surveys.
+
+[Website](https://formity.app/) · [Formity UI](https://ui.formity.app/) · [Discord](https://discord.gg/m8UrssFUBQ)
+
 </div>
 
-## The Formity mono repo
+---
 
-The Formity repository is the home of two packages:
+## The formity mono repo
 
-- `@formity/react`: [packages/react](./packages/react)
+This repository is the home of two packages:
 
-- `@formity/system`: [packages/system](./packages/system)
+- `@formity/react` — [packages/react](./packages/react)
+- `@formity/system` — [packages/system](./packages/system)
 
-## Website
+<!-- gif here -->
 
-**Visit [https://formity.app](https://formity.app) to get started with Formity.**
+## Featured by
 
-## About
+> "I highly recommend Formity for creating multi-step forms. It saves you from building it yourself, which is an enormous pain. After building these a million times myself, it's awesome to finally see one that handles everything so well."
+>
+> — **midudev (500k+ subscribers)** | [Watch video](https://youtu.be/0apXgMZ52nM?si=N3WYhh1Cn6XydvVs)
 
-Formity is an advanced form-building package designed to help React developers create advanced multi-step forms.
+> "With Formity's pattern for steps, logic, and animations, you can give your coding agent a skill for building multi-step forms - so any time you need one, your forms are way more consistent and follow the same structure."
+>
+> — **Hamed Bahram (200k+ subscribers)** | [Watch video](https://youtu.be/0wGxiucgLvM?si=KNvWkRlo3-JSkqMq)
 
-## Features
+## Key features of formity
 
-- Create advanced multi-step forms where each step adapts based on the user's previous responses.
+### Advanced logic
 
-- Integrate your custom components seamlessly, with no restrictions or limitations.
+You can add sophisticated logic to your multi-step forms using conditions, loops, and variables — creating truly dynamic forms where the flow adapts to every user.
+
+### Integration with any form library
+
+Formity integrates seamlessly with your favorite form library — React Hook Form, Formik, TanStack Form or any other form-handling tool.
+
+### Advanced type inference
+
+For TypeScript users, Formity offers advanced type inference for a smooth and error-free developer experience — with better autocomplete and improved type safety.
+
+![advanced type inference](https://www.formity.app/articles/type-inference.png)
 
 ## License
 
