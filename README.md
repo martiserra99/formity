@@ -1,4 +1,4 @@
-<!-- img here -->
+<h1 align="center">Formity</h1>
 
 <div align="center">
 
