@@ -17,7 +17,7 @@ This repository is the home of two packages:
 - `@formity/react` — [packages/react](./packages/react)
 - `@formity/system` — [packages/system](./packages/system)
 
-<!-- gif here -->
+![preview](https://raw.githubusercontent.com/martiserra99/formity/main/images/preview.gif)
 
 ## Featured by
 
