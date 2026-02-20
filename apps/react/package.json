@@ -12,7 +12,7 @@
     "cy:open": "cypress open"
   },
   "dependencies": {
-    "@formity/react": "^1.0.0",
+    "@formity/react": "^1.0.1",
     "@headlessui/react": "^2.1.10",
     "@heroicons/react": "^2.1.5",
     "@hookform/resolvers": "^3.9.1",

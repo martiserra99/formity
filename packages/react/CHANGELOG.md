@@ -1,5 +1,13 @@
 # @formity/react
 
+## 1.0.1
+
+### Patch Changes
+
+- Update README.md file
+- Updated dependencies
+  - @formity/system@1.0.1
+
 ## 1.0.0
 
 ### Major Changes
