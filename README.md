@@ -43,7 +43,7 @@ Formity integrates seamlessly with your favorite form library — React Hook For
 
 For TypeScript users, Formity offers advanced type inference for a smooth and error-free developer experience — with better autocomplete and improved type safety.
 
-![advanced type inference](https://www.formity.app/articles/type-inference.png)
+![advanced type inference](https://raw.githubusercontent.com/martiserra99/formity/main/images/type-inference.png)
 
 ## License
 
