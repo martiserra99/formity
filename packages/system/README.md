@@ -38,4 +38,4 @@ For TypeScript users, Formity offers advanced type inference for a smooth and er
 
 ## License
 
-These packages are licensed under the [MIT license](./LICENSE).
+This package is licensed under the [MIT license](./LICENSE).
