@@ -15,7 +15,7 @@ import type {
  */
 export type YieldOutput<V extends Values> = ListData<V, never> extends [
   infer Next,
-  unknown
+  unknown,
 ]
   ? Next
   : never;
@@ -36,7 +36,7 @@ type ItemData<Values extends ItemValues, Data> = Values extends ListValues
 
 type ListData<Values extends ListValues, Data> = Values extends [
   infer First,
-  ...infer Other
+  ...infer Other,
 ]
   ? First extends ItemValues
     ? Other extends ListValues
@@ -68,13 +68,13 @@ type SwitchData<Values extends SwitchValues, Data> = RoutesData<
 
 type YieldData<Values extends YieldValues, Data> = [
   Data | Values["yield"]["next"][number] | Values["yield"]["back"][number],
-  false
+  false,
 ];
 
 type RoutesData<
   Values extends ListValues[],
   Data,
-  RoutesReturn = true
+  RoutesReturn = true,
 > = Values extends [infer First, ...infer Other]
   ? First extends ListValues
     ? Other extends ListValues[]

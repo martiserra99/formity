@@ -1,3 +1,7 @@
+<div align="center">
+  <img width="36" height="36" alt="Formity logo" src="https://raw.githubusercontent.com/martiserra99/formity/main/images/logo.png" />
+</div>
+
 <h1 align="center">Formity</h1>
 
 <div align="center">
@@ -10,14 +14,14 @@ Formity is a React library that treats multi-step forms as programs — giving y
 
 ---
 
+![preview](https://raw.githubusercontent.com/martiserra99/formity/main/images/preview.gif)
+
 ## The formity mono repo
 
 This repository is the home of two packages:
 
-- `@formity/react` — [packages/react](./packages/react)
-- `@formity/system` — [packages/system](./packages/system)
-
-![preview](https://raw.githubusercontent.com/martiserra99/formity/main/images/preview.gif)
+- Formity `@formity/react` — [packages/react](./packages/react)
+- Helper library `@formity/system` — [packages/system](./packages/system)
 
 ## Featured by
 
