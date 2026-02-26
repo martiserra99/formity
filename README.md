@@ -2,13 +2,9 @@
   <img width="36" height="36" alt="Formity logo" src="https://raw.githubusercontent.com/martiserra99/formity/main/images/formity.png" /><br/>Formity
 </h1>
 
-<h3 align="center">
-  React Multi-Step Forms Where Logic Has No Limits
-</h3>
-
 <div align="center">
 
-Formity is a React library that treats multi-step forms as programs — giving you the full power of code to build dynamic forms that adapt to every user, from onboarding flows to surveys.
+<strong>React Multi-Step Forms Where Logic Has No Limits</strong>
 
 [Website](https://formity.app/) · [Formity UI](https://ui.formity.app/) · [Discord](https://discord.gg/m8UrssFUBQ)
 
