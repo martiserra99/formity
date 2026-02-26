@@ -1,8 +1,6 @@
-<div align="center">
-  <img width="36" height="36" alt="Formity logo" src="https://raw.githubusercontent.com/martiserra99/formity/main/images/logo.png" />
-</div>
-
-<h1 align="center">Formity</h1>
+<h1 align="center">
+  <img width="36" height="36" alt="Formity logo" src="https://raw.githubusercontent.com/martiserra99/formity/main/images/logo.png" /><br/>Formity
+</h1>
 
 <div align="center">
 
