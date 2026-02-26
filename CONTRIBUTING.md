@@ -6,6 +6,6 @@ Formity currently provides the **@formity/react** package, and we're excited to 
 
 If you're experienced with Vue, Angular, Svelte, or another framework and would like to help us build these packages, we'd be thrilled to collaborate with you!
 
-Have ideas for new features or ways to enhance Formity? Awesome! You can reach out to us anytime at [contact@martiserra.me](mailto:contact@martiserra.me). And if you're ready to dive in, feel free to submit a pull request — we're always happy to review contributions from the community.
+Have ideas for new features or ways to enhance Formity? Awesome! You can reach out to us anytime at [marti@formity.app](mailto:marti@formity.app). And if you're ready to dive in, feel free to submit a pull request — we're always happy to review contributions from the community.
 
 Thank you for making Formity better with your support. We can't wait to see what we build together!

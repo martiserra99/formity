@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img width="36" height="36" alt="Formity logo" src="https://raw.githubusercontent.com/martiserra99/formity/main/images/logo.png" /><br/>Formity
+  <img width="36" height="36" alt="Formity logo" src="https://raw.githubusercontent.com/martiserra99/formity/main/images/formity.png" /><br/>Formity
 </h1>
 
 <div align="center">
