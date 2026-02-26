@@ -1,14 +1,10 @@
-<h1 align="center">
-  <img width="36" height="36" alt="Formity logo" src="https://raw.githubusercontent.com/martiserra99/formity/main/images/formity.png" /><br/>Formity
-</h1>
+![Formity](https://raw.githubusercontent.com/martiserra99/formity/main/images/formity.jpg)
 
-<div align="center">
+# Multi-Step Forms Where Logic Has No Limits
 
-Formity is a React library that treats multi-step forms as programs — giving you the full power of code to build dynamic forms that adapt to every user, from onboarding flows to surveys.
+Formity is a React library for building advanced multi-step forms where you have full control over the flow — use variables, conditions, loops, and any logic you need to make your forms as dynamic as you want.
 
 [Website](https://formity.app/) · [Formity UI](https://ui.formity.app/) · [Discord](https://discord.gg/m8UrssFUBQ)
-
-</div>
 
 ---
 
@@ -42,4 +38,4 @@ For TypeScript users, Formity offers advanced type inference for a smooth and er
 
 ## License
 
-This package is licensed under the [MIT license](./LICENSE).
+These packages are licensed under the [MIT license](./LICENSE).

@@ -1,6 +1,6 @@
 ![Formity](https://raw.githubusercontent.com/martiserra99/formity/main/images/formity.jpg)
 
-# React Multi-Step Forms Where Logic Has No Limits
+# Multi-Step Forms Where Logic Has No Limits
 
 Formity is a React library for building advanced multi-step forms where you have full control over the flow — use variables, conditions, loops, and any logic you need to make your forms as dynamic as you want.
 
