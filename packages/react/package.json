@@ -1,6 +1,6 @@
 {
   "name": "@formity/react",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "license": "MIT",
   "private": false,
   "description": "React multi-step forms where logic has no limits - for any use case",
@@ -32,7 +32,7 @@
     "dev": "rollup --config rollup.config.mjs --watch"
   },
   "dependencies": {
-    "@formity/system": "^1.0.2"
+    "@formity/system": "^1.0.3"
   },
   "devDependencies": {
     "@types/react": "^18.3.12"
