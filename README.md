@@ -8,6 +8,8 @@
 
 <div align="center">
 
+Formity is a React library that treats multi-step forms as programs — giving you the full power of code to build dynamic forms that adapt to every user, from onboarding flows to surveys.
+
 [Website](https://formity.app/) · [Formity UI](https://ui.formity.app/) · [Discord](https://discord.gg/m8UrssFUBQ)
 
 </div>
