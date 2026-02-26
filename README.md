@@ -1,14 +1,10 @@
-<h1 align="center">
-  <img width="36" height="36" alt="Formity logo" src="https://raw.githubusercontent.com/martiserra99/formity/main/images/formity.png" /><br/>Formity
-</h1>
+![Formity](https://raw.githubusercontent.com/martiserra99/formity/main/images/formity.jpg)
 
-<div align="center">
+# React Multi-Step Forms Where Logic Has No Limits
 
-<strong>React Multi-Step Forms Where Logic Has No Limits</strong>
+Formity is a React library for building advanced multi-step forms where you have full control over the flow — use variables, conditions, loops, and any logic you need to make your forms as dynamic as you want.
 
 [Website](https://formity.app/) · [Formity UI](https://ui.formity.app/) · [Discord](https://discord.gg/m8UrssFUBQ)
-
-</div>
 
 ---
 
