@@ -8,7 +8,7 @@ Formity is a React library for building advanced multi-step forms where you have
 
 ---
 
-![preview](https://raw.githubusercontent.com/martiserra99/formity/main/images/preview.gif)
+![animation](https://raw.githubusercontent.com/martiserra99/formity/main/images/animation.gif)
 
 ## The formity mono repo
 
