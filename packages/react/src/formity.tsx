@@ -39,7 +39,7 @@ interface FormityProps<V extends Values, I extends object, P extends object> {
 export function Formity<
   V extends Values,
   I extends object = object,
-  P extends object = object
+  P extends object = object,
 >({
   schema,
   inputs = {} as I,
@@ -58,7 +58,7 @@ export function Formity<
       const updated = getNextState(state, schema, values, onYield, onReturn);
       setState(updated);
     },
-    [state, schema, onYield, onReturn]
+    [state, schema, onYield, onReturn],
   );
 
   const onBack = useCallback(
@@ -66,14 +66,14 @@ export function Formity<
       const updated = getPreviousState(state, schema, values, onYield);
       setState(updated);
     },
-    [state, schema]
+    [state, schema, onYield],
   );
 
   const _getState = useCallback(
     (values: object) => {
       return getState(state, schema, values);
     },
-    [state, schema]
+    [state, schema],
   );
 
   const _setState = useCallback((state: State) => {
