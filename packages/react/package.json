@@ -1,6 +1,6 @@
 {
   "name": "@formity/react",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "license": "MIT",
   "private": false,
   "description": "React multi-step forms where logic has no limits - for any use case",
