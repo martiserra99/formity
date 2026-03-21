@@ -33,12 +33,12 @@ export type MainValues = [
     next: [
       { type: "next"; data: { name: string } },
       { type: "next"; data: { surname: string } },
-      { type: "next"; data: { age: number } }
+      { type: "next"; data: { age: number } },
     ];
     back: [
       { type: "back"; data: { name: string } },
       { type: "back"; data: { surname: string } },
-      { type: "back"; data: { age: number } }
+      { type: "back"; data: { age: number } },
     ];
   }>,
   Form<{ softwareDeveloper: boolean }>,
@@ -73,7 +73,7 @@ export type MainValues = [
           Variables<{
             i: number;
             languagesRatings: { name: string; rating: string }[];
-          }>
+          }>,
         ]
       >,
       Return<{
@@ -81,7 +81,7 @@ export type MainValues = [
         age: number;
         softwareDeveloper: true;
         languages: { name: string; rating: string }[];
-      }>
+      }>,
     ];
     else: [
       Form<{ interested: string }>,
@@ -94,9 +94,9 @@ export type MainValues = [
         age: number;
         softwareDeveloper: false;
         interested: string;
-      }>
+      }>,
     ];
-  }>
+  }>,
 ];
 
 export const mainSchema: Schema<MainValues> = [
@@ -125,7 +125,7 @@ export const mainSchema: Schema<MainValues> = [
                   .number()
                   .min(18, { message: "Minimum of 18 years old" })
                   .max(99, { message: "Maximum of 99 years old" }),
-              })
+              }),
             )}
           >
             <Layout
@@ -174,7 +174,7 @@ export const mainSchema: Schema<MainValues> = [
             resolver={zodResolver(
               z.object({
                 softwareDeveloper: z.boolean(),
-              })
+              }),
             )}
           >
             <Layout
@@ -236,7 +236,7 @@ export const mainSchema: Schema<MainValues> = [
                   resolver={zodResolver(
                     z.object({
                       languages: z.array(z.string()),
-                    })
+                    }),
                   )}
                 >
                   <Layout
@@ -297,7 +297,7 @@ export const mainSchema: Schema<MainValues> = [
                         resolver={zodResolver(
                           z.object({
                             rating: z.string(),
-                          })
+                          }),
                         )}
                       >
                         <Layout
@@ -373,7 +373,7 @@ export const mainSchema: Schema<MainValues> = [
                   resolver={zodResolver(
                     z.object({
                       interested: z.string(),
-                    })
+                    }),
                   )}
                 >
                   <Layout

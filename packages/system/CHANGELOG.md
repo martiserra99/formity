@@ -1,5 +1,12 @@
 # @formity/system
 
+## 1.0.5
+
+### Patch Changes
+
+- Use `Record<string, unknown>` for object types
+- Make `onNext`, `onBack`, and `getState` generic over form values (`T`)
+
 ## 1.0.4
 
 ### Patch Changes

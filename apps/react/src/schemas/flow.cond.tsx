@@ -23,16 +23,16 @@ export type CondValues = [
       Return<{
         softwareDeveloper: true;
         languages: string[];
-      }>
+      }>,
     ];
     else: [
       Form<{ interested: string }>,
       Return<{
         softwareDeveloper: false;
         interested: string;
-      }>
+      }>,
     ];
-  }>
+  }>,
 ];
 
 export const condSchema: Schema<CondValues> = [
@@ -48,7 +48,7 @@ export const condSchema: Schema<CondValues> = [
             resolver={zodResolver(
               z.object({
                 softwareDeveloper: z.boolean(),
-              })
+              }),
             )}
           >
             <Layout
@@ -84,7 +84,7 @@ export const condSchema: Schema<CondValues> = [
                   resolver={zodResolver(
                     z.object({
                       languages: z.array(z.string()),
-                    })
+                    }),
                   )}
                 >
                   <Layout
@@ -131,7 +131,7 @@ export const condSchema: Schema<CondValues> = [
                   resolver={zodResolver(
                     z.object({
                       interested: z.string(),
-                    })
+                    }),
                   )}
                 >
                   <Layout

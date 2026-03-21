@@ -1,5 +1,14 @@
 # @formity/react
 
+## 1.0.6
+
+### Patch Changes
+
+- Use Record<string, unknown> for object types
+- Make onNext, onBack, and getState generic over form values (T)
+- Updated dependencies
+  - @formity/system@1.0.5
+
 ## 1.0.5
 
 ### Patch Changes
