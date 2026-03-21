@@ -37,28 +37,31 @@ import * as FlowInputsUtils from "./inputs/flow";
  * @throws An error if no form step is found or if a return operation is encountered before a form step.
  */
 export function getInitialState<
-  R,
-  V extends Values,
-  I extends object,
-  P extends object
->(schema: TypedSchema<R, V, I, P>, values: I, onYield: TypedOnYield<V>): State {
+  T,
+  U extends Values,
+  V extends Record<string, unknown>,
+  W extends Record<string, unknown>,
+>(schema: TypedSchema<T, U, V, W>, values: V, onYield: TypedOnYield<U>): State {
   const _schema = schema as Schema;
-  const _values = values as object;
+  const _values = values as Record<string, unknown>;
   const _onYield = onYield as OnYield;
   return _getInitialState(_schema, _values, _onYield);
 }
 
 function _getInitialState(
   schema: Schema,
-  values: object,
-  onYield: OnYield
+  values: Record<string, unknown>,
+  onYield: OnYield,
 ): State {
   const path = initialPath(schema, values);
   const points = initialPoints(schema, { path, values }, onYield);
   return { points, inputs: { type: "list", list: {} } };
 }
 
-function initialPath(schema: ListSchema, values: object): Position[] {
+function initialPath(
+  schema: ListSchema,
+  values: Record<string, unknown>,
+): Position[] {
   const path = initialPathOrNull(schema, values);
   if (path) return path;
   throw new Error("Invalid schema");
@@ -66,7 +69,7 @@ function initialPath(schema: ListSchema, values: object): Position[] {
 
 function initialPathOrNull(
   schema: FlowSchema,
-  values: object
+  values: Record<string, unknown>,
 ): Position[] | null {
   let position = FlowSchemaUtils.into(schema, values);
   while (position) {
@@ -80,7 +83,7 @@ function initialPathOrNull(
 function initialPathFromPosition(
   schema: FlowSchema,
   position: Position,
-  values: object
+  values: Record<string, unknown>,
 ): Position[] | null {
   const item = FlowSchemaUtils.find(schema, [position]);
   if (FlowSchemaUtils.is(item)) {
@@ -94,7 +97,7 @@ function initialPathFromPosition(
 function initialPoints(
   schema: ListSchema,
   point: Point,
-  onYield: OnYield
+  onYield: OnYield,
 ): Point[] {
   const points = [];
   let currPoint: Point | null = point;
@@ -142,16 +145,16 @@ function initialPoints(
  * @returns The updated state of the multi-step form.
  */
 export function getNextState<
-  R,
-  V extends Values,
-  I extends object,
-  P extends object
+  T,
+  U extends Values,
+  V extends Record<string, unknown>,
+  W extends Record<string, unknown>,
 >(
   state: State,
-  schema: TypedSchema<R, V, I, P>,
-  values: object,
-  onYield: TypedOnYield<V>,
-  onReturn: TypedOnReturn<V>
+  schema: TypedSchema<T, U, V, W>,
+  values: Record<string, unknown>,
+  onYield: TypedOnYield<U>,
+  onReturn: TypedOnReturn<U>,
 ): State {
   const _schema = schema as Schema;
   const _onYield = onYield as OnYield;
@@ -162,9 +165,9 @@ export function getNextState<
 function _getNextState(
   state: State,
   schema: Schema,
-  values: object,
+  values: Record<string, unknown>,
   onYield: OnYield,
-  onReturn: OnReturn
+  onReturn: OnReturn,
 ): State {
   const point = state.points[state.points.length - 1];
   const points = advanceForm(schema, point, values, onYield, onReturn);
@@ -175,9 +178,9 @@ function _getNextState(
 function advanceForm(
   schema: ListSchema,
   point: Point,
-  values: object,
+  values: Record<string, unknown>,
   onYield: OnYield,
-  onReturn: OnReturn
+  onReturn: OnReturn,
 ): Point[] {
   let currPoint: Point | null = nextPoint(schema, {
     path: point.path,
@@ -277,15 +280,15 @@ function overPoint(point: Point): Point | null {
  * @returns The updated state of the multi-step form.
  */
 export function getPreviousState<
-  R,
-  V extends Values,
-  I extends object,
-  P extends object
+  T,
+  U extends Values,
+  V extends Record<string, unknown>,
+  W extends Record<string, unknown>,
 >(
   state: State,
-  schema: TypedSchema<R, V, I, P>,
-  values: object,
-  onYield: TypedOnYield<V>
+  schema: TypedSchema<T, U, V, W>,
+  values: Record<string, unknown>,
+  onYield: TypedOnYield<U>,
 ): State {
   const _schema = schema as Schema;
   const _onYield = onYield as OnYield;
@@ -295,8 +298,8 @@ export function getPreviousState<
 function _getPreviousState(
   state: State,
   schema: Schema,
-  values: object,
-  onYield: OnYield
+  values: Record<string, unknown>,
+  onYield: OnYield,
 ): State {
   const points = state.points.slice(0, -1);
   while (points.length > 0) {
@@ -316,7 +319,11 @@ function _getPreviousState(
   return { points: state.points, inputs };
 }
 
-function updateInputs(state: State, schema: Schema, values: object): Inputs {
+function updateInputs(
+  state: State,
+  schema: Schema,
+  values: Record<string, unknown>,
+): Inputs {
   const point = state.points[state.points.length - 1];
   const formSchema = FlowSchemaUtils.find(schema, point.path) as FormSchema;
   const formValues = formSchema["form"]["values"](point.values);

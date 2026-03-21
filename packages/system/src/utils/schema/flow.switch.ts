@@ -18,7 +18,10 @@ export function is(schema: ItemSchema): schema is SwitchSchema {
  * @param values An object containing the generated values within the multi-step form.
  * @returns A `Position` object representing the initial position, or `null` if there is no initial position.
  */
-export function into(schema: SwitchSchema, values: object): Position | null {
+export function into(
+  schema: SwitchSchema,
+  values: Record<string, unknown>,
+): Position | null {
   for (let i = 0; i < schema.switch.branches.length; i++) {
     const branch = schema.switch.branches[i];
     if (branch.case(values)) {
@@ -43,7 +46,7 @@ export function into(schema: SwitchSchema, values: object): Position | null {
  */
 export function next(
   schema: SwitchSchema,
-  position: Position
+  position: Position,
 ): Position | null {
   const { branch, slot } = position as SwitchPosition;
   if (branch >= 0) {

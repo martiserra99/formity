@@ -15,8 +15,13 @@ import { getInitialState, getNextState, getPreviousState } from "./navigate";
 
 describe("getInitialState", () => {
   it("initializes the form state with the point pointing to the first position", () => {
-    type Values = [Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    type Values = [Form<Record<string, unknown>>];
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         form: {
           values: () => ({}),
@@ -24,11 +29,12 @@ describe("getInitialState", () => {
         },
       },
     ];
-    const state = getInitialState<null, Values, object, object>(
-      schema,
-      {},
-      () => {}
-    );
+    const state = getInitialState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(schema, {}, () => {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
@@ -37,8 +43,17 @@ describe("getInitialState", () => {
   });
 
   it("initializes the form state with the point pointing to the last position", () => {
-    type Values = [Variables<object>, Variables<object>, Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    type Values = [
+      Variables<Record<string, unknown>>,
+      Variables<Record<string, unknown>>,
+      Form<Record<string, unknown>>,
+    ];
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
@@ -48,11 +63,12 @@ describe("getInitialState", () => {
         },
       },
     ];
-    const state = getInitialState<null, Values, object, object>(
-      schema,
-      {},
-      () => {}
-    );
+    const state = getInitialState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(schema, {}, () => {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 2 }], values: {} }],
       inputs: { type: "list", list: {} },
@@ -66,13 +82,18 @@ describe("getInitialState", () => {
         then: [
           Cond<{
             then: [];
-            else: [Loop<[Form<object>]>];
-          }>
+            else: [Loop<[Form<Record<string, unknown>>]>];
+          }>,
         ];
         else: [];
-      }>
+      }>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         cond: {
           if: () => true,
@@ -103,11 +124,12 @@ describe("getInitialState", () => {
         },
       },
     ];
-    const state = getInitialState<null, Values, object, object>(
-      schema,
-      {},
-      () => {}
-    );
+    const state = getInitialState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(schema, {}, () => {});
     const expected: State = {
       points: [
         {
@@ -127,19 +149,32 @@ describe("getInitialState", () => {
 
   it("initializes the form state with the point pointing to a deeply nested position from the last position", () => {
     type Values = [
-      Variables<object>,
-      Variables<object>,
+      Variables<Record<string, unknown>>,
+      Variables<Record<string, unknown>>,
       Cond<{
         then: [
           Cond<{
             then: [];
-            else: [Variables<object>, Loop<[Variables<object>, Form<object>]>];
-          }>
+            else: [
+              Variables<Record<string, unknown>>,
+              Loop<
+                [
+                  Variables<Record<string, unknown>>,
+                  Form<Record<string, unknown>>,
+                ]
+              >,
+            ];
+          }>,
         ];
         else: [];
-      }>
+      }>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
@@ -174,11 +209,12 @@ describe("getInitialState", () => {
         },
       },
     ];
-    const state = getInitialState<null, Values, object, object>(
-      schema,
-      {},
-      () => {}
-    );
+    const state = getInitialState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(schema, {}, () => {});
     const expected: State = {
       points: [
         {
@@ -198,27 +234,42 @@ describe("getInitialState", () => {
 
   it("throws an error when the schema is empty", () => {
     type Values = [];
-    const schema: Schema<null, Values, object, object> = [];
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [];
     expect(() =>
-      getInitialState<null, Values, object, object>(schema, {}, () => {})
+      getInitialState<
+        null,
+        Values,
+        Record<string, unknown>,
+        Record<string, unknown>
+      >(schema, {}, () => {}),
     ).toThrow();
   });
 
   it("throws an error if no form can be reached", () => {
     type Values = [
-      Variables<object>,
-      Variables<object>,
+      Variables<Record<string, unknown>>,
+      Variables<Record<string, unknown>>,
       Cond<{
         then: [
           Cond<{
-            then: [Form<object>];
+            then: [Form<Record<string, unknown>>];
             else: [];
-          }>
+          }>,
         ];
         else: [];
-      }>
+      }>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
@@ -245,26 +296,36 @@ describe("getInitialState", () => {
       },
     ];
     expect(() =>
-      getInitialState<null, Values, object, object>(schema, {}, () => {})
+      getInitialState<
+        null,
+        Values,
+        Record<string, unknown>,
+        Record<string, unknown>
+      >(schema, {}, () => {}),
     ).toThrow();
   });
 
   it("throws an error if it finds a return before a form", () => {
     type Values = [
-      Variables<object>,
-      Variables<object>,
+      Variables<Record<string, unknown>>,
+      Variables<Record<string, unknown>>,
       Cond<{
         then: [
           Cond<{
             then: [];
-            else: [Return<object>];
-          }>
+            else: [Return<Record<string, unknown>>];
+          }>,
         ];
         else: [];
       }>,
-      Form<object>
+      Form<Record<string, unknown>>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
@@ -290,7 +351,12 @@ describe("getInitialState", () => {
       },
     ];
     expect(() =>
-      getInitialState<null, Values, object, object>(schema, {}, () => {})
+      getInitialState<
+        null,
+        Values,
+        Record<string, unknown>,
+        Record<string, unknown>
+      >(schema, {}, () => {}),
     ).toThrow();
   });
 
@@ -309,14 +375,19 @@ describe("getInitialState", () => {
                 next: [{ cn: number }];
                 back: [{ cb: number }];
               }>,
-              Loop<[Form<object>]>
+              Loop<[Form<Record<string, unknown>>]>,
             ];
-          }>
+          }>,
         ];
         else: [];
-      }>
+      }>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         yield: {
           next: () => [{ an: 1 }, { bn: 2 }],
@@ -360,7 +431,12 @@ describe("getInitialState", () => {
       },
     ];
     const onYield = vi.fn();
-    getInitialState<null, Values, object, object>(schema, {}, onYield);
+    getInitialState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(schema, {}, onYield);
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -382,16 +458,21 @@ describe("getInitialState", () => {
                 [
                   Variables<{ d: number }>,
                   Variables<{ e: number }>,
-                  Form<object>
+                  Form<Record<string, unknown>>,
                 ]
-              >
+              >,
             ];
-          }>
+          }>,
         ];
         else: [];
-      }>
+      }>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       { variables: () => ({ a: 1, b: 2 }) },
       {
         cond: {
@@ -426,11 +507,12 @@ describe("getInitialState", () => {
         },
       },
     ];
-    const state = getInitialState<null, Values, object, object>(
-      schema,
-      {},
-      () => {}
-    );
+    const state = getInitialState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(schema, {}, () => {});
     const expected: State = {
       points: [
         {
@@ -449,9 +531,9 @@ describe("getInitialState", () => {
   });
 
   it("initializes the values of the form state with the ones that have been provided", () => {
-    type Values = [Form<object>];
+    type Values = [Form<Record<string, unknown>>];
     type Inputs = { a: number; b: number };
-    const schema: Schema<null, Values, Inputs, object> = [
+    const schema: Schema<null, Values, Inputs, Record<string, unknown>> = [
       {
         form: {
           values: () => ({}),
@@ -460,11 +542,12 @@ describe("getInitialState", () => {
       },
     ];
     const inputs: Inputs = { a: 1, b: 2 };
-    const state = getInitialState<null, Values, Inputs, object>(
-      schema,
-      inputs,
-      () => {}
-    );
+    const state = getInitialState<
+      null,
+      Values,
+      Inputs,
+      Record<string, unknown>
+    >(schema, inputs, () => {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: { a: 1, b: 2 } }],
       inputs: { type: "list", list: {} },
@@ -475,8 +558,16 @@ describe("getInitialState", () => {
 
 describe("getNextState", () => {
   it("navigates to the form that is next to the current one", () => {
-    type Values = [Form<object>, Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    type Values = [
+      Form<Record<string, unknown>>,
+      Form<Record<string, unknown>>,
+    ];
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         form: {
           values: () => ({}),
@@ -494,12 +585,17 @@ describe("getNextState", () => {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
     };
-    const state = getNextState<null, Values, object, object>(
+    const state = getNextState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(
       current,
       schema,
       {},
       () => {},
-      () => {}
+      () => {},
     );
     const expected: State = {
       points: [
@@ -513,9 +609,19 @@ describe("getNextState", () => {
 
   it("navigates to the form that is next to the current one within the same flow element", () => {
     type Values = [
-      Loop<[Cond<{ then: [Form<object>]; else: [] }>, Form<object>]>
+      Loop<
+        [
+          Cond<{ then: [Form<Record<string, unknown>>]; else: [] }>,
+          Form<Record<string, unknown>>,
+        ]
+      >,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         loop: {
           while: () => true,
@@ -556,12 +662,17 @@ describe("getNextState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const state = getNextState<null, Values, object, object>(
+    const state = getNextState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(
       current,
       schema,
       {},
       () => {},
-      () => {}
+      () => {},
     );
     const expected: State = {
       points: [
@@ -588,10 +699,15 @@ describe("getNextState", () => {
 
   it("navigates to the form that is next to the current one outside the current flow element", () => {
     type Values = [
-      Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
-      Cond<{ then: []; else: [Form<object>] }>
+      Loop<[Cond<{ then: [Form<Record<string, unknown>>]; else: [] }>]>,
+      Cond<{ then: []; else: [Form<Record<string, unknown>>] }>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         loop: {
           while: () => false,
@@ -641,12 +757,17 @@ describe("getNextState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const next = getNextState<null, Values, object, object>(
+    const next = getNextState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(
       current,
       schema,
       {},
       () => {},
-      () => {}
+      () => {},
     );
     const expected: State = {
       points: [
@@ -677,14 +798,14 @@ describe("getNextState", () => {
         [
           Cond<{
             then: [
-              Form<object>,
+              Form<Record<string, unknown>>,
               Yield<{
                 next: [{ an: number }, { bn: number }];
                 back: [{ ab: number }, { bb: number }];
-              }>
+              }>,
             ];
             else: [];
-          }>
+          }>,
         ]
       >,
       Yield<{ next: [{ cn: number }]; back: [{ cb: number }] }>,
@@ -692,11 +813,16 @@ describe("getNextState", () => {
         then: [];
         else: [
           Yield<{ next: [{ dn: number }]; back: [{ db: number }] }>,
-          Form<object>
+          Form<Record<string, unknown>>,
         ];
-      }>
+      }>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         loop: {
           while: () => false,
@@ -765,13 +891,12 @@ describe("getNextState", () => {
       inputs: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    getNextState<null, Values, object, object>(
-      current,
-      schema,
-      {},
-      onYield,
-      () => {}
-    );
+    getNextState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(current, schema, {}, onYield, () => {});
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -788,14 +913,14 @@ describe("getNextState", () => {
         [
           Cond<{
             then: [
-              Form<object>,
+              Form<Record<string, unknown>>,
               Yield<{
                 next: [{ an: number }, { bn: number }];
                 back: [{ ab: number }, { bb: number }];
-              }>
+              }>,
             ];
             else: [];
-          }>
+          }>,
         ]
       >,
       Yield<{ next: [{ cn: number }]; back: [{ cb: number }] }>,
@@ -803,11 +928,16 @@ describe("getNextState", () => {
         then: [];
         else: [
           Yield<{ next: [{ dn: number }]; back: [{ db: number }] }>,
-          Return<object>
+          Return<Record<string, unknown>>,
         ];
-      }>
+      }>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         loop: {
           while: () => false,
@@ -871,13 +1001,12 @@ describe("getNextState", () => {
       inputs: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    getNextState<null, Values, object, object>(
-      current,
-      schema,
-      {},
-      onYield,
-      () => {}
-    );
+    getNextState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(current, schema, {}, onYield, () => {});
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -894,23 +1023,28 @@ describe("getNextState", () => {
         [
           Cond<{
             then: [
-              Form<object>,
+              Form<Record<string, unknown>>,
               Yield<{
                 next: [{ an: number }, { bn: number }];
                 back: [{ ab: number }, { bb: number }];
-              }>
+              }>,
             ];
             else: [];
-          }>
+          }>,
         ]
       >,
       Yield<{ next: [{ cn: number }]; back: [{ cb: number }] }>,
       Cond<{
         then: [];
         else: [Yield<{ next: [{ dn: number }]; back: [{ db: number }] }>];
-      }>
+      }>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         loop: {
           while: () => false,
@@ -973,13 +1107,12 @@ describe("getNextState", () => {
       inputs: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    getNextState<null, Values, object, object>(
-      current,
-      schema,
-      {},
-      onYield,
-      () => {}
-    );
+    getNextState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(current, schema, {}, onYield, () => {});
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -992,10 +1125,15 @@ describe("getNextState", () => {
 
   it("calls the onReturn callback with the appropriate values when a return is encountered", () => {
     type Values = [
-      Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
-      Cond<{ then: []; else: [Return<{ a: number; b: number }>] }>
+      Loop<[Cond<{ then: [Form<Record<string, unknown>>]; else: [] }>]>,
+      Cond<{ then: []; else: [Return<{ a: number; b: number }>] }>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         loop: {
           while: () => false,
@@ -1040,23 +1178,27 @@ describe("getNextState", () => {
       inputs: { type: "list", list: {} },
     };
     const onReturn = vi.fn();
-    getNextState<null, Values, object, object>(
-      current,
-      schema,
-      {},
-      () => {},
-      onReturn
-    );
+    getNextState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(current, schema, {}, () => {}, onReturn);
     expect(onReturn).toHaveBeenCalledWith({ a: 1, b: 2 });
   });
 
   it("doesn't navigate to any form that is after a return", () => {
     type Values = [
-      Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
-      Cond<{ then: []; else: [Return<object>] }>,
-      Form<object>
+      Loop<[Cond<{ then: [Form<Record<string, unknown>>]; else: [] }>]>,
+      Cond<{ then: []; else: [Return<Record<string, unknown>>] }>,
+      Form<Record<string, unknown>>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         loop: {
           while: () => false,
@@ -1105,12 +1247,17 @@ describe("getNextState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const next = getNextState<null, Values, object, object>(
+    const next = getNextState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(
       current,
       schema,
       {},
       () => {},
-      () => {}
+      () => {},
     );
     const expected: State = {
       points: [
@@ -1130,10 +1277,15 @@ describe("getNextState", () => {
 
   it("doesn't navigate to any other form if the current form is the last one", () => {
     type Values = [
-      Loop<[Cond<{ then: [Form<object>]; else: [] }>]>,
-      Cond<{ then: []; else: [] }>
+      Loop<[Cond<{ then: [Form<Record<string, unknown>>]; else: [] }>]>,
+      Cond<{ then: []; else: [] }>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         loop: {
           while: () => false,
@@ -1176,12 +1328,17 @@ describe("getNextState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const next = getNextState<null, Values, object, object>(
+    const next = getNextState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(
       current,
       schema,
       {},
       () => {},
-      () => {}
+      () => {},
     );
     const expected: State = {
       points: [
@@ -1200,8 +1357,16 @@ describe("getNextState", () => {
   });
 
   it("generates new values from the current form when navigating to the next step", () => {
-    type Values = [Form<{ a: number; b: number }>, Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    type Values = [
+      Form<{ a: number; b: number }>,
+      Form<Record<string, unknown>>,
+    ];
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         form: {
           values: () => ({
@@ -1222,12 +1387,17 @@ describe("getNextState", () => {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
     };
-    const state = getNextState<null, Values, object, object>(
+    const state = getNextState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(
       current,
       schema,
       { a: 1, b: 2 },
       () => {},
-      () => {}
+      () => {},
     );
     const expected: State = {
       points: [
@@ -1248,8 +1418,16 @@ describe("getNextState", () => {
   });
 
   it("saves the current form values when navigating to the next step", () => {
-    type Values = [Loop<[Form<{ a: number; b: number }>]>, Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    type Values = [
+      Loop<[Form<{ a: number; b: number }>]>,
+      Form<Record<string, unknown>>,
+    ];
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         loop: {
           while: () => false,
@@ -1285,12 +1463,17 @@ describe("getNextState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const state = getNextState<null, Values, object, object>(
+    const state = getNextState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(
       current,
       schema,
       { a: 1, b: 2 },
       () => {},
-      () => {}
+      () => {},
     );
     const expected: State = {
       points: [
@@ -1353,8 +1536,16 @@ describe("getNextState", () => {
 
 describe("getPreviousState", () => {
   it("navigates to the form that is previous to the current one", () => {
-    type Values = [Form<object>, Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    type Values = [
+      Form<Record<string, unknown>>,
+      Form<Record<string, unknown>>,
+    ];
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         form: {
           values: () => ({}),
@@ -1375,12 +1566,12 @@ describe("getPreviousState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const state = getPreviousState<null, Values, object, object>(
-      current,
-      schema,
-      {},
-      () => {}
-    );
+    const state = getPreviousState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(current, schema, {}, () => {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
@@ -1389,8 +1580,13 @@ describe("getPreviousState", () => {
   });
 
   it("doesn't navigate to any other form if the current form is the first one", () => {
-    type Values = [Form<object>];
-    const schema: Schema<null, Values, object, object> = [
+    type Values = [Form<Record<string, unknown>>];
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         form: {
           values: () => ({}),
@@ -1402,12 +1598,12 @@ describe("getPreviousState", () => {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
     };
-    const state = getPreviousState<null, Values, object, object>(
-      current,
-      schema,
-      {},
-      () => {}
-    );
+    const state = getPreviousState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(current, schema, {}, () => {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
@@ -1417,7 +1613,12 @@ describe("getPreviousState", () => {
 
   it("saves the current form values when navigating to the previous step", () => {
     type Values = [Form<{ a: number }>, Form<{ b: number }>];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         form: {
           values: () => ({
@@ -1452,12 +1653,12 @@ describe("getPreviousState", () => {
         },
       },
     };
-    const state = getPreviousState<null, Values, object, object>(
-      current,
-      schema,
-      { b: 2 },
-      () => {}
-    );
+    const state = getPreviousState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(current, schema, { b: 2 }, () => {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: {
@@ -1496,14 +1697,19 @@ describe("getPreviousState", () => {
                 next: [{ cn: number }];
                 back: [{ cb: number }];
               }>,
-              Loop<[Form<object>]>
+              Loop<[Form<Record<string, unknown>>]>,
             ];
-          }>
+          }>,
         ];
         else: [];
-      }>
+      }>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         yield: {
           next: () => [{ an: 1 }, { bn: 2 }],
@@ -1570,12 +1776,12 @@ describe("getPreviousState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    getPreviousState<null, Values, object, object>(
-      current,
-      schema,
-      {},
-      onYield
-    );
+    getPreviousState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(current, schema, {}, onYield);
     expect(onYield).toHaveBeenNthCalledWith(1, { cb: 3 });
     expect(onYield).toHaveBeenNthCalledWith(2, { ab: 1 });
     expect(onYield).toHaveBeenNthCalledWith(3, { bb: 2 });
@@ -1590,14 +1796,14 @@ describe("getPreviousState", () => {
         [
           Cond<{
             then: [
-              Form<object>,
+              Form<Record<string, unknown>>,
               Yield<{
                 next: [{ an: number }, { bn: number }];
                 back: [{ ab: number }, { bb: number }];
-              }>
+              }>,
             ];
             else: [];
-          }>
+          }>,
         ]
       >,
       Yield<{ next: [{ cn: number }]; back: [{ cb: number }] }>,
@@ -1605,11 +1811,16 @@ describe("getPreviousState", () => {
         then: [];
         else: [
           Yield<{ next: [{ dn: number }]; back: [{ db: number }] }>,
-          Form<object>
+          Form<Record<string, unknown>>,
         ];
-      }>
+      }>,
     ];
-    const schema: Schema<null, Values, object, object> = [
+    const schema: Schema<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       {
         loop: {
           while: () => false,
@@ -1696,12 +1907,12 @@ describe("getPreviousState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    getPreviousState<null, Values, object, object>(
-      current,
-      schema,
-      {},
-      onYield
-    );
+    getPreviousState<
+      null,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(current, schema, {}, onYield);
     expect(onYield).toHaveBeenNthCalledWith(1, { db: 4 });
     expect(onYield).toHaveBeenNthCalledWith(2, { cb: 3 });
     expect(onYield).toHaveBeenNthCalledWith(3, { ab: 1 });

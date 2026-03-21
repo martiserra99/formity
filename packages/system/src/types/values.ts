@@ -60,7 +60,7 @@ export type SwitchValues = {
  */
 export type FormValues = {
   type: "form";
-  form: object;
+  form: Record<string, unknown>;
 };
 
 /**
@@ -87,5 +87,5 @@ export type ReturnValues = {
  */
 export type VariablesValues = {
   type: "variables";
-  variables: object;
+  variables: Record<string, unknown>;
 };

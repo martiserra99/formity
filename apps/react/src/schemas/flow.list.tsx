@@ -10,7 +10,7 @@ import { MultiStep } from "../multi-step";
 export type ListValues = [
   Variables<{ fullName: string }>,
   [Form<{ name: string; surname: string }>, [Variables<{ fullName: string }>]],
-  Return<{ fullName: string }>
+  Return<{ fullName: string }>,
 ];
 
 export const listSchema: Schema<ListValues> = [
@@ -40,7 +40,7 @@ export const listSchema: Schema<ListValues> = [
                     .string()
                     .min(1, { message: "Required" })
                     .max(20, { message: "Must be at most 20 characters" }),
-                })
+                }),
               )}
             >
               <Layout

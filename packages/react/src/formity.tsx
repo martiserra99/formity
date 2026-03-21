@@ -14,9 +14,9 @@ import type { Schema } from "./schema";
 /**
  * The properties of the multi-step form.
  *
- * @template V The structure and values of the multi-step form.
- * @template I The input values of the multi-step form.
- * @template P The parameter values of the multi-step form.
+ * @template T The structure and values of the multi-step form.
+ * @template U The input values of the multi-step form.
+ * @template V The parameter values of the multi-step form.
  * @param schema The structure and behavior of the multi-step form.
  * @param inputs The input values of the multi-step form.
  * @param params The parameter values of the multi-step form.
@@ -24,12 +24,16 @@ import type { Schema } from "./schema";
  * @param onReturn Callback function invoked when the multi-step form returns values.
  * @param initialState The initial state of the multi-step form.
  */
-interface FormityProps<V extends Values, I extends object, P extends object> {
-  schema: Schema<V, I, P>;
-  inputs?: I;
-  params?: P;
-  onYield?: OnYield<V>;
-  onReturn?: OnReturn<V>;
+interface FormityProps<
+  T extends Values,
+  U extends Record<string, unknown>,
+  V extends Record<string, unknown>,
+> {
+  schema: Schema<T, U, V>;
+  inputs?: U;
+  params?: V;
+  onYield?: OnYield<T>;
+  onReturn?: OnReturn<T>;
   initialState?: State;
 }
 
@@ -37,24 +41,24 @@ interface FormityProps<V extends Values, I extends object, P extends object> {
  * Renders a multi-step form.
  */
 export function Formity<
-  V extends Values,
-  I extends object = object,
-  P extends object = object,
+  T extends Values,
+  U extends Record<string, unknown> = Record<never, never>,
+  V extends Record<string, unknown> = Record<never, never>,
 >({
   schema,
-  inputs = {} as I,
-  params = {} as P,
+  inputs = {} as U,
+  params = {} as V,
   onYield = () => {},
   onReturn = () => {},
   initialState,
-}: FormityProps<V, I, P>): React.ReactNode {
+}: FormityProps<T, U, V>): React.ReactNode {
   const [state, setState] = useState<State>(() => {
     if (initialState) return initialState;
     return getInitialState(schema, inputs, onYield);
   });
 
   const onNext = useCallback(
-    (values: object) => {
+    (values: Record<string, unknown>) => {
       const updated = getNextState(state, schema, values, onYield, onReturn);
       setState(updated);
     },
@@ -62,7 +66,7 @@ export function Formity<
   );
 
   const onBack = useCallback(
-    (values: object) => {
+    (values: Record<string, unknown>) => {
       const updated = getPreviousState(state, schema, values, onYield);
       setState(updated);
     },
@@ -70,7 +74,7 @@ export function Formity<
   );
 
   const _getState = useCallback(
-    (values: object) => {
+    (values: Record<string, unknown>) => {
       return getState(state, schema, values);
     },
     [state, schema],

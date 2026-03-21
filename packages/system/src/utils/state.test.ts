@@ -9,10 +9,15 @@ import { getState } from "./state";
 describe("getState", () => {
   it("returns the current state of the multi-step form after updating the values of the current form.", () => {
     type Values = [
-      Variables<object>,
-      Cond<{ then: [Loop<[Form<{ a: number; b: number }>]>]; else: [] }>
+      Variables<Record<string, unknown>>,
+      Cond<{ then: [Loop<[Form<{ a: number; b: number }>]>]; else: [] }>,
     ];
-    const schema: Schema<object, Values, object, object> = [
+    const schema: Schema<
+      Record<string, unknown>,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    > = [
       { variables: () => ({}) },
       {
         cond: {
@@ -52,11 +57,12 @@ describe("getState", () => {
       ],
       inputs: { type: "list", list: {} },
     };
-    const state: State = getState<object, Values, object, object>(
-      current,
-      schema,
-      { a: 1, b: 2 }
-    );
+    const state: State = getState<
+      Record<string, unknown>,
+      Values,
+      Record<string, unknown>,
+      Record<string, unknown>
+    >(current, schema, { a: 1, b: 2 });
     const expected: State = {
       points: [
         {

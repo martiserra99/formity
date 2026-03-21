@@ -34,7 +34,7 @@ export type ListSchema<T = unknown> = ItemSchema<T>[];
  */
 export type CondSchema<T = unknown> = {
   cond: {
-    if: (inputs: object) => boolean;
+    if: (inputs: Record<string, unknown>) => boolean;
     then: ListSchema<T>;
     else: ListSchema<T>;
   };
@@ -45,7 +45,7 @@ export type CondSchema<T = unknown> = {
  */
 export type LoopSchema<T = unknown> = {
   loop: {
-    while: (inputs: object) => boolean;
+    while: (inputs: Record<string, unknown>) => boolean;
     do: ListSchema<T>;
   };
 };
@@ -56,7 +56,7 @@ export type LoopSchema<T = unknown> = {
 export type SwitchSchema<T = unknown> = {
   switch: {
     branches: {
-      case: (inputs: object) => boolean;
+      case: (inputs: Record<string, unknown>) => boolean;
       then: ListSchema<T>;
     }[];
     default: ListSchema<T>;
@@ -68,14 +68,16 @@ export type SwitchSchema<T = unknown> = {
  */
 export type FormSchema<T = unknown> = {
   form: {
-    values: (inputs: object) => Record<string, [unknown, PropertyKey[]]>;
+    values: (
+      inputs: Record<string, unknown>,
+    ) => Record<string, [unknown, PropertyKey[]]>;
     render: (args: {
-      inputs: object;
-      values: object;
-      params: object;
-      onNext: OnNext;
-      onBack: OnBack;
-      getState: GetState;
+      inputs: Record<string, unknown>;
+      values: Record<string, unknown>;
+      params: Record<string, unknown>;
+      onNext: OnNext<Record<string, unknown>>;
+      onBack: OnBack<Record<string, unknown>>;
+      getState: GetState<Record<string, unknown>>;
       setState: SetState;
     }) => T;
   };
@@ -86,8 +88,8 @@ export type FormSchema<T = unknown> = {
  */
 export type YieldSchema = {
   yield: {
-    next: (inputs: object) => unknown[];
-    back: (inputs: object) => unknown[];
+    next: (inputs: Record<string, unknown>) => unknown[];
+    back: (inputs: Record<string, unknown>) => unknown[];
   };
 };
 
@@ -95,12 +97,12 @@ export type YieldSchema = {
  * Defines the structure and behavior of a return element in a multi-step form.
  */
 export type ReturnSchema = {
-  return: (inputs: object) => unknown;
+  return: (inputs: Record<string, unknown>) => unknown;
 };
 
 /**
  * Defines the structure and behavior of a variables element in a multi-step form.
  */
 export type VariablesSchema = {
-  variables: (inputs: object) => object;
+  variables: (inputs: Record<string, unknown>) => Record<string, unknown>;
 };

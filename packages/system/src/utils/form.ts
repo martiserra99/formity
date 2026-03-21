@@ -23,21 +23,21 @@ import * as FlowInputsUtils from "./inputs/flow";
  * @returns The rendered form for the current step of the multi-step form.
  */
 export function getForm<
-  R,
-  V extends Values,
-  I extends object,
-  P extends object
+  T,
+  U extends Values,
+  V extends Record<string, unknown>,
+  W extends Record<string, unknown>,
 >(
   state: State,
-  schema: TypedSchema<R, V, I, P>,
-  params: P,
-  onNext: OnNext,
-  onBack: OnBack,
-  getState: GetState,
-  setState: SetState
-): R {
+  schema: TypedSchema<T, U, V, W>,
+  params: W,
+  onNext: OnNext<Record<string, unknown>>,
+  onBack: OnBack<Record<string, unknown>>,
+  getState: GetState<Record<string, unknown>>,
+  setState: SetState,
+): T {
   const _schema = schema as Schema;
-  const _params = params as object;
+  const _params = params as Record<string, unknown>;
   return _getForm(
     state,
     _schema,
@@ -45,18 +45,18 @@ export function getForm<
     onNext,
     onBack,
     getState,
-    setState
-  ) as R;
+    setState,
+  ) as T;
 }
 
 function _getForm(
   state: State,
   schema: Schema,
-  params: object,
-  onNext: OnNext,
-  onBack: OnBack,
-  getState: GetState,
-  setState: SetState
+  params: Record<string, unknown>,
+  onNext: OnNext<Record<string, unknown>>,
+  onBack: OnBack<Record<string, unknown>>,
+  getState: GetState<Record<string, unknown>>,
+  setState: SetState,
 ): unknown {
   const point = state.points[state.points.length - 1];
   const form = FlowSchemaUtils.find(schema, point.path) as FormSchema;
@@ -68,8 +68,8 @@ function _getForm(
           name,
           FlowInputsUtils.get(state.inputs, point.path, name, keys, value),
         ];
-      }
-    )
+      },
+    ),
   );
   return form["form"]["render"]({
     inputs,

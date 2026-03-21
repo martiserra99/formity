@@ -12,69 +12,65 @@ import type {
 /**
  * Returns the union of all possible values that can be returned by a multi-step form.
  */
-export type ReturnOutput<V extends Values> = ListData<V, never> extends [
-  infer Next,
+export type ReturnOutput<T extends Values> = ListData<T, never> extends [
+  infer U,
   unknown,
 ]
-  ? Next
+  ? U
   : never;
 
-type ItemData<Values extends ItemValues, Data> = Values extends ListValues
-  ? ListData<Values, Data>
-  : Values extends CondValues
-  ? CondData<Values, Data>
-  : Values extends LoopValues
-  ? LoopData<Values, Data>
-  : Values extends SwitchValues
-  ? SwitchData<Values, Data>
-  : Values extends ReturnValues
-  ? [Data | Values["return"], true]
-  : [Data, false];
+type ItemData<T extends ItemValues, U> = T extends ListValues
+  ? ListData<T, U>
+  : T extends CondValues
+  ? CondData<T, U>
+  : T extends LoopValues
+  ? LoopData<T, U>
+  : T extends SwitchValues
+  ? SwitchData<T, U>
+  : T extends ReturnValues
+  ? [U | T["return"], true]
+  : [U, false];
 
-type ListData<Values extends ListValues, Data> = Values extends [
-  infer First,
-  ...infer Other,
+type ListData<T extends ListValues, U> = T extends [infer V, ...infer W]
+  ? V extends ItemValues
+    ? W extends ListValues
+      ? ItemData<V, U> extends [infer X, infer Y]
+        ? Y extends true
+          ? [X, true]
+          : ListData<W, X>
+        : never
+      : never
+    : never
+  : [U, false];
+
+type CondData<T extends CondValues, U> = BranchesData<
+  [T["cond"]["then"], T["cond"]["else"]],
+  U
+>;
+
+type LoopData<T extends LoopValues, U> = ListData<T["loop"]["do"], U> extends [
+  infer V,
+  unknown,
 ]
-  ? First extends ItemValues
-    ? Other extends ListValues
-      ? ItemData<First, Data> extends [infer Next, infer Return]
-        ? Return extends true
-          ? [Next, true]
-          : ListData<Other, Next>
-        : never
-      : never
-    : never
-  : [Data, false];
-
-type CondData<Values extends CondValues, Data> = RoutesData<
-  [Values["cond"]["then"], Values["cond"]["else"]],
-  Data
->;
-
-type LoopData<Values extends LoopValues, Data> = ListData<
-  Values["loop"]["do"],
-  Data
-> extends [infer Next, unknown]
-  ? [Next, false]
+  ? [V, false]
   : never;
 
-type SwitchData<Values extends SwitchValues, Data> = RoutesData<
-  [...Values["switch"]["branches"], Values["switch"]["default"]],
-  Data
+type SwitchData<T extends SwitchValues, U> = BranchesData<
+  [...T["switch"]["branches"], T["switch"]["default"]],
+  U
 >;
 
-type RoutesData<
-  Values extends ListValues[],
-  Data,
-  RoutesReturn = true,
-> = Values extends [infer First, ...infer Other]
-  ? First extends ListValues
-    ? Other extends ListValues[]
-      ? ListData<First, Data> extends [infer Next, infer Return]
-        ? RoutesReturn extends false
-          ? RoutesData<Other, Next, false>
-          : RoutesData<Other, Next, Return>
+type BranchesData<T extends ListValues[], U, V = true> = T extends [
+  infer W,
+  ...infer X,
+]
+  ? W extends ListValues
+    ? X extends ListValues[]
+      ? ListData<W, U> extends [infer Y, infer Z]
+        ? V extends false
+          ? BranchesData<X, Y, false>
+          : BranchesData<X, Y, Z>
         : never
       : never
     : never
-  : [Data, RoutesReturn];
+  : [U, V];
