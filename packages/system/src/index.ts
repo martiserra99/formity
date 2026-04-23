@@ -21,6 +21,7 @@ export type {
   YieldFlow,
   ReturnFlow,
   VariablesFlow,
+  JumpFlow,
 } from "./types/flow/typed";
 
 export type { Flow as ModelFlow } from "./types/flow/model";
@@ -36,6 +37,7 @@ export type {
   YieldFlow as ModelYieldFlow,
   ReturnFlow as ModelReturnFlow,
   VariablesFlow as ModelVariablesFlow,
+  JumpFlow as ModelJumpFlow,
 } from "./types/flow/model";
 
 export type { Inputs } from "./types/state/inputs";
@@ -73,6 +75,7 @@ export type {
   Yield,
   Return,
   Variables,
+  Jump,
 } from "./types/utils";
 
 export type { Schema } from "./types/schema";
@@ -88,6 +91,7 @@ export type {
   YieldSchema,
   ReturnSchema,
   VariablesSchema,
+  JumpSchema,
 } from "./types/schema";
 
 export {

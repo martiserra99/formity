@@ -32,7 +32,7 @@ export type ListSchema = ItemSchema[];
  */
 export type ConditionSchema = {
   type: "condition";
-  cond: {
+  condition: {
     then: ListSchema;
     else: ListSchema;
   };
@@ -92,4 +92,12 @@ export type ReturnSchema = {
 export type VariablesSchema = {
   type: "variables";
   variables: Record<string, unknown>;
+};
+
+/**
+ * This type is meant to be extended and is used to define the structure of a jump element in a multi-step form.
+ */
+export type JumpSchema = {
+  type: "jump";
+  item: ItemSchema;
 };

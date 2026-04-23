@@ -2,75 +2,109 @@ import type { Schema } from "../schema";
 
 import type {
   ItemSchema,
+  ControlSchema,
   ListSchema,
   ConditionSchema,
   LoopSchema,
   SwitchSchema,
   ReturnSchema,
+  JumpSchema,
 } from "../schema";
 
 /**
  * Returns the union of all possible values that can be returned by a multi-step form.
  */
-export type ReturnOutput<T extends Schema> = ListData<T, never> extends [
+export type ReturnOutput<T extends Schema> = ListData<T, never, false> extends [
   infer U,
-  unknown,
+  boolean,
 ]
   ? U
   : never;
 
-type ItemData<T extends ItemSchema, U> = T extends ListSchema
-  ? ListData<T, U>
-  : T extends ConditionSchema
-  ? CondData<T, U>
-  : T extends LoopSchema
-  ? LoopData<T, U>
-  : T extends SwitchSchema
-  ? SwitchData<T, U>
-  : T extends ReturnSchema
-  ? [U | T["return"], true]
-  : [U, false];
+type ItemData<Item extends ItemSchema, Data, Flag> = Item extends ControlSchema
+  ? ControlData<Item, Data, Flag>
+  : Item extends ReturnSchema
+  ? ReturnData<Item, Data, Flag>
+  : Item extends JumpSchema
+  ? JumpData<Item, Data>
+  : [Data, Flag];
 
-type ListData<T extends ListSchema, U> = T extends [infer V, ...infer W]
-  ? V extends ItemSchema
-    ? W extends ListSchema
-      ? ItemData<V, U> extends [infer X, infer Y]
-        ? Y extends true
-          ? [X, true]
-          : ListData<W, X>
-        : never
-      : never
-    : never
-  : [U, false];
-
-type CondData<T extends ConditionSchema, U> = BranchesData<
-  [T["cond"]["then"], T["cond"]["else"]],
-  U
->;
-
-type LoopData<T extends LoopSchema, U> = ListData<T["loop"]["do"], U> extends [
-  infer V,
-  unknown,
-]
-  ? [V, false]
+type ControlData<
+  Control extends ControlSchema,
+  Data,
+  Flag,
+> = Control extends ListSchema
+  ? ListData<Control, Data, Flag>
+  : Control extends ConditionSchema
+  ? ConditionData<Control, Data, Flag>
+  : Control extends LoopSchema
+  ? LoopData<Control, Data, Flag>
+  : Control extends SwitchSchema
+  ? SwitchData<Control, Data, Flag>
   : never;
 
-type SwitchData<T extends SwitchSchema, U> = BranchesData<
-  [...T["switch"]["branches"], T["switch"]["default"]],
-  U
->;
-
-type BranchesData<T extends ListSchema[], U, V = true> = T extends [
-  infer W,
-  ...infer X,
+type ListData<List extends ListSchema, Data, Flag> = List extends [
+  infer Item,
+  ...infer Rest,
 ]
-  ? W extends ListSchema
-    ? X extends ListSchema[]
-      ? ListData<W, U> extends [infer Y, infer Z]
-        ? V extends false
-          ? BranchesData<X, Y, false>
-          : BranchesData<X, Y, Z>
+  ? Item extends ItemSchema
+    ? Rest extends ListSchema
+      ? ItemData<Item, Data, Flag> extends [infer NextData, infer NextFlag]
+        ? ListData<Rest, NextData, NextFlag>
         : never
       : never
     : never
-  : [U, V];
+  : [Data, Flag];
+
+type ConditionData<
+  Condition extends ConditionSchema,
+  Data,
+  Flag,
+> = BranchesData<
+  [Condition["condition"]["then"], Condition["condition"]["else"]],
+  Data,
+  Flag
+>;
+
+type LoopData<Loop extends LoopSchema, Data, Flag> = ListData<
+  Loop["loop"]["do"],
+  Data,
+  Flag
+> extends [infer NextData, boolean]
+  ? [NextData, Flag]
+  : never;
+
+type SwitchData<Switch extends SwitchSchema, Data, Flag> = BranchesData<
+  [...Switch["switch"]["branches"], Switch["switch"]["default"]],
+  Data,
+  Flag
+>;
+
+type ReturnData<Return extends ReturnSchema, Data, Flag> = Flag extends false
+  ? [Data | Return["return"], true]
+  : [Data, true];
+
+type JumpData<Jump extends JumpSchema, Data> = ItemData<
+  Jump["item"],
+  Data,
+  false
+>;
+
+type BranchesData<
+  List extends ListSchema[],
+  Data,
+  Flag,
+  Mark = true,
+> = List extends [infer Item, ...infer Rest]
+  ? Item extends ListSchema
+    ? Rest extends ListSchema[]
+      ? ListData<Item, Data, Flag> extends [infer NextData, infer NextMark]
+        ? Mark extends false
+          ? BranchesData<Rest, NextData, Flag, Mark>
+          : BranchesData<Rest, NextData, Flag, NextMark>
+        : never
+      : never
+    : never
+  : Mark extends true
+  ? [Data, Mark]
+  : [Data, Flag];

@@ -1,18 +1,18 @@
-import { ListSchema } from "./schema";
+import { ListSchema, ItemSchema } from "./schema";
 
 /**
- * Utility type that defines the structure and values of a condition element in a multi-step form.
+ * Utility type that defines the structure of a condition element in a multi-step form.
  */
 export type Condition<T extends { then: ListSchema; else: ListSchema }> = {
   type: "condition";
-  cond: {
+  condition: {
     then: T["then"];
     else: T["else"];
   };
 };
 
 /**
- * Utility type that defines the structure and values of a loop element in a multi-step form.
+ * Utility type that defines the structure of a loop element in a multi-step form.
  */
 export type Loop<T extends ListSchema> = {
   type: "loop";
@@ -22,7 +22,7 @@ export type Loop<T extends ListSchema> = {
 };
 
 /**
- * Utility type that defines the structure and values of a switch element in a multi-step form.
+ * Utility type that defines the structure of a switch element in a multi-step form.
  */
 export type Switch<T extends { branches: ListSchema[]; default: ListSchema }> =
   {
@@ -34,7 +34,7 @@ export type Switch<T extends { branches: ListSchema[]; default: ListSchema }> =
   };
 
 /**
- * Utility type that defines the values of a form element in a multi-step form.
+ * Utility type that defines the structure of a form element in a multi-step form.
  */
 export type Form<T extends Record<string, unknown>> = {
   type: "form";
@@ -42,7 +42,7 @@ export type Form<T extends Record<string, unknown>> = {
 };
 
 /**
- * Utility type that defines the values of a yield element in a multi-step form.
+ * Utility type that defines the structure of a yield element in a multi-step form.
  */
 export type Yield<T extends { next: unknown[]; back: unknown[] }> = {
   type: "yield";
@@ -53,7 +53,7 @@ export type Yield<T extends { next: unknown[]; back: unknown[] }> = {
 };
 
 /**
- * Utility type that defines the values of a return element in a multi-step form.
+ * Utility type that defines the structure of a return element in a multi-step form.
  */
 export type Return<T> = {
   type: "return";
@@ -61,9 +61,17 @@ export type Return<T> = {
 };
 
 /**
- * Utility type that defines the values of a variables element in a multi-step form.
+ * Utility type that defines the structure of a variables element in a multi-step form.
  */
 export type Variables<T extends Record<string, unknown>> = {
   type: "variables";
   variables: T;
+};
+
+/**
+ * Utility type that defines the structure of a jump element in a multi-step form.
+ */
+export type Jump<T extends ItemSchema> = {
+  type: "jump";
+  item: T;
 };

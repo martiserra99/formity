@@ -40,6 +40,7 @@ export type {
   Yield,
   Return,
   Variables,
+  Jump,
 } from "@formity/system";
 
 export type { Schema } from "@formity/system";
@@ -55,6 +56,7 @@ export type {
   YieldSchema,
   ReturnSchema,
   VariablesSchema,
+  JumpSchema,
 } from "@formity/system";
 
 export type { Flow } from "./flow";
@@ -70,6 +72,7 @@ export type {
   YieldFlow,
   ReturnFlow,
   VariablesFlow,
+  JumpFlow,
 } from "./flow";
 
 export type { ModelFlow } from "./flow";
@@ -85,6 +88,7 @@ export type {
   ModelYieldFlow,
   ModelReturnFlow,
   ModelVariablesFlow,
+  ModelJumpFlow,
 } from "./flow";
 
 export { Formity } from "./formity";
