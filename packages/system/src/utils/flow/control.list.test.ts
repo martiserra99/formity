@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 
-import type { ListSchema, ReturnSchema } from "../../types/schema/model";
+import type { ListFlow, ReturnFlow } from "../../types/flow/model";
 import type { Position } from "src/types/state/position";
 
-import { into, next, at } from "./flow.list";
+import { into, next, at } from "./control.list";
 
-describe("ListSchema", () => {
+describe("ListFlow", () => {
   describe("into", () => {
-    it("navigates into the `ListSchema` object", () => {
-      const schema: ListSchema = [
+    it("navigates into the `ListFlow` object", () => {
+      const flow: ListFlow = [
         {
           form: {
             values: () => ({}),
@@ -16,20 +16,20 @@ describe("ListSchema", () => {
           },
         },
       ];
-      const position = into(schema);
+      const position = into(flow);
       expect(position).toEqual({ type: "list", slot: 0 });
     });
 
-    it("doesn't navigate into the `ListSchema` object", () => {
-      const schema: ListSchema = [];
-      const position = into(schema);
+    it("doesn't navigate into the `ListFlow` object", () => {
+      const flow: ListFlow = [];
+      const position = into(flow);
       expect(position).toEqual(null);
     });
   });
 
   describe("next", () => {
-    it("navigates to the next item in the `ListSchema` object", () => {
-      const schema: ListSchema = [
+    it("navigates to the next item in the `ListFlow` object", () => {
+      const flow: ListFlow = [
         {
           form: {
             values: () => ({}),
@@ -44,12 +44,12 @@ describe("ListSchema", () => {
         },
       ];
       const current: Position = { type: "list", slot: 0 };
-      const position = next(schema, current);
+      const position = next(flow, current);
       expect(position).toEqual({ type: "list", slot: 1 });
     });
 
-    it("doesn't navigate to the next item in the `ListSchema` object", () => {
-      const schema: ListSchema = [
+    it("doesn't navigate to the next item in the `ListFlow` object", () => {
+      const flow: ListFlow = [
         {
           form: {
             values: () => ({}),
@@ -58,18 +58,18 @@ describe("ListSchema", () => {
         },
       ];
       const current: Position = { type: "list", slot: 0 };
-      const position = next(schema, current);
+      const position = next(flow, current);
       expect(position).toEqual(null);
     });
   });
 });
 
 describe("at", () => {
-  it("retrieves the item at the specified position in the `ListSchema` object", () => {
-    const item: ReturnSchema = { return: () => ({}) };
-    const schema: ListSchema = [{ variables: () => ({}) }, item];
+  it("retrieves the item at the specified position in the `ListFlow` object", () => {
+    const item: ReturnFlow = { return: () => ({}) };
+    const flow: ListFlow = [{ variables: () => ({}) }, item];
     const position: Position = { type: "list", slot: 1 };
-    const result = at(schema, position);
+    const result = at(flow, position);
     expect(result).toBe(item);
   });
 });

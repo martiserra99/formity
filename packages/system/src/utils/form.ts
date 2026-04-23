@@ -1,20 +1,20 @@
-import type { Values } from "../types/values";
+import type { Schema } from "../types/schema";
 
-import type { Schema as TypedSchema } from "../types/schema/typed";
-import type { Schema, FormSchema } from "../types/schema/model";
+import type { Flow as TypedFlow } from "../types/flow/typed";
+import type { Flow, FormFlow } from "../types/flow/model";
 
 import type { State } from "../types/state/state";
 
-import type { OnNext, OnBack, GetState, SetState } from "../types/controls";
+import type { OnNext, OnBack, GetState, SetState } from "../types/render";
 
-import * as FlowSchemaUtils from "./schema/flow";
-import * as FlowInputsUtils from "./inputs/flow";
+import * as ControlFlowUtils from "./flow/control";
+import * as FlowInputsUtils from "./inputs/control";
 
 /**
  * Returns the rendered form for the current step of the multi-step form.
  *
  * @param state The current state of the multi-step form.
- * @param schema The `Schema` object representing the multi-step form.
+ * @param flow The `Flow` object representing the multi-step form.
  * @param params An object containing the parameters for the form.
  * @param onNext A callback function used to navigate to the next step of the multi-step form.
  * @param onBack A callback function used to navigate to the previous step of the multi-step form.
@@ -24,23 +24,23 @@ import * as FlowInputsUtils from "./inputs/flow";
  */
 export function getForm<
   T,
-  U extends Values,
+  U extends Schema,
   V extends Record<string, unknown>,
   W extends Record<string, unknown>,
 >(
   state: State,
-  schema: TypedSchema<T, U, V, W>,
+  flow: TypedFlow<T, U, V, W>,
   params: W,
   onNext: OnNext<Record<string, unknown>>,
   onBack: OnBack<Record<string, unknown>>,
   getState: GetState<Record<string, unknown>>,
   setState: SetState,
 ): T {
-  const _schema = schema as Schema;
+  const _flow = flow as Flow;
   const _params = params as Record<string, unknown>;
   return _getForm(
     state,
-    _schema,
+    _flow,
     _params,
     onNext,
     onBack,
@@ -51,7 +51,7 @@ export function getForm<
 
 function _getForm(
   state: State,
-  schema: Schema,
+  flow: Flow,
   params: Record<string, unknown>,
   onNext: OnNext<Record<string, unknown>>,
   onBack: OnBack<Record<string, unknown>>,
@@ -59,7 +59,7 @@ function _getForm(
   setState: SetState,
 ): unknown {
   const point = state.points[state.points.length - 1];
-  const form = FlowSchemaUtils.find(schema, point.path) as FormSchema;
+  const form = ControlFlowUtils.find(flow, point.path) as FormFlow;
   const inputs = point.values;
   const values = Object.fromEntries(
     Object.entries(form["form"]["values"](point.values)).map(

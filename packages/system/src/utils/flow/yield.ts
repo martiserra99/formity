@@ -1,4 +1,4 @@
-import type { ItemSchema, YieldSchema } from "../../types/schema/model";
+import type { ItemFlow, YieldFlow } from "../../types/flow/model";
 
 /**
  * Type guard for `YieldSchema` objects.
@@ -6,6 +6,6 @@ import type { ItemSchema, YieldSchema } from "../../types/schema/model";
  * @param schema An `ItemSchema` object.
  * @returns A boolean indicating whether the `schema` is a `YieldSchema` object.
  */
-export function is(schema: ItemSchema): schema is YieldSchema {
+export function is(schema: ItemFlow): schema is YieldFlow {
   return "yield" in schema;
 }

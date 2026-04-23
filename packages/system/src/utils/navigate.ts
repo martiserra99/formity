@@ -1,8 +1,8 @@
-import type { Values } from "../types/values";
+import type { Schema } from "../types/schema";
 
-import type { Schema as TypedSchema } from "../types/schema/typed";
-import type { Schema } from "../types/schema/model";
-import type { ListSchema, FlowSchema, FormSchema } from "../types/schema/model";
+import type { Flow as TypedFlow } from "../types/flow/typed";
+import type { Flow, ControlFlow } from "../types/flow/model";
+import type { ListFlow, FormFlow } from "../types/flow/model";
 
 import type { OnYield as TypedOnYield } from "../types/handlers/typed";
 import type { OnReturn as TypedOnReturn } from "../types/handlers/typed";
@@ -11,15 +11,15 @@ import type { OnYield, OnReturn } from "../types/handlers/model";
 import type { State } from "../types/state/state";
 import type { Point } from "../types/state/point";
 import type { Position } from "../types/state/position";
-import type { Inputs, FlowInputs } from "../types/state/inputs";
+import type { Inputs, ControlInputs } from "../types/state/inputs";
 
-import * as FlowSchemaUtils from "./schema/flow";
-import * as FormSchemaUtils from "./schema/form";
-import * as YieldSchemaUtils from "./schema/yield";
-import * as ReturnSchemaUtils from "./schema/return";
-import * as VariablesSchemaUtils from "./schema/variables";
+import * as ControlFlowUtils from "./flow/control";
+import * as FormFlowUtils from "./flow/form";
+import * as YieldFlowUtils from "./flow/yield";
+import * as ReturnFlowUtils from "./flow/return";
+import * as VariablesFlowUtils from "./flow/variables";
 
-import * as FlowInputsUtils from "./inputs/flow";
+import * as FlowInputsUtils from "./inputs/control";
 
 /**
  * Initializes the multi-step form and returns its initial state, including a point
@@ -29,7 +29,7 @@ import * as FlowInputsUtils from "./inputs/flow";
  * During traversal of the multi-step form, the `onYield` callback is triggered whenever
  * a yield operation is encountered, allowing for intermediate values to be processed.
  *
- * @param schema The `Schema` object that defines the structure and behavior of the multi-step form.
+ * @param flow The `Flow` object that defines the structure and behavior of the multi-step form.
  * @param values An object containing the initial input values for the multi-step form.
  * @param onYield A callback function triggered when the multi-step form yields values.
  * @returns The initial state of the form as a `State` object.
@@ -38,55 +38,55 @@ import * as FlowInputsUtils from "./inputs/flow";
  */
 export function getInitialState<
   T,
-  U extends Values,
+  U extends Schema,
   V extends Record<string, unknown>,
   W extends Record<string, unknown>,
->(schema: TypedSchema<T, U, V, W>, values: V, onYield: TypedOnYield<U>): State {
-  const _schema = schema as Schema;
+>(flow: TypedFlow<T, U, V, W>, values: V, onYield: TypedOnYield<U>): State {
+  const _flow = flow as Flow;
   const _values = values as Record<string, unknown>;
   const _onYield = onYield as OnYield;
-  return _getInitialState(_schema, _values, _onYield);
+  return _getInitialState(_flow, _values, _onYield);
 }
 
 function _getInitialState(
-  schema: Schema,
+  flow: Flow,
   values: Record<string, unknown>,
   onYield: OnYield,
 ): State {
-  const path = initialPath(schema, values);
-  const points = initialPoints(schema, { path, values }, onYield);
+  const path = initialPath(flow, values);
+  const points = initialPoints(flow, { path, values }, onYield);
   return { points, inputs: { type: "list", list: {} } };
 }
 
 function initialPath(
-  schema: ListSchema,
+  flow: ListFlow,
   values: Record<string, unknown>,
 ): Position[] {
-  const path = initialPathOrNull(schema, values);
+  const path = initialPathOrNull(flow, values);
   if (path) return path;
-  throw new Error("Invalid schema");
+  throw new Error("Invalid flow");
 }
 
 function initialPathOrNull(
-  schema: FlowSchema,
+  flow: ControlFlow,
   values: Record<string, unknown>,
 ): Position[] | null {
-  let position = FlowSchemaUtils.into(schema, values);
+  let position = ControlFlowUtils.into(flow, values);
   while (position) {
-    const path = initialPathFromPosition(schema, position, values);
+    const path = initialPathFromPosition(flow, position, values);
     if (path) return path;
-    position = FlowSchemaUtils.next(schema, position, values);
+    position = ControlFlowUtils.next(flow, position, values);
   }
   return null;
 }
 
 function initialPathFromPosition(
-  schema: FlowSchema,
+  flow: ControlFlow,
   position: Position,
   values: Record<string, unknown>,
 ): Position[] | null {
-  const item = FlowSchemaUtils.find(schema, [position]);
-  if (FlowSchemaUtils.is(item)) {
+  const item = ControlFlowUtils.find(flow, [position]);
+  if (ControlFlowUtils.is(item)) {
     const path = initialPathOrNull(item, values);
     if (path) return [position, ...path];
     else return null;
@@ -95,35 +95,35 @@ function initialPathFromPosition(
 }
 
 function initialPoints(
-  schema: ListSchema,
+  flow: ListFlow,
   point: Point,
   onYield: OnYield,
 ): Point[] {
   const points = [];
-  let currPoint: Point | null = point;
-  let currPointValues = point.values;
-  let currPointSchema = FlowSchemaUtils.find(schema, point.path);
-  while (!FormSchemaUtils.is(currPointSchema)) {
-    if (ReturnSchemaUtils.is(currPointSchema)) {
-      throw new Error("Invalid schema");
-    } else if (YieldSchemaUtils.is(currPointSchema)) {
-      const listValues = currPointSchema["yield"]["next"](currPointValues);
+  let currentPoint: Point | null = point;
+  let currentPointValues = point.values;
+  let currentPointFlow = ControlFlowUtils.find(flow, point.path);
+  while (!FormFlowUtils.is(currentPointFlow)) {
+    if (ReturnFlowUtils.is(currentPointFlow)) {
+      throw new Error("Invalid flow");
+    } else if (YieldFlowUtils.is(currentPointFlow)) {
+      const listValues = currentPointFlow["yield"]["next"](currentPointValues);
       listValues.forEach((values) => onYield(values));
-      points.push(currPoint);
-    } else if (VariablesSchemaUtils.is(currPointSchema)) {
-      const variables = currPointSchema["variables"](currPointValues);
-      currPointValues = { ...currPointValues, ...variables };
+      points.push(currentPoint);
+    } else if (VariablesFlowUtils.is(currentPointFlow)) {
+      const variables = currentPointFlow["variables"](currentPointValues);
+      currentPointValues = { ...currentPointValues, ...variables };
     }
-    currPoint = nextPoint(schema, {
-      path: currPoint.path,
-      values: currPointValues,
+    currentPoint = nextPoint(flow, {
+      path: currentPoint.path,
+      values: currentPointValues,
     });
-    if (!currPoint) {
-      throw new Error("Invalid schema");
+    if (!currentPoint) {
+      throw new Error("Invalid flow");
     }
-    currPointSchema = FlowSchemaUtils.find(schema, currPoint.path);
+    currentPointFlow = ControlFlowUtils.find(flow, currentPoint.path);
   }
-  points.push(currPoint);
+  points.push(currentPoint);
   return points;
 }
 
@@ -138,7 +138,7 @@ function initialPoints(
  * allowing for final values to be processed.
  *
  * @param state The current state of the multi-step form.
- * @param schema The `Schema` object representing the multi-step form.
+ * @param flow The `Flow` object representing the multi-step form.
  * @param values An object containing the generated values within the multi-step form.
  * @param onYield A callback function triggered when the multi-step form yields values.
  * @param onReturn A callback function triggered when the multi-step form returns values.
@@ -146,117 +146,117 @@ function initialPoints(
  */
 export function getNextState<
   T,
-  U extends Values,
+  U extends Schema,
   V extends Record<string, unknown>,
   W extends Record<string, unknown>,
 >(
   state: State,
-  schema: TypedSchema<T, U, V, W>,
+  flow: TypedFlow<T, U, V, W>,
   values: Record<string, unknown>,
   onYield: TypedOnYield<U>,
   onReturn: TypedOnReturn<U>,
 ): State {
-  const _schema = schema as Schema;
+  const _flow = flow as Flow;
   const _onYield = onYield as OnYield;
   const _onReturn = onReturn as OnReturn;
-  return _getNextState(state, _schema, values, _onYield, _onReturn);
+  return _getNextState(state, _flow, values, _onYield, _onReturn);
 }
 
 function _getNextState(
   state: State,
-  schema: Schema,
+  flow: Flow,
   values: Record<string, unknown>,
   onYield: OnYield,
   onReturn: OnReturn,
 ): State {
   const point = state.points[state.points.length - 1];
-  const points = advanceForm(schema, point, values, onYield, onReturn);
-  const inputs = updateInputs(state, schema, values);
+  const points = advanceForm(flow, point, values, onYield, onReturn);
+  const inputs = updateInputs(state, flow, values);
   return { points: [...state.points, ...points], inputs };
 }
 
 function advanceForm(
-  schema: ListSchema,
+  flow: ListFlow,
   point: Point,
   values: Record<string, unknown>,
   onYield: OnYield,
   onReturn: OnReturn,
 ): Point[] {
-  let currPoint: Point | null = nextPoint(schema, {
+  let currentPoint: Point | null = nextPoint(flow, {
     path: point.path,
     values: { ...point.values, ...values },
   });
-  if (!currPoint) {
+  if (!currentPoint) {
     return [];
   }
   const points: Point[] = [];
-  let currPointValues = currPoint.values;
-  let currPointSchema = FlowSchemaUtils.find(schema, currPoint.path);
-  while (!FormSchemaUtils.is(currPointSchema)) {
-    if (ReturnSchemaUtils.is(currPointSchema)) {
-      const values = currPointSchema["return"](currPointValues);
+  let currentPointValues = currentPoint.values;
+  let currentPointFlow = ControlFlowUtils.find(flow, currentPoint.path);
+  while (!FormFlowUtils.is(currentPointFlow)) {
+    if (ReturnFlowUtils.is(currentPointFlow)) {
+      const values = currentPointFlow["return"](currentPointValues);
       onReturn(values);
       return [];
-    } else if (YieldSchemaUtils.is(currPointSchema)) {
-      const listValues = currPointSchema["yield"]["next"](currPointValues);
+    } else if (YieldFlowUtils.is(currentPointFlow)) {
+      const listValues = currentPointFlow["yield"]["next"](currentPointValues);
       listValues.forEach((values) => onYield(values));
-      points.push(currPoint);
-    } else if (VariablesSchemaUtils.is(currPointSchema)) {
-      const variables = currPointSchema["variables"](currPointValues);
-      currPointValues = { ...currPointValues, ...variables };
+      points.push(currentPoint);
+    } else if (VariablesFlowUtils.is(currentPointFlow)) {
+      const variables = currentPointFlow["variables"](currentPointValues);
+      currentPointValues = { ...currentPointValues, ...variables };
     }
-    currPoint = nextPoint(schema, {
-      path: currPoint.path,
-      values: currPointValues,
+    currentPoint = nextPoint(flow, {
+      path: currentPoint.path,
+      values: currentPointValues,
     });
-    if (!currPoint) {
+    if (!currentPoint) {
       return [];
     }
-    currPointSchema = FlowSchemaUtils.find(schema, currPoint.path);
+    currentPointFlow = ControlFlowUtils.find(flow, currentPoint.path);
   }
-  points.push(currPoint);
+  points.push(currentPoint);
   return points;
 }
 
-function nextPoint(schema: ListSchema, point: Point): Point | null {
-  const next = nextPointInFlow(schema, point);
+function nextPoint(flow: ListFlow, point: Point): Point | null {
+  const next = nextPointInFlow(flow, point);
   if (next) return next;
   const over = overPoint(point);
-  if (over) return nextPoint(schema, over);
+  if (over) return nextPoint(flow, over);
   return null;
 }
 
-function nextPointInFlow(schema: ListSchema, point: Point): Point | null {
-  const next = nextPointInSameFlow(schema, point);
+function nextPointInFlow(flow: ListFlow, point: Point): Point | null {
+  const next = nextPointInSameFlow(flow, point);
   if (next) {
-    const into = nextPointInsideFlow(schema, next);
+    const into = nextPointInsideFlow(flow, next);
     if (into) return into;
-    return nextPointInFlow(schema, next);
+    return nextPointInFlow(flow, next);
   }
   return null;
 }
 
-function nextPointInSameFlow(schema: ListSchema, point: Point): Point | null {
+function nextPointInSameFlow(flow: ListFlow, point: Point): Point | null {
   const path = point.path.slice(0, -1);
-  const flow = FlowSchemaUtils.find(schema, path) as FlowSchema;
-  const curr = point.path[point.path.length - 1];
-  const next = FlowSchemaUtils.next(flow, curr, point.values);
+  const control = ControlFlowUtils.find(flow, path) as ControlFlow;
+  const current = point.path[point.path.length - 1];
+  const next = ControlFlowUtils.next(control, current, point.values);
   if (next) {
     return { path: [...path, next], values: point.values };
   }
   return null;
 }
 
-function nextPointInsideFlow(schema: ListSchema, point: Point): Point | null {
-  const item = FlowSchemaUtils.find(schema, point.path);
-  if (FlowSchemaUtils.is(item)) {
-    const position = FlowSchemaUtils.into(item, point.values);
+function nextPointInsideFlow(flow: ListFlow, point: Point): Point | null {
+  const item = ControlFlowUtils.find(flow, point.path);
+  if (ControlFlowUtils.is(item)) {
+    const position = ControlFlowUtils.into(item, point.values);
     if (position) {
       const path = [...point.path, position];
       const next = { path, values: point.values };
-      const into = nextPointInsideFlow(schema, next);
+      const into = nextPointInsideFlow(flow, next);
       if (into) return into;
-      return nextPointInFlow(schema, next);
+      return nextPointInFlow(flow, next);
     }
     return null;
   }
@@ -275,59 +275,59 @@ function overPoint(point: Point): Point | null {
  * If there is no previous form step, the returned state contains the current form step.
  *
  * @param state The current state of the multi-step form.
- * @param schema The `Schema` object representing the multi-step form.
+ * @param flow The `Flow` object representing the multi-step form.
  * @param values An object containing the generated values within the multi-step form.
  * @returns The updated state of the multi-step form.
  */
 export function getPreviousState<
   T,
-  U extends Values,
+  U extends Schema,
   V extends Record<string, unknown>,
   W extends Record<string, unknown>,
 >(
   state: State,
-  schema: TypedSchema<T, U, V, W>,
+  flow: TypedFlow<T, U, V, W>,
   values: Record<string, unknown>,
   onYield: TypedOnYield<U>,
 ): State {
-  const _schema = schema as Schema;
+  const _flow = flow as Flow;
   const _onYield = onYield as OnYield;
-  return _getPreviousState(state, _schema, values, _onYield);
+  return _getPreviousState(state, _flow, values, _onYield);
 }
 
 function _getPreviousState(
   state: State,
-  schema: Schema,
+  flow: Flow,
   values: Record<string, unknown>,
   onYield: OnYield,
 ): State {
   const points = state.points.slice(0, -1);
   while (points.length > 0) {
-    const currPoint = points[points.length - 1];
-    const currPointSchema = FlowSchemaUtils.find(schema, currPoint.path);
-    if (FormSchemaUtils.is(currPointSchema)) {
-      const inputs = updateInputs(state, schema, values);
+    const currentPoint = points[points.length - 1];
+    const currentPointFlow = ControlFlowUtils.find(flow, currentPoint.path);
+    if (FormFlowUtils.is(currentPointFlow)) {
+      const inputs = updateInputs(state, flow, values);
       return { points, inputs };
     }
-    if (YieldSchemaUtils.is(currPointSchema)) {
-      const listValues = currPointSchema["yield"]["back"](currPoint.values);
+    if (YieldFlowUtils.is(currentPointFlow)) {
+      const listValues = currentPointFlow["yield"]["back"](currentPoint.values);
       listValues.forEach((values) => onYield(values));
     }
     points.pop();
   }
-  const inputs = updateInputs(state, schema, values);
+  const inputs = updateInputs(state, flow, values);
   return { points: state.points, inputs };
 }
 
 function updateInputs(
   state: State,
-  schema: Schema,
+  flow: Flow,
   values: Record<string, unknown>,
 ): Inputs {
   const point = state.points[state.points.length - 1];
-  const formSchema = FlowSchemaUtils.find(schema, point.path) as FormSchema;
-  const formValues = formSchema["form"]["values"](point.values);
-  let inputs: FlowInputs = state.inputs;
+  const formFlow = ControlFlowUtils.find(flow, point.path) as FormFlow;
+  const formValues = formFlow["form"]["values"](point.values);
+  let inputs: ControlInputs = state.inputs;
   for (const [name, value] of Object.entries(values)) {
     if (name in formValues) {
       const keys = formValues[name][1];

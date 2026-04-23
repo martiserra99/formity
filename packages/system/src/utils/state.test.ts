@@ -1,26 +1,26 @@
 import { describe, expect, it } from "vitest";
 
-import type { Schema } from "src/types/schema/typed";
-import type { Form, Cond, Loop, Variables } from "src/types/utils";
+import type { Flow } from "src/types/flow/typed";
+import type { Form, Condition, Loop, Variables } from "src/types/utils";
 import type { State } from "src/types/state/state";
 
 import { getState } from "./state";
 
 describe("getState", () => {
   it("returns the current state of the multi-step form after updating the values of the current form.", () => {
-    type Values = [
+    type Schema = [
       Variables<Record<string, unknown>>,
-      Cond<{ then: [Loop<[Form<{ a: number; b: number }>]>]; else: [] }>,
+      Condition<{ then: [Loop<[Form<{ a: number; b: number }>]>]; else: [] }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       Record<string, unknown>,
-      Values,
+      Schema,
       Record<string, unknown>,
       Record<string, unknown>
     > = [
       { variables: () => ({}) },
       {
-        cond: {
+        condition: {
           if: () => true,
           then: [
             {
@@ -49,7 +49,7 @@ describe("getState", () => {
         {
           path: [
             { type: "list", slot: 1 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
             { type: "loop", slot: 0 },
           ],
           values: {},
@@ -59,16 +59,16 @@ describe("getState", () => {
     };
     const state: State = getState<
       Record<string, unknown>,
-      Values,
+      Schema,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, schema, { a: 1, b: 2 });
+    >(current, flow, { a: 1, b: 2 });
     const expected: State = {
       points: [
         {
           path: [
             { type: "list", slot: 1 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
             { type: "loop", slot: 0 },
           ],
           values: {},
@@ -78,7 +78,7 @@ describe("getState", () => {
         type: "list",
         list: {
           1: {
-            type: "cond",
+            type: "condition",
             then: {
               0: {
                 type: "loop",

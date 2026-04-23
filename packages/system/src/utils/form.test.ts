@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest";
 
-import type { Schema } from "src/types/schema/typed";
-import type { Form, Cond, Loop, Variables } from "src/types/utils";
+import type { Flow } from "src/types/flow/typed";
+import type { Form, Condition, Loop, Variables } from "src/types/utils";
 import type { State } from "src/types/state/state";
 
 import { getForm } from "./form";
 
 describe("getForm", () => {
-  it("renders the form from the schema that is in the current position", () => {
+  it("renders the form at the specified position", () => {
     type Values = [
       Variables<Record<string, unknown>>,
-      Cond<{ then: [Loop<[Form<Record<string, unknown>>]>]; else: [] }>,
+      Condition<{ then: [Loop<[Form<Record<string, unknown>>]>]; else: [] }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       Record<string, unknown>,
       Values,
       Record<string, unknown>,
@@ -20,7 +20,7 @@ describe("getForm", () => {
     > = [
       { variables: () => ({}) },
       {
-        cond: {
+        condition: {
           if: () => true,
           then: [
             {
@@ -48,7 +48,7 @@ describe("getForm", () => {
         {
           path: [
             { type: "list", slot: 1 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
             { type: "loop", slot: 0 },
           ],
           values: {},
@@ -63,7 +63,7 @@ describe("getForm", () => {
       Record<string, unknown>
     >(
       state,
-      schema,
+      flow,
       {},
       () => {},
       () => {},
@@ -73,9 +73,9 @@ describe("getForm", () => {
     expect(form).toEqual({ hello: "world" });
   });
 
-  it("uses the values from the form defined in the schema", () => {
+  it("uses the form values", () => {
     type Values = [Form<{ name: string }>];
-    const schema: Schema<
+    const flow: Flow<
       Record<string, unknown>,
       Values,
       Record<string, unknown>,
@@ -110,7 +110,7 @@ describe("getForm", () => {
       Record<string, unknown>
     >(
       state,
-      schema,
+      flow,
       {},
       () => {},
       () => {},
@@ -127,7 +127,7 @@ describe("getForm", () => {
   it("uses the params that have been provided", () => {
     type Values = [Form<Record<string, unknown>>];
     type Params = { hello: string };
-    const schema: Schema<
+    const flow: Flow<
       Record<string, unknown>,
       Values,
       Record<string, unknown>,
@@ -158,7 +158,7 @@ describe("getForm", () => {
       Params
     >(
       state,
-      schema,
+      flow,
       { hello: "world" },
       () => {},
       () => {},

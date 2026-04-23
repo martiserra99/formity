@@ -1,39 +1,39 @@
-import type { Values } from "../values";
+import type { Schema } from "../schema";
 
 import type {
-  ItemValues,
-  ListValues,
-  CondValues,
-  LoopValues,
-  SwitchValues,
-  ReturnValues,
-} from "../values";
+  ItemSchema,
+  ListSchema,
+  ConditionSchema,
+  LoopSchema,
+  SwitchSchema,
+  ReturnSchema,
+} from "../schema";
 
 /**
  * Returns the union of all possible values that can be returned by a multi-step form.
  */
-export type ReturnOutput<T extends Values> = ListData<T, never> extends [
+export type ReturnOutput<T extends Schema> = ListData<T, never> extends [
   infer U,
   unknown,
 ]
   ? U
   : never;
 
-type ItemData<T extends ItemValues, U> = T extends ListValues
+type ItemData<T extends ItemSchema, U> = T extends ListSchema
   ? ListData<T, U>
-  : T extends CondValues
+  : T extends ConditionSchema
   ? CondData<T, U>
-  : T extends LoopValues
+  : T extends LoopSchema
   ? LoopData<T, U>
-  : T extends SwitchValues
+  : T extends SwitchSchema
   ? SwitchData<T, U>
-  : T extends ReturnValues
+  : T extends ReturnSchema
   ? [U | T["return"], true]
   : [U, false];
 
-type ListData<T extends ListValues, U> = T extends [infer V, ...infer W]
-  ? V extends ItemValues
-    ? W extends ListValues
+type ListData<T extends ListSchema, U> = T extends [infer V, ...infer W]
+  ? V extends ItemSchema
+    ? W extends ListSchema
       ? ItemData<V, U> extends [infer X, infer Y]
         ? Y extends true
           ? [X, true]
@@ -43,29 +43,29 @@ type ListData<T extends ListValues, U> = T extends [infer V, ...infer W]
     : never
   : [U, false];
 
-type CondData<T extends CondValues, U> = BranchesData<
+type CondData<T extends ConditionSchema, U> = BranchesData<
   [T["cond"]["then"], T["cond"]["else"]],
   U
 >;
 
-type LoopData<T extends LoopValues, U> = ListData<T["loop"]["do"], U> extends [
+type LoopData<T extends LoopSchema, U> = ListData<T["loop"]["do"], U> extends [
   infer V,
   unknown,
 ]
   ? [V, false]
   : never;
 
-type SwitchData<T extends SwitchValues, U> = BranchesData<
+type SwitchData<T extends SwitchSchema, U> = BranchesData<
   [...T["switch"]["branches"], T["switch"]["default"]],
   U
 >;
 
-type BranchesData<T extends ListValues[], U, V = true> = T extends [
+type BranchesData<T extends ListSchema[], U, V = true> = T extends [
   infer W,
   ...infer X,
 ]
-  ? W extends ListValues
-    ? X extends ListValues[]
+  ? W extends ListSchema
+    ? X extends ListSchema[]
       ? ListData<W, U> extends [infer Y, infer Z]
         ? V extends false
           ? BranchesData<X, Y, false>

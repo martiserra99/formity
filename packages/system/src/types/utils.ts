@@ -1,10 +1,10 @@
-import { ListValues } from "./values";
+import { ListSchema } from "./schema";
 
 /**
  * Utility type that defines the structure and values of a condition element in a multi-step form.
  */
-export type Cond<T extends { then: ListValues; else: ListValues }> = {
-  type: "cond";
+export type Condition<T extends { then: ListSchema; else: ListSchema }> = {
+  type: "condition";
   cond: {
     then: T["then"];
     else: T["else"];
@@ -14,7 +14,7 @@ export type Cond<T extends { then: ListValues; else: ListValues }> = {
 /**
  * Utility type that defines the structure and values of a loop element in a multi-step form.
  */
-export type Loop<T extends ListValues> = {
+export type Loop<T extends ListSchema> = {
   type: "loop";
   loop: {
     do: T;
@@ -24,7 +24,7 @@ export type Loop<T extends ListValues> = {
 /**
  * Utility type that defines the structure and values of a switch element in a multi-step form.
  */
-export type Switch<T extends { branches: ListValues[]; default: ListValues }> =
+export type Switch<T extends { branches: ListSchema[]; default: ListSchema }> =
   {
     type: "switch";
     switch: {

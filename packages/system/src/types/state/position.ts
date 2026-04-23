@@ -3,7 +3,7 @@
  */
 export type Position =
   | ListPosition
-  | CondPosition
+  | ConditionPosition
   | LoopPosition
   | SwitchPosition;
 
@@ -18,8 +18,8 @@ export type ListPosition = {
 /**
  * Represents a position within a conditional.
  */
-export type CondPosition = {
-  type: "cond";
+export type ConditionPosition = {
+  type: "condition";
   path: "then" | "else";
   slot: number;
 };

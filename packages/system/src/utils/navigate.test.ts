@@ -1,9 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
 
-import type { Schema } from "src/types/schema/typed";
+import type { Flow } from "src/types/flow/typed";
 import type {
   Form,
-  Cond,
+  Condition,
   Loop,
   Yield,
   Return,
@@ -16,7 +16,7 @@ import { getInitialState, getNextState, getPreviousState } from "./navigate";
 describe("getInitialState", () => {
   it("initializes the form state with the point pointing to the first position", () => {
     type Values = [Form<Record<string, unknown>>];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -34,7 +34,7 @@ describe("getInitialState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(schema, {}, () => {});
+    >(flow, {}, () => {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
@@ -48,7 +48,7 @@ describe("getInitialState", () => {
       Variables<Record<string, unknown>>,
       Form<Record<string, unknown>>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -68,7 +68,7 @@ describe("getInitialState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(schema, {}, () => {});
+    >(flow, {}, () => {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 2 }], values: {} }],
       inputs: { type: "list", list: {} },
@@ -78,9 +78,9 @@ describe("getInitialState", () => {
 
   it("initializes the form state with the point pointing to a deeply nested position from the first position", () => {
     type Values = [
-      Cond<{
+      Condition<{
         then: [
-          Cond<{
+          Condition<{
             then: [];
             else: [Loop<[Form<Record<string, unknown>>]>];
           }>,
@@ -88,18 +88,18 @@ describe("getInitialState", () => {
         else: [];
       }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
     > = [
       {
-        cond: {
+        condition: {
           if: () => true,
           then: [
             {
-              cond: {
+              condition: {
                 if: () => false,
                 then: [],
                 else: [
@@ -129,14 +129,14 @@ describe("getInitialState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(schema, {}, () => {});
+    >(flow, {}, () => {});
     const expected: State = {
       points: [
         {
           path: [
             { type: "list", slot: 0 },
-            { type: "cond", path: "then", slot: 0 },
-            { type: "cond", path: "else", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", path: "else", slot: 0 },
             { type: "loop", slot: 0 },
           ],
           values: {},
@@ -151,9 +151,9 @@ describe("getInitialState", () => {
     type Values = [
       Variables<Record<string, unknown>>,
       Variables<Record<string, unknown>>,
-      Cond<{
+      Condition<{
         then: [
-          Cond<{
+          Condition<{
             then: [];
             else: [
               Variables<Record<string, unknown>>,
@@ -169,7 +169,7 @@ describe("getInitialState", () => {
         else: [];
       }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -178,11 +178,11 @@ describe("getInitialState", () => {
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
-        cond: {
+        condition: {
           if: () => true,
           then: [
             {
-              cond: {
+              condition: {
                 if: () => false,
                 then: [],
                 else: [
@@ -214,14 +214,14 @@ describe("getInitialState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(schema, {}, () => {});
+    >(flow, {}, () => {});
     const expected: State = {
       points: [
         {
           path: [
             { type: "list", slot: 2 },
-            { type: "cond", path: "then", slot: 0 },
-            { type: "cond", path: "else", slot: 1 },
+            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", path: "else", slot: 1 },
             { type: "loop", slot: 1 },
           ],
           values: {},
@@ -232,9 +232,9 @@ describe("getInitialState", () => {
     expect(state).toEqual(expected);
   });
 
-  it("throws an error when the schema is empty", () => {
+  it("throws an error when the flow is empty", () => {
     type Values = [];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -246,7 +246,7 @@ describe("getInitialState", () => {
         Values,
         Record<string, unknown>,
         Record<string, unknown>
-      >(schema, {}, () => {}),
+      >(flow, {}, () => {}),
     ).toThrow();
   });
 
@@ -254,9 +254,9 @@ describe("getInitialState", () => {
     type Values = [
       Variables<Record<string, unknown>>,
       Variables<Record<string, unknown>>,
-      Cond<{
+      Condition<{
         then: [
-          Cond<{
+          Condition<{
             then: [Form<Record<string, unknown>>];
             else: [];
           }>,
@@ -264,7 +264,7 @@ describe("getInitialState", () => {
         else: [];
       }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -273,11 +273,11 @@ describe("getInitialState", () => {
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
-        cond: {
+        condition: {
           if: () => true,
           then: [
             {
-              cond: {
+              condition: {
                 if: () => false,
                 then: [
                   {
@@ -301,7 +301,7 @@ describe("getInitialState", () => {
         Values,
         Record<string, unknown>,
         Record<string, unknown>
-      >(schema, {}, () => {}),
+      >(flow, {}, () => {}),
     ).toThrow();
   });
 
@@ -309,9 +309,9 @@ describe("getInitialState", () => {
     type Values = [
       Variables<Record<string, unknown>>,
       Variables<Record<string, unknown>>,
-      Cond<{
+      Condition<{
         then: [
-          Cond<{
+          Condition<{
             then: [];
             else: [Return<Record<string, unknown>>];
           }>,
@@ -320,7 +320,7 @@ describe("getInitialState", () => {
       }>,
       Form<Record<string, unknown>>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -329,11 +329,11 @@ describe("getInitialState", () => {
       { variables: () => ({}) },
       { variables: () => ({}) },
       {
-        cond: {
+        condition: {
           if: () => true,
           then: [
             {
-              cond: {
+              condition: {
                 if: () => false,
                 then: [],
                 else: [{ return: () => ({}) }],
@@ -356,7 +356,7 @@ describe("getInitialState", () => {
         Values,
         Record<string, unknown>,
         Record<string, unknown>
-      >(schema, {}, () => {}),
+      >(flow, {}, () => {}),
     ).toThrow();
   });
 
@@ -366,9 +366,9 @@ describe("getInitialState", () => {
         next: [{ an: number }, { bn: number }];
         back: [{ ab: number }, { bb: number }];
       }>,
-      Cond<{
+      Condition<{
         then: [
-          Cond<{
+          Condition<{
             then: [];
             else: [
               Yield<{
@@ -382,7 +382,7 @@ describe("getInitialState", () => {
         else: [];
       }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -395,11 +395,11 @@ describe("getInitialState", () => {
         },
       },
       {
-        cond: {
+        condition: {
           if: () => true,
           then: [
             {
-              cond: {
+              condition: {
                 if: () => false,
                 then: [],
                 else: [
@@ -436,7 +436,7 @@ describe("getInitialState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(schema, {}, onYield);
+    >(flow, {}, onYield);
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -448,9 +448,9 @@ describe("getInitialState", () => {
   it("generates values every time it encounters a variables element", () => {
     type Values = [
       Variables<{ a: number; b: number }>,
-      Cond<{
+      Condition<{
         then: [
-          Cond<{
+          Condition<{
             then: [];
             else: [
               Variables<{ c: number }>,
@@ -467,7 +467,7 @@ describe("getInitialState", () => {
         else: [];
       }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -475,11 +475,11 @@ describe("getInitialState", () => {
     > = [
       { variables: () => ({ a: 1, b: 2 }) },
       {
-        cond: {
+        condition: {
           if: () => true,
           then: [
             {
-              cond: {
+              condition: {
                 if: () => false,
                 then: [],
                 else: [
@@ -512,14 +512,14 @@ describe("getInitialState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(schema, {}, () => {});
+    >(flow, {}, () => {});
     const expected: State = {
       points: [
         {
           path: [
             { type: "list", slot: 1 },
-            { type: "cond", path: "then", slot: 0 },
-            { type: "cond", path: "else", slot: 1 },
+            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", path: "else", slot: 1 },
             { type: "loop", slot: 2 },
           ],
           values: { a: 1, b: 2, c: 3, d: 4, e: 5 },
@@ -533,7 +533,7 @@ describe("getInitialState", () => {
   it("initializes the values of the form state with the ones that have been provided", () => {
     type Values = [Form<Record<string, unknown>>];
     type Inputs = { a: number; b: number };
-    const schema: Schema<null, Values, Inputs, Record<string, unknown>> = [
+    const flow: Flow<null, Values, Inputs, Record<string, unknown>> = [
       {
         form: {
           values: () => ({}),
@@ -547,7 +547,7 @@ describe("getInitialState", () => {
       Values,
       Inputs,
       Record<string, unknown>
-    >(schema, inputs, () => {});
+    >(flow, inputs, () => {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: { a: 1, b: 2 } }],
       inputs: { type: "list", list: {} },
@@ -562,7 +562,7 @@ describe("getNextState", () => {
       Form<Record<string, unknown>>,
       Form<Record<string, unknown>>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -592,7 +592,7 @@ describe("getNextState", () => {
       Record<string, unknown>
     >(
       current,
-      schema,
+      flow,
       {},
       () => {},
       () => {},
@@ -611,12 +611,12 @@ describe("getNextState", () => {
     type Values = [
       Loop<
         [
-          Cond<{ then: [Form<Record<string, unknown>>]; else: [] }>,
+          Condition<{ then: [Form<Record<string, unknown>>]; else: [] }>,
           Form<Record<string, unknown>>,
         ]
       >,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -627,7 +627,7 @@ describe("getNextState", () => {
           while: () => true,
           do: [
             {
-              cond: {
+              condition: {
                 if: () => true,
                 then: [
                   {
@@ -669,7 +669,7 @@ describe("getNextState", () => {
       Record<string, unknown>
     >(
       current,
-      schema,
+      flow,
       {},
       () => {},
       () => {},
@@ -687,7 +687,7 @@ describe("getNextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
           ],
           values: {},
         },
@@ -699,10 +699,10 @@ describe("getNextState", () => {
 
   it("navigates to the form that is next to the current one outside the current flow element", () => {
     type Values = [
-      Loop<[Cond<{ then: [Form<Record<string, unknown>>]; else: [] }>]>,
-      Cond<{ then: []; else: [Form<Record<string, unknown>>] }>,
+      Loop<[Condition<{ then: [Form<Record<string, unknown>>]; else: [] }>]>,
+      Condition<{ then: []; else: [Form<Record<string, unknown>>] }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -713,7 +713,7 @@ describe("getNextState", () => {
           while: () => false,
           do: [
             {
-              cond: {
+              condition: {
                 if: () => true,
                 then: [
                   {
@@ -730,7 +730,7 @@ describe("getNextState", () => {
         },
       },
       {
-        cond: {
+        condition: {
           if: () => false,
           then: [],
           else: [
@@ -750,7 +750,7 @@ describe("getNextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
           ],
           values: {},
         },
@@ -764,7 +764,7 @@ describe("getNextState", () => {
       Record<string, unknown>
     >(
       current,
-      schema,
+      flow,
       {},
       () => {},
       () => {},
@@ -775,14 +775,14 @@ describe("getNextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
           ],
           values: {},
         },
         {
           path: [
             { type: "list", slot: 1 },
-            { type: "cond", path: "else", slot: 0 },
+            { type: "condition", path: "else", slot: 0 },
           ],
           values: {},
         },
@@ -796,7 +796,7 @@ describe("getNextState", () => {
     type Values = [
       Loop<
         [
-          Cond<{
+          Condition<{
             then: [
               Form<Record<string, unknown>>,
               Yield<{
@@ -809,7 +809,7 @@ describe("getNextState", () => {
         ]
       >,
       Yield<{ next: [{ cn: number }]; back: [{ cb: number }] }>,
-      Cond<{
+      Condition<{
         then: [];
         else: [
           Yield<{ next: [{ dn: number }]; back: [{ db: number }] }>,
@@ -817,7 +817,7 @@ describe("getNextState", () => {
         ];
       }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -828,7 +828,7 @@ describe("getNextState", () => {
           while: () => false,
           do: [
             {
-              cond: {
+              condition: {
                 if: () => true,
                 then: [
                   {
@@ -857,7 +857,7 @@ describe("getNextState", () => {
         },
       },
       {
-        cond: {
+        condition: {
           if: () => false,
           then: [],
           else: [
@@ -883,7 +883,7 @@ describe("getNextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
           ],
           values: {},
         },
@@ -896,7 +896,7 @@ describe("getNextState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, schema, {}, onYield, () => {});
+    >(current, flow, {}, onYield, () => {});
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -911,7 +911,7 @@ describe("getNextState", () => {
     type Values = [
       Loop<
         [
-          Cond<{
+          Condition<{
             then: [
               Form<Record<string, unknown>>,
               Yield<{
@@ -924,7 +924,7 @@ describe("getNextState", () => {
         ]
       >,
       Yield<{ next: [{ cn: number }]; back: [{ cb: number }] }>,
-      Cond<{
+      Condition<{
         then: [];
         else: [
           Yield<{ next: [{ dn: number }]; back: [{ db: number }] }>,
@@ -932,7 +932,7 @@ describe("getNextState", () => {
         ];
       }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -943,7 +943,7 @@ describe("getNextState", () => {
           while: () => false,
           do: [
             {
-              cond: {
+              condition: {
                 if: () => true,
                 then: [
                   {
@@ -972,7 +972,7 @@ describe("getNextState", () => {
         },
       },
       {
-        cond: {
+        condition: {
           if: () => false,
           then: [],
           else: [
@@ -993,7 +993,7 @@ describe("getNextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
           ],
           values: {},
         },
@@ -1006,7 +1006,7 @@ describe("getNextState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, schema, {}, onYield, () => {});
+    >(current, flow, {}, onYield, () => {});
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -1017,11 +1017,11 @@ describe("getNextState", () => {
     expect(onYield).not.toHaveBeenCalledWith({ db: 4 });
   });
 
-  it("calls the onYield callback with the appropriate values every time values are yielded until it reaches the end of the schema", () => {
+  it("calls the onYield callback with the appropriate values every time values are yielded until it reaches the end of the flow", () => {
     type Values = [
       Loop<
         [
-          Cond<{
+          Condition<{
             then: [
               Form<Record<string, unknown>>,
               Yield<{
@@ -1034,12 +1034,12 @@ describe("getNextState", () => {
         ]
       >,
       Yield<{ next: [{ cn: number }]; back: [{ cb: number }] }>,
-      Cond<{
+      Condition<{
         then: [];
         else: [Yield<{ next: [{ dn: number }]; back: [{ db: number }] }>];
       }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -1050,7 +1050,7 @@ describe("getNextState", () => {
           while: () => false,
           do: [
             {
-              cond: {
+              condition: {
                 if: () => true,
                 then: [
                   {
@@ -1079,7 +1079,7 @@ describe("getNextState", () => {
         },
       },
       {
-        cond: {
+        condition: {
           if: () => false,
           then: [],
           else: [
@@ -1099,7 +1099,7 @@ describe("getNextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
           ],
           values: {},
         },
@@ -1112,7 +1112,7 @@ describe("getNextState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, schema, {}, onYield, () => {});
+    >(current, flow, {}, onYield, () => {});
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -1125,10 +1125,10 @@ describe("getNextState", () => {
 
   it("calls the onReturn callback with the appropriate values when a return is encountered", () => {
     type Values = [
-      Loop<[Cond<{ then: [Form<Record<string, unknown>>]; else: [] }>]>,
-      Cond<{ then: []; else: [Return<{ a: number; b: number }>] }>,
+      Loop<[Condition<{ then: [Form<Record<string, unknown>>]; else: [] }>]>,
+      Condition<{ then: []; else: [Return<{ a: number; b: number }>] }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -1139,7 +1139,7 @@ describe("getNextState", () => {
           while: () => false,
           do: [
             {
-              cond: {
+              condition: {
                 if: () => true,
                 then: [
                   {
@@ -1157,7 +1157,7 @@ describe("getNextState", () => {
       },
 
       {
-        cond: {
+        condition: {
           if: () => false,
           then: [],
           else: [{ return: () => ({ a: 1, b: 2 }) }],
@@ -1170,7 +1170,7 @@ describe("getNextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
           ],
           values: {},
         },
@@ -1183,17 +1183,17 @@ describe("getNextState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, schema, {}, () => {}, onReturn);
+    >(current, flow, {}, () => {}, onReturn);
     expect(onReturn).toHaveBeenCalledWith({ a: 1, b: 2 });
   });
 
   it("doesn't navigate to any form that is after a return", () => {
     type Values = [
-      Loop<[Cond<{ then: [Form<Record<string, unknown>>]; else: [] }>]>,
-      Cond<{ then: []; else: [Return<Record<string, unknown>>] }>,
+      Loop<[Condition<{ then: [Form<Record<string, unknown>>]; else: [] }>]>,
+      Condition<{ then: []; else: [Return<Record<string, unknown>>] }>,
       Form<Record<string, unknown>>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -1204,7 +1204,7 @@ describe("getNextState", () => {
           while: () => false,
           do: [
             {
-              cond: {
+              condition: {
                 if: () => true,
                 then: [
                   {
@@ -1221,7 +1221,7 @@ describe("getNextState", () => {
         },
       },
       {
-        cond: {
+        condition: {
           if: () => false,
           then: [],
           else: [{ return: () => ({}) }],
@@ -1240,7 +1240,7 @@ describe("getNextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
           ],
           values: {},
         },
@@ -1254,7 +1254,7 @@ describe("getNextState", () => {
       Record<string, unknown>
     >(
       current,
-      schema,
+      flow,
       {},
       () => {},
       () => {},
@@ -1265,7 +1265,7 @@ describe("getNextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
           ],
           values: {},
         },
@@ -1277,10 +1277,10 @@ describe("getNextState", () => {
 
   it("doesn't navigate to any other form if the current form is the last one", () => {
     type Values = [
-      Loop<[Cond<{ then: [Form<Record<string, unknown>>]; else: [] }>]>,
-      Cond<{ then: []; else: [] }>,
+      Loop<[Condition<{ then: [Form<Record<string, unknown>>]; else: [] }>]>,
+      Condition<{ then: []; else: [] }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -1291,7 +1291,7 @@ describe("getNextState", () => {
           while: () => false,
           do: [
             {
-              cond: {
+              condition: {
                 if: () => true,
                 then: [
                   {
@@ -1308,7 +1308,7 @@ describe("getNextState", () => {
         },
       },
       {
-        cond: {
+        condition: {
           if: () => false,
           then: [],
           else: [],
@@ -1321,7 +1321,7 @@ describe("getNextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
           ],
           values: {},
         },
@@ -1335,7 +1335,7 @@ describe("getNextState", () => {
       Record<string, unknown>
     >(
       current,
-      schema,
+      flow,
       {},
       () => {},
       () => {},
@@ -1346,7 +1346,7 @@ describe("getNextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "cond", path: "then", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
           ],
           values: {},
         },
@@ -1361,7 +1361,7 @@ describe("getNextState", () => {
       Form<{ a: number; b: number }>,
       Form<Record<string, unknown>>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -1394,7 +1394,7 @@ describe("getNextState", () => {
       Record<string, unknown>
     >(
       current,
-      schema,
+      flow,
       { a: 1, b: 2 },
       () => {},
       () => {},
@@ -1422,7 +1422,7 @@ describe("getNextState", () => {
       Loop<[Form<{ a: number; b: number }>]>,
       Form<Record<string, unknown>>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -1470,7 +1470,7 @@ describe("getNextState", () => {
       Record<string, unknown>
     >(
       current,
-      schema,
+      flow,
       { a: 1, b: 2 },
       () => {},
       () => {},
@@ -1540,7 +1540,7 @@ describe("getPreviousState", () => {
       Form<Record<string, unknown>>,
       Form<Record<string, unknown>>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -1571,7 +1571,7 @@ describe("getPreviousState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, schema, {}, () => {});
+    >(current, flow, {}, () => {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
@@ -1581,7 +1581,7 @@ describe("getPreviousState", () => {
 
   it("doesn't navigate to any other form if the current form is the first one", () => {
     type Values = [Form<Record<string, unknown>>];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -1603,7 +1603,7 @@ describe("getPreviousState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, schema, {}, () => {});
+    >(current, flow, {}, () => {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: { type: "list", list: {} },
@@ -1613,7 +1613,7 @@ describe("getPreviousState", () => {
 
   it("saves the current form values when navigating to the previous step", () => {
     type Values = [Form<{ a: number }>, Form<{ b: number }>];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -1658,7 +1658,7 @@ describe("getPreviousState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, schema, { b: 2 }, () => {});
+    >(current, flow, { b: 2 }, () => {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
       inputs: {
@@ -1682,15 +1682,15 @@ describe("getPreviousState", () => {
     expect(state).toEqual(expected);
   });
 
-  it("calls the onYield callback with the appropriate values every time values are yielded until it reaches the start of the schema", () => {
+  it("calls the onYield callback with the appropriate values every time values are yielded until it reaches the start of the flow", () => {
     type Values = [
       Yield<{
         next: [{ an: number }, { bn: number }];
         back: [{ ab: number }, { bb: number }];
       }>,
-      Cond<{
+      Condition<{
         then: [
-          Cond<{
+          Condition<{
             then: [];
             else: [
               Yield<{
@@ -1704,7 +1704,7 @@ describe("getPreviousState", () => {
         else: [];
       }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -1717,11 +1717,11 @@ describe("getPreviousState", () => {
         },
       },
       {
-        cond: {
+        condition: {
           if: () => true,
           then: [
             {
-              cond: {
+              condition: {
                 if: () => false,
                 then: [],
                 else: [
@@ -1759,16 +1759,16 @@ describe("getPreviousState", () => {
         {
           path: [
             { type: "list", slot: 1 },
-            { type: "cond", path: "then", slot: 0 },
-            { type: "cond", path: "else", slot: 0 },
+            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", path: "else", slot: 0 },
           ],
           values: {},
         },
         {
           path: [
             { type: "list", slot: 1 },
-            { type: "cond", path: "then", slot: 0 },
-            { type: "cond", path: "else", slot: 1 },
+            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", path: "else", slot: 1 },
             { type: "loop", slot: 0 },
           ],
           values: {},
@@ -1781,7 +1781,7 @@ describe("getPreviousState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, schema, {}, onYield);
+    >(current, flow, {}, onYield);
     expect(onYield).toHaveBeenNthCalledWith(1, { cb: 3 });
     expect(onYield).toHaveBeenNthCalledWith(2, { ab: 1 });
     expect(onYield).toHaveBeenNthCalledWith(3, { bb: 2 });
@@ -1794,7 +1794,7 @@ describe("getPreviousState", () => {
     type Values = [
       Loop<
         [
-          Cond<{
+          Condition<{
             then: [
               Form<Record<string, unknown>>,
               Yield<{
@@ -1807,7 +1807,7 @@ describe("getPreviousState", () => {
         ]
       >,
       Yield<{ next: [{ cn: number }]; back: [{ cb: number }] }>,
-      Cond<{
+      Condition<{
         then: [];
         else: [
           Yield<{ next: [{ dn: number }]; back: [{ db: number }] }>,
@@ -1815,7 +1815,7 @@ describe("getPreviousState", () => {
         ];
       }>,
     ];
-    const schema: Schema<
+    const flow: Flow<
       null,
       Values,
       Record<string, unknown>,
@@ -1826,7 +1826,7 @@ describe("getPreviousState", () => {
           while: () => false,
           do: [
             {
-              cond: {
+              condition: {
                 if: () => true,
                 then: [
                   {
@@ -1855,7 +1855,7 @@ describe("getPreviousState", () => {
         },
       },
       {
-        cond: {
+        condition: {
           if: () => false,
           then: [],
           else: [
@@ -1882,7 +1882,7 @@ describe("getPreviousState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "cond", path: "then", slot: 1 },
+            { type: "condition", path: "then", slot: 1 },
           ],
           values: {},
         },
@@ -1893,14 +1893,14 @@ describe("getPreviousState", () => {
         {
           path: [
             { type: "list", slot: 2 },
-            { type: "cond", path: "else", slot: 0 },
+            { type: "condition", path: "else", slot: 0 },
           ],
           values: {},
         },
         {
           path: [
             { type: "list", slot: 2 },
-            { type: "cond", path: "else", slot: 1 },
+            { type: "condition", path: "else", slot: 1 },
           ],
           values: {},
         },
@@ -1912,7 +1912,7 @@ describe("getPreviousState", () => {
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, schema, {}, onYield);
+    >(current, flow, {}, onYield);
     expect(onYield).toHaveBeenNthCalledWith(1, { db: 4 });
     expect(onYield).toHaveBeenNthCalledWith(2, { cb: 3 });
     expect(onYield).toHaveBeenNthCalledWith(3, { ab: 1 });

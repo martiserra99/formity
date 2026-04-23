@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest";
 
-import type { FlowInputs } from "src/types/state/inputs";
+import type { ControlInputs } from "src/types/state/inputs";
 import type { Position } from "src/types/state/position";
 
-import { get, set } from "./flow";
+import { get, set } from "./control";
 
-describe("FlowInputs", () => {
+describe("ControlInputs", () => {
   describe("get", () => {
-    it("returns the value that is in the given `FlowInputs` object", () => {
-      const flow: FlowInputs = {
+    it("returns the value that is in the given `ControlInputs` object", () => {
+      const inputs: ControlInputs = {
         type: "list",
         list: {
           1: {
-            type: "cond",
+            type: "condition",
             then: {},
             else: {
               0: {
@@ -42,22 +42,22 @@ describe("FlowInputs", () => {
       };
       const path: Position[] = [
         { type: "list", slot: 1 },
-        { type: "cond", path: "else", slot: 0 },
+        { type: "condition", path: "else", slot: 0 },
         { type: "loop", slot: 0 },
       ];
       const name: string = "a";
       const keys: PropertyKey[] = ["x", "y"];
       const defaultValue: unknown = 2;
-      const result = get(flow, path, name, keys, defaultValue);
+      const result = get(inputs, path, name, keys, defaultValue);
       expect(result).toEqual(1);
     });
 
-    it("returns the default value if the path is not encountered in the given `FlowInputs` object", () => {
-      const flow: FlowInputs = {
+    it("returns the default value if the path is not encountered in the given `ControlInputs` object", () => {
+      const inputs: ControlInputs = {
         type: "list",
         list: {
           1: {
-            type: "cond",
+            type: "condition",
             then: {},
             else: {
               0: {
@@ -87,22 +87,22 @@ describe("FlowInputs", () => {
       };
       const path: Position[] = [
         { type: "list", slot: 1 },
-        { type: "cond", path: "then", slot: 0 },
+        { type: "condition", path: "then", slot: 0 },
         { type: "loop", slot: 0 },
       ];
       const name: string = "a";
       const keys: PropertyKey[] = ["x", "y"];
       const defaultValue: unknown = 2;
-      const result = get(flow, path, name, keys, defaultValue);
+      const result = get(inputs, path, name, keys, defaultValue);
       expect(result).toEqual(2);
     });
 
-    it("returns the default value if the keys are not encountered in the given `FlowInputs` object", () => {
-      const flow: FlowInputs = {
+    it("returns the default value if the keys are not encountered in the given `ControlInputs` object", () => {
+      const inputs: ControlInputs = {
         type: "list",
         list: {
           1: {
-            type: "cond",
+            type: "condition",
             then: {},
             else: {
               0: {
@@ -132,34 +132,34 @@ describe("FlowInputs", () => {
       };
       const path: Position[] = [
         { type: "list", slot: 1 },
-        { type: "cond", path: "else", slot: 0 },
+        { type: "condition", path: "else", slot: 0 },
         { type: "loop", slot: 0 },
       ];
       const name: string = "a";
       const keys: PropertyKey[] = ["x", "z"];
       const defaultValue: unknown = 2;
-      const result = get(flow, path, name, keys, defaultValue);
+      const result = get(inputs, path, name, keys, defaultValue);
       expect(result).toEqual(2);
     });
   });
 
   describe("set", () => {
-    it("sets the value in the given `FlowInputs` object", () => {
-      const flow: FlowInputs = { type: "list", list: {} };
+    it("sets the value in the given `ControlInputs` object", () => {
+      const inputs: ControlInputs = { type: "list", list: {} };
       const path: Position[] = [
         { type: "list", slot: 1 },
-        { type: "cond", path: "else", slot: 0 },
+        { type: "condition", path: "else", slot: 0 },
         { type: "loop", slot: 0 },
       ];
       const name: string = "a";
       const keys: PropertyKey[] = ["x", "y"];
       const data: unknown = 1;
-      const result = set(flow, path, name, keys, data);
-      const expected: FlowInputs = {
+      const result = set(inputs, path, name, keys, data);
+      const expected: ControlInputs = {
         type: "list",
         list: {
           1: {
-            type: "cond",
+            type: "condition",
             then: {},
             else: {
               0: {

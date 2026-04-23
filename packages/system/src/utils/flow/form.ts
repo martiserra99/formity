@@ -1,4 +1,4 @@
-import type { ItemSchema, FormSchema } from "../../types/schema/model";
+import type { ItemFlow, FormFlow } from "../../types/flow/model";
 
 /**
  * Type guard for `FormSchema` objects.
@@ -6,6 +6,6 @@ import type { ItemSchema, FormSchema } from "../../types/schema/model";
  * @param schema An `ItemSchema` object.
  * @returns A boolean indicating whether the `schema` is a `FormSchema` object.
  */
-export function is(schema: ItemSchema): schema is FormSchema {
+export function is(schema: ItemFlow): schema is FormFlow {
   return "form" in schema;
 }

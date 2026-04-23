@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { LoopInputs, FormInputs } from "src/types/state/inputs";
 import type { Position } from "src/types/state/position";
 
-import { getItem, setItem } from "./flow.loop";
+import { getItem, setItem } from "./control.loop";
 
 describe("LoopInputs", () => {
   describe("getItem", () => {
@@ -14,14 +14,14 @@ describe("LoopInputs", () => {
           keys: {},
         },
       };
-      const flow: LoopInputs = {
+      const control: LoopInputs = {
         type: "loop",
         list: {
           1: item,
         },
       };
       const position: Position = { type: "loop", slot: 1 };
-      const result = getItem(flow, position);
+      const result = getItem(control, position);
       expect(result).toBe(item);
     });
 
@@ -32,21 +32,21 @@ describe("LoopInputs", () => {
           keys: {},
         },
       };
-      const flow: LoopInputs = {
+      const control: LoopInputs = {
         type: "loop",
         list: {
           0: item,
         },
       };
       const position: Position = { type: "loop", slot: 1 };
-      const result = getItem(flow, position);
+      const result = getItem(control, position);
       expect(result).toBe(null);
     });
   });
 
   describe("setItem", () => {
     it("sets the item at the given position within the given `LoopInputs` object", () => {
-      const flow: LoopInputs = {
+      const control: LoopInputs = {
         type: "loop",
         list: {},
       };
@@ -57,14 +57,14 @@ describe("LoopInputs", () => {
           keys: {},
         },
       };
-      setItem(flow, position, item);
+      setItem(control, position, item);
       const expected: LoopInputs = {
         type: "loop",
         list: {
           1: item,
         },
       };
-      expect(flow).toEqual(expected);
+      expect(control).toEqual(expected);
     });
   });
 });

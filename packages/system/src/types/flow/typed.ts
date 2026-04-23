@@ -1,19 +1,19 @@
-import type { Values } from "../values";
+import type { Schema } from "../schema";
 
 import type {
-  ItemValues,
-  FlowValues,
-  ListValues,
-  CondValues,
-  LoopValues,
-  SwitchValues,
-  FormValues,
-  YieldValues,
-  ReturnValues,
-  VariablesValues,
-} from "../values";
+  ItemSchema,
+  ControlSchema,
+  ListSchema,
+  ConditionSchema,
+  LoopSchema,
+  SwitchSchema,
+  FormSchema,
+  YieldSchema,
+  ReturnSchema,
+  VariablesSchema,
+} from "../schema";
 
-import type { OnNext, OnBack, GetState, SetState } from "../controls";
+import type { OnNext, OnBack, GetState, SetState } from "../render";
 
 /**
  * Defines the structure and behavior of a multi-step form.
@@ -21,7 +21,7 @@ import type { OnNext, OnBack, GetState, SetState } from "../controls";
  * @template T The type of the rendered output for each form step. This can vary depending on
  * the framework; for example, in React, it would typically be `ReactNode`.
  *
- * @template U A type extending `Values` that defines the structure of the multi-step form,
+ * @template U A type extending `Schema` that defines the structure of the multi-step form,
  * including the values handled in each phase.
  *
  * @template V An object type representing additional values available during form execution,
@@ -30,12 +30,12 @@ import type { OnNext, OnBack, GetState, SetState } from "../controls";
  * @template W An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type Schema<
+export type Flow<
   T,
-  U extends Values,
+  U extends Schema,
   V extends Record<string, unknown> = Record<never, never>,
   W extends Record<string, unknown> = Record<never, never>,
-> = ListSchema<T, U, V, W>;
+> = ListFlow<T, U, V, W>;
 
 /**
  * Defines the structure and behavior of any element in a multi-step form.
@@ -43,7 +43,7 @@ export type Schema<
  * @template Render The type of the rendered output for each form step. This can vary depending on
  * the framework; for example, in React, it would typically be `ReactNode`.
  *
- * @template Values A type extending `ItemValues` that defines the structure of the multi-step form,
+ * @template Schema A type extending `ItemSchema` that defines the structure of the multi-step form,
  * including the values handled in each phase.
  *
  * @template Inputs An object type representing additional values available during form execution,
@@ -52,30 +52,30 @@ export type Schema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type ItemSchema<
+export type ItemFlow<
   Render,
-  Values extends ItemValues,
+  Schema extends ItemSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = Values extends FlowValues
-  ? FlowSchema<Render, Values, Inputs, Params>
-  : Values extends FormValues
-  ? FormSchema<Render, Values, Inputs, Params>
-  : Values extends YieldValues
-  ? YieldSchema<Values, Inputs>
-  : Values extends ReturnValues
-  ? ReturnSchema<Values, Inputs>
-  : Values extends VariablesValues
-  ? VariablesSchema<Values, Inputs>
+> = Schema extends ControlSchema
+  ? ControlFlow<Render, Schema, Inputs, Params>
+  : Schema extends FormSchema
+  ? FormFlow<Render, Schema, Inputs, Params>
+  : Schema extends YieldSchema
+  ? YieldFlow<Schema, Inputs>
+  : Schema extends ReturnSchema
+  ? ReturnFlow<Schema, Inputs>
+  : Schema extends VariablesSchema
+  ? VariablesFlow<Schema, Inputs>
   : never;
 
 /**
- * Defines the structure and behavior of any flow element in a multi-step form.
+ * Defines the structure and behavior of any control element in a multi-step form.
  *
  * @template Render The type of the rendered output for each form step. This can vary depending on
  * the framework; for example, in React, it would typically be `ReactNode`.
  *
- * @template Values A type extending `FlowValues` that defines the structure of the multi-step form,
+ * @template Schema A type extending `ItemSchema` that defines the structure of the multi-step form,
  * including the values handled in each phase.
  *
  * @template Inputs An object type representing additional values available during form execution,
@@ -84,19 +84,19 @@ export type ItemSchema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type FlowSchema<
+export type ControlFlow<
   Render,
-  Values extends FlowValues,
+  Schema extends ItemSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = Values extends ListValues
-  ? ListSchema<Render, Values, Inputs, Params>
-  : Values extends CondValues
-  ? CondSchema<Render, Values, Inputs, Params>
-  : Values extends LoopValues
-  ? LoopSchema<Render, Values, Inputs, Params>
-  : Values extends SwitchValues
-  ? SwitchSchema<Render, Values, Inputs, Params>
+> = Schema extends ListSchema
+  ? ListFlow<Render, Schema, Inputs, Params>
+  : Schema extends ConditionSchema
+  ? ConditionFlow<Render, Schema, Inputs, Params>
+  : Schema extends LoopSchema
+  ? LoopFlow<Render, Schema, Inputs, Params>
+  : Schema extends SwitchSchema
+  ? SwitchFlow<Render, Schema, Inputs, Params>
   : never;
 
 /**
@@ -105,7 +105,7 @@ export type FlowSchema<
  * @template Render The type of the rendered output for each form step. This can vary depending on
  * the framework; for example, in React, it would typically be `ReactNode`.
  *
- * @template Values A type extending `ListValues` that defines the structure of the multi-step form,
+ * @template Schema A type extending `ListSchema` that defines the structure of the multi-step form,
  * including the values handled in each phase.
  *
  * @template Inputs An object type representing additional values available during form execution,
@@ -114,22 +114,17 @@ export type FlowSchema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type ListSchema<
+export type ListFlow<
   Render,
-  Values extends ListValues,
+  Schema extends ListSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = Values extends [infer Head, ...infer Others]
-  ? Head extends ItemValues
-    ? Others extends ListValues
+> = Schema extends [infer Head, ...infer Others]
+  ? Head extends ItemSchema
+    ? Others extends ListSchema
       ? [
-          ItemSchema<Render, Head, Inputs, Params>,
-          ...ListSchema<
-            Render,
-            Others,
-            Joined<Inputs, ItemOutput<Head>>,
-            Params
-          >,
+          ItemFlow<Render, Head, Inputs, Params>,
+          ...ListFlow<Render, Others, Joined<Inputs, ItemOutput<Head>>, Params>,
         ]
       : never
     : never
@@ -141,7 +136,7 @@ export type ListSchema<
  * @template Render The type of the rendered output for each form step. This can vary depending on
  * the framework; for example, in React, it would typically be `ReactNode`.
  *
- * @template Values A type extending `CondValues` that defines the structure of the multi-step form,
+ * @template Schema A type extending `CondSchema` that defines the structure of the multi-step form,
  * including the values handled in each phase.
  *
  * @template Inputs An object type representing additional values available during form execution,
@@ -150,16 +145,16 @@ export type ListSchema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type CondSchema<
+export type ConditionFlow<
   Render,
-  Values extends CondValues,
+  Schema extends ConditionSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
 > = {
-  cond: {
+  condition: {
     if: (inputs: Inputs) => boolean;
-    then: ListSchema<Render, Values["cond"]["then"], Inputs, Params>;
-    else: ListSchema<Render, Values["cond"]["else"], Inputs, Params>;
+    then: ListFlow<Render, Schema["cond"]["then"], Inputs, Params>;
+    else: ListFlow<Render, Schema["cond"]["else"], Inputs, Params>;
   };
 };
 
@@ -169,7 +164,7 @@ export type CondSchema<
  * @template Render The type of the rendered output for each form step. This can vary depending on
  * the framework; for example, in React, it would typically be `ReactNode`.
  *
- * @template Values A type extending `LoopValues` that defines the structure of the multi-step form,
+ * @template Schema A type extending `LoopSchema` that defines the structure of the multi-step form,
  * including the values handled in each phase.
  *
  * @template Inputs An object type representing additional values available during form execution,
@@ -178,15 +173,15 @@ export type CondSchema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type LoopSchema<
+export type LoopFlow<
   Render,
-  Values extends LoopValues,
+  Schema extends LoopSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
 > = {
   loop: {
     while: (inputs: Inputs) => boolean;
-    do: ListSchema<Render, Values["loop"]["do"], Inputs, Params>;
+    do: ListFlow<Render, Schema["loop"]["do"], Inputs, Params>;
   };
 };
 
@@ -196,7 +191,7 @@ export type LoopSchema<
  * @template Render The type of the rendered output for each form step. This can vary depending on
  * the framework; for example, in React, it would typically be `ReactNode`.
  *
- * @template Values A type extending `SwitchValues` that defines the structure of the multi-step
+ * @template Schema A type extending `SwitchSchema` that defines the structure of the multi-step
  * form, including the values handled in each phase.
  *
  * @template Inputs An object type representing additional values available during form execution,
@@ -205,37 +200,37 @@ export type LoopSchema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type SwitchSchema<
+export type SwitchFlow<
   Render,
-  Values extends SwitchValues,
+  Schema extends SwitchSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
 > = {
   switch: {
-    branches: SwitchBranchesSchema<
+    branches: SwitchBranchesFlow<
       Render,
-      Values["switch"]["branches"],
+      Schema["switch"]["branches"],
       Inputs,
       Params
     >;
-    default: ListSchema<Render, Values["switch"]["default"], Inputs, Params>;
+    default: ListFlow<Render, Schema["switch"]["default"], Inputs, Params>;
   };
 };
 
-type SwitchBranchesSchema<
+type SwitchBranchesFlow<
   Render,
-  Values extends ListValues[],
+  Schema extends ListSchema[],
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = Values extends [infer Head, ...infer Others]
-  ? Head extends ListValues
-    ? Others extends ListValues[]
+> = Schema extends [infer Head, ...infer Others]
+  ? Head extends ListSchema
+    ? Others extends ListSchema[]
       ? [
           {
             case: (inputs: Inputs) => boolean;
-            then: ListSchema<Render, Head, Inputs, Params>;
+            then: ListFlow<Render, Head, Inputs, Params>;
           },
-          ...SwitchBranchesSchema<Render, Others, Inputs, Params>,
+          ...SwitchBranchesFlow<Render, Others, Inputs, Params>,
         ]
       : never
     : never
@@ -247,7 +242,7 @@ type SwitchBranchesSchema<
  * @template Render The type of the rendered output for each form step. This can vary depending on
  * the framework; for example, in React, it would typically be `ReactNode`.
  *
- * @template Values A type extending `FormValues` that defines the values of the form element.
+ * @template Schema A type extending `FormSchema` that defines the values of the form element.
  *
  * @template Inputs An object type representing additional values available during form execution,
  * beyond those generated by the multi-step form itself.
@@ -255,23 +250,23 @@ type SwitchBranchesSchema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type FormSchema<
+export type FormFlow<
   Render,
-  Values extends FormValues,
+  Schema extends FormSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
 > = {
   form: {
     values: (inputs: Inputs) => {
-      [K in keyof Values["form"]]: [Values["form"][K], PropertyKey[]];
+      [K in keyof Schema["form"]]: [Schema["form"][K], PropertyKey[]];
     };
     render: (args: {
       inputs: Inputs;
-      values: Values["form"];
+      values: Schema["form"];
       params: Params;
-      onNext: OnNext<Values["form"]>;
-      onBack: OnBack<Values["form"]>;
-      getState: GetState<Values["form"]>;
+      onNext: OnNext<Schema["form"]>;
+      onBack: OnBack<Schema["form"]>;
+      getState: GetState<Schema["form"]>;
       setState: SetState;
     }) => Render;
   };
@@ -280,49 +275,49 @@ export type FormSchema<
 /**
  * Defines the structure and behavior of a yield element in a multi-step form.
  *
- * @template Values A type extending `YieldValues` that defines the values of the yield element.
+ * @template Schema A type extending `YieldSchema` that defines the values of the yield element.
  *
  * @template Inputs An object type representing additional values available during form execution,
  * beyond those generated by the multi-step form itself.
  */
-export type YieldSchema<
-  Values extends YieldValues,
+export type YieldFlow<
+  Schema extends YieldSchema,
   Inputs extends Record<string, unknown>,
 > = {
   yield: {
-    next: (inputs: Inputs) => Values["yield"]["next"];
-    back: (inputs: Inputs) => Values["yield"]["back"];
+    next: (inputs: Inputs) => Schema["yield"]["next"];
+    back: (inputs: Inputs) => Schema["yield"]["back"];
   };
 };
 
 /**
  * Defines the structure and behavior of a return element in a multi-step form.
  *
- * @template Values A type extending `ReturnValues` that defines the values of the return element.
+ * @template Schema A type extending `ReturnSchema` that defines the values of the return element.
  *
  * @template Inputs An object type representing additional values available during form execution,
  * beyond those generated by the multi-step form itself.
  */
-export type ReturnSchema<
-  Values extends ReturnValues,
+export type ReturnFlow<
+  Schema extends ReturnSchema,
   Inputs extends Record<string, unknown>,
 > = {
-  return: (inputs: Inputs) => Values["return"];
+  return: (inputs: Inputs) => Schema["return"];
 };
 
 /**
  * Defines the structure and behavior of a variables element in a multi-step form.
  *
- * @template Values A type extending `VariablesValues` that defines the values of the variables element.
+ * @template Schema A type extending `VariablesSchema` that defines the values of the variables element.
  *
  * @template Inputs An object type representing additional values available during form execution,
  * beyond those generated by the multi-step form itself.
  */
-export type VariablesSchema<
-  Values extends VariablesValues,
+export type VariablesFlow<
+  Schema extends VariablesSchema,
   Inputs extends Record<string, unknown>,
 > = {
-  variables: (inputs: Inputs) => Values["variables"];
+  variables: (inputs: Inputs) => Schema["variables"];
 };
 
 type Joined<
@@ -330,11 +325,11 @@ type Joined<
   U extends Record<string, unknown>,
 > = Omit<T, keyof U> & U;
 
-type ItemOutput<Values extends ItemValues> = Values extends FormValues
-  ? FormOutput<Values>
-  : Values extends VariablesValues
-  ? VariablesOutput<Values>
+type ItemOutput<Schema extends ItemSchema> = Schema extends FormSchema
+  ? FormOutput<Schema>
+  : Schema extends VariablesSchema
+  ? VariablesOutput<Schema>
   : Record<never, never>;
 
-type FormOutput<Values extends FormValues> = Values["form"];
-type VariablesOutput<Values extends VariablesValues> = Values["variables"];
+type FormOutput<Schema extends FormSchema> = Schema["form"];
+type VariablesOutput<Schema extends VariablesSchema> = Schema["variables"];

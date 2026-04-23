@@ -1,15 +1,15 @@
 import { describe, expect, it } from "vitest";
 
-import type { CondSchema, ReturnSchema } from "../../types/schema/model";
+import type { ConditionFlow, ReturnFlow } from "../../types/flow/model";
 import type { Position } from "src/types/state/position";
 
-import { into, next, at } from "./flow.cond";
+import { into, next, at } from "./control.condition";
 
-describe("CondSchema", () => {
+describe("ConditionFlow", () => {
   describe("into", () => {
-    it("navigates into the `then` path of the `CondSchema` object", () => {
-      const schema: CondSchema = {
-        cond: {
+    it("navigates into the `then` path of the `ConditionFlow` object", () => {
+      const flow: ConditionFlow = {
+        condition: {
           if: () => true,
           then: [
             {
@@ -22,13 +22,13 @@ describe("CondSchema", () => {
           else: [],
         },
       };
-      const position = into(schema, {});
-      expect(position).toEqual({ type: "cond", path: "then", slot: 0 });
+      const position = into(flow, {});
+      expect(position).toEqual({ type: "condition", path: "then", slot: 0 });
     });
 
-    it("navigates into the `else` path of the `CondSchema` object", () => {
-      const schema: CondSchema = {
-        cond: {
+    it("navigates into the `else` path of the `ConditionFlow` object", () => {
+      const flow: ConditionFlow = {
+        condition: {
           if: () => false,
           then: [],
           else: [
@@ -41,13 +41,13 @@ describe("CondSchema", () => {
           ],
         },
       };
-      const position = into(schema, {});
-      expect(position).toEqual({ type: "cond", path: "else", slot: 0 });
+      const position = into(flow, {});
+      expect(position).toEqual({ type: "condition", path: "else", slot: 0 });
     });
 
-    it("doesn't navigate into the `CondSchema` object", () => {
-      const schema: CondSchema = {
-        cond: {
+    it("doesn't navigate into the `ConditionFlow` object", () => {
+      const flow: ConditionFlow = {
+        condition: {
           if: () => true,
           then: [],
           else: [
@@ -60,15 +60,15 @@ describe("CondSchema", () => {
           ],
         },
       };
-      const position = into(schema, {});
+      const position = into(flow, {});
       expect(position).toEqual(null);
     });
   });
 
   describe("next", () => {
-    it("navigates to the next item in the `then` path of the `CondSchema` object", () => {
-      const schema: CondSchema = {
-        cond: {
+    it("navigates to the next item in the `then` path of the `ConditionFlow` object", () => {
+      const flow: ConditionFlow = {
+        condition: {
           if: () => true,
           then: [
             {
@@ -87,14 +87,14 @@ describe("CondSchema", () => {
           else: [],
         },
       };
-      const current: Position = { type: "cond", path: "then", slot: 0 };
-      const position = next(schema, current);
-      expect(position).toEqual({ type: "cond", path: "then", slot: 1 });
+      const current: Position = { type: "condition", path: "then", slot: 0 };
+      const position = next(flow, current);
+      expect(position).toEqual({ type: "condition", path: "then", slot: 1 });
     });
 
-    it("navigates to the next item in the `else` path of the `CondSchema` object", () => {
-      const schema: CondSchema = {
-        cond: {
+    it("navigates to the next item in the `else` path of the `ConditionFlow` object", () => {
+      const flow: ConditionFlow = {
+        condition: {
           if: () => true,
           then: [],
           else: [
@@ -113,14 +113,14 @@ describe("CondSchema", () => {
           ],
         },
       };
-      const current: Position = { type: "cond", path: "else", slot: 0 };
-      const position = next(schema, current);
-      expect(position).toEqual({ type: "cond", path: "else", slot: 1 });
+      const current: Position = { type: "condition", path: "else", slot: 0 };
+      const position = next(flow, current);
+      expect(position).toEqual({ type: "condition", path: "else", slot: 1 });
     });
 
-    it("doesn't navigate to the next item in the `CondSchema` object", () => {
-      const schema: CondSchema = {
-        cond: {
+    it("doesn't navigate to the next item in the `ConditionFlow` object", () => {
+      const flow: ConditionFlow = {
+        condition: {
           if: () => true,
           then: [
             {
@@ -140,38 +140,38 @@ describe("CondSchema", () => {
           ],
         },
       };
-      const current: Position = { type: "cond", path: "then", slot: 0 };
-      const position = next(schema, current);
+      const current: Position = { type: "condition", path: "then", slot: 0 };
+      const position = next(flow, current);
       expect(position).toEqual(null);
     });
   });
 
   describe("at", () => {
-    it("retrieves the item at the specified position in the `then` path of the `CondSchema` object", () => {
-      const item: ReturnSchema = { return: () => ({}) };
-      const schema: CondSchema = {
-        cond: {
+    it("retrieves the item at the specified position in the `then` path of the `ConditionFlow` object", () => {
+      const item: ReturnFlow = { return: () => ({}) };
+      const flow: ConditionFlow = {
+        condition: {
           if: () => true,
           then: [{ variables: () => ({}) }, item],
           else: [],
         },
       };
-      const position: Position = { type: "cond", path: "then", slot: 1 };
-      const result = at(schema, position);
+      const position: Position = { type: "condition", path: "then", slot: 1 };
+      const result = at(flow, position);
       expect(result).toBe(item);
     });
 
-    it("retrieves the item at the specified position in the `else` path of the `CondSchema` object", () => {
-      const item: ReturnSchema = { return: () => ({}) };
-      const schema: CondSchema = {
-        cond: {
+    it("retrieves the item at the specified position in the `else` path of the `ConditionFlow` object", () => {
+      const item: ReturnFlow = { return: () => ({}) };
+      const flow: ConditionFlow = {
+        condition: {
           if: () => false,
           then: [],
           else: [{ variables: () => ({}) }, item],
         },
       };
-      const position: Position = { type: "cond", path: "else", slot: 1 };
-      const result = at(schema, position);
+      const position: Position = { type: "condition", path: "else", slot: 1 };
+      const result = at(flow, position);
       expect(result).toBe(item);
     });
   });

@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { SwitchInputs, FormInputs } from "src/types/state/inputs";
 import type { Position } from "src/types/state/position";
 
-import { getItem, setItem } from "./flow.switch";
+import { getItem, setItem } from "./control.switch";
 
 describe("SwitchInputs", () => {
   describe("getItem", () => {
@@ -14,7 +14,7 @@ describe("SwitchInputs", () => {
           keys: {},
         },
       };
-      const flow: SwitchInputs = {
+      const control: SwitchInputs = {
         type: "switch",
         branches: {
           1: {
@@ -24,7 +24,7 @@ describe("SwitchInputs", () => {
         default: {},
       };
       const position: Position = { type: "switch", branch: 1, slot: 1 };
-      const result = getItem(flow, position);
+      const result = getItem(control, position);
       expect(result).toBe(item);
     });
 
@@ -35,7 +35,7 @@ describe("SwitchInputs", () => {
           keys: {},
         },
       };
-      const flow: SwitchInputs = {
+      const control: SwitchInputs = {
         type: "switch",
         branches: {},
         default: {
@@ -43,7 +43,7 @@ describe("SwitchInputs", () => {
         },
       };
       const position: Position = { type: "switch", branch: -1, slot: 1 };
-      const result = getItem(flow, position);
+      const result = getItem(control, position);
       expect(result).toBe(item);
     });
 
@@ -54,7 +54,7 @@ describe("SwitchInputs", () => {
           keys: {},
         },
       };
-      const flow: SwitchInputs = {
+      const control: SwitchInputs = {
         type: "switch",
         branches: {
           1: {
@@ -64,7 +64,7 @@ describe("SwitchInputs", () => {
         default: {},
       };
       const position: Position = { type: "switch", branch: 1, slot: 0 };
-      const result = getItem(flow, position);
+      const result = getItem(control, position);
       expect(result).toBe(null);
     });
 
@@ -75,7 +75,7 @@ describe("SwitchInputs", () => {
           keys: {},
         },
       };
-      const flow: SwitchInputs = {
+      const control: SwitchInputs = {
         type: "switch",
         branches: {},
         default: {
@@ -83,14 +83,14 @@ describe("SwitchInputs", () => {
         },
       };
       const position: Position = { type: "switch", branch: -1, slot: 0 };
-      const result = getItem(flow, position);
+      const result = getItem(control, position);
       expect(result).toBe(null);
     });
   });
 
   describe("setItem", () => {
     it("sets the item at the given branch position within the given `SwitchInputs` object", () => {
-      const flow: SwitchInputs = {
+      const control: SwitchInputs = {
         type: "switch",
         branches: {},
         default: {},
@@ -102,7 +102,7 @@ describe("SwitchInputs", () => {
           keys: {},
         },
       };
-      setItem(flow, position, item);
+      setItem(control, position, item);
       const expected: SwitchInputs = {
         type: "switch",
         branches: {
@@ -112,11 +112,11 @@ describe("SwitchInputs", () => {
         },
         default: {},
       };
-      expect(flow).toEqual(expected);
+      expect(control).toEqual(expected);
     });
 
     it("sets the item at the given default branch position within the given `SwitchInputs` object", () => {
-      const flow: SwitchInputs = {
+      const control: SwitchInputs = {
         type: "switch",
         branches: {},
         default: {},
@@ -128,7 +128,7 @@ describe("SwitchInputs", () => {
           keys: {},
         },
       };
-      setItem(flow, position, item);
+      setItem(control, position, item);
       const expected: SwitchInputs = {
         type: "switch",
         branches: {},
@@ -136,7 +136,7 @@ describe("SwitchInputs", () => {
           1: item,
         },
       };
-      expect(flow).toEqual(expected);
+      expect(control).toEqual(expected);
     });
   });
 });

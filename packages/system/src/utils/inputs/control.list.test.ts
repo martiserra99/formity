@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { ListInputs, FormInputs } from "src/types/state/inputs";
 import type { Position } from "src/types/state/position";
 
-import { getItem, setItem } from "./flow.list";
+import { getItem, setItem } from "./control.list";
 
 describe("ListInputs", () => {
   describe("getItem", () => {
@@ -14,14 +14,14 @@ describe("ListInputs", () => {
           keys: {},
         },
       };
-      const flow: ListInputs = {
+      const control: ListInputs = {
         type: "list",
         list: {
           1: item,
         },
       };
       const position: Position = { type: "list", slot: 1 };
-      const result = getItem(flow, position);
+      const result = getItem(control, position);
       expect(result).toBe(item);
     });
 
@@ -32,21 +32,21 @@ describe("ListInputs", () => {
           keys: {},
         },
       };
-      const flow: ListInputs = {
+      const control: ListInputs = {
         type: "list",
         list: {
           0: item,
         },
       };
       const position: Position = { type: "list", slot: 1 };
-      const result = getItem(flow, position);
+      const result = getItem(control, position);
       expect(result).toBe(null);
     });
   });
 
   describe("setItem", () => {
     it("sets the item at the given position within the given `ListInputs` object", () => {
-      const flow: ListInputs = {
+      const control: ListInputs = {
         type: "list",
         list: {},
       };
@@ -57,14 +57,14 @@ describe("ListInputs", () => {
           keys: {},
         },
       };
-      setItem(flow, position, item);
+      setItem(control, position, item);
       const expected: ListInputs = {
         type: "list",
         list: {
           1: item,
         },
       };
-      expect(flow).toEqual(expected);
+      expect(control).toEqual(expected);
     });
   });
 });

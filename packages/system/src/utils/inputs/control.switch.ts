@@ -1,6 +1,6 @@
 import type {
   ItemInputs,
-  FlowInputs,
+  ControlInputs,
   SwitchInputs,
 } from "../../types/state/inputs";
 
@@ -11,44 +11,47 @@ import type { Position, SwitchPosition } from "../../types/state/position";
  *
  * @returns The created `SwitchInputs` object.
  */
-export function create(): FlowInputs {
+export function create(): ControlInputs {
   return { type: "switch", branches: {}, default: {} };
 }
 
 /**
  * Clones a `SwitchInputs` object.
  *
- * @param flow A `SwitchInputs` object.
+ * @param inputs A `SwitchInputs` object.
  * @returns The cloned `SwitchInputs` object.
  */
-export function clone(flow: SwitchInputs): FlowInputs {
+export function clone(inputs: SwitchInputs): ControlInputs {
   return {
-    ...flow,
+    ...inputs,
     branches: Object.fromEntries(
-      Object.entries(flow.branches).map(([key, value]) => [key, { ...value }])
+      Object.entries(inputs.branches).map(([key, value]) => [
+        key,
+        { ...value },
+      ]),
     ),
-    default: { ...flow.default },
+    default: { ...inputs.default },
   };
 }
 
 /**
  * Returns the `ItemInputs` object at the given position within the given `SwitchInputs` object, or `null` if there is no item at the given position.
  *
- * @param flow The `SwitchInputs` object.
+ * @param inputs The `SwitchInputs` object.
  * @param position The position within the `SwitchInputs` object.
  * @returns The `ItemInputs` object at the given position within the `SwitchInputs` object, or `null` if there is no item at the given position.
  */
 export function getItem(
-  flow: SwitchInputs,
-  position: Position
+  inputs: SwitchInputs,
+  position: Position,
 ): ItemInputs | null {
   const { branch, slot } = position as SwitchPosition;
   if (branch >= 0) {
-    if (branch in flow.branches) {
-      if (slot in flow.branches[branch]) return flow.branches[branch][slot];
+    if (branch in inputs.branches) {
+      if (slot in inputs.branches[branch]) return inputs.branches[branch][slot];
     }
   } else {
-    if (slot in flow.default) return flow.default[slot];
+    if (slot in inputs.default) return inputs.default[slot];
   }
   return null;
 }
@@ -56,23 +59,23 @@ export function getItem(
 /**
  * Sets the `ItemInputs` object at the given position within the given `SwitchInputs` object.
  *
- * @param flow The `SwitchInputs` object.
+ * @param inputs The `SwitchInputs` object.
  * @param position The position within the `SwitchInputs` object.
  * @param item The `ItemInputs` object to set.
  */
 export function setItem(
-  flow: SwitchInputs,
+  inputs: SwitchInputs,
   position: Position,
-  item: ItemInputs
+  item: ItemInputs,
 ): void {
   const { branch, slot } = position as SwitchPosition;
   if (branch >= 0) {
-    if (branch in flow.branches) {
-      flow.branches[branch][slot] = item;
+    if (branch in inputs.branches) {
+      inputs.branches[branch][slot] = item;
     } else {
-      flow.branches[branch] = { [slot]: item };
+      inputs.branches[branch] = { [slot]: item };
     }
   } else {
-    flow.default[slot] = item;
+    inputs.default[slot] = item;
   }
 }

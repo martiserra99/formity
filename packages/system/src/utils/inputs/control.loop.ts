@@ -1,6 +1,6 @@
 import type {
   ItemInputs,
-  FlowInputs,
+  ControlInputs,
   LoopInputs,
 } from "../../types/state/inputs";
 
@@ -11,48 +11,48 @@ import type { Position, LoopPosition } from "../../types/state/position";
  *
  * @returns The created `LoopInputs` object.
  */
-export function create(): FlowInputs {
+export function create(): ControlInputs {
   return { type: "loop", list: {} };
 }
 
 /**
  * Clones a `LoopInputs` object.
  *
- * @param flow A `LoopInputs` object.
+ * @param inputs A `LoopInputs` object.
  * @returns The cloned `LoopInputs` object.
  */
-export function clone(flow: LoopInputs): FlowInputs {
-  return { ...flow, list: { ...flow.list } };
+export function clone(inputs: LoopInputs): ControlInputs {
+  return { ...inputs, list: { ...inputs.list } };
 }
 
 /**
  * Returns the `ItemInputs` object at the given position within the given `LoopInputs` object, or `null` if there is no item at the given position.
  *
- * @param flow The `LoopInputs` object.
+ * @param inputs The `LoopInputs` object.
  * @param position The position within the `LoopInputs` object.
  * @returns The `ItemInputs` object at the given position within the `LoopInputs` object, or `null` if there is no item at the given position.
  */
 export function getItem(
-  flow: LoopInputs,
-  position: Position
+  inputs: LoopInputs,
+  position: Position,
 ): ItemInputs | null {
   const { slot } = position as LoopPosition;
-  if (slot in flow.list) return flow.list[slot];
+  if (slot in inputs.list) return inputs.list[slot];
   return null;
 }
 
 /**
  * Sets the `ItemInputs` object at the given position within the given `LoopInputs` object.
  *
- * @param flow The `LoopInputs` object.
+ * @param inputs The `LoopInputs` object.
  * @param position The position within the `LoopInputs` object.
  * @param item The `ItemInputs` object to set.
  */
 export function setItem(
-  flow: LoopInputs,
+  inputs: LoopInputs,
   position: Position,
-  item: ItemInputs
+  item: ItemInputs,
 ): void {
   const { slot } = position as LoopPosition;
-  flow.list[slot] = item;
+  inputs.list[slot] = item;
 }

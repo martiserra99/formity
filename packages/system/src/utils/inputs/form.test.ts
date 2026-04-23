@@ -57,11 +57,11 @@ describe("FormInputs", () => {
 
   describe("set", () => {
     it("sets the value in the given `FormInputs` object", () => {
-      const flow: FormInputs = {};
+      const form: FormInputs = {};
       const name: string = "a";
       const keys: PropertyKey[] = ["x", "y"];
       const data: unknown = 1;
-      const result = set(flow, name, keys, data);
+      const result = set(form, name, keys, data);
       const expected: FormInputs = {
         a: {
           data: { here: false },

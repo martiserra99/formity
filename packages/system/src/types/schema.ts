@@ -1,0 +1,95 @@
+/**
+ * This type is meant to be extended and is used to define the structure of a multi-step form.
+ */
+export type Schema = ListSchema;
+
+/**
+ * This type is meant to be extended and is used to define the structure of any element in a multi-step form.
+ */
+export type ItemSchema =
+  | ControlSchema
+  | FormSchema
+  | YieldSchema
+  | ReturnSchema
+  | VariablesSchema;
+
+/**
+ * This type is meant to be extended and is used to define the structure of any control element in a multi-step form.
+ */
+export type ControlSchema =
+  | ListSchema
+  | ConditionSchema
+  | LoopSchema
+  | SwitchSchema;
+
+/**
+ * This type is meant to be extended and is used to define the structure of a list element in a multi-step form.
+ */
+export type ListSchema = ItemSchema[];
+
+/**
+ * This type is meant to be extended and is used to define the structure of a condition element in a multi-step form.
+ */
+export type ConditionSchema = {
+  type: "condition";
+  cond: {
+    then: ListSchema;
+    else: ListSchema;
+  };
+};
+
+/**
+ * This type is meant to be extended and is used to define the structure of a loop element in a multi-step form.
+ */
+export type LoopSchema = {
+  type: "loop";
+  loop: {
+    do: ListSchema;
+  };
+};
+
+/**
+ * This type is meant to be extended and is used to define the structure of a switch element in a multi-step form.
+ */
+export type SwitchSchema = {
+  type: "switch";
+  switch: {
+    branches: ListSchema[];
+    default: ListSchema;
+  };
+};
+
+/**
+ * This type is meant to be extended and is used to define the structure of a form element in a multi-step form.
+ */
+export type FormSchema = {
+  type: "form";
+  form: Record<string, unknown>;
+};
+
+/**
+ * This type is meant to be extended and is used to define the structure of a yield element in a multi-step form.
+ */
+export type YieldSchema = {
+  type: "yield";
+  yield: {
+    next: unknown[];
+    back: unknown[];
+  };
+};
+
+/**
+ * This type is meant to be extended and is used to define the structure of a return element in a multi-step form.
+ */
+export type ReturnSchema = {
+  type: "return";
+  return: unknown;
+};
+
+/**
+ * This type is meant to be extended and is used to define the structure of a variables element in a multi-step form.
+ */
+export type VariablesSchema = {
+  type: "variables";
+  variables: Record<string, unknown>;
+};

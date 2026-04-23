@@ -1,18 +1,18 @@
 import { describe, expect, it } from "vitest";
 
-import type { ListSchema, ReturnSchema } from "../../types/schema/model";
+import type { ListFlow, ReturnFlow } from "../../types/flow/model";
 import type { Position } from "src/types/state/position";
 
-import { find } from "./flow";
+import { find } from "./control";
 
-describe("FlowSchema", () => {
+describe("ControlFlow", () => {
   describe("find", () => {
-    it("returns the item at the given path within the given schema", () => {
-      const item: ReturnSchema = { return: () => ({}) };
-      const schema: ListSchema = [
+    it("returns the item at the given path within the given flow", () => {
+      const item: ReturnFlow = { return: () => ({}) };
+      const flow: ListFlow = [
         { variables: () => ({}) },
         {
-          cond: {
+          condition: {
             if: () => true,
             then: [
               {
@@ -28,10 +28,10 @@ describe("FlowSchema", () => {
       ];
       const path: Position[] = [
         { type: "list", slot: 1 },
-        { type: "cond", path: "then", slot: 0 },
+        { type: "condition", path: "then", slot: 0 },
         { type: "loop", slot: 0 },
       ];
-      const result = find(schema, path);
+      const result = find(flow, path);
       expect(result).toBe(item);
     });
   });

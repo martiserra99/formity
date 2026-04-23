@@ -4,14 +4,18 @@
 export type Inputs = ListInputs;
 
 /**
- * Union of `FlowInputs` and `FormInputs`.
+ * Union of `ControlInputs` and `FormInputs`.
  */
-export type ItemInputs = FlowInputs | FormInputs;
+export type ItemInputs = ControlInputs | FormInputs;
 
 /**
  * Values entered in the forms that are within any flow control structure.
  */
-export type FlowInputs = ListInputs | CondInputs | LoopInputs | SwitchInputs;
+export type ControlInputs =
+  | ListInputs
+  | ConditionInputs
+  | LoopInputs
+  | SwitchInputs;
 
 /**
  * Values entered in the forms that are within a list.
@@ -24,8 +28,8 @@ export type ListInputs = {
 /**
  * Values entered in the forms that are within a condition.
  */
-export type CondInputs = {
-  type: "cond";
+export type ConditionInputs = {
+  type: "condition";
   then: { [position: number]: ItemInputs };
   else: { [position: number]: ItemInputs };
 };

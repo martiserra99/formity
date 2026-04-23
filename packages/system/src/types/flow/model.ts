@@ -1,72 +1,72 @@
-import type { OnNext, OnBack, GetState, SetState } from "../controls";
+import type { OnNext, OnBack, GetState, SetState } from "../render";
 
 /**
- * Defines the structure and behavior of a multi-step form.
+ * Defines the structure and behavior of the multi-step form.
  */
-export type Schema<T = unknown> = ListSchema<T>;
+export type Flow<T = unknown> = ListFlow<T>;
 
 /**
  * Defines the structure and behavior of any element in a multi-step form.
  */
-export type ItemSchema<T = unknown> =
-  | FlowSchema<T>
-  | FormSchema<T>
-  | YieldSchema
-  | ReturnSchema
-  | VariablesSchema;
+export type ItemFlow<Render = unknown> =
+  | ControlFlow<Render>
+  | FormFlow<Render>
+  | YieldFlow
+  | ReturnFlow
+  | VariablesFlow;
 
 /**
- * Defines the structure and behavior of any flow element in a multi-step form.
+ * Defines the structure and behavior of any control element in a multi-step form.
  */
-export type FlowSchema<T = unknown> =
-  | ListSchema<T>
-  | CondSchema<T>
-  | LoopSchema<T>
-  | SwitchSchema<T>;
+export type ControlFlow<Render = unknown> =
+  | ListFlow<Render>
+  | ConditionFlow<Render>
+  | LoopFlow<Render>
+  | SwitchFlow<Render>;
 
 /**
  * Defines the structure and behavior of a list element in a multi-step form.
  */
-export type ListSchema<T = unknown> = ItemSchema<T>[];
+export type ListFlow<Render = unknown> = ItemFlow<Render>[];
 
 /**
  * Defines the structure and behavior of a condition element in a multi-step form.
  */
-export type CondSchema<T = unknown> = {
-  cond: {
+export type ConditionFlow<Render = unknown> = {
+  condition: {
     if: (inputs: Record<string, unknown>) => boolean;
-    then: ListSchema<T>;
-    else: ListSchema<T>;
+    then: ListFlow<Render>;
+    else: ListFlow<Render>;
   };
 };
 
 /**
  * Defines the structure and behavior of a loop element in a multi-step form.
  */
-export type LoopSchema<T = unknown> = {
+export type LoopFlow<Render = unknown> = {
   loop: {
     while: (inputs: Record<string, unknown>) => boolean;
-    do: ListSchema<T>;
+    do: ListFlow<Render>;
   };
 };
 
 /**
  * Defines the structure and behavior of a switch element in a multi-step form.
  */
-export type SwitchSchema<T = unknown> = {
+export type SwitchFlow<Render = unknown> = {
   switch: {
     branches: {
       case: (inputs: Record<string, unknown>) => boolean;
-      then: ListSchema<T>;
+      then: ListFlow<Render>;
     }[];
-    default: ListSchema<T>;
+    default: ListFlow<Render>;
   };
 };
 
 /**
  * Defines the structure and behavior of a form element in a multi-step form.
  */
-export type FormSchema<T = unknown> = {
+export type FormFlow<Render = unknown> = {
   form: {
     values: (
       inputs: Record<string, unknown>,
@@ -79,14 +79,14 @@ export type FormSchema<T = unknown> = {
       onBack: OnBack<Record<string, unknown>>;
       getState: GetState<Record<string, unknown>>;
       setState: SetState;
-    }) => T;
+    }) => Render;
   };
 };
 
 /**
  * Defines the structure and behavior of a yield element in a multi-step form.
  */
-export type YieldSchema = {
+export type YieldFlow = {
   yield: {
     next: (inputs: Record<string, unknown>) => unknown[];
     back: (inputs: Record<string, unknown>) => unknown[];
@@ -96,13 +96,13 @@ export type YieldSchema = {
 /**
  * Defines the structure and behavior of a return element in a multi-step form.
  */
-export type ReturnSchema = {
+export type ReturnFlow = {
   return: (inputs: Record<string, unknown>) => unknown;
 };
 
 /**
  * Defines the structure and behavior of a variables element in a multi-step form.
  */
-export type VariablesSchema = {
+export type VariablesFlow = {
   variables: (inputs: Record<string, unknown>) => Record<string, unknown>;
 };
