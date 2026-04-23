@@ -1,4 +1,4 @@
-import type { Values, OnYield, OnReturn, State } from "@formity/system";
+import type { Schema, OnYield, OnReturn, State } from "@formity/system";
 
 import { useState, useCallback } from "react";
 import {
@@ -9,15 +9,15 @@ import {
   getState,
 } from "@formity/system";
 
-import type { Schema } from "./schema";
+import type { Flow } from "./flow";
 
 /**
  * The properties of the multi-step form.
  *
- * @template T The structure and values of the multi-step form.
+ * @template T The structure of the multi-step form.
  * @template U The input values of the multi-step form.
  * @template V The parameter values of the multi-step form.
- * @param schema The structure and behavior of the multi-step form.
+ * @param flow The structure and behavior of the multi-step form.
  * @param inputs The input values of the multi-step form.
  * @param params The parameter values of the multi-step form.
  * @param onYield Callback function invoked when the multi-step form yields values.
@@ -25,11 +25,11 @@ import type { Schema } from "./schema";
  * @param initialState The initial state of the multi-step form.
  */
 interface FormityProps<
-  T extends Values,
+  T extends Schema,
   U extends Record<string, unknown>,
   V extends Record<string, unknown>,
 > {
-  schema: Schema<T, U, V>;
+  flow: Flow<T, U, V>;
   inputs?: U;
   params?: V;
   onYield?: OnYield<T>;
@@ -41,11 +41,11 @@ interface FormityProps<
  * Renders a multi-step form.
  */
 export function Formity<
-  T extends Values,
+  T extends Schema,
   U extends Record<string, unknown> = Record<never, never>,
   V extends Record<string, unknown> = Record<never, never>,
 >({
-  schema,
+  flow,
   inputs = {} as U,
   params = {} as V,
   onYield = () => {},
@@ -54,35 +54,35 @@ export function Formity<
 }: FormityProps<T, U, V>): React.ReactNode {
   const [state, setState] = useState<State>(() => {
     if (initialState) return initialState;
-    return getInitialState(schema, inputs, onYield);
+    return getInitialState(flow, inputs, onYield);
   });
 
   const onNext = useCallback(
     (values: Record<string, unknown>) => {
-      const updated = getNextState(state, schema, values, onYield, onReturn);
+      const updated = getNextState(state, flow, values, onYield, onReturn);
       setState(updated);
     },
-    [state, schema, onYield, onReturn],
+    [state, flow, onYield, onReturn],
   );
 
   const onBack = useCallback(
     (values: Record<string, unknown>) => {
-      const updated = getPreviousState(state, schema, values, onYield);
+      const updated = getPreviousState(state, flow, values, onYield);
       setState(updated);
     },
-    [state, schema, onYield],
+    [state, flow, onYield],
   );
 
   const _getState = useCallback(
     (values: Record<string, unknown>) => {
-      return getState(state, schema, values);
+      return getState(state, flow, values);
     },
-    [state, schema],
+    [state, flow],
   );
 
   const _setState = useCallback((state: State) => {
     setState(state);
   }, []);
 
-  return getForm(state, schema, params, onNext, onBack, _getState, _setState);
+  return getForm(state, flow, params, onNext, onBack, _getState, _setState);
 }

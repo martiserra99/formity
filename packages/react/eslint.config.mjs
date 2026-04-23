@@ -5,11 +5,15 @@ import reactlint from "eslint-plugin-react";
 
 export default [
   {
-    ignores: ["dist", "node_modules"],
+    ignores: ["dist", "node_modules", "eslint.config.mjs"],
   },
   {
     languageOptions: {
       globals: globals.browser,
+      parserOptions: {
+        project: true,
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
   },
   {

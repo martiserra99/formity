@@ -9,9 +9,9 @@ export type { Inputs } from "@formity/system";
 
 export type {
   ItemInputs,
-  FlowInputs,
+  ControlInputs,
   ListInputs,
-  CondInputs,
+  ConditionInputs,
   LoopInputs,
   SwitchInputs,
   FormInputs,
@@ -23,7 +23,7 @@ export type { Point } from "@formity/system";
 export type {
   Position,
   ListPosition,
-  CondPosition,
+  ConditionPosition,
   LoopPosition,
   SwitchPosition,
 } from "@formity/system";
@@ -33,7 +33,7 @@ export type { State } from "@formity/system";
 export type { OnNext, OnBack, GetState, SetState } from "@formity/system";
 
 export type {
-  Cond,
+  Condition,
   Loop,
   Switch,
   Form,
@@ -42,49 +42,49 @@ export type {
   Variables,
 } from "@formity/system";
 
-export type { Values } from "@formity/system";
-
-export type {
-  ItemValues,
-  FlowValues,
-  ListValues,
-  CondValues,
-  LoopValues,
-  SwitchValues,
-  FormValues,
-  YieldValues,
-  ReturnValues,
-  VariablesValues,
-} from "@formity/system";
-
-export type { Schema } from "./schema";
+export type { Schema } from "@formity/system";
 
 export type {
   ItemSchema,
-  FlowSchema,
+  ControlSchema,
   ListSchema,
-  CondSchema,
+  ConditionSchema,
   LoopSchema,
   SwitchSchema,
   FormSchema,
   YieldSchema,
   ReturnSchema,
   VariablesSchema,
-} from "./schema";
+} from "@formity/system";
 
-export type { ModelSchema } from "./schema";
+export type { Flow } from "./flow";
 
 export type {
-  ModelItemSchema,
-  ModelFlowSchema,
-  ModelListSchema,
-  ModelCondSchema,
-  ModelLoopSchema,
-  ModelSwitchSchema,
-  ModelFormSchema,
-  ModelYieldSchema,
-  ModelReturnSchema,
-  ModelVariablesSchema,
-} from "./schema";
+  ItemFlow,
+  ControlFlow,
+  ListFlow,
+  ConditionFlow,
+  LoopFlow,
+  SwitchFlow,
+  FormFlow,
+  YieldFlow,
+  ReturnFlow,
+  VariablesFlow,
+} from "./flow";
+
+export type { ModelFlow } from "./flow";
+
+export type {
+  ModelItemFlow,
+  ModelControlFlow,
+  ModelListFlow,
+  ModelConditionFlow,
+  ModelLoopFlow,
+  ModelSwitchFlow,
+  ModelFormFlow,
+  ModelYieldFlow,
+  ModelReturnFlow,
+  ModelVariablesFlow,
+} from "./flow";
 
 export { Formity } from "./formity";

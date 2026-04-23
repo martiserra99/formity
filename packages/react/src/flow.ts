@@ -1,54 +1,54 @@
 import type { ReactNode } from "react";
 
-import type { Values } from "@formity/system";
+import type { Schema } from "@formity/system";
 
 import type {
-  ItemValues,
-  FlowValues,
-  ListValues,
-  CondValues,
-  LoopValues,
-  SwitchValues,
-  FormValues,
-  YieldValues,
-  ReturnValues,
-  VariablesValues,
+  ItemSchema,
+  ControlSchema,
+  ListSchema,
+  ConditionSchema,
+  LoopSchema,
+  SwitchSchema,
+  FormSchema,
+  YieldSchema,
+  ReturnSchema,
+  VariablesSchema,
 } from "@formity/system";
 
-import type { Schema as SystemSchema } from "@formity/system";
+import type { Flow as SystemFlow } from "@formity/system";
 
 import type {
-  ItemSchema as SystemItemSchema,
-  FlowSchema as SystemFlowSchema,
-  ListSchema as SystemListSchema,
-  CondSchema as SystemCondSchema,
-  LoopSchema as SystemLoopSchema,
-  SwitchSchema as SystemSwitchSchema,
-  FormSchema as SystemFormSchema,
-  YieldSchema as SystemYieldSchema,
-  ReturnSchema as SystemReturnSchema,
-  VariablesSchema as SystemVariablesSchema,
+  ItemFlow as SystemItemFlow,
+  ControlFlow as SystemControlFlow,
+  ListFlow as SystemListFlow,
+  ConditionFlow as SystemConditionFlow,
+  LoopFlow as SystemLoopFlow,
+  SwitchFlow as SystemSwitchFlow,
+  FormFlow as SystemFormFlow,
+  YieldFlow as SystemYieldFlow,
+  ReturnFlow as SystemReturnFlow,
+  VariablesFlow as SystemVariablesFlow,
 } from "@formity/system";
 
-import type { ModelSchema as SystemModelSchema } from "@formity/system";
+import type { ModelFlow as SystemModelFlow } from "@formity/system";
 
 import type {
-  ModelItemSchema as SystemModelItemSchema,
-  ModelFlowSchema as SystemModelFlowSchema,
-  ModelListSchema as SystemModelListSchema,
-  ModelCondSchema as SystemModelCondSchema,
-  ModelLoopSchema as SystemModelLoopSchema,
-  ModelSwitchSchema as SystemModelSwitchSchema,
-  ModelFormSchema as SystemModelFormSchema,
-  ModelYieldSchema as SystemModelYieldSchema,
-  ModelReturnSchema as SystemModelReturnSchema,
-  ModelVariablesSchema as SystemModelVariablesSchema,
+  ModelItemFlow as SystemModelItemFlow,
+  ModelControlFlow as SystemModelControlFlow,
+  ModelListFlow as SystemModelListFlow,
+  ModelConditionFlow as SystemModelConditionFlow,
+  ModelLoopFlow as SystemModelLoopFlow,
+  ModelSwitchFlow as SystemModelSwitchFlow,
+  ModelFormFlow as SystemModelFormFlow,
+  ModelYieldFlow as SystemModelYieldFlow,
+  ModelReturnFlow as SystemModelReturnFlow,
+  ModelVariablesFlow as SystemModelVariablesFlow,
 } from "@formity/system";
 
 /**
  * Defines the structure and behavior of a multi-step form.
  *
- * @template T A type extending `Values` that defines the structure of the multi-step form,
+ * @template T A type extending `Schema` that defines the structure of the multi-step form,
  * including the values handled in each phase.
  *
  * @template U An object type representing additional values available during form execution,
@@ -57,16 +57,16 @@ import type {
  * @template V An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type Schema<
-  T extends Values,
+export type Flow<
+  T extends Schema,
   U extends Record<string, unknown> = Record<never, never>,
   V extends Record<string, unknown> = Record<never, never>,
-> = SystemSchema<ReactNode, T, U, V>;
+> = SystemFlow<ReactNode, T, U, V>;
 
 /**
  * Defines the structure and behavior of any element in a multi-step form.
  *
- * @template Values A type extending `ItemValues` that defines the structure of the multi-step form,
+ * @template Schema A type extending `ItemSchema` that defines the structure of the multi-step form,
  * including the values handled in each phase.
  *
  * @template Inputs An object type representing additional values available during form execution,
@@ -75,16 +75,16 @@ export type Schema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type ItemSchema<
-  Values extends ItemValues,
+export type ItemFlow<
+  Schema extends ItemSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = SystemItemSchema<ReactNode, Values, Inputs, Params>;
+> = SystemItemFlow<ReactNode, Schema, Inputs, Params>;
 
 /**
- * Defines the structure and behavior of any flow element in a multi-step form.
+ * Defines the structure and behavior of any control element in a multi-step form.
  *
- * @template Values A type extending `FlowValues` that defines the structure of the multi-step form,
+ * @template Schema A type extending `ControlSchema` that defines the structure of the multi-step form,
  * including the values handled in each phase.
  *
  * @template Inputs An object type representing additional values available during form execution,
@@ -93,16 +93,16 @@ export type ItemSchema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type FlowSchema<
-  Values extends FlowValues,
+export type ControlFlow<
+  Schema extends ControlSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = SystemFlowSchema<ReactNode, Values, Inputs, Params>;
+> = SystemControlFlow<ReactNode, Schema, Inputs, Params>;
 
 /**
  * Defines the structure and behavior of a list element in a multi-step form.
  *
- * @template Values A type extending `ListValues` that defines the structure of the multi-step form,
+ * @template Schema A type extending `ListSchema` that defines the structure of the multi-step form,
  * including the values handled in each phase.
  *
  * @template Inputs An object type representing additional values available during form execution,
@@ -111,16 +111,16 @@ export type FlowSchema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type ListSchema<
-  Values extends ListValues,
+export type ListFlow<
+  Schema extends ListSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = SystemListSchema<ReactNode, Values, Inputs, Params>;
+> = SystemListFlow<ReactNode, Schema, Inputs, Params>;
 
 /**
  * Defines the structure and behavior of a condition element in a multi-step form.
  *
- * @template Values A type extending `CondValues` that defines the structure of the multi-step form,
+ * @template Schema A type extending `ConditionSchema` that defines the structure of the multi-step form,
  * including the values handled in each phase.
  *
  * @template Inputs An object type representing additional values available during form execution,
@@ -129,16 +129,16 @@ export type ListSchema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type CondSchema<
-  Values extends CondValues,
+export type ConditionFlow<
+  Schema extends ConditionSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = SystemCondSchema<ReactNode, Values, Inputs, Params>;
+> = SystemConditionFlow<ReactNode, Schema, Inputs, Params>;
 
 /**
  * Defines the structure and behavior of a loop element in a multi-step form.
  *
- * @template Values A type extending `LoopValues` that defines the structure of the multi-step form,
+ * @template Schema A type extending `LoopSchema` that defines the structure of the multi-step form,
  * including the values handled in each phase.
  *
  * @template Inputs An object type representing additional values available during form execution,
@@ -147,16 +147,16 @@ export type CondSchema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type LoopSchema<
-  Values extends LoopValues,
+export type LoopFlow<
+  Schema extends LoopSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = SystemLoopSchema<ReactNode, Values, Inputs, Params>;
+> = SystemLoopFlow<ReactNode, Schema, Inputs, Params>;
 
 /**
  * Defines the structure and behavior of a switch element in a multi-step form.
  *
- * @template Values A type extending `SwitchValues` that defines the structure of the multi-step
+ * @template Schema A type extending `SwitchSchema` that defines the structure of the multi-step
  * form, including the values handled in each phase.
  *
  * @template Inputs An object type representing additional values available during form execution,
@@ -165,16 +165,16 @@ export type LoopSchema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type SwitchSchema<
-  Values extends SwitchValues,
+export type SwitchFlow<
+  Schema extends SwitchSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = SystemSwitchSchema<ReactNode, Values, Inputs, Params>;
+> = SystemSwitchFlow<ReactNode, Schema, Inputs, Params>;
 
 /**
  * Defines the structure and behavior of a form element in a multi-step form.
  *
- * @template Values A type extending `FormValues` that defines the values of the form element.
+ * @template Schema A type extending `FormSchema` that defines the values of the form element.
  *
  * @template Inputs An object type representing additional values available during form execution,
  * beyond those generated by the multi-step form itself.
@@ -182,102 +182,102 @@ export type SwitchSchema<
  * @template Params An object type defining the values accessible when rendering each form step in
  * the multi-step process.
  */
-export type FormSchema<
-  Values extends FormValues,
+export type FormFlow<
+  Schema extends FormSchema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = SystemFormSchema<ReactNode, Values, Inputs, Params>;
+> = SystemFormFlow<ReactNode, Schema, Inputs, Params>;
 
 /**
  * Defines the structure and behavior of a yield element in a multi-step form.
  *
- * @template Values A type extending `YieldValues` that defines the values of the yield element.
+ * @template Schema A type extending `YieldSchema` that defines the values of the yield element.
  *
  * @template Inputs An object type representing additional values available during form execution,
  * beyond those generated by the multi-step form itself.
  */
-export type YieldSchema<
-  Values extends YieldValues,
+export type YieldFlow<
+  Schema extends YieldSchema,
   Inputs extends Record<string, unknown>,
-> = SystemYieldSchema<Values, Inputs>;
+> = SystemYieldFlow<Schema, Inputs>;
 
 /**
  * Defines the structure and behavior of a return element in a multi-step form.
  *
- * @template Values A type extending `ReturnValues` that defines the values of the return element.
+ * @template Schema A type extending `ReturnSchema` that defines the values of the return element.
  *
  * @template Inputs An object type representing additional values available during form execution,
  * beyond those generated by the multi-step form itself.
  */
-export type ReturnSchema<
-  Values extends ReturnValues,
+export type ReturnFlow<
+  Schema extends ReturnSchema,
   Inputs extends Record<string, unknown>,
-> = SystemReturnSchema<Values, Inputs>;
+> = SystemReturnFlow<Schema, Inputs>;
 
 /**
  * Defines the structure and behavior of a variables element in a multi-step form.
  *
- * @template Values A type extending `VariablesValues` that defines the values of the variables element.
+ * @template Schema A type extending `VariablesSchema` that defines the values of the variables element.
  *
  * @template Inputs An object type representing additional values available during form execution,
  * beyond those generated by the multi-step form itself.
  */
-export type VariablesSchema<
-  Values extends VariablesValues,
+export type VariablesFlow<
+  Schema extends VariablesSchema,
   Inputs extends Record<string, unknown>,
-> = SystemVariablesSchema<Values, Inputs>;
+> = SystemVariablesFlow<Schema, Inputs>;
 
 /**
  * Defines the structure and behavior of a multi-step form.
  */
-export type ModelSchema = SystemModelSchema<ReactNode>;
+export type ModelFlow = SystemModelFlow<ReactNode>;
 
 /**
  * Defines the structure and behavior of any element in a multi-step form.
  */
-export type ModelItemSchema = SystemModelItemSchema<ReactNode>;
+export type ModelItemFlow = SystemModelItemFlow<ReactNode>;
 
 /**
- * Defines the structure and behavior of any flow element in a multi-step form.
+ * Defines the structure and behavior of any control element in a multi-step form.
  */
-export type ModelFlowSchema = SystemModelFlowSchema<ReactNode>;
+export type ModelControlFlow = SystemModelControlFlow<ReactNode>;
 
 /**
  * Defines the structure and behavior of a list element in a multi-step form.
  */
-export type ModelListSchema = SystemModelListSchema<ReactNode>;
+export type ModelListFlow = SystemModelListFlow<ReactNode>;
 
 /**
  * Defines the structure and behavior of a condition element in a multi-step form.
  */
-export type ModelCondSchema = SystemModelCondSchema<ReactNode>;
+export type ModelConditionFlow = SystemModelConditionFlow<ReactNode>;
 
 /**
  * Defines the structure and behavior of a loop element in a multi-step form.
  */
-export type ModelLoopSchema = SystemModelLoopSchema<ReactNode>;
+export type ModelLoopFlow = SystemModelLoopFlow<ReactNode>;
 
 /**
  * Defines the structure and behavior of a switch element in a multi-step form.
  */
-export type ModelSwitchSchema = SystemModelSwitchSchema<ReactNode>;
+export type ModelSwitchFlow = SystemModelSwitchFlow<ReactNode>;
 
 /**
  * Defines the structure and behavior of a form element in a multi-step form.
  */
-export type ModelFormSchema = SystemModelFormSchema<ReactNode>;
+export type ModelFormFlow = SystemModelFormFlow<ReactNode>;
 
 /**
  * Defines the structure and behavior of a yield element in a multi-step form.
  */
-export type ModelYieldSchema = SystemModelYieldSchema;
+export type ModelYieldFlow = SystemModelYieldFlow;
 
 /**
  * Defines the structure and behavior of a return element in a multi-step form.
  */
-export type ModelReturnSchema = SystemModelReturnSchema;
+export type ModelReturnFlow = SystemModelReturnFlow;
 
 /**
  * Defines the structure and behavior of a variables element in a multi-step form.
  */
-export type ModelVariablesSchema = SystemModelVariablesSchema;
+export type ModelVariablesFlow = SystemModelVariablesFlow;
