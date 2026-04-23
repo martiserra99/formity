@@ -17,7 +17,7 @@ import type {
  */
 export type YieldOutput<T extends Schema> = ListData<T, never, false> extends [
   infer U,
-  unknown,
+  boolean,
 ]
   ? U
   : never;

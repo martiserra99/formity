@@ -47,13 +47,13 @@ export type ItemFlow<
 > = Schema extends ControlSchema
   ? ControlFlow<Render, Schema, Inputs, Memory, Params>
   : Schema extends FormSchema
-  ? FormFlow<Render, Schema, Inputs, Params>
+  ? FormFlow<Render, Schema, Memory, Params>
   : Schema extends YieldSchema
-  ? YieldFlow<Schema, Inputs>
+  ? YieldFlow<Schema, Memory>
   : Schema extends ReturnSchema
-  ? ReturnFlow<Schema, Inputs>
+  ? ReturnFlow<Schema, Memory>
   : Schema extends VariablesSchema
-  ? VariablesFlow<Schema, Inputs>
+  ? VariablesFlow<Schema, Memory>
   : Schema extends JumpSchema
   ? JumpFlow<Render, Schema, Inputs, Params>
   : never;
