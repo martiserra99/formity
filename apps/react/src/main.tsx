@@ -5,34 +5,34 @@ import "./main.css";
 
 import App from "./app";
 
-import { mainSchema, MainValues } from "./schemas/main";
-import { listSchema, ListValues } from "./schemas/flow.list";
-import { condSchema, CondValues } from "./schemas/flow.cond";
-import { loopSchema, LoopValues } from "./schemas/flow.loop";
-import { switchSchema, SwitchValues } from "./schemas/flow.switch";
+import { flow, Schema } from "./flow";
+import { listFlow, ListSchema } from "./flow.list";
+import { conditionFlow, ConditionSchema } from "./flow.condition";
+import { loopFlow, LoopSchema } from "./flow.loop";
+import { switchFlow, SwitchSchema } from "./flow.switch";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App<MainValues> schema={mainSchema} />} />
+        <Route path="/" element={<App<Schema> flow={flow} />} />
         <Route
           path="/flow/list"
-          element={<App<ListValues> schema={listSchema} />}
+          element={<App<ListSchema> flow={listFlow} />}
         />
         <Route
           path="/flow/cond"
-          element={<App<CondValues> schema={condSchema} />}
+          element={<App<ConditionSchema> flow={conditionFlow} />}
         />
         <Route
           path="/flow/loop"
-          element={<App<LoopValues> schema={loopSchema} />}
+          element={<App<LoopSchema> flow={loopFlow} />}
         />
         <Route
           path="/flow/switch"
-          element={<App<SwitchValues> schema={switchSchema} />}
+          element={<App<SwitchSchema> flow={switchFlow} />}
         />
       </Routes>
     </BrowserRouter>
-  </StrictMode>
+  </StrictMode>,
 );

@@ -1,4 +1,4 @@
-import type { Schema, Switch, Form, Return } from "@formity/react";
+import type { Flow, Switch, Form, Return } from "@formity/react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -10,11 +10,11 @@ import {
   Listbox,
   NextButton,
   BackButton,
-} from "../components";
+} from "./components";
 
-import { MultiStep } from "../multi-step";
+import { MultiStep } from "./multi-step";
 
-export type SwitchValues = [
+export type SwitchSchema = [
   Form<{ interested: string }>,
   Switch<{
     branches: [
@@ -22,17 +22,17 @@ export type SwitchValues = [
       [Form<{ whyNot: string }>, Return<{ interested: "no"; whyNot: string }>],
       [
         Form<{ whyMaybe: string }>,
-        Return<{ interested: "maybe"; whyMaybe: string }>
-      ]
+        Return<{ interested: "maybe"; whyMaybe: string }>,
+      ],
     ];
     default: [
       Form<{ whyNotSure: string }>,
-      Return<{ interested: "notSure"; whyNotSure: string }>
+      Return<{ interested: "notSure"; whyNotSure: string }>,
     ];
-  }>
+  }>,
 ];
 
-export const switchSchema: Schema<SwitchValues> = [
+export const switchFlow: Flow<SwitchSchema> = [
   {
     form: {
       values: () => ({
@@ -45,7 +45,7 @@ export const switchSchema: Schema<SwitchValues> = [
             resolver={zodResolver(
               z.object({
                 interested: z.string(),
-              })
+              }),
             )}
           >
             <Layout
@@ -101,7 +101,7 @@ export const switchSchema: Schema<SwitchValues> = [
                       resolver={zodResolver(
                         z.object({
                           whyYes: z.string(),
-                        })
+                        }),
                       )}
                     >
                       <Layout
@@ -141,7 +141,7 @@ export const switchSchema: Schema<SwitchValues> = [
                       resolver={zodResolver(
                         z.object({
                           whyNot: z.string(),
-                        })
+                        }),
                       )}
                     >
                       <Layout
@@ -181,7 +181,7 @@ export const switchSchema: Schema<SwitchValues> = [
                       resolver={zodResolver(
                         z.object({
                           whyMaybe: z.string(),
-                        })
+                        }),
                       )}
                     >
                       <Layout
@@ -224,7 +224,7 @@ export const switchSchema: Schema<SwitchValues> = [
                   resolver={zodResolver(
                     z.object({
                       whyNotSure: z.string(),
-                    })
+                    }),
                   )}
                 >
                   <Layout

@@ -1,21 +1,21 @@
 import { Form } from "./form";
 
-import { mainSchema, MainValues } from "./schemas/main";
-import { listSchema, ListValues } from "./schemas/flow.list";
-import { condSchema, CondValues } from "./schemas/flow.cond";
-import { loopSchema, LoopValues } from "./schemas/flow.loop";
-import { switchSchema, SwitchValues } from "./schemas/flow.switch";
+import { flow, Schema } from "./flow";
+import { listFlow, ListSchema } from "./flow.list";
+import { conditionFlow, ConditionSchema } from "./flow.condition";
+import { loopFlow, LoopSchema } from "./flow.loop";
+import { switchFlow, SwitchSchema } from "./flow.switch";
 
 describe("<Formity />", () => {
   it("renders the multi-step form with the initial state", () => {
-    cy.mount(<Form<MainValues> schema={mainSchema} />);
+    cy.mount(<Form<Schema> flow={flow} />);
     cy.get("[data-cy=heading]").should("have.text", "Tell us about yourself");
   });
 
   it("initializes the form with the passed initial state", () => {
     cy.mount(
-      <Form<MainValues>
-        schema={mainSchema}
+      <Form<Schema>
+        flow={flow}
         initialState={{
           points: [
             {
@@ -47,7 +47,7 @@ describe("<Formity />", () => {
                   slot: 4,
                 },
                 {
-                  type: "cond",
+                  type: "condition",
                   path: "else",
                   slot: 0,
                 },
@@ -96,7 +96,7 @@ describe("<Formity />", () => {
                 },
               },
               "4": {
-                type: "cond",
+                type: "condition",
                 then: {},
                 else: {
                   "0": {
@@ -113,16 +113,16 @@ describe("<Formity />", () => {
             },
           },
         }}
-      />
+      />,
     );
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "Would you be interested in learning how to code?"
+      "Would you be interested in learning how to code?",
     );
   });
 
   it("navigates to the next steps of the multi-step form", () => {
-    cy.mount(<Form<MainValues> schema={mainSchema} />);
+    cy.mount(<Form<Schema> flow={flow} />);
     cy.get("[data-cy=heading]").should("have.text", "Tell us about yourself");
     cy.get("[data-cy=input]").eq(0).type("John");
     cy.get("[data-cy=input]").eq(1).type("Doe");
@@ -130,33 +130,33 @@ describe("<Formity />", () => {
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "Are you a software developer?"
+      "Are you a software developer?",
     );
     cy.get("[data-cy=input]").eq(0).click();
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What are your favourite programming languages?"
+      "What are your favourite programming languages?",
     );
     cy.get("[data-cy=input]").eq(0).click();
     cy.get("[data-cy=input]").eq(1).click();
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What rating would you give to the JavaScript language?"
+      "What rating would you give to the JavaScript language?",
     );
     cy.get("[data-cy=input]").eq(0).click();
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What rating would you give to the Python language?"
+      "What rating would you give to the Python language?",
     );
     cy.get("[data-cy=input]").eq(1).click();
     cy.get("[data-cy=button]").click();
   });
 
   it("navigates to the previous steps of the multi-step form", () => {
-    cy.mount(<Form<MainValues> schema={mainSchema} />);
+    cy.mount(<Form<Schema> flow={flow} />);
     cy.get("[data-cy=input]").eq(0).type("John");
     cy.get("[data-cy=input]").eq(1).type("Doe");
     cy.get("[data-cy=input]").eq(2).type("{backspace}5");
@@ -171,22 +171,22 @@ describe("<Formity />", () => {
     cy.get("[data-cy=input]").eq(1).click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What rating would you give to the Python language?"
+      "What rating would you give to the Python language?",
     );
     cy.get("[data-cy=back]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What rating would you give to the JavaScript language?"
+      "What rating would you give to the JavaScript language?",
     );
     cy.get("[data-cy=back]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What are your favourite programming languages?"
+      "What are your favourite programming languages?",
     );
     cy.get("[data-cy=back]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "Are you a software developer?"
+      "Are you a software developer?",
     );
     cy.get("[data-cy=back]").click();
     cy.get("[data-cy=heading]").should("have.text", "Tell us about yourself");
@@ -194,7 +194,7 @@ describe("<Formity />", () => {
 
   it("invokes the onYield callback function every time the multi-step form yields values", () => {
     const onYieldSpy = cy.spy().as("onYieldSpy");
-    cy.mount(<Form<MainValues> schema={mainSchema} onYield={onYieldSpy} />);
+    cy.mount(<Form<Schema> flow={flow} onYield={onYieldSpy} />);
     cy.get("[data-cy=input]").eq(0).type("John");
     cy.get("[data-cy=input]").eq(1).type("Doe");
     cy.get("[data-cy=input]").eq(2).type("{backspace}5");
@@ -286,7 +286,7 @@ describe("<Formity />", () => {
 
   it("invokes the onReturn callback function when the multi-step form returns values", () => {
     const onReturn = cy.spy().as("onReturn");
-    cy.mount(<Form<MainValues> schema={mainSchema} onReturn={onReturn} />);
+    cy.mount(<Form<Schema> flow={flow} onReturn={onReturn} />);
     cy.get("[data-cy=input]").eq(0).type("John");
     cy.get("[data-cy=input]").eq(1).type("Doe");
     cy.get("[data-cy=input]").eq(2).type("{backspace}5");
@@ -319,7 +319,7 @@ describe("<Formity />", () => {
 
   it("saves the values previously introduced in each form of the multi-step form", () => {
     const onReturn = cy.spy().as("onReturn");
-    cy.mount(<Form<MainValues> schema={mainSchema} onReturn={onReturn} />);
+    cy.mount(<Form<Schema> flow={flow} onReturn={onReturn} />);
     cy.get("[data-cy=input]").eq(0).type("John");
     cy.get("[data-cy=input]").eq(1).type("Doe");
     cy.get("[data-cy=input]").eq(2).type("{backspace}5");
@@ -360,7 +360,7 @@ describe("<Formity />", () => {
 
   it("navigates through steps in a list of the multi-step form until it reaches a return", () => {
     const onReturn = cy.spy().as("onReturn");
-    cy.mount(<Form<ListValues> schema={listSchema} onReturn={onReturn} />);
+    cy.mount(<Form<ListSchema> flow={listFlow} onReturn={onReturn} />);
     cy.get("[data-cy=heading]").should("have.text", "Tell us your name");
     cy.get("[data-cy=input]").eq(0).type("John");
     cy.get("[data-cy=input]").eq(1).type("Doe");
@@ -372,27 +372,29 @@ describe("<Formity />", () => {
 
   it("navigates through steps in a condition of the multi-step form until it reaches a return", () => {
     const onReturn = cy.spy().as("onReturn");
-    cy.mount(<Form<CondValues> schema={condSchema} onReturn={onReturn} />);
+    cy.mount(
+      <Form<ConditionSchema> flow={conditionFlow} onReturn={onReturn} />,
+    );
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "Are you a software developer?"
+      "Are you a software developer?",
     );
     cy.get("[data-cy=input]").eq(1).click();
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "Would you be interested in learning how to code?"
+      "Would you be interested in learning how to code?",
     );
     cy.get("[data-cy=back]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "Are you a software developer?"
+      "Are you a software developer?",
     );
     cy.get("[data-cy=input]").eq(0).click();
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What are your favourite programming languages?"
+      "What are your favourite programming languages?",
     );
     cy.get("[data-cy=input]").eq(0).click();
     cy.get("[data-cy=input]").eq(1).click();
@@ -405,22 +407,22 @@ describe("<Formity />", () => {
 
   it("navigates through steps in a loop of the multi-step form until it reaches a return", () => {
     const onReturn = cy.spy().as("onReturn");
-    cy.mount(<Form<LoopValues> schema={loopSchema} onReturn={onReturn} />);
+    cy.mount(<Form<LoopSchema> flow={loopFlow} onReturn={onReturn} />);
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What rating would you give to the JavaScript language?"
+      "What rating would you give to the JavaScript language?",
     );
     cy.get("[data-cy=input]").eq(0).click();
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What rating would you give to the Python language?"
+      "What rating would you give to the Python language?",
     );
     cy.get("[data-cy=input]").eq(1).click();
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "What rating would you give to the Go language?"
+      "What rating would you give to the Go language?",
     );
     cy.get("[data-cy=input]").eq(2).click();
     cy.get("[data-cy=button]").click();
@@ -435,10 +437,10 @@ describe("<Formity />", () => {
 
   it("navigates through steps in a switch of the multi-step form until it reaches a return", () => {
     const onReturn = cy.spy().as("onReturn");
-    cy.mount(<Form<SwitchValues> schema={switchSchema} onReturn={onReturn} />);
+    cy.mount(<Form<SwitchSchema> flow={switchFlow} onReturn={onReturn} />);
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "Would you be interested in learning how to code?"
+      "Would you be interested in learning how to code?",
     );
     cy.get("[data-cy=input]").click();
     cy.get("[data-cy=listbox-option]").eq(0).click();
@@ -447,19 +449,19 @@ describe("<Formity />", () => {
     cy.get("[data-cy=back]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "Would you be interested in learning how to code?"
+      "Would you be interested in learning how to code?",
     );
     cy.get("[data-cy=input]").click();
     cy.get("[data-cy=listbox-option]").eq(2).click();
     cy.get("[data-cy=button]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "Why are you maybe interested?"
+      "Why are you maybe interested?",
     );
     cy.get("[data-cy=back]").click();
     cy.get("[data-cy=heading]").should(
       "have.text",
-      "Would you be interested in learning how to code?"
+      "Would you be interested in learning how to code?",
     );
     cy.get("[data-cy=input]").click();
     cy.get("[data-cy=listbox-option]").eq(3).click();

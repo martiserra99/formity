@@ -1,4 +1,4 @@
-import type { Schema, Cond, Form, Return } from "@formity/react";
+import type { Flow, Condition, Form, Return } from "@formity/react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -11,13 +11,13 @@ import {
   YesNo,
   NextButton,
   BackButton,
-} from "../components";
+} from "./components";
 
-import { MultiStep } from "../multi-step";
+import { MultiStep } from "./multi-step";
 
-export type CondValues = [
+export type ConditionSchema = [
   Form<{ softwareDeveloper: boolean }>,
-  Cond<{
+  Condition<{
     then: [
       Form<{ languages: string[] }>,
       Return<{
@@ -35,7 +35,7 @@ export type CondValues = [
   }>,
 ];
 
-export const condSchema: Schema<CondValues> = [
+export const conditionFlow: Flow<ConditionSchema> = [
   {
     form: {
       values: () => ({
@@ -69,7 +69,7 @@ export const condSchema: Schema<CondValues> = [
     },
   },
   {
-    cond: {
+    condition: {
       if: ({ softwareDeveloper }) => softwareDeveloper,
       then: [
         {

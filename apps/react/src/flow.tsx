@@ -1,6 +1,6 @@
 import type {
-  Schema,
-  Cond,
+  Flow,
+  Condition,
   Loop,
   Form,
   Yield,
@@ -23,11 +23,11 @@ import {
   YesNo,
   NextButton,
   BackButton,
-} from "../components";
+} from "./components";
 
-import { MultiStep } from "../multi-step";
+import { MultiStep } from "./multi-step";
 
-export type MainValues = [
+export type Schema = [
   Form<{ name: string; surname: string; age: number }>,
   Yield<{
     next: [
@@ -46,7 +46,7 @@ export type MainValues = [
     next: [{ type: "next"; data: { softwareDeveloper: boolean } }];
     back: [{ type: "back"; data: { softwareDeveloper: boolean } }];
   }>,
-  Cond<{
+  Condition<{
     then: [
       Variables<{
         languagesOptions: { value: string; label: string }[];
@@ -99,7 +99,7 @@ export type MainValues = [
   }>,
 ];
 
-export const mainSchema: Schema<MainValues> = [
+export const flow: Flow<Schema> = [
   {
     form: {
       values: () => ({
@@ -206,7 +206,7 @@ export const mainSchema: Schema<MainValues> = [
     },
   },
   {
-    cond: {
+    condition: {
       if: ({ softwareDeveloper }) => softwareDeveloper,
       then: [
         {

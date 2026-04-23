@@ -1,13 +1,13 @@
-import type { Schema, Loop, Form, Return, Variables } from "@formity/react";
+import type { Flow, Loop, Form, Return, Variables } from "@formity/react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { Step, Layout, Select, NextButton, BackButton } from "../components";
+import { Step, Layout, Select, NextButton, BackButton } from "./components";
 
-import { MultiStep } from "../multi-step";
+import { MultiStep } from "./multi-step";
 
-export type LoopValues = [
+export type LoopSchema = [
   Variables<{ languages: { value: string; question: string }[] }>,
   Variables<{
     i: number;
@@ -20,13 +20,13 @@ export type LoopValues = [
       Variables<{
         i: number;
         languagesRatings: { name: string; rating: string }[];
-      }>
+      }>,
     ]
   >,
-  Return<{ languagesRatings: { name: string; rating: string }[] }>
+  Return<{ languagesRatings: { name: string; rating: string }[] }>,
 ];
 
-export const loopSchema: Schema<LoopValues> = [
+export const loopFlow: Flow<LoopSchema> = [
   {
     variables: () => ({
       languages: [
@@ -72,7 +72,7 @@ export const loopSchema: Schema<LoopValues> = [
                   resolver={zodResolver(
                     z.object({
                       rating: z.string(),
-                    })
+                    }),
                   )}
                 >
                   <Layout

@@ -1,28 +1,28 @@
 import {
   Formity,
+  Flow,
   Schema,
-  Values,
   OnYield,
   OnReturn,
   State,
 } from "@formity/react";
 
-interface FormProps<T extends Values> {
-  schema: Schema<T>;
-  onYield?: OnYield<Values>;
-  onReturn?: OnReturn<Values>;
+interface FormProps<T extends Schema> {
+  flow: Flow<T>;
+  onYield?: OnYield<Schema>;
+  onReturn?: OnReturn<Schema>;
   initialState?: State;
 }
 
-export function Form<T extends Values>({
-  schema,
+export function Form<T extends Schema>({
+  flow,
   onYield,
   onReturn,
   initialState,
 }: FormProps<T>) {
   return (
     <Formity<T>
-      schema={schema}
+      flow={flow}
       onYield={onYield}
       onReturn={onReturn}
       initialState={initialState}

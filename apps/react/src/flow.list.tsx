@@ -1,19 +1,19 @@
-import type { Schema, Form, Return, Variables } from "@formity/react";
+import type { Flow, Form, Return, Variables } from "@formity/react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { Step, Layout, Row, TextField, NextButton } from "../components";
+import { Step, Layout, Row, TextField, NextButton } from "./components";
 
-import { MultiStep } from "../multi-step";
+import { MultiStep } from "./multi-step";
 
-export type ListValues = [
+export type ListSchema = [
   Variables<{ fullName: string }>,
   [Form<{ name: string; surname: string }>, [Variables<{ fullName: string }>]],
   Return<{ fullName: string }>,
 ];
 
-export const listSchema: Schema<ListValues> = [
+export const listFlow: Flow<ListSchema> = [
   {
     variables: () => ({
       fullName: "",

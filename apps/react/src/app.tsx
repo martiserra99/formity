@@ -1,8 +1,8 @@
 import { useCallback, useState } from "react";
 
 import {
+  Flow,
   Schema,
-  Values,
   OnYield,
   OnReturn,
   YieldOutput,
@@ -12,30 +12,30 @@ import {
 import { Form } from "./form";
 import { Data } from "./components";
 
-interface AppProps<T extends Values> {
-  schema: Schema<T>;
+interface AppProps<T extends Schema> {
+  flow: Flow<T>;
 }
 
-export default function App<T extends Values>({ schema }: AppProps<T>) {
-  const [values, setValues] = useState<ReturnOutput<Values> | null>(null);
+export default function App<T extends Schema>({ flow }: AppProps<T>) {
+  const [values, setValues] = useState<ReturnOutput<Schema> | null>(null);
 
-  const onYield = useCallback<OnYield<Values>>(
-    (values: YieldOutput<Values>) => {
+  const onYield = useCallback<OnYield<Schema>>(
+    (values: YieldOutput<Schema>) => {
       console.log(values);
     },
-    []
+    [],
   );
 
-  const onReturn = useCallback<OnReturn<Values>>(
-    (values: ReturnOutput<Values>) => {
+  const onReturn = useCallback<OnReturn<Schema>>(
+    (values: ReturnOutput<Schema>) => {
       setValues(values);
     },
-    []
+    [],
   );
 
   if (values) {
     return <Data data={values} onStart={() => setValues(null)} />;
   }
 
-  return <Form<T> schema={schema} onYield={onYield} onReturn={onReturn} />;
+  return <Form<T> flow={flow} onYield={onYield} onReturn={onReturn} />;
 }
