@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { ConditionFlow, ReturnFlow } from "../../types/flow/model";
 import type { Position } from "src/types/state/position";
 
-import { into, next, at } from "./control.condition";
+import { into, next, at } from "./scope.condition";
 
 describe("ConditionFlow", () => {
   describe("into", () => {

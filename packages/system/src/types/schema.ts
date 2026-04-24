@@ -4,24 +4,24 @@
 export type Schema = ListSchema;
 
 /**
- * This type is meant to be extended and is used to define the structure of any element in a multi-step form.
+ * This type is meant to be extended and is used to define the structure of an element in a multi-step form.
  */
 export type ItemSchema =
-  | ControlSchema
+  | ScopeSchema
   | FormSchema
-  | YieldSchema
-  | ReturnSchema
   | VariablesSchema
-  | JumpSchema;
+  | YieldSchema
+  | ReturnSchema;
 
 /**
- * This type is meant to be extended and is used to define the structure of any control element in a multi-step form.
+ * This type is meant to be extended and is used to define the structure of a scope element in a multi-step form.
  */
-export type ControlSchema =
+export type ScopeSchema =
   | ListSchema
   | ConditionSchema
   | LoopSchema
-  | SwitchSchema;
+  | SwitchSchema
+  | JumpSchema;
 
 /**
  * This type is meant to be extended and is used to define the structure of a list element in a multi-step form.
@@ -61,11 +61,27 @@ export type SwitchSchema = {
 };
 
 /**
+ * This type is meant to be extended and is used to define the structure of a jump element in a multi-step form.
+ */
+export type JumpSchema = {
+  type: "jump";
+  item: ItemSchema;
+};
+
+/**
  * This type is meant to be extended and is used to define the structure of a form element in a multi-step form.
  */
 export type FormSchema = {
   type: "form";
   form: Record<string, unknown>;
+};
+
+/**
+ * This type is meant to be extended and is used to define the structure of a variables element in a multi-step form.
+ */
+export type VariablesSchema = {
+  type: "variables";
+  variables: Record<string, unknown>;
 };
 
 /**
@@ -85,20 +101,4 @@ export type YieldSchema = {
 export type ReturnSchema = {
   type: "return";
   return: unknown;
-};
-
-/**
- * This type is meant to be extended and is used to define the structure of a variables element in a multi-step form.
- */
-export type VariablesSchema = {
-  type: "variables";
-  variables: Record<string, unknown>;
-};
-
-/**
- * This type is meant to be extended and is used to define the structure of a jump element in a multi-step form.
- */
-export type JumpSchema = {
-  type: "jump";
-  item: ItemSchema;
 };

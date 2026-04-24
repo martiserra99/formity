@@ -34,11 +34,27 @@ export type Switch<T extends { branches: ListSchema[]; default: ListSchema }> =
   };
 
 /**
+ * Utility type that defines the structure of a jump element in a multi-step form.
+ */
+export type Jump<T extends ItemSchema> = {
+  type: "jump";
+  item: T;
+};
+
+/**
  * Utility type that defines the structure of a form element in a multi-step form.
  */
 export type Form<T extends Record<string, unknown>> = {
   type: "form";
   form: T;
+};
+
+/**
+ * Utility type that defines the structure of a variables element in a multi-step form.
+ */
+export type Variables<T extends Record<string, unknown>> = {
+  type: "variables";
+  variables: T;
 };
 
 /**
@@ -58,20 +74,4 @@ export type Yield<T extends { next: unknown[]; back: unknown[] }> = {
 export type Return<T> = {
   type: "return";
   return: T;
-};
-
-/**
- * Utility type that defines the structure of a variables element in a multi-step form.
- */
-export type Variables<T extends Record<string, unknown>> = {
-  type: "variables";
-  variables: T;
-};
-
-/**
- * Utility type that defines the structure of a jump element in a multi-step form.
- */
-export type Jump<T extends ItemSchema> = {
-  type: "jump";
-  item: T;
 };

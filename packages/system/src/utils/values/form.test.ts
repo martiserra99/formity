@@ -4,9 +4,9 @@ import type { FormValues } from "src/types/state/values";
 
 import { get, set } from "./form";
 
-describe("FormInputs", () => {
+describe("FormValues", () => {
   describe("get", () => {
-    it("returns the value that is in the given `FormInputs` object", () => {
+    it("returns the value that is in the given `FormValues` object", () => {
       const form: FormValues = {
         a: {
           data: { here: false },
@@ -30,7 +30,7 @@ describe("FormInputs", () => {
       expect(result).toEqual(1);
     });
 
-    it("returns the default value if the keys are not encountered in the given `FormInputs` object", () => {
+    it("returns the default value if the keys are not encountered in the given `FormValues` object", () => {
       const form: FormValues = {
         a: {
           data: { here: false },
@@ -56,7 +56,7 @@ describe("FormInputs", () => {
   });
 
   describe("set", () => {
-    it("sets the value in the given `FormInputs` object", () => {
+    it("sets the value in the given `FormValues` object", () => {
       const form: FormValues = {};
       const name: string = "a";
       const keys: PropertyKey[] = ["x", "y"];

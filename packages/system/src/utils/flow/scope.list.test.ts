@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { ListFlow, ReturnFlow } from "../../types/flow/model";
 import type { Position } from "src/types/state/position";
 
-import { into, next, at } from "./control.list";
+import { into, next, at } from "./scope.list";
 
 describe("ListFlow", () => {
   describe("into", () => {

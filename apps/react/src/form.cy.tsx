@@ -25,7 +25,7 @@ describe("<Formity />", () => {
                   slot: 0,
                 },
               ],
-              values: {},
+              inputs: {},
             },
             {
               path: [
@@ -34,7 +34,7 @@ describe("<Formity />", () => {
                   slot: 2,
                 },
               ],
-              values: {
+              inputs: {
                 name: "Marti",
                 surname: "Serra",
                 age: 25,
@@ -52,7 +52,7 @@ describe("<Formity />", () => {
                   slot: 0,
                 },
               ],
-              values: {
+              inputs: {
                 name: "Marti",
                 surname: "Serra",
                 age: 25,
@@ -60,7 +60,7 @@ describe("<Formity />", () => {
               },
             },
           ],
-          inputs: {
+          values: {
             type: "list",
             list: {
               "0": {

@@ -4,10 +4,10 @@ import type { Flow as TypedFlow } from "../types/flow/typed";
 import type { Flow, FormFlow } from "../types/flow/model";
 
 import type { State } from "../types/state/state";
-import type { Values, ControlValues } from "../types/state/values";
+import type { Values, ScopeValues } from "../types/state/values";
 
-import * as ControlFlowUtils from "./flow/control";
-import * as FlowInputsUtils from "./inputs/control";
+import * as ControlFlowUtils from "./flow/scope";
+import * as FlowInputsUtils from "./values/scope";
 
 /**
  * Returns the current state of the multi-step form after updating the values of the current form.
@@ -39,7 +39,7 @@ function _getState(
   const point = state.points[state.points.length - 1];
   const formFlow = ControlFlowUtils.find(flow, point.path) as FormFlow;
   const formValues = formFlow["form"]["values"](point.inputs);
-  let inputs: ControlValues = state.values;
+  let inputs: ScopeValues = state.values;
   for (const [name, value] of Object.entries(values)) {
     if (name in formValues) {
       const keys = formValues[name][1];

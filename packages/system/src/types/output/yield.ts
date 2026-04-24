@@ -2,7 +2,7 @@ import type { Schema } from "../schema";
 
 import type {
   ItemSchema,
-  ControlSchema,
+  ScopeSchema,
   ListSchema,
   ConditionSchema,
   LoopSchema,
@@ -22,28 +22,24 @@ export type YieldOutput<T extends Schema> = ListData<T, never, false> extends [
   ? U
   : never;
 
-type ItemData<Item extends ItemSchema, Data, Flag> = Item extends ControlSchema
-  ? ControlData<Item, Data, Flag>
+type ItemData<Item extends ItemSchema, Data, Flag> = Item extends ScopeSchema
+  ? ScopeData<Item, Data, Flag>
   : Item extends YieldSchema
   ? YieldData<Item, Data, Flag>
   : Item extends ReturnSchema
   ? ReturnData<Data>
-  : Item extends JumpSchema
-  ? JumpData<Item, Data>
   : [Data, Flag];
 
-type ControlData<
-  Control extends ControlSchema,
-  Data,
-  Flag,
-> = Control extends ListSchema
-  ? ListData<Control, Data, Flag>
-  : Control extends ConditionSchema
-  ? ConditionData<Control, Data, Flag>
-  : Control extends LoopSchema
-  ? LoopData<Control, Data, Flag>
-  : Control extends SwitchSchema
-  ? SwitchData<Control, Data, Flag>
+type ScopeData<Scope extends ScopeSchema, Data, Flag> = Scope extends ListSchema
+  ? ListData<Scope, Data, Flag>
+  : Scope extends ConditionSchema
+  ? ConditionData<Scope, Data, Flag>
+  : Scope extends LoopSchema
+  ? LoopData<Scope, Data, Flag>
+  : Scope extends SwitchSchema
+  ? SwitchData<Scope, Data, Flag>
+  : Scope extends JumpSchema
+  ? JumpData<Scope, Data>
   : never;
 
 type ListData<List extends ListSchema, Data, Flag> = List extends [
@@ -83,15 +79,6 @@ type SwitchData<Switch extends SwitchSchema, Data, Flag> = BranchesData<
   Flag
 >;
 
-type YieldData<Yield extends YieldSchema, Data, Flag> = Flag extends false
-  ? [
-      Data | Yield["yield"]["next"][number] | Yield["yield"]["back"][number],
-      Flag,
-    ]
-  : [Data, Flag];
-
-type ReturnData<Data> = [Data, true];
-
 type JumpData<Jump extends JumpSchema, Data> = ItemData<
   Jump["item"],
   Data,
@@ -116,3 +103,12 @@ type BranchesData<
   : Mark extends true
   ? [Data, Mark]
   : [Data, Flag];
+
+type YieldData<Yield extends YieldSchema, Data, Flag> = Flag extends false
+  ? [
+      Data | Yield["yield"]["next"][number] | Yield["yield"]["back"][number],
+      Flag,
+    ]
+  : [Data, Flag];
+
+type ReturnData<Data> = [Data, true];

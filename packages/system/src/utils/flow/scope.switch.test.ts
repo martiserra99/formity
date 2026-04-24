@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { SwitchFlow, ReturnFlow } from "../../types/flow/model";
 import type { Position } from "src/types/state/position";
 
-import { into, next, at } from "./control.switch";
+import { into, next, at } from "./scope.switch";
 
 describe("SwitchFlow", () => {
   describe("into", () => {

@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest";
 import type { ListFlow, ReturnFlow } from "../../types/flow/model";
 import type { Position } from "src/types/state/position";
 
-import { find } from "./control";
+import { find } from "./scope";
 
-describe("ControlFlow", () => {
+describe("ScopeFlow", () => {
   describe("find", () => {
     it("returns the item at the given path within the given flow", () => {
       const item: ReturnFlow = { return: () => ({}) };

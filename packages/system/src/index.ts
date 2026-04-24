@@ -1,104 +1,31 @@
-export type { OnYield, OnReturn } from "./types/handlers/typed";
+export type { Flow } from "./types/flow/typed";
+export type { Schema } from "./types/schema";
 
-export type {
-  OnYield as ModelOnYield,
-  OnReturn as ModelOnReturn,
-} from "./types/handlers/model";
+export type { Form } from "./types/utils";
+export type { Variables } from "./types/utils";
+export type { Yield } from "./types/utils";
+export type { Return } from "./types/utils";
+export type { Condition } from "./types/utils";
+export type { Loop } from "./types/utils";
+export type { Switch } from "./types/utils";
+export type { Jump } from "./types/utils";
+
+export type { OnYield } from "./types/handlers/typed";
+export type { OnReturn } from "./types/handlers/typed";
 
 export type { YieldOutput } from "./types/output/yield";
 export type { ReturnOutput } from "./types/output/return";
 
-export type { Flow } from "./types/flow/typed";
-
-export type {
-  ItemFlow,
-  ControlFlow,
-  ListFlow,
-  ConditionFlow,
-  LoopFlow,
-  SwitchFlow,
-  FormFlow,
-  YieldFlow,
-  ReturnFlow,
-  VariablesFlow,
-  JumpFlow,
-} from "./types/flow/typed";
-
-export type { Flow as ModelFlow } from "./types/flow/model";
-
-export type {
-  ItemFlow as ModelItemFlow,
-  ControlFlow as ModelControlFlow,
-  ListFlow as ModelListFlow,
-  ConditionFlow as ModelConditionFlow,
-  LoopFlow as ModelLoopFlow,
-  SwitchFlow as ModelSwitchFlow,
-  FormFlow as ModelFormFlow,
-  YieldFlow as ModelYieldFlow,
-  ReturnFlow as ModelReturnFlow,
-  VariablesFlow as ModelVariablesFlow,
-  JumpFlow as ModelJumpFlow,
-} from "./types/flow/model";
-
-export type { Values as Inputs } from "./types/state/values";
-
-export type {
-  ItemValues as ItemInputs,
-  ControlValues as ControlInputs,
-  ListValues as ListInputs,
-  ConditionValues as ConditionInputs,
-  LoopValues as LoopInputs,
-  SwitchValues as SwitchInputs,
-  FormValues as FormInputs,
-  NameValues as NameInputs,
-} from "./types/state/values";
-
-export type { Point } from "./types/state/point";
-
-export type {
-  Position,
-  ListPosition,
-  ConditionPosition,
-  LoopPosition,
-  SwitchPosition,
-} from "./types/state/position";
-
 export type { State } from "./types/state/state";
 
-export type { OnNext, OnBack, GetState, SetState } from "./types/render";
+export type { OnNext } from "./types/render";
+export type { OnBack } from "./types/render";
+export type { GetState } from "./types/render";
+export type { SetState } from "./types/render";
 
-export type {
-  Condition,
-  Loop,
-  Switch,
-  Form,
-  Yield,
-  Return,
-  Variables,
-  Jump,
-} from "./types/utils";
-
-export type { Schema } from "./types/schema";
-
-export type {
-  ItemSchema,
-  ControlSchema,
-  ListSchema,
-  ConditionSchema,
-  LoopSchema,
-  SwitchSchema,
-  FormSchema,
-  YieldSchema,
-  ReturnSchema,
-  VariablesSchema,
-  JumpSchema,
-} from "./types/schema";
-
-export {
-  getInitialState,
-  getNextState,
-  getPreviousState,
-} from "./utils/navigate";
+export { getInitialState } from "./utils/navigate";
+export { getNextState } from "./utils/navigate";
+export { getPreviousState } from "./utils/navigate";
 
 export { getForm } from "./utils/form";
 export { getState } from "./utils/state";

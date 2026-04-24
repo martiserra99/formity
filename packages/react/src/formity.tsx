@@ -1,13 +1,12 @@
 import type { Schema, OnYield, OnReturn, State } from "@formity/system";
 
 import { useState, useCallback } from "react";
-import {
-  getInitialState,
-  getNextState,
-  getPreviousState,
-  getForm,
-  getState,
-} from "@formity/system";
+
+import { getInitialState } from "@formity/system";
+import { getNextState } from "@formity/system";
+import { getPreviousState } from "@formity/system";
+import { getForm } from "@formity/system";
+import { getState } from "@formity/system";
 
 import type { Flow } from "./flow";
 
@@ -62,6 +61,7 @@ export function Formity<
       const updated = getNextState(state, flow, values, onYield, onReturn);
       setState(updated);
     },
+    // @ts-expect-error: excessively deep type instantiation due to recursive ReturnOutput<T>
     [state, flow, onYield, onReturn],
   );
 

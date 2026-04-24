@@ -2,7 +2,7 @@ import type { Schema } from "../schema";
 
 import type {
   ItemSchema,
-  ControlSchema,
+  ScopeSchema,
   ListSchema,
   ConditionSchema,
   LoopSchema,
@@ -44,21 +44,19 @@ export type ItemFlow<
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = Schema extends ControlSchema
-  ? ControlFlow<Render, Schema, Inputs, Memory, Params>
+> = Schema extends ScopeSchema
+  ? ScopeFlow<Render, Schema, Inputs, Memory, Params>
   : Schema extends FormSchema
   ? FormFlow<Render, Schema, Memory, Params>
+  : Schema extends VariablesSchema
+  ? VariablesFlow<Schema, Memory>
   : Schema extends YieldSchema
   ? YieldFlow<Schema, Memory>
   : Schema extends ReturnSchema
   ? ReturnFlow<Schema, Memory>
-  : Schema extends VariablesSchema
-  ? VariablesFlow<Schema, Memory>
-  : Schema extends JumpSchema
-  ? JumpFlow<Render, Schema, Inputs, Params>
   : never;
 
-export type ControlFlow<
+export type ScopeFlow<
   Render,
   Schema extends ItemSchema,
   Inputs extends Record<string, unknown>,
@@ -72,6 +70,8 @@ export type ControlFlow<
   ? LoopFlow<Render, Schema, Inputs, Memory, Params>
   : Schema extends SwitchSchema
   ? SwitchFlow<Render, Schema, Inputs, Memory, Params>
+  : Schema extends JumpSchema
+  ? JumpFlow<Render, Schema, Inputs, Params>
   : never;
 
 export type ListFlow<
@@ -105,7 +105,7 @@ export type ConditionFlow<
   Params extends Record<string, unknown>,
 > = {
   condition: {
-    if: (inputs: Inputs) => boolean;
+    if: (inputs: Memory) => boolean;
     then: ListFlow<Render, Schema["condition"]["then"], Inputs, Memory, Params>;
     else: ListFlow<Render, Schema["condition"]["else"], Inputs, Memory, Params>;
   };
@@ -119,7 +119,7 @@ export type LoopFlow<
   Params extends Record<string, unknown>,
 > = {
   loop: {
-    while: (inputs: Inputs) => boolean;
+    while: (inputs: Memory) => boolean;
     do: ListFlow<Render, Schema["loop"]["do"], Inputs, Memory, Params>;
   };
 };
@@ -160,7 +160,7 @@ type SwitchBranchesFlow<
     ? Others extends ListSchema[]
       ? [
           {
-            case: (inputs: Inputs) => boolean;
+            case: (inputs: Memory) => boolean;
             then: ListFlow<Render, Head, Inputs, Memory, Params>;
           },
           ...SwitchBranchesFlow<Render, Others, Inputs, Memory, Params>,
@@ -168,52 +168,6 @@ type SwitchBranchesFlow<
       : never
     : never
   : [];
-
-export type FormFlow<
-  Render,
-  Schema extends FormSchema,
-  Inputs extends Record<string, unknown>,
-  Params extends Record<string, unknown>,
-> = {
-  form: {
-    values: (inputs: Inputs) => {
-      [K in keyof Schema["form"]]: [Schema["form"][K], PropertyKey[]];
-    };
-    render: (args: {
-      inputs: Inputs;
-      values: Schema["form"];
-      params: Params;
-      onNext: OnNext<Schema["form"]>;
-      onBack: OnBack<Schema["form"]>;
-      getState: GetState<Schema["form"]>;
-      setState: SetState;
-    }) => Render;
-  };
-};
-
-export type YieldFlow<
-  Schema extends YieldSchema,
-  Inputs extends Record<string, unknown>,
-> = {
-  yield: {
-    next: (inputs: Inputs) => Schema["yield"]["next"];
-    back: (inputs: Inputs) => Schema["yield"]["back"];
-  };
-};
-
-export type ReturnFlow<
-  Schema extends ReturnSchema,
-  Inputs extends Record<string, unknown>,
-> = {
-  return: (inputs: Inputs) => Schema["return"];
-};
-
-export type VariablesFlow<
-  Schema extends VariablesSchema,
-  Inputs extends Record<string, unknown>,
-> = {
-  variables: (inputs: Inputs) => Schema["variables"];
-};
 
 export type JumpFlow<
   Render,
@@ -225,6 +179,52 @@ export type JumpFlow<
     id: string;
     item: ItemFlow<Render, Schema["item"], Inputs, Inputs, Params>;
   };
+};
+
+export type FormFlow<
+  Render,
+  Schema extends FormSchema,
+  Memory extends Record<string, unknown>,
+  Params extends Record<string, unknown>,
+> = {
+  form: {
+    values: (inputs: Memory) => {
+      [K in keyof Schema["form"]]: [Schema["form"][K], PropertyKey[]];
+    };
+    render: (args: {
+      inputs: Memory;
+      values: Schema["form"];
+      params: Params;
+      onNext: OnNext<Schema["form"]>;
+      onBack: OnBack<Schema["form"]>;
+      getState: GetState<Schema["form"]>;
+      setState: SetState;
+    }) => Render;
+  };
+};
+
+export type VariablesFlow<
+  Schema extends VariablesSchema,
+  Memory extends Record<string, unknown>,
+> = {
+  variables: (inputs: Memory) => Schema["variables"];
+};
+
+export type YieldFlow<
+  Schema extends YieldSchema,
+  Memory extends Record<string, unknown>,
+> = {
+  yield: {
+    next: (inputs: Memory) => Schema["yield"]["next"];
+    back: (inputs: Memory) => Schema["yield"]["back"];
+  };
+};
+
+export type ReturnFlow<
+  Schema extends ReturnSchema,
+  Memory extends Record<string, unknown>,
+> = {
+  return: (inputs: Memory) => Schema["return"];
 };
 
 type Output<

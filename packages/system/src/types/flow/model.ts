@@ -3,18 +3,18 @@ import type { OnNext, OnBack, GetState, SetState } from "../render";
 export type Flow<Render = unknown> = ListFlow<Render>;
 
 export type ItemFlow<Render = unknown> =
-  | ControlFlow<Render>
+  | ScopeFlow<Render>
   | FormFlow<Render>
-  | YieldFlow
-  | ReturnFlow
   | VariablesFlow
-  | JumpFlow<Render>;
+  | YieldFlow
+  | ReturnFlow;
 
-export type ControlFlow<Render = unknown> =
+export type ScopeFlow<Render = unknown> =
   | ListFlow<Render>
   | ConditionFlow<Render>
   | LoopFlow<Render>
-  | SwitchFlow<Render>;
+  | SwitchFlow<Render>
+  | JumpFlow<Render>;
 
 export type ListFlow<Render = unknown> = ItemFlow<Render>[];
 
@@ -43,6 +43,13 @@ export type SwitchFlow<Render = unknown> = {
   };
 };
 
+export type JumpFlow<Render = unknown> = {
+  jump: {
+    id: string;
+    item: ItemFlow<Render>;
+  };
+};
+
 export type FormFlow<Render = unknown> = {
   form: {
     values: (
@@ -60,6 +67,10 @@ export type FormFlow<Render = unknown> = {
   };
 };
 
+export type VariablesFlow = {
+  variables: (inputs: Record<string, unknown>) => Record<string, unknown>;
+};
+
 export type YieldFlow = {
   yield: {
     next: (inputs: Record<string, unknown>) => unknown[];
@@ -69,15 +80,4 @@ export type YieldFlow = {
 
 export type ReturnFlow = {
   return: (inputs: Record<string, unknown>) => unknown;
-};
-
-export type VariablesFlow = {
-  variables: (inputs: Record<string, unknown>) => Record<string, unknown>;
-};
-
-export type JumpFlow<Render = unknown> = {
-  jump: {
-    id: string;
-    item: ItemFlow<Render>;
-  };
 };

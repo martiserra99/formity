@@ -4,18 +4,19 @@
 export type Values = ListValues;
 
 /**
- * Values entered in the forms that are within an element.
+ * Union of `ScopeValues` and `FormValues`.
  */
-export type ItemValues = ControlValues | JumpValues | FormValues;
+export type ItemValues = ScopeValues | FormValues;
 
 /**
- * Values entered in the forms that are within a flow control structure.
+ * Values entered in the forms that are within a scope.
  */
-export type ControlValues =
+export type ScopeValues =
   | ListValues
   | ConditionValues
   | LoopValues
-  | SwitchValues;
+  | SwitchValues
+  | JumpValues;
 
 /**
  * Values entered in the forms that are within a list.
@@ -56,7 +57,7 @@ export type SwitchValues = {
  */
 export type JumpValues = {
   type: "jump";
-  item: ItemValues;
+  item: ItemValues | undefined;
 };
 
 /**

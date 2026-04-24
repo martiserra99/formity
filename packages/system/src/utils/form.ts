@@ -7,8 +7,8 @@ import type { State } from "../types/state/state";
 
 import type { OnNext, OnBack, GetState, SetState } from "../types/render";
 
-import * as ControlFlowUtils from "./flow/control";
-import * as FlowInputsUtils from "./inputs/control";
+import * as ScopeFlowUtils from "./flow/scope";
+import * as ScopeValuesUtils from "./values/scope";
 
 /**
  * Returns the rendered form for the current step of the multi-step form.
@@ -59,14 +59,14 @@ function _getForm(
   setState: SetState,
 ): unknown {
   const point = state.points[state.points.length - 1];
-  const form = ControlFlowUtils.find(flow, point.path) as FormFlow;
+  const form = ScopeFlowUtils.find(flow, point.path) as FormFlow;
   const inputs = point.inputs;
   const values = Object.fromEntries(
     Object.entries(form["form"]["values"](point.inputs)).map(
       ([name, [value, keys]]) => {
         return [
           name,
-          FlowInputsUtils.get(state.values, point.path, name, keys, value),
+          ScopeValuesUtils.get(state.values, point.path, name, keys, value),
         ];
       },
     ),

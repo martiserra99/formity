@@ -1,7 +1,7 @@
 import type { Schema } from "../types/schema";
 
 import type { Flow as TypedFlow } from "../types/flow/typed";
-import type { Flow, ControlFlow } from "../types/flow/model";
+import type { Flow, ScopeFlow } from "../types/flow/model";
 import type { ListFlow, FormFlow } from "../types/flow/model";
 
 import type { OnYield as TypedOnYield } from "../types/handlers/typed";
@@ -11,15 +11,15 @@ import type { OnYield, OnReturn } from "../types/handlers/model";
 import type { State } from "../types/state/state";
 import type { Point } from "../types/state/point";
 import type { Position } from "../types/state/position";
-import type { Values, ControlValues } from "../types/state/values";
+import type { Values, ScopeValues } from "../types/state/values";
 
-import * as ControlFlowUtils from "./flow/control";
+import * as ControlFlowUtils from "./flow/scope";
 import * as FormFlowUtils from "./flow/form";
 import * as YieldFlowUtils from "./flow/yield";
 import * as ReturnFlowUtils from "./flow/return";
 import * as VariablesFlowUtils from "./flow/variables";
 
-import * as FlowInputsUtils from "./inputs/control";
+import * as FlowInputsUtils from "./values/scope";
 
 /**
  * Initializes the multi-step form and returns its initial state, including a point
@@ -68,7 +68,7 @@ function initialPath(
 }
 
 function initialPathOrNull(
-  flow: ControlFlow,
+  flow: ScopeFlow,
   values: Record<string, unknown>,
 ): Position[] | null {
   let position = ControlFlowUtils.into(flow, values);
@@ -81,7 +81,7 @@ function initialPathOrNull(
 }
 
 function initialPathFromPosition(
-  flow: ControlFlow,
+  flow: ScopeFlow,
   position: Position,
   values: Record<string, unknown>,
 ): Position[] | null {
@@ -238,7 +238,7 @@ function nextPointInFlow(flow: ListFlow, point: Point): Point | null {
 
 function nextPointInSameFlow(flow: ListFlow, point: Point): Point | null {
   const path = point.path.slice(0, -1);
-  const control = ControlFlowUtils.find(flow, path) as ControlFlow;
+  const control = ControlFlowUtils.find(flow, path) as ScopeFlow;
   const current = point.path[point.path.length - 1];
   const next = ControlFlowUtils.next(control, current, point.inputs);
   if (next) {
@@ -327,7 +327,7 @@ function updateInputs(
   const point = state.points[state.points.length - 1];
   const formFlow = ControlFlowUtils.find(flow, point.path) as FormFlow;
   const formValues = formFlow["form"]["values"](point.inputs);
-  let inputs: ControlValues = state.values;
+  let inputs: ScopeValues = state.values;
   for (const [name, value] of Object.entries(values)) {
     if (name in formValues) {
       const keys = formValues[name][1];
