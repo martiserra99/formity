@@ -1,4 +1,4 @@
-import type { ItemFlow, SwitchFlow } from "../../types/flow/model";
+import type { ItemFlow, SwitchFlow } from "../../types/flow/plain";
 import type { Position, SwitchPosition } from "../../types/state/position";
 
 export function is(flow: ItemFlow): flow is SwitchFlow {
@@ -7,11 +7,11 @@ export function is(flow: ItemFlow): flow is SwitchFlow {
 
 export function into(
   flow: SwitchFlow,
-  values: Record<string, unknown>,
+  inputs: Record<string, unknown>,
 ): Position | null {
   for (let i = 0; i < flow.switch.branches.length; i++) {
     const branch = flow.switch.branches[i];
-    if (branch.case(values)) {
+    if (branch.case(inputs)) {
       if (branch.then.length > 0) {
         return { type: "switch", branch: i, slot: 0 };
       }

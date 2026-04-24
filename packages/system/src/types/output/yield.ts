@@ -15,10 +15,11 @@ import type {
 /**
  * Returns the union of all possible values that can be yielded by a multi-step form.
  */
-export type YieldOutput<T extends Schema> = ListData<T, never, false> extends [
-  infer U,
-  boolean,
-]
+export type YieldOutput<Struct extends Schema> = ListData<
+  Struct,
+  never,
+  false
+> extends [infer U, boolean]
   ? U
   : never;
 

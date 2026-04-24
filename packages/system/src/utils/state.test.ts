@@ -1,23 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import type { Flow } from "src/types/flow/typed";
-import type { Form, Condition, Loop, Variables } from "src/types/utils";
+import type { Flow } from "src/types/flow/plain";
 import type { State } from "src/types/state/state";
 
 import { syncState } from "./state";
 
-describe("getState", () => {
+describe("syncState", () => {
   it("returns the current state of the multi-step form after updating the values of the current form.", () => {
-    type Schema = [
-      Variables<Record<string, unknown>>,
-      Condition<{ then: [Loop<[Form<{ a: number; b: number }>]>]; else: [] }>,
-    ];
-    const flow: Flow<
-      Record<string, unknown>,
-      Schema,
-      Record<string, unknown>,
-      Record<string, unknown>
-    > = [
+    const flow: Flow = [
       { variables: () => ({}) },
       {
         condition: {
@@ -57,12 +47,7 @@ describe("getState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const state: State = syncState<
-      Record<string, unknown>,
-      Schema,
-      Record<string, unknown>,
-      Record<string, unknown>
-    >(flow, current, { a: 1, b: 2 });
+    const state: State = syncState(flow, current, { a: 1, b: 2 });
     const expected: State = {
       points: [
         {

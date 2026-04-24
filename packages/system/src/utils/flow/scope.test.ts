@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { ListFlow, ReturnFlow } from "../../types/flow/model";
+import type { ListFlow, ReturnFlow } from "../../types/flow/plain";
 import type { Position } from "src/types/state/position";
 
 import { find } from "./scope";

@@ -1,23 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import type { Flow } from "src/types/flow/typed";
-import type { Form, Condition, Loop, Variables } from "src/types/utils";
+import type { Flow } from "src/types/flow/plain";
 import type { State } from "src/types/state/state";
 
 import { render } from "./render";
 
 describe("render", () => {
   it("renders the form at the specified position", () => {
-    type Values = [
-      Variables<Record<string, unknown>>,
-      Condition<{ then: [Loop<[Form<Record<string, unknown>>]>]; else: [] }>,
-    ];
-    const flow: Flow<
-      Record<string, unknown>,
-      Values,
-      Record<string, unknown>,
-      Record<string, unknown>
-    > = [
+    const flow: Flow = [
       { variables: () => ({}) },
       {
         condition: {
@@ -56,12 +46,7 @@ describe("render", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const form = render<
-      Record<string, unknown>,
-      Values,
-      Record<string, unknown>,
-      Record<string, unknown>
-    >(
+    const form = render(
       flow,
       {},
       state,
@@ -74,13 +59,7 @@ describe("render", () => {
   });
 
   it("uses the form values", () => {
-    type Values = [Form<{ name: string }>];
-    const flow: Flow<
-      Record<string, unknown>,
-      Values,
-      Record<string, unknown>,
-      Record<string, unknown>
-    > = [
+    const flow: Flow = [
       {
         form: {
           values: () => ({
@@ -103,12 +82,7 @@ describe("render", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const form = render<
-      Record<string, unknown>,
-      Values,
-      Record<string, unknown>,
-      Record<string, unknown>
-    >(
+    const form = render(
       flow,
       {},
       state,
@@ -125,14 +99,7 @@ describe("render", () => {
   });
 
   it("uses the params that have been provided", () => {
-    type Values = [Form<Record<string, unknown>>];
-    type Params = { hello: string };
-    const flow: Flow<
-      Record<string, unknown>,
-      Values,
-      Record<string, unknown>,
-      Params
-    > = [
+    const flow: Flow = [
       {
         form: {
           values: () => ({}),
@@ -151,12 +118,7 @@ describe("render", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const form = render<
-      Record<string, unknown>,
-      Values,
-      Record<string, unknown>,
-      Params
-    >(
+    const form = render(
       flow,
       { hello: "world" },
       state,

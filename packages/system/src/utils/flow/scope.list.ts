@@ -1,4 +1,4 @@
-import type { ItemFlow, ListFlow } from "../../types/flow/model";
+import type { ItemFlow, ListFlow } from "../../types/flow/plain";
 import type { Position, ListPosition } from "../../types/state/position";
 
 export function is(flow: ItemFlow): flow is ListFlow {

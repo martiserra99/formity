@@ -1,7 +1,4 @@
-import type { Schema } from "../types/schema";
-
-import type { Flow as TypedFlow } from "../types/flow/typed";
-import type { Flow, FormFlow } from "../types/flow/model";
+import type { Flow, FormFlow } from "../types/flow/plain";
 
 import type { State } from "../types/state/state";
 
@@ -10,49 +7,10 @@ import type { OnNext, OnBack, GetState, SetState } from "../types/render";
 import * as ScopeFlowUtils from "./flow/scope";
 import * as ScopeValuesUtils from "./values/scope";
 
-/**
- * Returns the rendered form for the current step of the multi-step form.
- *
- * @param state The current state of the multi-step form.
- * @param flow The `Flow` object representing the multi-step form.
- * @param params An object containing the parameters for the form.
- * @param onNext A callback function used to navigate to the next step of the multi-step form.
- * @param onBack A callback function used to navigate to the previous step of the multi-step form.
- * @param getState A callback function used to get the current state of the multi-step form.
- * @param setState A callback function used to set the current state of the multi-step form.
- * @returns The rendered form for the current step of the multi-step form.
- */
-export function render<
-  T,
-  U extends Schema,
-  V extends Record<string, unknown>,
-  W extends Record<string, unknown>,
->(
-  flow: TypedFlow<T, U, V, W>,
-  params: W,
-  state: State,
-  onNext: OnNext<Record<string, unknown>>,
-  onBack: OnBack<Record<string, unknown>>,
-  getState: GetState<Record<string, unknown>>,
-  setState: SetState,
-): T {
-  const _flow = flow as Flow;
-  const _params = params as Record<string, unknown>;
-  return _getForm(
-    state,
-    _flow,
-    _params,
-    onNext,
-    onBack,
-    getState,
-    setState,
-  ) as T;
-}
-
-function _getForm(
-  state: State,
+export function render(
   flow: Flow,
   params: Record<string, unknown>,
+  state: State,
   onNext: OnNext<Record<string, unknown>>,
   onBack: OnBack<Record<string, unknown>>,
   getState: GetState<Record<string, unknown>>,

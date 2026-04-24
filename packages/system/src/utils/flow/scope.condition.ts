@@ -1,4 +1,4 @@
-import type { ItemFlow, ConditionFlow } from "../../types/flow/model";
+import type { ItemFlow, ConditionFlow } from "../../types/flow/plain";
 import type { Position, ConditionPosition } from "../../types/state/position";
 
 export function is(flow: ItemFlow): flow is ConditionFlow {
@@ -7,9 +7,9 @@ export function is(flow: ItemFlow): flow is ConditionFlow {
 
 export function into(
   flow: ConditionFlow,
-  values: Record<string, unknown>,
+  inputs: Record<string, unknown>,
 ): Position | null {
-  if (flow.condition.if(values)) {
+  if (flow.condition.if(inputs)) {
     if (flow.condition.then.length > 0) {
       return { type: "condition", path: "then", slot: 0 };
     }

@@ -23,9 +23,9 @@ export type { OnBack } from "./types/render";
 export type { GetState } from "./types/render";
 export type { SetState } from "./types/render";
 
-export { initState } from "./utils/navigate";
-export { nextState } from "./utils/navigate";
-export { prevState } from "./utils/navigate";
+export { initState } from "./utils";
+export { nextState } from "./utils";
+export { prevState } from "./utils";
 
-export { syncState } from "./utils/state";
-export { render } from "./utils/render";
+export { syncState } from "./utils";
+export { render } from "./utils";

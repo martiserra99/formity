@@ -14,10 +14,11 @@ import type {
 /**
  * Returns the union of all possible values that can be returned by a multi-step form.
  */
-export type ReturnOutput<T extends Schema> = ListData<T, never, false> extends [
-  infer U,
-  boolean,
-]
+export type ReturnOutput<Struct extends Schema> = ListData<
+  Struct,
+  never,
+  false
+> extends [infer U, boolean]
   ? U
   : never;
 

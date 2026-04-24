@@ -1,4 +1,4 @@
-import type { ItemFlow, ScopeFlow } from "../../types/flow/model";
+import type { ItemFlow, ScopeFlow } from "../../types/flow/plain";
 import type { Position } from "../../types/state/position";
 
 import * as ListFlowUtils from "./scope.list";
@@ -19,19 +19,19 @@ export function is(flow: ItemFlow): flow is ScopeFlow {
 
 export function into(
   flow: ScopeFlow,
-  values: Record<string, unknown>,
+  inputs: Record<string, unknown>,
 ): Position | null {
   if (ListFlowUtils.is(flow)) {
     return ListFlowUtils.into(flow);
   }
   if (ConditionFlowUtils.is(flow)) {
-    return ConditionFlowUtils.into(flow, values);
+    return ConditionFlowUtils.into(flow, inputs);
   }
   if (LoopFlowUtils.is(flow)) {
-    return LoopFlowUtils.into(flow, values);
+    return LoopFlowUtils.into(flow, inputs);
   }
   if (SwitchFlowUtils.is(flow)) {
-    return SwitchFlowUtils.into(flow, values);
+    return SwitchFlowUtils.into(flow, inputs);
   }
   if (JumpFlowUtils.is(flow)) {
     return JumpFlowUtils.into();
@@ -42,7 +42,7 @@ export function into(
 export function next(
   flow: ScopeFlow,
   position: Position,
-  values: Record<string, unknown>,
+  inputs: Record<string, unknown>,
 ): Position | null {
   if (ListFlowUtils.is(flow)) {
     return ListFlowUtils.next(flow, position);
@@ -51,7 +51,7 @@ export function next(
     return ConditionFlowUtils.next(flow, position);
   }
   if (LoopFlowUtils.is(flow)) {
-    return LoopFlowUtils.next(flow, position, values);
+    return LoopFlowUtils.next(flow, position, inputs);
   }
   if (SwitchFlowUtils.is(flow)) {
     return SwitchFlowUtils.next(flow, position);

@@ -14,9 +14,9 @@ import type { Flow } from "./flow";
 /**
  * The properties of the multi-step form.
  *
- * @template T The structure of the multi-step form.
- * @template U The input values of the multi-step form.
- * @template V The parameter values of the multi-step form.
+ * @template Struct The structure of the multi-step form.
+ * @template Inputs The input values of the multi-step form.
+ * @template Params The parameter values of the multi-step form.
  * @param flow The structure and behavior of the multi-step form.
  * @param inputs The input values of the multi-step form.
  * @param params The parameter values of the multi-step form.
@@ -25,15 +25,15 @@ import type { Flow } from "./flow";
  * @param initialState The initial state of the multi-step form.
  */
 interface FormityProps<
-  T extends Schema,
-  U extends Record<string, unknown>,
-  V extends Record<string, unknown>,
+  Struct extends Schema,
+  Inputs extends Record<string, unknown>,
+  Params extends Record<string, unknown>,
 > {
-  flow: Flow<T, U, V>;
-  inputs?: U;
-  params?: V;
-  onYield?: OnYield<T>;
-  onReturn?: OnReturn<T>;
+  flow: Flow<Struct, Inputs, Params>;
+  inputs?: Inputs;
+  params?: Params;
+  onYield?: OnYield<Struct>;
+  onReturn?: OnReturn<Struct>;
   initialState?: State;
 }
 

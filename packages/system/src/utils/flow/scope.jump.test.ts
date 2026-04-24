@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { JumpFlow, FormFlow } from "../../types/flow/model";
+import type { JumpFlow, FormFlow } from "../../types/flow/plain";
 
 import { into, next, at } from "./scope.jump";
 
