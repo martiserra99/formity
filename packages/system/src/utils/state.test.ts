@@ -4,7 +4,7 @@ import type { Flow } from "src/types/flow/typed";
 import type { Form, Condition, Loop, Variables } from "src/types/utils";
 import type { State } from "src/types/state/state";
 
-import { getState } from "./state";
+import { syncState } from "./state";
 
 describe("getState", () => {
   it("returns the current state of the multi-step form after updating the values of the current form.", () => {
@@ -57,12 +57,12 @@ describe("getState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const state: State = getState<
+    const state: State = syncState<
       Record<string, unknown>,
       Schema,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, flow, { a: 1, b: 2 });
+    >(flow, current, { a: 1, b: 2 });
     const expected: State = {
       points: [
         {

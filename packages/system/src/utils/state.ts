@@ -17,14 +17,14 @@ import * as FlowInputsUtils from "./values/scope";
  * @param values An object containing the values of the current form.
  * @returns The current state of the multi-step form after updating the values of the current form.
  */
-export function getState<
+export function syncState<
   T,
   U extends Schema,
   V extends Record<string, unknown>,
   W extends Record<string, unknown>,
 >(
-  state: State,
   flow: TypedFlow<T, U, V, W>,
+  state: State,
   values: Record<string, unknown>,
 ): State {
   const _schema = flow as Flow;

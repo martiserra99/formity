@@ -2,11 +2,12 @@ import type { Schema, OnYield, OnReturn, State } from "@formity/system";
 
 import { useState, useCallback } from "react";
 
-import { getInitialState } from "@formity/system";
-import { getNextState } from "@formity/system";
-import { getPreviousState } from "@formity/system";
-import { getForm } from "@formity/system";
-import { getState } from "@formity/system";
+import { initState } from "@formity/system";
+import { nextState } from "@formity/system";
+import { prevState } from "@formity/system";
+
+import { syncState } from "@formity/system";
+import { render } from "@formity/system";
 
 import type { Flow } from "./flow";
 
@@ -53,36 +54,32 @@ export function Formity<
 }: FormityProps<T, U, V>): React.ReactNode {
   const [state, setState] = useState<State>(() => {
     if (initialState) return initialState;
-    return getInitialState(flow, inputs, onYield);
+    return initState(flow, onYield, inputs);
   });
 
   const onNext = useCallback(
     (values: Record<string, unknown>) => {
-      const updated = getNextState(state, flow, values, onYield, onReturn);
-      setState(updated);
+      const changed = nextState(flow, onYield, onReturn, state, values);
+      setState(changed);
     },
     // @ts-expect-error: excessively deep type instantiation due to recursive ReturnOutput<T>
-    [state, flow, onYield, onReturn],
+    [flow, onYield, onReturn, state],
   );
 
   const onBack = useCallback(
     (values: Record<string, unknown>) => {
-      const updated = getPreviousState(state, flow, values, onYield);
-      setState(updated);
+      const changed = prevState(flow, onYield, state, values);
+      setState(changed);
     },
-    [state, flow, onYield],
+    [flow, onYield, state],
   );
 
-  const _getState = useCallback(
+  const getState = useCallback(
     (values: Record<string, unknown>) => {
-      return getState(state, flow, values);
+      return syncState(flow, state, values);
     },
     [state, flow],
   );
 
-  const _setState = useCallback((state: State) => {
-    setState(state);
-  }, []);
-
-  return getForm(state, flow, params, onNext, onBack, _getState, _setState);
+  return render(flow, params, state, onNext, onBack, getState, setState);
 }

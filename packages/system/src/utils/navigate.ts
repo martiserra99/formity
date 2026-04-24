@@ -36,12 +36,12 @@ import * as FlowInputsUtils from "./values/scope";
  *
  * @throws An error if no form step is found or if a return operation is encountered before a form step.
  */
-export function getInitialState<
+export function initState<
   T,
   U extends Schema,
   V extends Record<string, unknown>,
   W extends Record<string, unknown>,
->(flow: TypedFlow<T, U, V, W>, values: V, onYield: TypedOnYield<U>): State {
+>(flow: TypedFlow<T, U, V, W>, onYield: TypedOnYield<U>, values: V): State {
   const _flow = flow as Flow;
   const _values = values as Record<string, unknown>;
   const _onYield = onYield as OnYield;
@@ -144,17 +144,17 @@ function initialPoints(
  * @param onReturn A callback function triggered when the multi-step form returns values.
  * @returns The updated state of the multi-step form.
  */
-export function getNextState<
+export function nextState<
   T,
   U extends Schema,
   V extends Record<string, unknown>,
   W extends Record<string, unknown>,
 >(
-  state: State,
   flow: TypedFlow<T, U, V, W>,
-  values: Record<string, unknown>,
   onYield: TypedOnYield<U>,
   onReturn: TypedOnReturn<U>,
+  state: State,
+  values: Record<string, unknown>,
 ): State {
   const _flow = flow as Flow;
   const _onYield = onYield as OnYield;
@@ -279,16 +279,16 @@ function overPoint(point: Point): Point | null {
  * @param values An object containing the generated values within the multi-step form.
  * @returns The updated state of the multi-step form.
  */
-export function getPreviousState<
+export function prevState<
   T,
   U extends Schema,
   V extends Record<string, unknown>,
   W extends Record<string, unknown>,
 >(
-  state: State,
   flow: TypedFlow<T, U, V, W>,
-  values: Record<string, unknown>,
   onYield: TypedOnYield<U>,
+  state: State,
+  values: Record<string, unknown>,
 ): State {
   const _flow = flow as Flow;
   const _onYield = onYield as OnYield;

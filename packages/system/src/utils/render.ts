@@ -22,15 +22,15 @@ import * as ScopeValuesUtils from "./values/scope";
  * @param setState A callback function used to set the current state of the multi-step form.
  * @returns The rendered form for the current step of the multi-step form.
  */
-export function getForm<
+export function render<
   T,
   U extends Schema,
   V extends Record<string, unknown>,
   W extends Record<string, unknown>,
 >(
-  state: State,
   flow: TypedFlow<T, U, V, W>,
   params: W,
+  state: State,
   onNext: OnNext<Record<string, unknown>>,
   onBack: OnBack<Record<string, unknown>>,
   getState: GetState<Record<string, unknown>>,

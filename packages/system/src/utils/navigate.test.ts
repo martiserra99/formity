@@ -11,9 +11,9 @@ import type {
 } from "src/types/utils";
 import type { State } from "src/types/state/state";
 
-import { getInitialState, getNextState, getPreviousState } from "./navigate";
+import { initState, nextState, prevState } from "./navigate";
 
-describe("getInitialState", () => {
+describe("initState", () => {
   it("initializes the form state with the point pointing to the first position", () => {
     type Values = [Form<Record<string, unknown>>];
     const flow: Flow<
@@ -29,12 +29,12 @@ describe("getInitialState", () => {
         },
       },
     ];
-    const state = getInitialState<
+    const state = initState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(flow, {}, () => {});
+    >(flow, () => {}, {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: { type: "list", list: {} },
@@ -63,12 +63,12 @@ describe("getInitialState", () => {
         },
       },
     ];
-    const state = getInitialState<
+    const state = initState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(flow, {}, () => {});
+    >(flow, () => {}, {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 2 }], inputs: {} }],
       values: { type: "list", list: {} },
@@ -124,12 +124,12 @@ describe("getInitialState", () => {
         },
       },
     ];
-    const state = getInitialState<
+    const state = initState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(flow, {}, () => {});
+    >(flow, () => {}, {});
     const expected: State = {
       points: [
         {
@@ -209,12 +209,12 @@ describe("getInitialState", () => {
         },
       },
     ];
-    const state = getInitialState<
+    const state = initState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(flow, {}, () => {});
+    >(flow, () => {}, {});
     const expected: State = {
       points: [
         {
@@ -241,12 +241,11 @@ describe("getInitialState", () => {
       Record<string, unknown>
     > = [];
     expect(() =>
-      getInitialState<
-        null,
-        Values,
-        Record<string, unknown>,
-        Record<string, unknown>
-      >(flow, {}, () => {}),
+      initState<null, Values, Record<string, unknown>, Record<string, unknown>>(
+        flow,
+        () => {},
+        {},
+      ),
     ).toThrow();
   });
 
@@ -296,12 +295,11 @@ describe("getInitialState", () => {
       },
     ];
     expect(() =>
-      getInitialState<
-        null,
-        Values,
-        Record<string, unknown>,
-        Record<string, unknown>
-      >(flow, {}, () => {}),
+      initState<null, Values, Record<string, unknown>, Record<string, unknown>>(
+        flow,
+        () => {},
+        {},
+      ),
     ).toThrow();
   });
 
@@ -351,12 +349,11 @@ describe("getInitialState", () => {
       },
     ];
     expect(() =>
-      getInitialState<
-        null,
-        Values,
-        Record<string, unknown>,
-        Record<string, unknown>
-      >(flow, {}, () => {}),
+      initState<null, Values, Record<string, unknown>, Record<string, unknown>>(
+        flow,
+        () => {},
+        {},
+      ),
     ).toThrow();
   });
 
@@ -431,12 +428,11 @@ describe("getInitialState", () => {
       },
     ];
     const onYield = vi.fn();
-    getInitialState<
-      null,
-      Values,
-      Record<string, unknown>,
-      Record<string, unknown>
-    >(flow, {}, onYield);
+    initState<null, Values, Record<string, unknown>, Record<string, unknown>>(
+      flow,
+      onYield,
+      {},
+    );
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -507,12 +503,12 @@ describe("getInitialState", () => {
         },
       },
     ];
-    const state = getInitialState<
+    const state = initState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(flow, {}, () => {});
+    >(flow, () => {}, {});
     const expected: State = {
       points: [
         {
@@ -542,12 +538,11 @@ describe("getInitialState", () => {
       },
     ];
     const inputs: Inputs = { a: 1, b: 2 };
-    const state = getInitialState<
-      null,
-      Values,
-      Inputs,
-      Record<string, unknown>
-    >(flow, inputs, () => {});
+    const state = initState<null, Values, Inputs, Record<string, unknown>>(
+      flow,
+      () => {},
+      inputs,
+    );
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: { a: 1, b: 2 } }],
       values: { type: "list", list: {} },
@@ -556,7 +551,7 @@ describe("getInitialState", () => {
   });
 });
 
-describe("getNextState", () => {
+describe("nextState", () => {
   it("navigates to the form that is next to the current one", () => {
     type Values = [
       Form<Record<string, unknown>>,
@@ -585,17 +580,17 @@ describe("getNextState", () => {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: { type: "list", list: {} },
     };
-    const state = getNextState<
+    const state = nextState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
     >(
-      current,
       flow,
+      () => {},
+      () => {},
+      current,
       {},
-      () => {},
-      () => {},
     );
     const expected: State = {
       points: [
@@ -662,17 +657,17 @@ describe("getNextState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const state = getNextState<
+    const state = nextState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
     >(
-      current,
       flow,
+      () => {},
+      () => {},
+      current,
       {},
-      () => {},
-      () => {},
     );
     const expected: State = {
       points: [
@@ -757,17 +752,17 @@ describe("getNextState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const next = getNextState<
+    const next = nextState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
     >(
-      current,
       flow,
+      () => {},
+      () => {},
+      current,
       {},
-      () => {},
-      () => {},
     );
     const expected: State = {
       points: [
@@ -891,12 +886,13 @@ describe("getNextState", () => {
       values: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    getNextState<
-      null,
-      Values,
-      Record<string, unknown>,
-      Record<string, unknown>
-    >(current, flow, {}, onYield, () => {});
+    nextState<null, Values, Record<string, unknown>, Record<string, unknown>>(
+      flow,
+      onYield,
+      () => {},
+      current,
+      {},
+    );
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -1001,12 +997,13 @@ describe("getNextState", () => {
       values: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    getNextState<
-      null,
-      Values,
-      Record<string, unknown>,
-      Record<string, unknown>
-    >(current, flow, {}, onYield, () => {});
+    nextState<null, Values, Record<string, unknown>, Record<string, unknown>>(
+      flow,
+      onYield,
+      () => {},
+      current,
+      {},
+    );
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -1107,12 +1104,13 @@ describe("getNextState", () => {
       values: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    getNextState<
-      null,
-      Values,
-      Record<string, unknown>,
-      Record<string, unknown>
-    >(current, flow, {}, onYield, () => {});
+    nextState<null, Values, Record<string, unknown>, Record<string, unknown>>(
+      flow,
+      onYield,
+      () => {},
+      current,
+      {},
+    );
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -1178,12 +1176,13 @@ describe("getNextState", () => {
       values: { type: "list", list: {} },
     };
     const onReturn = vi.fn();
-    getNextState<
-      null,
-      Values,
-      Record<string, unknown>,
-      Record<string, unknown>
-    >(current, flow, {}, () => {}, onReturn);
+    nextState<null, Values, Record<string, unknown>, Record<string, unknown>>(
+      flow,
+      () => {},
+      onReturn,
+      current,
+      {},
+    );
     expect(onReturn).toHaveBeenCalledWith({ a: 1, b: 2 });
   });
 
@@ -1247,17 +1246,17 @@ describe("getNextState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const next = getNextState<
+    const next = nextState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
     >(
-      current,
       flow,
+      () => {},
+      () => {},
+      current,
       {},
-      () => {},
-      () => {},
     );
     const expected: State = {
       points: [
@@ -1328,17 +1327,17 @@ describe("getNextState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const next = getNextState<
+    const next = nextState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
     >(
-      current,
       flow,
+      () => {},
+      () => {},
+      current,
       {},
-      () => {},
-      () => {},
     );
     const expected: State = {
       points: [
@@ -1387,17 +1386,17 @@ describe("getNextState", () => {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: { type: "list", list: {} },
     };
-    const state = getNextState<
+    const state = nextState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
     >(
-      current,
       flow,
+      () => {},
+      () => {},
+      current,
       { a: 1, b: 2 },
-      () => {},
-      () => {},
     );
     const expected: State = {
       points: [
@@ -1463,17 +1462,17 @@ describe("getNextState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const state = getNextState<
+    const state = nextState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
     >(
-      current,
       flow,
+      () => {},
+      () => {},
+      current,
       { a: 1, b: 2 },
-      () => {},
-      () => {},
     );
     const expected: State = {
       points: [
@@ -1534,7 +1533,7 @@ describe("getNextState", () => {
   });
 });
 
-describe("getPreviousState", () => {
+describe("prevState", () => {
   it("navigates to the form that is previous to the current one", () => {
     type Values = [
       Form<Record<string, unknown>>,
@@ -1566,12 +1565,12 @@ describe("getPreviousState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const state = getPreviousState<
+    const state = prevState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, flow, {}, () => {});
+    >(flow, () => {}, current, {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: { type: "list", list: {} },
@@ -1598,12 +1597,12 @@ describe("getPreviousState", () => {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: { type: "list", list: {} },
     };
-    const state = getPreviousState<
+    const state = prevState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, flow, {}, () => {});
+    >(flow, () => {}, current, {});
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: { type: "list", list: {} },
@@ -1653,12 +1652,12 @@ describe("getPreviousState", () => {
         },
       },
     };
-    const state = getPreviousState<
+    const state = prevState<
       null,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
-    >(current, flow, { b: 2 }, () => {});
+    >(flow, () => {}, current, { b: 2 });
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: {
@@ -1776,12 +1775,12 @@ describe("getPreviousState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    getPreviousState<
-      null,
-      Values,
-      Record<string, unknown>,
-      Record<string, unknown>
-    >(current, flow, {}, onYield);
+    prevState<null, Values, Record<string, unknown>, Record<string, unknown>>(
+      flow,
+      onYield,
+      current,
+      {},
+    );
     expect(onYield).toHaveBeenNthCalledWith(1, { cb: 3 });
     expect(onYield).toHaveBeenNthCalledWith(2, { ab: 1 });
     expect(onYield).toHaveBeenNthCalledWith(3, { bb: 2 });
@@ -1907,12 +1906,12 @@ describe("getPreviousState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    getPreviousState<
-      null,
-      Values,
-      Record<string, unknown>,
-      Record<string, unknown>
-    >(current, flow, {}, onYield);
+    prevState<null, Values, Record<string, unknown>, Record<string, unknown>>(
+      flow,
+      onYield,
+      current,
+      {},
+    );
     expect(onYield).toHaveBeenNthCalledWith(1, { db: 4 });
     expect(onYield).toHaveBeenNthCalledWith(2, { cb: 3 });
     expect(onYield).toHaveBeenNthCalledWith(3, { ab: 1 });

@@ -4,9 +4,9 @@ import type { Flow } from "src/types/flow/typed";
 import type { Form, Condition, Loop, Variables } from "src/types/utils";
 import type { State } from "src/types/state/state";
 
-import { getForm } from "./form";
+import { render } from "./render";
 
-describe("getForm", () => {
+describe("render", () => {
   it("renders the form at the specified position", () => {
     type Values = [
       Variables<Record<string, unknown>>,
@@ -56,15 +56,15 @@ describe("getForm", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const form = getForm<
+    const form = render<
       Record<string, unknown>,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
     >(
-      state,
       flow,
       {},
+      state,
       () => {},
       () => {},
       () => state,
@@ -103,15 +103,15 @@ describe("getForm", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const form = getForm<
+    const form = render<
       Record<string, unknown>,
       Values,
       Record<string, unknown>,
       Record<string, unknown>
     >(
-      state,
       flow,
       {},
+      state,
       () => {},
       () => {},
       () => state,
@@ -151,15 +151,15 @@ describe("getForm", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const form = getForm<
+    const form = render<
       Record<string, unknown>,
       Values,
       Record<string, unknown>,
       Params
     >(
-      state,
       flow,
       { hello: "world" },
+      state,
       () => {},
       () => {},
       () => state,
