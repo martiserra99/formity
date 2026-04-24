@@ -51,10 +51,10 @@ describe("getForm", () => {
             { type: "condition", path: "then", slot: 0 },
             { type: "loop", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const form = getForm<
       Record<string, unknown>,
@@ -98,10 +98,10 @@ describe("getForm", () => {
       points: [
         {
           path: [{ type: "list", slot: 0 }],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const form = getForm<
       Record<string, unknown>,
@@ -146,10 +146,10 @@ describe("getForm", () => {
       points: [
         {
           path: [{ type: "list", slot: 0 }],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const form = getForm<
       Record<string, unknown>,

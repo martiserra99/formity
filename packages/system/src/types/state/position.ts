@@ -1,14 +1,19 @@
 /**
- * Represents a position within a flow control structure of a multi-step form. This can be a list, a conditional, a loop, or a switch.
+ * Position within an element of a multi-step form.
  */
-export type Position =
+export type Position = ControlPosition | JumpPosition;
+
+/**
+ * Position within a flow control structure.
+ */
+export type ControlPosition =
   | ListPosition
   | ConditionPosition
   | LoopPosition
   | SwitchPosition;
 
 /**
- * Represents a position within a list.
+ * Position within a list.
  */
 export type ListPosition = {
   type: "list";
@@ -16,7 +21,7 @@ export type ListPosition = {
 };
 
 /**
- * Represents a position within a conditional.
+ * Position within a conditional.
  */
 export type ConditionPosition = {
   type: "condition";
@@ -25,7 +30,7 @@ export type ConditionPosition = {
 };
 
 /**
- * Represents a position within a loop.
+ * Position within a loop.
  */
 export type LoopPosition = {
   type: "loop";
@@ -33,10 +38,17 @@ export type LoopPosition = {
 };
 
 /**
- * Represents a position within a switch.
+ * Position within a switch.
  */
 export type SwitchPosition = {
   type: "switch";
   branch: number;
   slot: number;
+};
+
+/**
+ * Position within a jump.
+ */
+export type JumpPosition = {
+  type: "jump";
 };

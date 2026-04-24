@@ -1,8 +1,8 @@
 import type {
-  ItemInputs,
-  ControlInputs,
-  ListInputs,
-} from "../../types/state/inputs";
+  ItemValues,
+  ControlValues,
+  ListValues,
+} from "../../types/state/values";
 
 import type { Position, ListPosition } from "../../types/state/position";
 
@@ -11,7 +11,7 @@ import type { Position, ListPosition } from "../../types/state/position";
  *
  * @returns The created `ListInputs` object.
  */
-export function create(): ControlInputs {
+export function create(): ControlValues {
   return { type: "list", list: {} };
 }
 
@@ -21,7 +21,7 @@ export function create(): ControlInputs {
  * @param inputs A `ListInputs` object.
  * @returns The cloned `ListInputs` object.
  */
-export function clone(inputs: ListInputs): ControlInputs {
+export function clone(inputs: ListValues): ControlValues {
   return { ...inputs, list: { ...inputs.list } };
 }
 
@@ -33,9 +33,9 @@ export function clone(inputs: ListInputs): ControlInputs {
  * @returns The `ItemInputs` object at the given position within the `ListInputs` object, or `null` if there is no item at the given position.
  */
 export function getItem(
-  inputs: ListInputs,
+  inputs: ListValues,
   position: Position,
-): ItemInputs | null {
+): ItemValues | null {
   const { slot } = position as ListPosition;
   if (slot in inputs.list) return inputs.list[slot];
   return null;
@@ -49,9 +49,9 @@ export function getItem(
  * @param item The `ItemInputs` object to set.
  */
 export function setItem(
-  inputs: ListInputs,
+  inputs: ListValues,
   position: Position,
-  item: ItemInputs,
+  item: ItemValues,
 ): void {
   const { slot } = position as ListPosition;
   inputs.list[slot] = item;

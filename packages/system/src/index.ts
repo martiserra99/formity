@@ -40,18 +40,18 @@ export type {
   JumpFlow as ModelJumpFlow,
 } from "./types/flow/model";
 
-export type { Inputs } from "./types/state/inputs";
+export type { Values as Inputs } from "./types/state/values";
 
 export type {
-  ItemInputs,
-  ControlInputs,
-  ListInputs,
-  ConditionInputs,
-  LoopInputs,
-  SwitchInputs,
-  FormInputs,
-  NameInputs,
-} from "./types/state/inputs";
+  ItemValues as ItemInputs,
+  ControlValues as ControlInputs,
+  ListValues as ListInputs,
+  ConditionValues as ConditionInputs,
+  LoopValues as LoopInputs,
+  SwitchValues as SwitchInputs,
+  FormValues as FormInputs,
+  NameValues as NameInputs,
+} from "./types/state/values";
 
 export type { Point } from "./types/state/point";
 

@@ -1,4 +1,4 @@
-import type { FormInputs, NameInputs } from "../../types/state/inputs";
+import type { FormValues, NameValues } from "../../types/state/values";
 
 /**
  * Returns the value that is in the given `FormInputs` object using the following parameters:
@@ -14,12 +14,12 @@ import type { FormInputs, NameInputs } from "../../types/state/inputs";
  * @returns The value that is in the given `FormInputs` object or the default value if the value is not found.
  */
 export function get(
-  form: FormInputs,
+  form: FormValues,
   name: string,
   keys: PropertyKey[],
-  defaultValue: unknown
+  defaultValue: unknown,
 ): unknown {
-  let current: NameInputs = form[name];
+  let current: NameValues = form[name];
   for (const key of keys) {
     if (key in current.keys) {
       current = current.keys[key];
@@ -47,26 +47,26 @@ export function get(
  * @returns The updated `FormInputs` object.
  */
 export function set(
-  form: FormInputs,
+  form: FormValues,
   name: string,
   keys: PropertyKey[],
-  data: unknown
-): FormInputs {
-  const updated: FormInputs = { ...form };
+  data: unknown,
+): FormValues {
+  const updated: FormValues = { ...form };
   if (name in form) {
     updated[name] = { ...form[name], keys: { ...form[name].keys } };
   } else {
     updated[name] = { data: { here: false }, keys: {} };
   }
-  let current: NameInputs = updated[name];
+  let current: NameValues = updated[name];
   for (const key of keys) {
     if (key in current.keys) {
-      const name: NameInputs = current.keys[key];
-      const copy: NameInputs = { ...name, keys: { ...name.keys } };
+      const name: NameValues = current.keys[key];
+      const copy: NameValues = { ...name, keys: { ...name.keys } };
       current.keys[key] = copy;
       current = copy;
     } else {
-      const name: NameInputs = { data: { here: false }, keys: {} };
+      const name: NameValues = { data: { here: false }, keys: {} };
       current.keys[key] = name;
       current = name;
     }

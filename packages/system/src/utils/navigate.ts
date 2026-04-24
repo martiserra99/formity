@@ -11,7 +11,7 @@ import type { OnYield, OnReturn } from "../types/handlers/model";
 import type { State } from "../types/state/state";
 import type { Point } from "../types/state/point";
 import type { Position } from "../types/state/position";
-import type { Inputs, ControlInputs } from "../types/state/inputs";
+import type { Values, ControlValues } from "../types/state/values";
 
 import * as ControlFlowUtils from "./flow/control";
 import * as FormFlowUtils from "./flow/form";
@@ -54,8 +54,8 @@ function _getInitialState(
   onYield: OnYield,
 ): State {
   const path = initialPath(flow, values);
-  const points = initialPoints(flow, { path, values }, onYield);
-  return { points, inputs: { type: "list", list: {} } };
+  const points = initialPoints(flow, { path, inputs: values }, onYield);
+  return { points, values: { type: "list", list: {} } };
 }
 
 function initialPath(
@@ -101,7 +101,7 @@ function initialPoints(
 ): Point[] {
   const points = [];
   let currentPoint: Point | null = point;
-  let currentPointValues = point.values;
+  let currentPointValues = point.inputs;
   let currentPointFlow = ControlFlowUtils.find(flow, point.path);
   while (!FormFlowUtils.is(currentPointFlow)) {
     if (ReturnFlowUtils.is(currentPointFlow)) {
@@ -116,7 +116,7 @@ function initialPoints(
     }
     currentPoint = nextPoint(flow, {
       path: currentPoint.path,
-      values: currentPointValues,
+      inputs: currentPointValues,
     });
     if (!currentPoint) {
       throw new Error("Invalid flow");
@@ -172,7 +172,7 @@ function _getNextState(
   const point = state.points[state.points.length - 1];
   const points = advanceForm(flow, point, values, onYield, onReturn);
   const inputs = updateInputs(state, flow, values);
-  return { points: [...state.points, ...points], inputs };
+  return { points: [...state.points, ...points], values: inputs };
 }
 
 function advanceForm(
@@ -184,13 +184,13 @@ function advanceForm(
 ): Point[] {
   let currentPoint: Point | null = nextPoint(flow, {
     path: point.path,
-    values: { ...point.values, ...values },
+    inputs: { ...point.inputs, ...values },
   });
   if (!currentPoint) {
     return [];
   }
   const points: Point[] = [];
-  let currentPointValues = currentPoint.values;
+  let currentPointValues = currentPoint.inputs;
   let currentPointFlow = ControlFlowUtils.find(flow, currentPoint.path);
   while (!FormFlowUtils.is(currentPointFlow)) {
     if (ReturnFlowUtils.is(currentPointFlow)) {
@@ -207,7 +207,7 @@ function advanceForm(
     }
     currentPoint = nextPoint(flow, {
       path: currentPoint.path,
-      values: currentPointValues,
+      inputs: currentPointValues,
     });
     if (!currentPoint) {
       return [];
@@ -240,9 +240,9 @@ function nextPointInSameFlow(flow: ListFlow, point: Point): Point | null {
   const path = point.path.slice(0, -1);
   const control = ControlFlowUtils.find(flow, path) as ControlFlow;
   const current = point.path[point.path.length - 1];
-  const next = ControlFlowUtils.next(control, current, point.values);
+  const next = ControlFlowUtils.next(control, current, point.inputs);
   if (next) {
-    return { path: [...path, next], values: point.values };
+    return { path: [...path, next], inputs: point.inputs };
   }
   return null;
 }
@@ -250,10 +250,10 @@ function nextPointInSameFlow(flow: ListFlow, point: Point): Point | null {
 function nextPointInsideFlow(flow: ListFlow, point: Point): Point | null {
   const item = ControlFlowUtils.find(flow, point.path);
   if (ControlFlowUtils.is(item)) {
-    const position = ControlFlowUtils.into(item, point.values);
+    const position = ControlFlowUtils.into(item, point.inputs);
     if (position) {
       const path = [...point.path, position];
-      const next = { path, values: point.values };
+      const next = { path, inputs: point.inputs };
       const into = nextPointInsideFlow(flow, next);
       if (into) return into;
       return nextPointInFlow(flow, next);
@@ -265,7 +265,7 @@ function nextPointInsideFlow(flow: ListFlow, point: Point): Point | null {
 
 function overPoint(point: Point): Point | null {
   if (point.path.length > 1) {
-    return { path: point.path.slice(0, -1), values: point.values };
+    return { path: point.path.slice(0, -1), inputs: point.inputs };
   }
   return null;
 }
@@ -307,27 +307,27 @@ function _getPreviousState(
     const currentPointFlow = ControlFlowUtils.find(flow, currentPoint.path);
     if (FormFlowUtils.is(currentPointFlow)) {
       const inputs = updateInputs(state, flow, values);
-      return { points, inputs };
+      return { points, values: inputs };
     }
     if (YieldFlowUtils.is(currentPointFlow)) {
-      const listValues = currentPointFlow["yield"]["back"](currentPoint.values);
+      const listValues = currentPointFlow["yield"]["back"](currentPoint.inputs);
       listValues.forEach((values) => onYield(values));
     }
     points.pop();
   }
   const inputs = updateInputs(state, flow, values);
-  return { points: state.points, inputs };
+  return { points: state.points, values: inputs };
 }
 
 function updateInputs(
   state: State,
   flow: Flow,
   values: Record<string, unknown>,
-): Inputs {
+): Values {
   const point = state.points[state.points.length - 1];
   const formFlow = ControlFlowUtils.find(flow, point.path) as FormFlow;
-  const formValues = formFlow["form"]["values"](point.values);
-  let inputs: ControlInputs = state.inputs;
+  const formValues = formFlow["form"]["values"](point.inputs);
+  let inputs: ControlValues = state.values;
   for (const [name, value] of Object.entries(values)) {
     if (name in formValues) {
       const keys = formValues[name][1];
@@ -335,5 +335,5 @@ function updateInputs(
       inputs = FlowInputsUtils.set(inputs, path, name, keys, value);
     }
   }
-  return inputs as Inputs;
+  return inputs as Values;
 }

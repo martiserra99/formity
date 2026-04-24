@@ -36,8 +36,8 @@ describe("getInitialState", () => {
       Record<string, unknown>
     >(flow, {}, () => {});
     const expected: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      inputs: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
+      values: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -70,8 +70,8 @@ describe("getInitialState", () => {
       Record<string, unknown>
     >(flow, {}, () => {});
     const expected: State = {
-      points: [{ path: [{ type: "list", slot: 2 }], values: {} }],
-      inputs: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 2 }], inputs: {} }],
+      values: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -139,10 +139,10 @@ describe("getInitialState", () => {
             { type: "condition", path: "else", slot: 0 },
             { type: "loop", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -224,10 +224,10 @@ describe("getInitialState", () => {
             { type: "condition", path: "else", slot: 1 },
             { type: "loop", slot: 1 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -522,10 +522,10 @@ describe("getInitialState", () => {
             { type: "condition", path: "else", slot: 1 },
             { type: "loop", slot: 2 },
           ],
-          values: { a: 1, b: 2, c: 3, d: 4, e: 5 },
+          inputs: { a: 1, b: 2, c: 3, d: 4, e: 5 },
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -549,8 +549,8 @@ describe("getInitialState", () => {
       Record<string, unknown>
     >(flow, inputs, () => {});
     const expected: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], values: { a: 1, b: 2 } }],
-      inputs: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], inputs: { a: 1, b: 2 } }],
+      values: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -582,8 +582,8 @@ describe("getNextState", () => {
       },
     ];
     const current: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      inputs: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
+      values: { type: "list", list: {} },
     };
     const state = getNextState<
       null,
@@ -599,10 +599,10 @@ describe("getNextState", () => {
     );
     const expected: State = {
       points: [
-        { path: [{ type: "list", slot: 0 }], values: {} },
-        { path: [{ type: "list", slot: 1 }], values: {} },
+        { path: [{ type: "list", slot: 0 }], inputs: {} },
+        { path: [{ type: "list", slot: 1 }], inputs: {} },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -657,10 +657,10 @@ describe("getNextState", () => {
             { type: "list", slot: 0 },
             { type: "loop", slot: 1 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const state = getNextState<
       null,
@@ -681,7 +681,7 @@ describe("getNextState", () => {
             { type: "list", slot: 0 },
             { type: "loop", slot: 1 },
           ],
-          values: {},
+          inputs: {},
         },
         {
           path: [
@@ -689,10 +689,10 @@ describe("getNextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", path: "then", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -752,10 +752,10 @@ describe("getNextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", path: "then", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const next = getNextState<
       null,
@@ -777,17 +777,17 @@ describe("getNextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", path: "then", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
         {
           path: [
             { type: "list", slot: 1 },
             { type: "condition", path: "else", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     expect(next).toEqual(expected);
   });
@@ -885,10 +885,10 @@ describe("getNextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", path: "then", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const onYield = vi.fn();
     getNextState<
@@ -995,10 +995,10 @@ describe("getNextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", path: "then", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const onYield = vi.fn();
     getNextState<
@@ -1101,10 +1101,10 @@ describe("getNextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", path: "then", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const onYield = vi.fn();
     getNextState<
@@ -1172,10 +1172,10 @@ describe("getNextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", path: "then", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const onReturn = vi.fn();
     getNextState<
@@ -1242,10 +1242,10 @@ describe("getNextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", path: "then", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const next = getNextState<
       null,
@@ -1267,10 +1267,10 @@ describe("getNextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", path: "then", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     expect(next).toEqual(expected);
   });
@@ -1323,10 +1323,10 @@ describe("getNextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", path: "then", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const next = getNextState<
       null,
@@ -1348,10 +1348,10 @@ describe("getNextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", path: "then", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     expect(next).toEqual(expected);
   });
@@ -1384,8 +1384,8 @@ describe("getNextState", () => {
       },
     ];
     const current: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      inputs: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
+      values: { type: "list", list: {} },
     };
     const state = getNextState<
       null,
@@ -1401,10 +1401,10 @@ describe("getNextState", () => {
     );
     const expected: State = {
       points: [
-        { path: [{ type: "list", slot: 0 }], values: {} },
-        { path: [{ type: "list", slot: 1 }], values: { a: 1, b: 2 } },
+        { path: [{ type: "list", slot: 0 }], inputs: {} },
+        { path: [{ type: "list", slot: 1 }], inputs: { a: 1, b: 2 } },
       ],
-      inputs: {
+      values: {
         type: "list",
         list: {
           0: {
@@ -1458,10 +1458,10 @@ describe("getNextState", () => {
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const state = getNextState<
       null,
@@ -1482,14 +1482,14 @@ describe("getNextState", () => {
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
         {
           path: [{ type: "list", slot: 1 }],
-          values: { a: 1, b: 2 },
+          inputs: { a: 1, b: 2 },
         },
       ],
-      inputs: {
+      values: {
         type: "list",
         list: {
           0: {
@@ -1561,10 +1561,10 @@ describe("getPreviousState", () => {
     ];
     const current: State = {
       points: [
-        { path: [{ type: "list", slot: 0 }], values: {} },
-        { path: [{ type: "list", slot: 1 }], values: {} },
+        { path: [{ type: "list", slot: 0 }], inputs: {} },
+        { path: [{ type: "list", slot: 1 }], inputs: {} },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const state = getPreviousState<
       null,
@@ -1573,8 +1573,8 @@ describe("getPreviousState", () => {
       Record<string, unknown>
     >(current, flow, {}, () => {});
     const expected: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      inputs: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
+      values: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -1595,8 +1595,8 @@ describe("getPreviousState", () => {
       },
     ];
     const current: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      inputs: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
+      values: { type: "list", list: {} },
     };
     const state = getPreviousState<
       null,
@@ -1605,8 +1605,8 @@ describe("getPreviousState", () => {
       Record<string, unknown>
     >(current, flow, {}, () => {});
     const expected: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      inputs: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
+      values: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -1638,10 +1638,10 @@ describe("getPreviousState", () => {
     ];
     const current: State = {
       points: [
-        { path: [{ type: "list", slot: 0 }], values: {} },
-        { path: [{ type: "list", slot: 1 }], values: { a: 1 } },
+        { path: [{ type: "list", slot: 0 }], inputs: {} },
+        { path: [{ type: "list", slot: 1 }], inputs: { a: 1 } },
       ],
-      inputs: {
+      values: {
         type: "list",
         list: {
           0: {
@@ -1660,8 +1660,8 @@ describe("getPreviousState", () => {
       Record<string, unknown>
     >(current, flow, { b: 2 }, () => {});
     const expected: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
-      inputs: {
+      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
+      values: {
         type: "list",
         list: {
           0: {
@@ -1755,14 +1755,14 @@ describe("getPreviousState", () => {
     const onYield = vi.fn();
     const current: State = {
       points: [
-        { path: [{ type: "list", slot: 0 }], values: {} },
+        { path: [{ type: "list", slot: 0 }], inputs: {} },
         {
           path: [
             { type: "list", slot: 1 },
             { type: "condition", path: "then", slot: 0 },
             { type: "condition", path: "else", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
         {
           path: [
@@ -1771,10 +1771,10 @@ describe("getPreviousState", () => {
             { type: "condition", path: "else", slot: 1 },
             { type: "loop", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     getPreviousState<
       null,
@@ -1884,28 +1884,28 @@ describe("getPreviousState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", path: "then", slot: 1 },
           ],
-          values: {},
+          inputs: {},
         },
         {
           path: [{ type: "list", slot: 1 }],
-          values: {},
+          inputs: {},
         },
         {
           path: [
             { type: "list", slot: 2 },
             { type: "condition", path: "else", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
         {
           path: [
             { type: "list", slot: 2 },
             { type: "condition", path: "else", slot: 1 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     getPreviousState<
       null,

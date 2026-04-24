@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import type { FormInputs } from "src/types/state/inputs";
+import type { FormValues } from "src/types/state/values";
 
 import { get, set } from "./form";
 
 describe("FormInputs", () => {
   describe("get", () => {
     it("returns the value that is in the given `FormInputs` object", () => {
-      const form: FormInputs = {
+      const form: FormValues = {
         a: {
           data: { here: false },
           keys: {
@@ -31,7 +31,7 @@ describe("FormInputs", () => {
     });
 
     it("returns the default value if the keys are not encountered in the given `FormInputs` object", () => {
-      const form: FormInputs = {
+      const form: FormValues = {
         a: {
           data: { here: false },
           keys: {
@@ -57,12 +57,12 @@ describe("FormInputs", () => {
 
   describe("set", () => {
     it("sets the value in the given `FormInputs` object", () => {
-      const form: FormInputs = {};
+      const form: FormValues = {};
       const name: string = "a";
       const keys: PropertyKey[] = ["x", "y"];
       const data: unknown = 1;
       const result = set(form, name, keys, data);
-      const expected: FormInputs = {
+      const expected: FormValues = {
         a: {
           data: { here: false },
           keys: {

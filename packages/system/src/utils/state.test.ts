@@ -52,10 +52,10 @@ describe("getState", () => {
             { type: "condition", path: "then", slot: 0 },
             { type: "loop", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: { type: "list", list: {} },
+      values: { type: "list", list: {} },
     };
     const state: State = getState<
       Record<string, unknown>,
@@ -71,10 +71,10 @@ describe("getState", () => {
             { type: "condition", path: "then", slot: 0 },
             { type: "loop", slot: 0 },
           ],
-          values: {},
+          inputs: {},
         },
       ],
-      inputs: {
+      values: {
         type: "list",
         list: {
           1: {

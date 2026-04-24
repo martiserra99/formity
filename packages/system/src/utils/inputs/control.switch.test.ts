@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { SwitchInputs, FormInputs } from "src/types/state/inputs";
+import type { SwitchValues, FormValues } from "src/types/state/values";
 import type { Position } from "src/types/state/position";
 
 import { getItem, setItem } from "./control.switch";
@@ -8,13 +8,13 @@ import { getItem, setItem } from "./control.switch";
 describe("SwitchInputs", () => {
   describe("getItem", () => {
     it("returns the item at the given branch position within the given `SwitchInputs` object", () => {
-      const item: FormInputs = {
+      const item: FormValues = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const control: SwitchInputs = {
+      const control: SwitchValues = {
         type: "switch",
         branches: {
           1: {
@@ -29,13 +29,13 @@ describe("SwitchInputs", () => {
     });
 
     it("returns the item at the given default branch position within the given `SwitchInputs` object", () => {
-      const item: FormInputs = {
+      const item: FormValues = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const control: SwitchInputs = {
+      const control: SwitchValues = {
         type: "switch",
         branches: {},
         default: {
@@ -48,13 +48,13 @@ describe("SwitchInputs", () => {
     });
 
     it("returns null when trying to get an item from a branch position that doesn't exist in the given `SwitchInputs` object", () => {
-      const item: FormInputs = {
+      const item: FormValues = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const control: SwitchInputs = {
+      const control: SwitchValues = {
         type: "switch",
         branches: {
           1: {
@@ -69,13 +69,13 @@ describe("SwitchInputs", () => {
     });
 
     it("returns null when trying to get an item from a default branch position that doesn't exist in the given `SwitchInputs` object", () => {
-      const item: FormInputs = {
+      const item: FormValues = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const control: SwitchInputs = {
+      const control: SwitchValues = {
         type: "switch",
         branches: {},
         default: {
@@ -90,20 +90,20 @@ describe("SwitchInputs", () => {
 
   describe("setItem", () => {
     it("sets the item at the given branch position within the given `SwitchInputs` object", () => {
-      const control: SwitchInputs = {
+      const control: SwitchValues = {
         type: "switch",
         branches: {},
         default: {},
       };
       const position: Position = { type: "switch", branch: 1, slot: 1 };
-      const item: FormInputs = {
+      const item: FormValues = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
       setItem(control, position, item);
-      const expected: SwitchInputs = {
+      const expected: SwitchValues = {
         type: "switch",
         branches: {
           1: {
@@ -116,20 +116,20 @@ describe("SwitchInputs", () => {
     });
 
     it("sets the item at the given default branch position within the given `SwitchInputs` object", () => {
-      const control: SwitchInputs = {
+      const control: SwitchValues = {
         type: "switch",
         branches: {},
         default: {},
       };
       const position: Position = { type: "switch", branch: -1, slot: 1 };
-      const item: FormInputs = {
+      const item: FormValues = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
       setItem(control, position, item);
-      const expected: SwitchInputs = {
+      const expected: SwitchValues = {
         type: "switch",
         branches: {},
         default: {

@@ -1,8 +1,8 @@
 import type {
-  ItemInputs,
-  ControlInputs,
-  SwitchInputs,
-} from "../../types/state/inputs";
+  ItemValues,
+  ControlValues,
+  SwitchValues,
+} from "../../types/state/values";
 
 import type { Position, SwitchPosition } from "../../types/state/position";
 
@@ -11,7 +11,7 @@ import type { Position, SwitchPosition } from "../../types/state/position";
  *
  * @returns The created `SwitchInputs` object.
  */
-export function create(): ControlInputs {
+export function create(): ControlValues {
   return { type: "switch", branches: {}, default: {} };
 }
 
@@ -21,7 +21,7 @@ export function create(): ControlInputs {
  * @param inputs A `SwitchInputs` object.
  * @returns The cloned `SwitchInputs` object.
  */
-export function clone(inputs: SwitchInputs): ControlInputs {
+export function clone(inputs: SwitchValues): ControlValues {
   return {
     ...inputs,
     branches: Object.fromEntries(
@@ -42,9 +42,9 @@ export function clone(inputs: SwitchInputs): ControlInputs {
  * @returns The `ItemInputs` object at the given position within the `SwitchInputs` object, or `null` if there is no item at the given position.
  */
 export function getItem(
-  inputs: SwitchInputs,
+  inputs: SwitchValues,
   position: Position,
-): ItemInputs | null {
+): ItemValues | null {
   const { branch, slot } = position as SwitchPosition;
   if (branch >= 0) {
     if (branch in inputs.branches) {
@@ -64,9 +64,9 @@ export function getItem(
  * @param item The `ItemInputs` object to set.
  */
 export function setItem(
-  inputs: SwitchInputs,
+  inputs: SwitchValues,
   position: Position,
-  item: ItemInputs,
+  item: ItemValues,
 ): void {
   const { branch, slot } = position as SwitchPosition;
   if (branch >= 0) {

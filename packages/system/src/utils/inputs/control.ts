@@ -1,8 +1,8 @@
 import type {
-  ItemInputs,
-  ControlInputs,
-  FormInputs,
-} from "../../types/state/inputs";
+  ItemValues,
+  ControlValues,
+  FormValues,
+} from "../../types/state/values";
 
 import type { Position } from "../../types/state/position";
 
@@ -28,20 +28,20 @@ import * as FormInputsUtils from "./form";
  * @returns The value that is in the given `ControlInputs` object or the default value if the value is not found.
  */
 export function get(
-  inputs: ControlInputs,
+  inputs: ControlValues,
   path: Position[],
   name: string,
   keys: PropertyKey[],
   defaultValue: unknown,
 ): unknown {
-  let current: ItemInputs = inputs;
+  let current: ItemValues = inputs;
   for (const position of path) {
-    const inputs = current as ControlInputs;
+    const inputs = current as ControlValues;
     const item = getItem(inputs, position);
     if (item) current = item;
     else return defaultValue;
   }
-  const form = current as FormInputs;
+  const form = current as FormValues;
   return FormInputsUtils.get(form, name, keys, defaultValue);
 }
 
@@ -61,19 +61,19 @@ export function get(
  * @returns The updated `ControlInputs` object.
  */
 export function set(
-  inputs: ControlInputs,
+  inputs: ControlValues,
   path: Position[],
   name: string,
   keys: PropertyKey[],
   data: unknown,
-): ControlInputs {
-  const updated: ControlInputs = clone(inputs);
-  let current: ControlInputs = updated;
+): ControlValues {
+  const updated: ControlValues = clone(inputs);
+  let current: ControlValues = updated;
   for (let i = 0; i < path.length - 1; i++) {
     const position = path[i];
     const item = getItem(current, position);
     if (item) {
-      const next = item as ControlInputs;
+      const next = item as ControlValues;
       const cloned = clone(next);
       setItem(current, position, cloned);
       current = cloned;
@@ -86,10 +86,10 @@ export function set(
   const position = path[path.length - 1];
   const item = getItem(current, position);
   if (item) {
-    const form = item as FormInputs;
+    const form = item as FormValues;
     setItem(current, position, FormInputsUtils.set(form, name, keys, data));
   } else {
-    const form: FormInputs = { [name]: { data: { here: false }, keys: {} } };
+    const form: FormValues = { [name]: { data: { here: false }, keys: {} } };
     setItem(current, position, FormInputsUtils.set(form, name, keys, data));
   }
   return updated;
@@ -100,7 +100,7 @@ export function set(
  *
  * @returns The created `ControlInputs` object.
  */
-export function create(position: Position): ControlInputs {
+export function create(position: Position): ControlValues {
   switch (position.type) {
     case "list":
       return ListInputsUtils.create();
@@ -119,7 +119,7 @@ export function create(position: Position): ControlInputs {
  * @param inputs A `ControlInputs` object.
  * @returns The cloned `ControlInputs` object.
  */
-export function clone(inputs: ControlInputs): ControlInputs {
+export function clone(inputs: ControlValues): ControlValues {
   switch (inputs.type) {
     case "list":
       return ListInputsUtils.clone(inputs);
@@ -140,9 +140,9 @@ export function clone(inputs: ControlInputs): ControlInputs {
  * @returns The `ItemInputs` object at the given position within the `ControlInputs` object, or `null` if there is no item at the given position.
  */
 export function getItem(
-  inputs: ControlInputs,
+  inputs: ControlValues,
   position: Position,
-): ItemInputs | null {
+): ItemValues | null {
   switch (inputs.type) {
     case "list":
       return ListInputsUtils.getItem(inputs, position);
@@ -163,9 +163,9 @@ export function getItem(
  * @param item The `ItemInputs` object to set.
  */
 export function setItem(
-  inputs: ControlInputs,
+  inputs: ControlValues,
   position: Position,
-  item: ItemInputs,
+  item: ItemValues,
 ): void {
   switch (inputs.type) {
     case "list":

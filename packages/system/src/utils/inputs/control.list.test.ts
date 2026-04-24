@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { ListInputs, FormInputs } from "src/types/state/inputs";
+import type { ListValues, FormValues } from "src/types/state/values";
 import type { Position } from "src/types/state/position";
 
 import { getItem, setItem } from "./control.list";
@@ -8,13 +8,13 @@ import { getItem, setItem } from "./control.list";
 describe("ListInputs", () => {
   describe("getItem", () => {
     it("returns the item at the given position within the given `ListInputs` object", () => {
-      const item: FormInputs = {
+      const item: FormValues = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const control: ListInputs = {
+      const control: ListValues = {
         type: "list",
         list: {
           1: item,
@@ -26,13 +26,13 @@ describe("ListInputs", () => {
     });
 
     it("returns null when trying to get an item from a position that doesn't exist in the given `ListInputs` object", () => {
-      const item: FormInputs = {
+      const item: FormValues = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const control: ListInputs = {
+      const control: ListValues = {
         type: "list",
         list: {
           0: item,
@@ -46,19 +46,19 @@ describe("ListInputs", () => {
 
   describe("setItem", () => {
     it("sets the item at the given position within the given `ListInputs` object", () => {
-      const control: ListInputs = {
+      const control: ListValues = {
         type: "list",
         list: {},
       };
       const position: Position = { type: "list", slot: 1 };
-      const item: FormInputs = {
+      const item: FormValues = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
       setItem(control, position, item);
-      const expected: ListInputs = {
+      const expected: ListValues = {
         type: "list",
         list: {
           1: item,

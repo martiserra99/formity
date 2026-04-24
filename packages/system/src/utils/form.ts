@@ -60,13 +60,13 @@ function _getForm(
 ): unknown {
   const point = state.points[state.points.length - 1];
   const form = ControlFlowUtils.find(flow, point.path) as FormFlow;
-  const inputs = point.values;
+  const inputs = point.inputs;
   const values = Object.fromEntries(
-    Object.entries(form["form"]["values"](point.values)).map(
+    Object.entries(form["form"]["values"](point.inputs)).map(
       ([name, [value, keys]]) => {
         return [
           name,
-          FlowInputsUtils.get(state.inputs, point.path, name, keys, value),
+          FlowInputsUtils.get(state.values, point.path, name, keys, value),
         ];
       },
     ),
