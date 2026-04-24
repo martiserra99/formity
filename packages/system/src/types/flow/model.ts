@@ -8,7 +8,7 @@ export type ItemFlow<Render = unknown> =
   | YieldFlow
   | ReturnFlow
   | VariablesFlow
-  | JumpFlow;
+  | JumpFlow<Render>;
 
 export type ControlFlow<Render = unknown> =
   | ListFlow<Render>

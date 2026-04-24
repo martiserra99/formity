@@ -11,7 +11,8 @@ export type ItemSchema =
   | FormSchema
   | YieldSchema
   | ReturnSchema
-  | VariablesSchema;
+  | VariablesSchema
+  | JumpSchema;
 
 /**
  * This type is meant to be extended and is used to define the structure of any control element in a multi-step form.
