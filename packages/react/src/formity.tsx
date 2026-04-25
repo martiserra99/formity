@@ -41,7 +41,7 @@ interface FormityProps<
  * Renders a multi-step form.
  */
 export function Formity<
-  T extends Schema,
+  Struct extends Schema,
   U extends Record<string, unknown> = Record<never, never>,
   V extends Record<string, unknown> = Record<never, never>,
 >({
@@ -51,7 +51,7 @@ export function Formity<
   onYield = () => {},
   onReturn = () => {},
   initialState,
-}: FormityProps<T, U, V>): React.ReactNode {
+}: FormityProps<Struct, U, V>): React.ReactNode {
   const [state, setState] = useState<State>(() => {
     if (initialState) return initialState;
     return initState(flow, onYield, inputs);

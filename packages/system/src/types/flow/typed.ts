@@ -235,6 +235,8 @@ type Output<
   ? FormOutput<Schema, Memory>
   : Schema extends VariablesSchema
   ? VariablesOutput<Schema, Memory>
+  : Schema extends ListSchema
+  ? ListOutput<Schema, Inputs, Memory>
   : Schema extends ConditionSchema
   ? ConditionOutput<Schema, Inputs, Memory>
   : Schema extends LoopSchema
@@ -242,7 +244,7 @@ type Output<
   : Schema extends SwitchSchema
   ? SwitchOutput<Schema, Inputs, Memory>
   : Schema extends JumpSchema
-  ? Inputs
+  ? JumpOutput<Schema, Inputs>
   : Memory;
 
 type FormOutput<
@@ -254,6 +256,18 @@ type VariablesOutput<
   Schema extends VariablesSchema,
   Memory extends Record<string, unknown>,
 > = Join<Schema["variables"], Memory>;
+
+type ListOutput<
+  Schema extends ListSchema,
+  Inputs extends Record<string, unknown>,
+  Memory extends Record<string, unknown>,
+> = Schema extends [infer Head, ...infer Others]
+  ? Head extends ItemSchema
+    ? Others extends ListSchema[]
+      ? ListOutput<Others, Inputs, Output<Head, Inputs, Memory>>
+      : never
+    : never
+  : Memory;
 
 type ConditionOutput<
   Schema extends ConditionSchema,
@@ -280,6 +294,11 @@ type SwitchOutput<
 > extends true
   ? Inputs
   : Memory;
+
+type JumpOutput<
+  Schema extends JumpSchema,
+  Inputs extends Record<string, unknown>,
+> = Output<Schema["item"], Inputs, Inputs>;
 
 type BranchesContainsJump<Series extends ListSchema[]> = Series extends [
   infer Head,
