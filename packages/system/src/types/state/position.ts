@@ -1,5 +1,5 @@
 /**
- * Position within a scope of a multi-step form.
+ * Position within a nest element of a multi-step form.
  */
 export type Position =
   | ListPosition

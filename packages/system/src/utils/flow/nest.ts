@@ -1,13 +1,13 @@
-import type { ItemFlow, ScopeFlow } from "../../types/flow/plain";
+import type { ItemFlow, NestFlow } from "../../types/flow/plain";
 import type { Position } from "../../types/state/position";
 
-import * as ListFlowUtils from "./scope.list";
-import * as ConditionFlowUtils from "./scope.condition";
-import * as LoopFlowUtils from "./scope.loop";
-import * as SwitchFlowUtils from "./scope.switch";
-import * as JumpFlowUtils from "./scope.jump";
+import * as ListFlowUtils from "./nest.list";
+import * as ConditionFlowUtils from "./nest.condition";
+import * as LoopFlowUtils from "./nest.loop";
+import * as SwitchFlowUtils from "./nest.switch";
+import * as JumpFlowUtils from "./nest.jump";
 
-export function is(flow: ItemFlow): flow is ScopeFlow {
+export function is(flow: ItemFlow): flow is NestFlow {
   return (
     ListFlowUtils.is(flow) ||
     ConditionFlowUtils.is(flow) ||
@@ -18,7 +18,7 @@ export function is(flow: ItemFlow): flow is ScopeFlow {
 }
 
 export function into(
-  flow: ScopeFlow,
+  flow: NestFlow,
   inputs: Record<string, unknown>,
 ): Position | null {
   if (ListFlowUtils.is(flow)) {
@@ -40,7 +40,7 @@ export function into(
 }
 
 export function next(
-  flow: ScopeFlow,
+  flow: NestFlow,
   position: Position,
   inputs: Record<string, unknown>,
 ): Position | null {
@@ -62,7 +62,7 @@ export function next(
   throw new Error("Invalid flow");
 }
 
-export function at(flow: ScopeFlow, position: Position): ItemFlow {
+export function at(flow: NestFlow, position: Position): ItemFlow {
   if (ListFlowUtils.is(flow)) {
     return ListFlowUtils.at(flow, position);
   }
@@ -81,10 +81,10 @@ export function at(flow: ScopeFlow, position: Position): ItemFlow {
   throw new Error("Invalid flow");
 }
 
-export function find(flow: ScopeFlow, path: Position[]) {
+export function find(flow: NestFlow, path: Position[]) {
   let current: ItemFlow = flow;
   for (const position of path) {
-    const flow = current as ScopeFlow;
+    const flow = current as NestFlow;
     current = at(flow, position);
   }
   return current;

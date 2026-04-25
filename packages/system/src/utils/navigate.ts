@@ -1,4 +1,4 @@
-import type { Flow, ScopeFlow } from "../types/flow/plain";
+import type { Flow, NestFlow } from "../types/flow/plain";
 import type { ListFlow, FormFlow } from "../types/flow/plain";
 
 import type { OnYield, OnReturn } from "../types/handlers/plain";
@@ -6,15 +6,15 @@ import type { OnYield, OnReturn } from "../types/handlers/plain";
 import type { State } from "../types/state/state";
 import type { Point } from "../types/state/point";
 import type { Position } from "../types/state/position";
-import type { Values, ScopeValues } from "../types/state/values";
+import type { Values, NestValues } from "../types/state/values";
 
-import * as ScopeFlowUtils from "./flow/scope";
+import * as NestFlowUtils from "./flow/nest";
 import * as FormFlowUtils from "./flow/form";
 import * as YieldFlowUtils from "./flow/yield";
 import * as ReturnFlowUtils from "./flow/return";
 import * as VariablesFlowUtils from "./flow/variables";
 
-import * as FlowInputsUtils from "./values/scope";
+import * as FlowInputsUtils from "./values/nest";
 
 export function initState(
   flow: Flow,
@@ -36,25 +36,25 @@ function initialPath(
 }
 
 function initialPathOrNull(
-  flow: ScopeFlow,
+  flow: NestFlow,
   inputs: Record<string, unknown>,
 ): Position[] | null {
-  let position = ScopeFlowUtils.into(flow, inputs);
+  let position = NestFlowUtils.into(flow, inputs);
   while (position) {
     const path = initialPathFromPosition(flow, position, inputs);
     if (path) return path;
-    position = ScopeFlowUtils.next(flow, position, inputs);
+    position = NestFlowUtils.next(flow, position, inputs);
   }
   return null;
 }
 
 function initialPathFromPosition(
-  flow: ScopeFlow,
+  flow: NestFlow,
   position: Position,
   inputs: Record<string, unknown>,
 ): Position[] | null {
-  const item = ScopeFlowUtils.find(flow, [position]);
-  if (ScopeFlowUtils.is(item)) {
+  const item = NestFlowUtils.find(flow, [position]);
+  if (NestFlowUtils.is(item)) {
     const path = initialPathOrNull(item, inputs);
     if (path) return [position, ...path];
     else return null;
@@ -70,7 +70,7 @@ function initialPoints(
   const points = [];
   let currentPoint: Point | null = point;
   let currentPointInputs = point.inputs;
-  let currentPointFlow = ScopeFlowUtils.find(flow, point.path);
+  let currentPointFlow = NestFlowUtils.find(flow, point.path);
   while (!FormFlowUtils.is(currentPointFlow)) {
     if (ReturnFlowUtils.is(currentPointFlow)) {
       throw new Error("Invalid flow");
@@ -89,7 +89,7 @@ function initialPoints(
     if (!currentPoint) {
       throw new Error("Invalid flow");
     }
-    currentPointFlow = ScopeFlowUtils.find(flow, currentPoint.path);
+    currentPointFlow = NestFlowUtils.find(flow, currentPoint.path);
   }
   points.push(currentPoint);
   return points;
@@ -124,7 +124,7 @@ function advanceForm(
   }
   const points: Point[] = [];
   let currentPointInputs = currentPoint.inputs;
-  let currentPointFlow = ScopeFlowUtils.find(flow, currentPoint.path);
+  let currentPointFlow = NestFlowUtils.find(flow, currentPoint.path);
   while (!FormFlowUtils.is(currentPointFlow)) {
     if (ReturnFlowUtils.is(currentPointFlow)) {
       const values = currentPointFlow["return"](currentPointInputs);
@@ -145,7 +145,7 @@ function advanceForm(
     if (!currentPoint) {
       return [];
     }
-    currentPointFlow = ScopeFlowUtils.find(flow, currentPoint.path);
+    currentPointFlow = NestFlowUtils.find(flow, currentPoint.path);
   }
   points.push(currentPoint);
   return points;
@@ -171,9 +171,9 @@ function nextPointInFlow(flow: ListFlow, point: Point): Point | null {
 
 function nextPointInSameFlow(flow: ListFlow, point: Point): Point | null {
   const path = point.path.slice(0, -1);
-  const scope = ScopeFlowUtils.find(flow, path) as ScopeFlow;
+  const nest = NestFlowUtils.find(flow, path) as NestFlow;
   const current = point.path[point.path.length - 1];
-  const next = ScopeFlowUtils.next(scope, current, point.inputs);
+  const next = NestFlowUtils.next(nest, current, point.inputs);
   if (next) {
     return { path: [...path, next], inputs: point.inputs };
   }
@@ -181,9 +181,9 @@ function nextPointInSameFlow(flow: ListFlow, point: Point): Point | null {
 }
 
 function nextPointInsideFlow(flow: ListFlow, point: Point): Point | null {
-  const item = ScopeFlowUtils.find(flow, point.path);
-  if (ScopeFlowUtils.is(item)) {
-    const position = ScopeFlowUtils.into(item, point.inputs);
+  const item = NestFlowUtils.find(flow, point.path);
+  if (NestFlowUtils.is(item)) {
+    const position = NestFlowUtils.into(item, point.inputs);
     if (position) {
       const path = [...point.path, position];
       const next = { path, inputs: point.inputs };
@@ -212,7 +212,7 @@ export function prevState(
   const points = state.points.slice(0, -1);
   while (points.length > 0) {
     const currentPoint = points[points.length - 1];
-    const currentPointFlow = ScopeFlowUtils.find(flow, currentPoint.path);
+    const currentPointFlow = NestFlowUtils.find(flow, currentPoint.path);
     if (FormFlowUtils.is(currentPointFlow)) {
       const stateValues = updateStateValues(flow, state, values);
       return { points, values: stateValues };
@@ -234,9 +234,9 @@ function updateStateValues(
 ): Values {
   const point = state.points[state.points.length - 1];
   const path = point.path;
-  const formFlow = ScopeFlowUtils.find(flow, point.path) as FormFlow;
+  const formFlow = NestFlowUtils.find(flow, point.path) as FormFlow;
   const formValues = formFlow["form"]["values"](point.inputs);
-  let stateValues: ScopeValues = state.values;
+  let stateValues: NestValues = state.values;
   for (const [name, value] of Object.entries(values)) {
     if (name in formValues) {
       const keys = formValues[name][1];

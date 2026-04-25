@@ -1,12 +1,4 @@
-import type {
-  Flow,
-  Condition,
-  Loop,
-  Form,
-  Yield,
-  Return,
-  Variables,
-} from "@formity/react";
+import type { Flow, s } from "@formity/react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -28,8 +20,8 @@ import {
 import { MultiStep } from "./multi-step";
 
 export type Schema = [
-  Form<{ name: string; surname: string; age: number }>,
-  Yield<{
+  s.Form<{ name: string; surname: string; age: number }>,
+  s.Yield<{
     next: [
       { type: "next"; data: { name: string } },
       { type: "next"; data: { surname: string } },
@@ -41,42 +33,42 @@ export type Schema = [
       { type: "back"; data: { age: number } },
     ];
   }>,
-  Form<{ softwareDeveloper: boolean }>,
-  Yield<{
+  s.Form<{ softwareDeveloper: boolean }>,
+  s.Yield<{
     next: [{ type: "next"; data: { softwareDeveloper: boolean } }];
     back: [{ type: "back"; data: { softwareDeveloper: boolean } }];
   }>,
-  Condition<{
+  s.Condition<{
     then: [
-      Variables<{
+      s.Variables<{
         languagesOptions: { value: string; label: string }[];
         questions: Record<string, string>;
       }>,
-      Form<{ languages: string[] }>,
-      Yield<{
+      s.Form<{ languages: string[] }>,
+      s.Yield<{
         next: [{ type: "next"; data: { languages: string[] } }];
         back: [{ type: "back"; data: { languages: string[] } }];
       }>,
-      Variables<{
+      s.Variables<{
         i: number;
         languagesRatings: { name: string; rating: string }[];
       }>,
-      Loop<
+      s.Loop<
         [
-          Variables<{ language: string }>,
-          Variables<{ question: string }>,
-          Form<{ rating: string }>,
-          Yield<{
+          s.Variables<{ language: string }>,
+          s.Variables<{ question: string }>,
+          s.Form<{ rating: string }>,
+          s.Yield<{
             next: [{ type: "next"; data: { rating: string } }];
             back: [{ type: "back"; data: { rating: string } }];
           }>,
-          Variables<{
+          s.Variables<{
             i: number;
             languagesRatings: { name: string; rating: string }[];
           }>,
         ]
       >,
-      Return<{
+      s.Return<{
         fullName: string;
         age: number;
         softwareDeveloper: true;
@@ -84,12 +76,12 @@ export type Schema = [
       }>,
     ];
     else: [
-      Form<{ interested: string }>,
-      Yield<{
+      s.Form<{ interested: string }>,
+      s.Yield<{
         next: [{ type: "next"; data: { interested: string } }];
         back: [{ type: "back"; data: { interested: string } }];
       }>,
-      Return<{
+      s.Return<{
         fullName: string;
         age: number;
         softwareDeveloper: false;

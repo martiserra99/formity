@@ -1,4 +1,4 @@
-import type { Flow, Loop, Form, Return, Variables } from "@formity/react";
+import type { Flow, s } from "@formity/react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -8,22 +8,22 @@ import { Step, Layout, Select, NextButton, BackButton } from "./components";
 import { MultiStep } from "./multi-step";
 
 export type LoopSchema = [
-  Variables<{ languages: { value: string; question: string }[] }>,
-  Variables<{
+  s.Variables<{ languages: { value: string; question: string }[] }>,
+  s.Variables<{
     i: number;
     languagesRatings: { name: string; rating: string }[];
   }>,
-  Loop<
+  s.Loop<
     [
-      Variables<{ language: { value: string; question: string } }>,
-      Form<{ rating: string }>,
-      Variables<{
+      s.Variables<{ language: { value: string; question: string } }>,
+      s.Form<{ rating: string }>,
+      s.Variables<{
         i: number;
         languagesRatings: { name: string; rating: string }[];
       }>,
     ]
   >,
-  Return<{ languagesRatings: { name: string; rating: string }[] }>,
+  s.Return<{ languagesRatings: { name: string; rating: string }[] }>,
 ];
 
 export const loopFlow: Flow<LoopSchema> = [

@@ -1,16 +1,16 @@
 import type {
   ItemValues,
-  ScopeValues,
+  NestValues,
   SwitchValues,
 } from "../../types/state/values";
 
 import type { Position, SwitchPosition } from "../../types/state/position";
 
-export function create(): ScopeValues {
+export function create(): NestValues {
   return { type: "switch", branches: {}, default: {} };
 }
 
-export function clone(values: SwitchValues): ScopeValues {
+export function clone(values: SwitchValues): NestValues {
   return {
     ...values,
     branches: Object.fromEntries(

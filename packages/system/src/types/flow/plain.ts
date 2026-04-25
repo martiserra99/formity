@@ -3,13 +3,13 @@ import type { OnNext, OnBack, GetState, SetState } from "../render";
 export type Flow<Render = unknown> = ListFlow<Render>;
 
 export type ItemFlow<Render = unknown> =
-  | ScopeFlow<Render>
+  | NestFlow<Render>
   | FormFlow<Render>
   | VariablesFlow
   | YieldFlow
   | ReturnFlow;
 
-export type ScopeFlow<Render = unknown> =
+export type NestFlow<Render = unknown> =
   | ListFlow<Render>
   | ConditionFlow<Render>
   | LoopFlow<Render>

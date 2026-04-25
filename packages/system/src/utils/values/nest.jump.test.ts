@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import type { JumpValues, FormValues } from "src/types/state/values";
 
-import { getItem, setItem } from "./scope.jump";
+import { getItem, setItem } from "./nest.jump";
 
 describe("JumpValues", () => {
   describe("getItem", () => {
@@ -13,27 +13,27 @@ describe("JumpValues", () => {
           keys: {},
         },
       };
-      const scope: JumpValues = {
+      const nest: JumpValues = {
         type: "jump",
         item: item,
       };
-      const result = getItem(scope);
+      const result = getItem(nest);
       expect(result).toBe(item);
     });
 
     it("returns null when trying to get the item and it doesn't exist in the given `JumpValues` object", () => {
-      const scope: JumpValues = {
+      const nest: JumpValues = {
         type: "jump",
         item: undefined,
       };
-      const result = getItem(scope);
+      const result = getItem(nest);
       expect(result).toBe(null);
     });
   });
 
   describe("setItem", () => {
     it("sets the item within the given `JumpValues` object", () => {
-      const scope: JumpValues = {
+      const nest: JumpValues = {
         type: "jump",
         item: undefined,
       };
@@ -43,12 +43,12 @@ describe("JumpValues", () => {
           keys: {},
         },
       };
-      setItem(scope, item);
+      setItem(nest, item);
       const expected: JumpValues = {
         type: "jump",
         item: item,
       };
-      expect(scope).toEqual(expected);
+      expect(nest).toEqual(expected);
     });
   });
 });

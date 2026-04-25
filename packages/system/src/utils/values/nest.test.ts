@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
 
-import type { ScopeValues } from "src/types/state/values";
+import type { NestValues } from "src/types/state/values";
 import type { Position } from "src/types/state/position";
 
-import { get, set } from "./scope";
+import { get, set } from "./nest";
 
-describe("ScopeValues", () => {
+describe("NestValues", () => {
   describe("get", () => {
-    it("returns the value that is in the given `ScopeValues` object", () => {
-      const scope: ScopeValues = {
+    it("returns the value that is in the given `NestValues` object", () => {
+      const nest: NestValues = {
         type: "list",
         list: {
           1: {
@@ -48,12 +48,12 @@ describe("ScopeValues", () => {
       const name: string = "a";
       const keys: PropertyKey[] = ["x", "y"];
       const defaultValue: unknown = 2;
-      const result = get(scope, path, name, keys, defaultValue);
+      const result = get(nest, path, name, keys, defaultValue);
       expect(result).toEqual(1);
     });
 
-    it("returns the default value if the path is not encountered in the given `ScopeValues` object", () => {
-      const scope: ScopeValues = {
+    it("returns the default value if the path is not encountered in the given `NestValues` object", () => {
+      const nest: NestValues = {
         type: "list",
         list: {
           1: {
@@ -93,12 +93,12 @@ describe("ScopeValues", () => {
       const name: string = "a";
       const keys: PropertyKey[] = ["x", "y"];
       const defaultValue: unknown = 2;
-      const result = get(scope, path, name, keys, defaultValue);
+      const result = get(nest, path, name, keys, defaultValue);
       expect(result).toEqual(2);
     });
 
-    it("returns the default value if the keys are not encountered in the given `ScopeValues` object", () => {
-      const scope: ScopeValues = {
+    it("returns the default value if the keys are not encountered in the given `NestValues` object", () => {
+      const nest: NestValues = {
         type: "list",
         list: {
           1: {
@@ -138,14 +138,14 @@ describe("ScopeValues", () => {
       const name: string = "a";
       const keys: PropertyKey[] = ["x", "z"];
       const defaultValue: unknown = 2;
-      const result = get(scope, path, name, keys, defaultValue);
+      const result = get(nest, path, name, keys, defaultValue);
       expect(result).toEqual(2);
     });
   });
 
   describe("set", () => {
-    it("sets the value in the given `ScopeValues` object", () => {
-      const scope: ScopeValues = { type: "list", list: {} };
+    it("sets the value in the given `NestValues` object", () => {
+      const nest: NestValues = { type: "list", list: {} };
       const path: Position[] = [
         { type: "list", slot: 1 },
         { type: "condition", path: "else", slot: 0 },
@@ -154,8 +154,8 @@ describe("ScopeValues", () => {
       const name: string = "a";
       const keys: PropertyKey[] = ["x", "y"];
       const data: unknown = 1;
-      const result = set(scope, path, name, keys, data);
-      const expected: ScopeValues = {
+      const result = set(nest, path, name, keys, data);
+      const expected: NestValues = {
         type: "list",
         list: {
           1: {

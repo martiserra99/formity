@@ -4,14 +4,14 @@
 export type Values = ListValues;
 
 /**
- * Union of `ScopeValues` and `FormValues`.
+ * Union of `NestValues` and `FormValues`.
  */
-export type ItemValues = ScopeValues | FormValues;
+export type ItemValues = NestValues | FormValues;
 
 /**
- * Values entered in the forms that are within a scope.
+ * Values entered in the forms that are within a nest element.
  */
-export type ScopeValues =
+export type NestValues =
   | ListValues
   | ConditionValues
   | LoopValues

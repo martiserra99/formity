@@ -1,14 +1,14 @@
 import type {
   ItemValues,
-  ScopeValues,
+  NestValues,
   JumpValues,
 } from "../../types/state/values";
 
-export function create(): ScopeValues {
+export function create(): NestValues {
   return { type: "jump", item: undefined };
 }
 
-export function clone(values: JumpValues): ScopeValues {
+export function clone(values: JumpValues): NestValues {
   return { ...values };
 }
 

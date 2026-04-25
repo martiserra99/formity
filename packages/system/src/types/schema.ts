@@ -7,16 +7,16 @@ export type Schema = ListSchema;
  * This type is meant to be extended and is used to define the structure of an element in a multi-step form.
  */
 export type ItemSchema =
-  | ScopeSchema
+  | NestSchema
   | FormSchema
   | VariablesSchema
   | YieldSchema
   | ReturnSchema;
 
 /**
- * This type is meant to be extended and is used to define the structure of a scope element in a multi-step form.
+ * This type is meant to be extended and is used to define the structure of a nest element in a multi-step form.
  */
-export type ScopeSchema =
+export type NestSchema =
   | ListSchema
   | ConditionSchema
   | LoopSchema

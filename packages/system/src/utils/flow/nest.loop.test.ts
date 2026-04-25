@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { LoopFlow, ReturnFlow } from "../../types/flow/plain";
 import type { Position } from "src/types/state/position";
 
-import { into, next, at } from "./scope.loop";
+import { into, next, at } from "./nest.loop";
 
 describe("LoopFlow", () => {
   describe("into", () => {

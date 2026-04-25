@@ -1,4 +1,4 @@
-import type { Flow, Switch, Form, Return } from "@formity/react";
+import type { Flow, s } from "@formity/react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -15,19 +15,25 @@ import {
 import { MultiStep } from "./multi-step";
 
 export type SwitchSchema = [
-  Form<{ interested: string }>,
-  Switch<{
+  s.Form<{ interested: string }>,
+  s.Switch<{
     branches: [
-      [Form<{ whyYes: string }>, Return<{ interested: "yes"; whyYes: string }>],
-      [Form<{ whyNot: string }>, Return<{ interested: "no"; whyNot: string }>],
       [
-        Form<{ whyMaybe: string }>,
-        Return<{ interested: "maybe"; whyMaybe: string }>,
+        s.Form<{ whyYes: string }>,
+        s.Return<{ interested: "yes"; whyYes: string }>,
+      ],
+      [
+        s.Form<{ whyNot: string }>,
+        s.Return<{ interested: "no"; whyNot: string }>,
+      ],
+      [
+        s.Form<{ whyMaybe: string }>,
+        s.Return<{ interested: "maybe"; whyMaybe: string }>,
       ],
     ];
     default: [
-      Form<{ whyNotSure: string }>,
-      Return<{ interested: "notSure"; whyNotSure: string }>,
+      s.Form<{ whyNotSure: string }>,
+      s.Return<{ interested: "notSure"; whyNotSure: string }>,
     ];
   }>,
 ];

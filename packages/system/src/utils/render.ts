@@ -4,8 +4,8 @@ import type { State } from "../types/state/state";
 
 import type { OnNext, OnBack, GetState, SetState } from "../types/render";
 
-import * as ScopeFlowUtils from "./flow/scope";
-import * as ScopeValuesUtils from "./values/scope";
+import * as NestFlowUtils from "./flow/nest";
+import * as NestValuesUtils from "./values/nest";
 
 export function render(
   flow: Flow,
@@ -17,14 +17,14 @@ export function render(
   setState: SetState,
 ): unknown {
   const point = state.points[state.points.length - 1];
-  const form = ScopeFlowUtils.find(flow, point.path) as FormFlow;
+  const form = NestFlowUtils.find(flow, point.path) as FormFlow;
   const inputs = point.inputs;
   const values = Object.fromEntries(
     Object.entries(form["form"]["values"](point.inputs)).map(
       ([name, [value, keys]]) => {
         return [
           name,
-          ScopeValuesUtils.get(state.values, point.path, name, keys, value),
+          NestValuesUtils.get(state.values, point.path, name, keys, value),
         ];
       },
     ),

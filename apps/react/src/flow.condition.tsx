@@ -1,4 +1,4 @@
-import type { Flow, Condition, Form, Return } from "@formity/react";
+import type { Flow, s } from "@formity/react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -16,18 +16,18 @@ import {
 import { MultiStep } from "./multi-step";
 
 export type ConditionSchema = [
-  Form<{ softwareDeveloper: boolean }>,
-  Condition<{
+  s.Form<{ softwareDeveloper: boolean }>,
+  s.Condition<{
     then: [
-      Form<{ languages: string[] }>,
-      Return<{
+      s.Form<{ languages: string[] }>,
+      s.Return<{
         softwareDeveloper: true;
         languages: string[];
       }>,
     ];
     else: [
-      Form<{ interested: string }>,
-      Return<{
+      s.Form<{ interested: string }>,
+      s.Return<{
         softwareDeveloper: false;
         interested: string;
       }>,

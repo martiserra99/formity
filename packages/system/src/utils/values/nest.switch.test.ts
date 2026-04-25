@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { SwitchValues, FormValues } from "src/types/state/values";
 import type { Position } from "src/types/state/position";
 
-import { getItem, setItem } from "./scope.switch";
+import { getItem, setItem } from "./nest.switch";
 
 describe("SwitchValues", () => {
   describe("getItem", () => {
@@ -14,7 +14,7 @@ describe("SwitchValues", () => {
           keys: {},
         },
       };
-      const scope: SwitchValues = {
+      const nest: SwitchValues = {
         type: "switch",
         branches: {
           1: {
@@ -24,7 +24,7 @@ describe("SwitchValues", () => {
         default: {},
       };
       const position: Position = { type: "switch", branch: 1, slot: 1 };
-      const result = getItem(scope, position);
+      const result = getItem(nest, position);
       expect(result).toBe(item);
     });
 
@@ -35,7 +35,7 @@ describe("SwitchValues", () => {
           keys: {},
         },
       };
-      const scope: SwitchValues = {
+      const nest: SwitchValues = {
         type: "switch",
         branches: {},
         default: {
@@ -43,7 +43,7 @@ describe("SwitchValues", () => {
         },
       };
       const position: Position = { type: "switch", branch: -1, slot: 1 };
-      const result = getItem(scope, position);
+      const result = getItem(nest, position);
       expect(result).toBe(item);
     });
 
@@ -54,7 +54,7 @@ describe("SwitchValues", () => {
           keys: {},
         },
       };
-      const scope: SwitchValues = {
+      const nest: SwitchValues = {
         type: "switch",
         branches: {
           1: {
@@ -64,7 +64,7 @@ describe("SwitchValues", () => {
         default: {},
       };
       const position: Position = { type: "switch", branch: 1, slot: 0 };
-      const result = getItem(scope, position);
+      const result = getItem(nest, position);
       expect(result).toBe(null);
     });
 
@@ -75,7 +75,7 @@ describe("SwitchValues", () => {
           keys: {},
         },
       };
-      const scope: SwitchValues = {
+      const nest: SwitchValues = {
         type: "switch",
         branches: {},
         default: {
@@ -83,14 +83,14 @@ describe("SwitchValues", () => {
         },
       };
       const position: Position = { type: "switch", branch: -1, slot: 0 };
-      const result = getItem(scope, position);
+      const result = getItem(nest, position);
       expect(result).toBe(null);
     });
   });
 
   describe("setItem", () => {
     it("sets the item at the given branch position within the given `SwitchValues` object", () => {
-      const scope: SwitchValues = {
+      const nest: SwitchValues = {
         type: "switch",
         branches: {},
         default: {},
@@ -102,7 +102,7 @@ describe("SwitchValues", () => {
           keys: {},
         },
       };
-      setItem(scope, position, item);
+      setItem(nest, position, item);
       const expected: SwitchValues = {
         type: "switch",
         branches: {
@@ -112,11 +112,11 @@ describe("SwitchValues", () => {
         },
         default: {},
       };
-      expect(scope).toEqual(expected);
+      expect(nest).toEqual(expected);
     });
 
     it("sets the item at the given default branch position within the given `SwitchValues` object", () => {
-      const scope: SwitchValues = {
+      const nest: SwitchValues = {
         type: "switch",
         branches: {},
         default: {},
@@ -128,7 +128,7 @@ describe("SwitchValues", () => {
           keys: {},
         },
       };
-      setItem(scope, position, item);
+      setItem(nest, position, item);
       const expected: SwitchValues = {
         type: "switch",
         branches: {},
@@ -136,7 +136,7 @@ describe("SwitchValues", () => {
           1: item,
         },
       };
-      expect(scope).toEqual(expected);
+      expect(nest).toEqual(expected);
     });
   });
 });

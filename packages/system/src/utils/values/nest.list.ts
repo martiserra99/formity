@@ -1,16 +1,16 @@
 import type {
   ItemValues,
-  ScopeValues,
+  NestValues,
   ListValues,
 } from "../../types/state/values";
 
 import type { Position, ListPosition } from "../../types/state/position";
 
-export function create(): ScopeValues {
+export function create(): NestValues {
   return { type: "list", list: {} };
 }
 
-export function clone(values: ListValues): ScopeValues {
+export function clone(values: ListValues): NestValues {
   return { ...values, list: { ...values.list } };
 }
 

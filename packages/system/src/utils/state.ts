@@ -1,10 +1,10 @@
 import type { Flow, FormFlow } from "../types/flow/plain";
 
 import type { State } from "../types/state/state";
-import type { Values, ScopeValues } from "../types/state/values";
+import type { Values, NestValues } from "../types/state/values";
 
-import * as ScopeFlowUtils from "./flow/scope";
-import * as FlowInputsUtils from "./values/scope";
+import * as NestFlowUtils from "./flow/nest";
+import * as FlowInputsUtils from "./values/nest";
 
 export function syncState(
   flow: Flow,
@@ -13,9 +13,9 @@ export function syncState(
 ): State {
   const point = state.points[state.points.length - 1];
   const path = point.path;
-  const formFlow = ScopeFlowUtils.find(flow, point.path) as FormFlow;
+  const formFlow = NestFlowUtils.find(flow, point.path) as FormFlow;
   const formValues = formFlow["form"]["values"](point.inputs);
-  let stateValues: ScopeValues = state.values;
+  let stateValues: NestValues = state.values;
   for (const [name, value] of Object.entries(values)) {
     if (name in formValues) {
       const keys = formValues[name][1];

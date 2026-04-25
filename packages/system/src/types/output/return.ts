@@ -2,7 +2,7 @@ import type { Schema } from "../schema";
 
 import type {
   ItemSchema,
-  ScopeSchema,
+  NestSchema,
   ListSchema,
   ConditionSchema,
   LoopSchema,
@@ -22,22 +22,22 @@ export type ReturnOutput<Struct extends Schema> = ListData<
   ? U
   : never;
 
-type ItemData<Item extends ItemSchema, Data, Flag> = Item extends ScopeSchema
-  ? ScopeData<Item, Data, Flag>
+type ItemData<Item extends ItemSchema, Data, Flag> = Item extends NestSchema
+  ? NestData<Item, Data, Flag>
   : Item extends ReturnSchema
   ? ReturnData<Item, Data, Flag>
   : [Data, Flag];
 
-type ScopeData<Scope extends ScopeSchema, Data, Flag> = Scope extends ListSchema
-  ? ListData<Scope, Data, Flag>
-  : Scope extends ConditionSchema
-  ? ConditionData<Scope, Data, Flag>
-  : Scope extends LoopSchema
-  ? LoopData<Scope, Data, Flag>
-  : Scope extends SwitchSchema
-  ? SwitchData<Scope, Data, Flag>
-  : Scope extends JumpSchema
-  ? JumpData<Scope, Data>
+type NestData<Nest extends NestSchema, Data, Flag> = Nest extends ListSchema
+  ? ListData<Nest, Data, Flag>
+  : Nest extends ConditionSchema
+  ? ConditionData<Nest, Data, Flag>
+  : Nest extends LoopSchema
+  ? LoopData<Nest, Data, Flag>
+  : Nest extends SwitchSchema
+  ? SwitchData<Nest, Data, Flag>
+  : Nest extends JumpSchema
+  ? JumpData<Nest, Data>
   : never;
 
 type ListData<List extends ListSchema, Data, Flag> = List extends [

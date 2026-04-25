@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import type { ConditionValues, FormValues } from "src/types/state/values";
 import type { Position } from "src/types/state/position";
 
-import { getItem, setItem } from "./scope.condition";
+import { getItem, setItem } from "./nest.condition";
 
 describe("ConditionValues", () => {
   describe("getItem", () => {
@@ -14,7 +14,7 @@ describe("ConditionValues", () => {
           keys: {},
         },
       };
-      const scope: ConditionValues = {
+      const nest: ConditionValues = {
         type: "condition",
         then: {
           1: item,
@@ -22,7 +22,7 @@ describe("ConditionValues", () => {
         else: {},
       };
       const position: Position = { type: "condition", path: "then", slot: 1 };
-      const result = getItem(scope, position);
+      const result = getItem(nest, position);
       expect(result).toBe(item);
     });
 
@@ -33,7 +33,7 @@ describe("ConditionValues", () => {
           keys: {},
         },
       };
-      const scope: ConditionValues = {
+      const nest: ConditionValues = {
         type: "condition",
         then: {},
         else: {
@@ -41,7 +41,7 @@ describe("ConditionValues", () => {
         },
       };
       const position: Position = { type: "condition", path: "else", slot: 1 };
-      const result = getItem(scope, position);
+      const result = getItem(nest, position);
       expect(result).toBe(item);
     });
 
@@ -52,7 +52,7 @@ describe("ConditionValues", () => {
           keys: {},
         },
       };
-      const scope: ConditionValues = {
+      const nest: ConditionValues = {
         type: "condition",
         then: {},
         else: {
@@ -60,14 +60,14 @@ describe("ConditionValues", () => {
         },
       };
       const position: Position = { type: "condition", path: "then", slot: 1 };
-      const result = getItem(scope, position);
+      const result = getItem(nest, position);
       expect(result).toBe(null);
     });
   });
 
   describe("setItem", () => {
     it("sets the item at the given `then` position within the given `ConditionValues` object", () => {
-      const scope: ConditionValues = {
+      const nest: ConditionValues = {
         type: "condition",
         then: {},
         else: {},
@@ -79,7 +79,7 @@ describe("ConditionValues", () => {
           keys: {},
         },
       };
-      setItem(scope, position, item);
+      setItem(nest, position, item);
       const expected: ConditionValues = {
         type: "condition",
         then: {
@@ -87,11 +87,11 @@ describe("ConditionValues", () => {
         },
         else: {},
       };
-      expect(scope).toEqual(expected);
+      expect(nest).toEqual(expected);
     });
 
     it("sets the item at the given `else` position within the given `ConditionValues` object", () => {
-      const scope: ConditionValues = {
+      const nest: ConditionValues = {
         type: "condition",
         then: {},
         else: {},
@@ -103,7 +103,7 @@ describe("ConditionValues", () => {
           keys: {},
         },
       };
-      setItem(scope, position, item);
+      setItem(nest, position, item);
       const expected: ConditionValues = {
         type: "condition",
         then: {},
@@ -111,7 +111,7 @@ describe("ConditionValues", () => {
           1: item,
         },
       };
-      expect(scope).toEqual(expected);
+      expect(nest).toEqual(expected);
     });
   });
 });

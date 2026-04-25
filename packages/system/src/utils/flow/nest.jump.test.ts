@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import type { JumpFlow, FormFlow } from "../../types/flow/plain";
 
-import { into, next, at } from "./scope.jump";
+import { into, next, at } from "./nest.jump";
 
 describe("JumpFlow", () => {
   describe("into", () => {

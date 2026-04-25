@@ -1,23 +1,23 @@
 import type {
   ItemValues,
-  ScopeValues,
+  NestValues,
   FormValues,
 } from "../../types/state/values";
 
 import type { Position } from "../../types/state/position";
 
-import * as ListValuesUtils from "./scope.list";
-import * as ConditionValuesUtils from "./scope.condition";
-import * as LoopValuesUtils from "./scope.loop";
-import * as SwitchValuesUtils from "./scope.switch";
-import * as JumpValuesUtils from "./scope.jump";
+import * as ListValuesUtils from "./nest.list";
+import * as ConditionValuesUtils from "./nest.condition";
+import * as LoopValuesUtils from "./nest.loop";
+import * as SwitchValuesUtils from "./nest.switch";
+import * as JumpValuesUtils from "./nest.jump";
 import * as FormValuesUtils from "./form";
 
 /**
- * Returns the value at the given path, name and keys in `ScopeValues`, falling back to `defaultValue`.
+ * Returns the value at the given path, name and keys in `NestValues`, falling back to `defaultValue`.
  */
 export function get(
-  values: ScopeValues,
+  values: NestValues,
   path: Position[],
   name: string,
   keys: PropertyKey[],
@@ -25,7 +25,7 @@ export function get(
 ): unknown {
   let current: ItemValues = values;
   for (const position of path) {
-    const values = current as ScopeValues;
+    const values = current as NestValues;
     const item = getItem(values, position);
     if (item) current = item;
     else return defaultValue;
@@ -35,22 +35,22 @@ export function get(
 }
 
 /**
- * Returns a new `ScopeValues` object with the value at the given path, name and keys set to `data`.
+ * Returns a new `NestValues` object with the value at the given path, name and keys set to `data`.
  */
 export function set(
-  values: ScopeValues,
+  values: NestValues,
   path: Position[],
   name: string,
   keys: PropertyKey[],
   data: unknown,
-): ScopeValues {
-  const updated: ScopeValues = clone(values);
-  let current: ScopeValues = updated;
+): NestValues {
+  const updated: NestValues = clone(values);
+  let current: NestValues = updated;
   for (let i = 0; i < path.length - 1; i++) {
     const position = path[i];
     const item = getItem(current, position);
     if (item) {
-      const next = item as ScopeValues;
+      const next = item as NestValues;
       const cloned = clone(next);
       setItem(current, position, cloned);
       current = cloned;
@@ -72,7 +72,7 @@ export function set(
   return updated;
 }
 
-export function create(position: Position): ScopeValues {
+export function create(position: Position): NestValues {
   switch (position.type) {
     case "list":
       return ListValuesUtils.create();
@@ -87,7 +87,7 @@ export function create(position: Position): ScopeValues {
   }
 }
 
-export function clone(values: ScopeValues): ScopeValues {
+export function clone(values: NestValues): NestValues {
   switch (values.type) {
     case "list":
       return ListValuesUtils.clone(values);
@@ -103,7 +103,7 @@ export function clone(values: ScopeValues): ScopeValues {
 }
 
 export function getItem(
-  values: ScopeValues,
+  values: NestValues,
   position: Position,
 ): ItemValues | null {
   switch (values.type) {
@@ -121,7 +121,7 @@ export function getItem(
 }
 
 export function setItem(
-  values: ScopeValues,
+  values: NestValues,
   position: Position,
   item: ItemValues,
 ): void {

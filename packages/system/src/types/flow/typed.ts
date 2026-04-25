@@ -2,7 +2,7 @@ import type { Schema } from "../schema";
 
 import type {
   ItemSchema,
-  ScopeSchema,
+  NestSchema,
   ListSchema,
   ConditionSchema,
   LoopSchema,
@@ -44,8 +44,8 @@ export type ItemFlow<
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = Schema extends ScopeSchema
-  ? ScopeFlow<Render, Schema, Inputs, Memory, Params>
+> = Schema extends NestSchema
+  ? NestFlow<Render, Schema, Inputs, Memory, Params>
   : Schema extends FormSchema
   ? FormFlow<Render, Schema, Memory, Params>
   : Schema extends VariablesSchema
@@ -56,7 +56,7 @@ export type ItemFlow<
   ? ReturnFlow<Schema, Memory>
   : never;
 
-export type ScopeFlow<
+export type NestFlow<
   Render,
   Schema extends ItemSchema,
   Inputs extends Record<string, unknown>,
