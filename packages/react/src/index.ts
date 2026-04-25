@@ -16,4 +16,4 @@ export type { OnBack } from "@formity/system";
 export type { GetState } from "@formity/system";
 export type { SetState } from "@formity/system";
 
-export { Formity } from "./formity";
+export { useFormity } from "./use-formity";

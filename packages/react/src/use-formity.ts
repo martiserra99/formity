@@ -11,20 +11,7 @@ import { render } from "@formity/system";
 
 import type { Flow } from "./flow";
 
-/**
- * The properties of the multi-step form.
- *
- * @template Struct The structure of the multi-step form.
- * @template Inputs The input values of the multi-step form.
- * @template Params The parameter values of the multi-step form.
- * @param flow The structure and behavior of the multi-step form.
- * @param inputs The input values of the multi-step form.
- * @param params The parameter values of the multi-step form.
- * @param onYield Callback function invoked when the multi-step form yields values.
- * @param onReturn Callback function invoked when the multi-step form returns values.
- * @param initialState The initial state of the multi-step form.
- */
-interface FormityProps<
+interface Options<
   Struct extends Schema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
@@ -38,20 +25,30 @@ interface FormityProps<
 }
 
 /**
- * Renders a multi-step form.
+ * Runs a multi-step form and returns the rendered output for the current step.
+ *
+ * @template Struct The structure of the multi-step form.
+ * @template Inputs The input values available throughout the form.
+ * @template Params The parameter values available when rendering each step.
+ * @param flow The structure and behavior of the multi-step form.
+ * @param inputs The input values available throughout the form.
+ * @param params The parameter values available when rendering each step.
+ * @param onYield Callback invoked when the form yields values.
+ * @param onReturn Callback invoked when the form returns its final values.
+ * @param initialState The initial state to resume from, if any.
  */
-export function Formity<
+export function useFormity<
   Struct extends Schema,
-  U extends Record<string, unknown> = Record<never, never>,
-  V extends Record<string, unknown> = Record<never, never>,
+  Inputs extends Record<string, unknown> = Record<never, never>,
+  Params extends Record<string, unknown> = Record<never, never>,
 >({
   flow,
-  inputs = {} as U,
-  params = {} as V,
+  inputs = {} as Inputs,
+  params = {} as Params,
   onYield = () => {},
   onReturn = () => {},
   initialState,
-}: FormityProps<Struct, U, V>): React.ReactNode {
+}: Options<Struct, Inputs, Params>) {
   const [state, setState] = useState<State>(() => {
     if (initialState) return initialState;
     return initState(flow, onYield, inputs);

@@ -1,5 +1,5 @@
 import {
-  Formity,
+  useFormity,
   Flow,
   Schema,
   OnYield,
@@ -20,12 +20,5 @@ export function Form<T extends Schema>({
   onReturn,
   initialState,
 }: FormProps<T>) {
-  return (
-    <Formity<T>
-      flow={flow}
-      onYield={onYield}
-      onReturn={onReturn}
-      initialState={initialState}
-    />
-  );
+  return useFormity<T>({ flow, onYield, onReturn, initialState });
 }
