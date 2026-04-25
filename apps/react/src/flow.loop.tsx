@@ -3,7 +3,7 @@ import type { Flow, s } from "@formity/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { Step, Layout, Select, NextButton, BackButton } from "./components";
+import { Form, Layout, Select, NextButton, BackButton } from "./components";
 
 import type { Render } from "./render";
 
@@ -68,7 +68,7 @@ export const loopFlow: Flow<Render, LoopSchema> = [
             render: ({ inputs, values }) => ({
               step: `rating-${inputs.language.value}`,
               Form: () => (
-                <Step
+                <Form
                   defaultValues={values}
                   resolver={zodResolver(
                     z.object({
@@ -95,7 +95,7 @@ export const loopFlow: Flow<Render, LoopSchema> = [
                     button={<NextButton>Next</NextButton>}
                     back={inputs.i > 0 ? <BackButton /> : undefined}
                   />
-                </Step>
+                </Form>
               ),
             }),
           },

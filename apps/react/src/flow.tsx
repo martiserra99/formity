@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import {
-  Step,
+  Form,
   Layout,
   Row,
   TextField,
@@ -102,7 +102,7 @@ export const flow: Flow<Render, Schema> = [
       render: ({ values }) => ({
         step: "name",
         Form: () => (
-          <Step
+          <Form
             defaultValues={values}
             resolver={zodResolver(
               z.object({
@@ -136,7 +136,7 @@ export const flow: Flow<Render, Schema> = [
               ]}
               button={<NextButton>Next</NextButton>}
             />
-          </Step>
+          </Form>
         ),
       }),
     },
@@ -163,7 +163,7 @@ export const flow: Flow<Render, Schema> = [
       render: ({ values }) => ({
         step: "softwareDeveloper",
         Form: () => (
-          <Step
+          <Form
             defaultValues={values}
             resolver={zodResolver(
               z.object({
@@ -184,7 +184,7 @@ export const flow: Flow<Render, Schema> = [
               button={<NextButton>Next</NextButton>}
               back={<BackButton />}
             />
-          </Step>
+          </Form>
         ),
       }),
     },
@@ -226,7 +226,7 @@ export const flow: Flow<Render, Schema> = [
             render: ({ inputs, values }) => ({
               step: "languages",
               Form: () => (
-                <Step
+                <Form
                   defaultValues={values}
                   resolver={zodResolver(
                     z.object({
@@ -249,7 +249,7 @@ export const flow: Flow<Render, Schema> = [
                     button={<NextButton>Next</NextButton>}
                     back={<BackButton />}
                   />
-                </Step>
+                </Form>
               ),
             }),
           },
@@ -288,7 +288,7 @@ export const flow: Flow<Render, Schema> = [
                   render: ({ inputs, values }) => ({
                     step: `rating-${inputs.language}`,
                     Form: () => (
-                      <Step
+                      <Form
                         defaultValues={values}
                         resolver={zodResolver(
                           z.object({
@@ -324,7 +324,7 @@ export const flow: Flow<Render, Schema> = [
                           button={<NextButton>Next</NextButton>}
                           back={<BackButton />}
                         />
-                      </Step>
+                      </Form>
                     ),
                   }),
                 },
@@ -365,7 +365,7 @@ export const flow: Flow<Render, Schema> = [
             render: ({ values }) => ({
               step: "interested",
               Form: () => (
-                <Step
+                <Form
                   defaultValues={values}
                   resolver={zodResolver(
                     z.object({
@@ -400,7 +400,7 @@ export const flow: Flow<Render, Schema> = [
                     button={<NextButton>Next</NextButton>}
                     back={<BackButton />}
                   />
-                </Step>
+                </Form>
               ),
             }),
           },

@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import {
-  Step,
+  Form,
   Layout,
   TextField,
   Listbox,
@@ -47,7 +47,7 @@ export const switchFlow: Flow<Render, SwitchSchema> = [
       render: ({ values }) => ({
         step: "interested",
         Form: () => (
-          <Step
+          <Form
             defaultValues={values}
             resolver={zodResolver(
               z.object({
@@ -85,7 +85,7 @@ export const switchFlow: Flow<Render, SwitchSchema> = [
               ]}
               button={<NextButton>Next</NextButton>}
             />
-          </Step>
+          </Form>
         ),
       }),
     },
@@ -104,7 +104,7 @@ export const switchFlow: Flow<Render, SwitchSchema> = [
                 render: ({ values }) => ({
                   step: "whyYes",
                   Form: () => (
-                    <Step
+                    <Form
                       defaultValues={values}
                       resolver={zodResolver(
                         z.object({
@@ -121,7 +121,7 @@ export const switchFlow: Flow<Render, SwitchSchema> = [
                         button={<NextButton>Next</NextButton>}
                         back={<BackButton />}
                       />
-                    </Step>
+                    </Form>
                   ),
                 }),
               },
@@ -145,7 +145,7 @@ export const switchFlow: Flow<Render, SwitchSchema> = [
                 render: ({ values }) => ({
                   step: "whyNot",
                   Form: () => (
-                    <Step
+                    <Form
                       defaultValues={values}
                       resolver={zodResolver(
                         z.object({
@@ -162,7 +162,7 @@ export const switchFlow: Flow<Render, SwitchSchema> = [
                         button={<NextButton>Next</NextButton>}
                         back={<BackButton />}
                       />
-                    </Step>
+                    </Form>
                   ),
                 }),
               },
@@ -186,7 +186,7 @@ export const switchFlow: Flow<Render, SwitchSchema> = [
                 render: ({ values }) => ({
                   step: "whyMaybe",
                   Form: () => (
-                    <Step
+                    <Form
                       defaultValues={values}
                       resolver={zodResolver(
                         z.object({
@@ -207,7 +207,7 @@ export const switchFlow: Flow<Render, SwitchSchema> = [
                         button={<NextButton>Next</NextButton>}
                         back={<BackButton />}
                       />
-                    </Step>
+                    </Form>
                   ),
                 }),
               },
@@ -230,7 +230,7 @@ export const switchFlow: Flow<Render, SwitchSchema> = [
             render: ({ values }) => ({
               step: "whyNotSure",
               Form: () => (
-                <Step
+                <Form
                   defaultValues={values}
                   resolver={zodResolver(
                     z.object({
@@ -251,7 +251,7 @@ export const switchFlow: Flow<Render, SwitchSchema> = [
                     button={<NextButton>Next</NextButton>}
                     back={<BackButton />}
                   />
-                </Step>
+                </Form>
               ),
             }),
           },

@@ -9,7 +9,7 @@ import {
   ReturnOutput,
 } from "@formity/react";
 
-import { Form } from "./form";
+import { MultiStepForm } from "./multi-step-form";
 import { Data } from "./components";
 
 import type { Render } from "./render";
@@ -39,5 +39,5 @@ export default function App<T extends Schema>({ flow }: AppProps<T>) {
     return <Data data={values} onStart={() => setValues(null)} />;
   }
 
-  return <Form<T> flow={flow} onYield={onYield} onReturn={onReturn} />;
+  return <MultiStepForm<T> flow={flow} onYield={onYield} onReturn={onReturn} />;
 }

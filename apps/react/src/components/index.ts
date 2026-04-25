@@ -1,4 +1,4 @@
-export { default as Step } from "./step";
+export { default as Form } from "./form";
 export { default as Layout } from "./layout";
 export { default as NextButton } from "./navigation/next-button";
 export { default as BackButton } from "./navigation/back-button";

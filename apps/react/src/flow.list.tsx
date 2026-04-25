@@ -3,7 +3,7 @@ import type { Flow, s } from "@formity/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
-import { Step, Layout, Row, TextField, NextButton } from "./components";
+import { Form, Layout, Row, TextField, NextButton } from "./components";
 
 import type { Render } from "./render";
 
@@ -32,7 +32,7 @@ export const listFlow: Flow<Render, ListSchema> = [
         render: ({ values }) => ({
           step: "nameSurname",
           Form: () => (
-            <Step
+            <Form
               defaultValues={values}
               resolver={zodResolver(
                 z.object({
@@ -65,7 +65,7 @@ export const listFlow: Flow<Render, ListSchema> = [
                 ]}
                 button={<NextButton>Next</NextButton>}
               />
-            </Step>
+            </Form>
           ),
         }),
       },

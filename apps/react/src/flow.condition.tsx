@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import {
-  Step,
+  Form,
   Layout,
   MultiSelect,
   Listbox,
@@ -44,7 +44,7 @@ export const conditionFlow: Flow<Render, ConditionSchema> = [
       render: ({ values }) => ({
         step: "softwareDeveloper",
         Form: () => (
-          <Step
+          <Form
             defaultValues={values}
             resolver={zodResolver(
               z.object({
@@ -64,7 +64,7 @@ export const conditionFlow: Flow<Render, ConditionSchema> = [
               ]}
               button={<NextButton>Next</NextButton>}
             />
-          </Step>
+          </Form>
         ),
       }),
     },
@@ -81,7 +81,7 @@ export const conditionFlow: Flow<Render, ConditionSchema> = [
             render: ({ values }) => ({
               step: "languages",
               Form: () => (
-                <Step
+                <Form
                   defaultValues={values}
                   resolver={zodResolver(
                     z.object({
@@ -108,7 +108,7 @@ export const conditionFlow: Flow<Render, ConditionSchema> = [
                     button={<NextButton>Next</NextButton>}
                     back={<BackButton />}
                   />
-                </Step>
+                </Form>
               ),
             }),
           },
@@ -129,7 +129,7 @@ export const conditionFlow: Flow<Render, ConditionSchema> = [
             render: ({ values }) => ({
               step: "interested",
               Form: () => (
-                <Step
+                <Form
                   defaultValues={values}
                   resolver={zodResolver(
                     z.object({
@@ -164,7 +164,7 @@ export const conditionFlow: Flow<Render, ConditionSchema> = [
                     button={<NextButton>Next</NextButton>}
                     back={<BackButton />}
                   />
-                </Step>
+                </Form>
               ),
             }),
           },

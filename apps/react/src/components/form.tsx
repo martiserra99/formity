@@ -5,17 +5,17 @@ import { FormProvider, useForm } from "react-hook-form";
 
 import { useFormActions } from "../form-actions";
 
-interface StepProps<T extends Record<string, unknown>> {
+interface FormProps<T extends Record<string, unknown>> {
   defaultValues: DefaultValues<T>;
   resolver: Resolver<T>;
   children: ReactNode;
 }
 
-export default function Step<T extends Record<string, unknown>>({
+export default function Form<T extends Record<string, unknown>>({
   defaultValues,
   resolver,
   children,
-}: StepProps<T>) {
+}: FormProps<T>) {
   const form = useForm({ defaultValues, resolver });
   const { onNext } = useFormActions<T>();
   return (

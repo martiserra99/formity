@@ -11,19 +11,19 @@ import { FormActions } from "./form-actions";
 
 import type { Render } from "./render";
 
-interface FormProps<T extends Schema> {
+interface MultiStepFormProps<T extends Schema> {
   flow: Flow<Render, T>;
   onYield?: OnYield<Schema>;
   onReturn?: OnReturn<Schema>;
   initialState?: State;
 }
 
-export function Form<T extends Schema>({
+export function MultiStepForm<T extends Schema>({
   flow,
   onYield,
   onReturn,
   initialState,
-}: FormProps<T>): React.ReactNode {
+}: MultiStepFormProps<T>): React.ReactNode {
   const { form, ...rest } = useFormity<Render, T>({
     flow,
     onYield,
