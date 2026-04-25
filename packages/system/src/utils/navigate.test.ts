@@ -15,7 +15,7 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState(flow, () => {}, {});
+    const state = initState({ flow, onYield: () => {}, inputs: {} });
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: { type: "list", list: {} },
@@ -34,7 +34,7 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState(flow, () => {}, {});
+    const state = initState({ flow, onYield: () => {}, inputs: {} });
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 2 }], inputs: {} }],
       values: { type: "list", list: {} },
@@ -74,7 +74,7 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState(flow, () => {}, {});
+    const state = initState({ flow, onYield: () => {}, inputs: {} });
     const expected: State = {
       points: [
         {
@@ -128,7 +128,7 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState(flow, () => {}, {});
+    const state = initState({ flow, onYield: () => {}, inputs: {} });
     const expected: State = {
       points: [
         {
@@ -148,7 +148,7 @@ describe("initState", () => {
 
   it("throws an error when the flow is empty", () => {
     const flow: Flow = [];
-    expect(() => initState(flow, () => {}, {})).toThrow();
+    expect(() => initState({ flow, onYield: () => {}, inputs: {} })).toThrow();
   });
 
   it("throws an error if no form can be reached", () => {
@@ -178,7 +178,7 @@ describe("initState", () => {
         },
       },
     ];
-    expect(() => initState(flow, () => {}, {})).toThrow();
+    expect(() => initState({ flow, onYield: () => {}, inputs: {} })).toThrow();
   });
 
   it("throws an error if it finds a return before a form", () => {
@@ -207,7 +207,7 @@ describe("initState", () => {
         },
       },
     ];
-    expect(() => initState(flow, () => {}, {})).toThrow();
+    expect(() => initState({ flow, onYield: () => {}, inputs: {} })).toThrow();
   });
 
   it("calls the onYield callback with the appropriate values every time values are yielded until it reaches a form", () => {
@@ -255,7 +255,7 @@ describe("initState", () => {
       },
     ];
     const onYield = vi.fn();
-    initState(flow, onYield, {});
+    initState({ flow, onYield, inputs: {} });
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -300,7 +300,7 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState(flow, () => {}, {});
+    const state = initState({ flow, onYield: () => {}, inputs: {} });
     const expected: State = {
       points: [
         {
@@ -327,7 +327,11 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState(flow, () => {}, { a: 1, b: 2 });
+    const state = initState({
+      flow,
+      onYield: () => {},
+      inputs: { a: 1, b: 2 },
+    });
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: { a: 1, b: 2 } }],
       values: { type: "list", list: {} },
@@ -356,13 +360,13 @@ describe("nextState", () => {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: { type: "list", list: {} },
     };
-    const state = nextState(
+    const state = nextState({
       flow,
-      () => {},
-      () => {},
-      current,
-      {},
-    );
+      onYield: () => {},
+      onReturn: () => {},
+      state: current,
+      values: {},
+    });
     const expected: State = {
       points: [
         { path: [{ type: "list", slot: 0 }], inputs: {} },
@@ -415,13 +419,13 @@ describe("nextState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const state = nextState(
+    const state = nextState({
       flow,
-      () => {},
-      () => {},
-      current,
-      {},
-    );
+      onYield: () => {},
+      onReturn: () => {},
+      state: current,
+      values: {},
+    });
     const expected: State = {
       points: [
         {
@@ -496,13 +500,13 @@ describe("nextState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const next = nextState(
+    const next = nextState({
       flow,
-      () => {},
-      () => {},
-      current,
-      {},
-    );
+      onYield: () => {},
+      onReturn: () => {},
+      state: current,
+      values: {},
+    });
     const expected: State = {
       points: [
         {
@@ -596,7 +600,13 @@ describe("nextState", () => {
       values: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    nextState(flow, onYield, () => {}, current, {});
+    nextState({
+      flow,
+      onYield,
+      onReturn: () => {},
+      state: current,
+      values: {},
+    });
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -672,7 +682,13 @@ describe("nextState", () => {
       values: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    nextState(flow, onYield, () => {}, current, {});
+    nextState({
+      flow,
+      onYield,
+      onReturn: () => {},
+      state: current,
+      values: {},
+    });
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -747,7 +763,13 @@ describe("nextState", () => {
       values: { type: "list", list: {} },
     };
     const onYield = vi.fn();
-    nextState(flow, onYield, () => {}, current, {});
+    nextState({
+      flow,
+      onYield,
+      onReturn: () => {},
+      state: current,
+      values: {},
+    });
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -804,7 +826,13 @@ describe("nextState", () => {
       values: { type: "list", list: {} },
     };
     const onReturn = vi.fn();
-    nextState(flow, () => {}, onReturn, current, {});
+    nextState({
+      flow,
+      onYield: () => {},
+      onReturn,
+      state: current,
+      values: {},
+    });
     expect(onReturn).toHaveBeenCalledWith({ a: 1, b: 2 });
   });
 
@@ -858,13 +886,13 @@ describe("nextState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const next = nextState(
+    const next = nextState({
       flow,
-      () => {},
-      () => {},
-      current,
-      {},
-    );
+      onYield: () => {},
+      onReturn: () => {},
+      state: current,
+      values: {},
+    });
     const expected: State = {
       points: [
         {
@@ -925,13 +953,13 @@ describe("nextState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const next = nextState(
+    const next = nextState({
       flow,
-      () => {},
-      () => {},
-      current,
-      {},
-    );
+      onYield: () => {},
+      onReturn: () => {},
+      state: current,
+      values: {},
+    });
     const expected: State = {
       points: [
         {
@@ -970,13 +998,13 @@ describe("nextState", () => {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: { type: "list", list: {} },
     };
-    const state = nextState(
+    const state = nextState({
       flow,
-      () => {},
-      () => {},
-      current,
-      { a: 1, b: 2 },
-    );
+      onYield: () => {},
+      onReturn: () => {},
+      state: current,
+      values: { a: 1, b: 2 },
+    });
     const expected: State = {
       points: [
         { path: [{ type: "list", slot: 0 }], inputs: {} },
@@ -1032,13 +1060,13 @@ describe("nextState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const state = nextState(
+    const state = nextState({
       flow,
-      () => {},
-      () => {},
-      current,
-      { a: 1, b: 2 },
-    );
+      onYield: () => {},
+      onReturn: () => {},
+      state: current,
+      values: { a: 1, b: 2 },
+    });
     const expected: State = {
       points: [
         {
@@ -1121,7 +1149,12 @@ describe("prevState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const state = prevState(flow, () => {}, current, {});
+    const state = prevState({
+      flow,
+      onYield: () => {},
+      state: current,
+      values: {},
+    });
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: { type: "list", list: {} },
@@ -1142,7 +1175,12 @@ describe("prevState", () => {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: { type: "list", list: {} },
     };
-    const state = prevState(flow, () => {}, current, {});
+    const state = prevState({
+      flow,
+      onYield: () => {},
+      state: current,
+      values: {},
+    });
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: { type: "list", list: {} },
@@ -1186,7 +1224,12 @@ describe("prevState", () => {
         },
       },
     };
-    const state = prevState(flow, () => {}, current, { b: 2 });
+    const state = prevState({
+      flow,
+      onYield: () => {},
+      state: current,
+      values: { b: 2 },
+    });
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: {
@@ -1278,7 +1321,7 @@ describe("prevState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    prevState(flow, onYield, current, {});
+    prevState({ flow, onYield, state: current, values: {} });
     expect(onYield).toHaveBeenNthCalledWith(1, { cb: 3 });
     expect(onYield).toHaveBeenNthCalledWith(2, { ab: 1 });
     expect(onYield).toHaveBeenNthCalledWith(3, { bb: 2 });
@@ -1375,7 +1418,7 @@ describe("prevState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    prevState(flow, onYield, current, {});
+    prevState({ flow, onYield, state: current, values: {} });
     expect(onYield).toHaveBeenNthCalledWith(1, { db: 4 });
     expect(onYield).toHaveBeenNthCalledWith(2, { cb: 3 });
     expect(onYield).toHaveBeenNthCalledWith(3, { ab: 1 });

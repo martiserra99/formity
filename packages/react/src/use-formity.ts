@@ -1,4 +1,5 @@
-import type { Schema, OnYield, OnReturn, State } from "@formity/system";
+import type { Flow, Schema, OnYield, OnReturn, State } from "@formity/system";
+import type { OnNext, OnBack, GetState, SetState } from "@formity/system";
 
 import { useState, useCallback } from "react";
 
@@ -7,16 +8,15 @@ import { nextState } from "@formity/system";
 import { prevState } from "@formity/system";
 
 import { syncState } from "@formity/system";
-import { render } from "@formity/system";
-
-import type { Flow } from "./flow";
+import { getForm } from "@formity/system";
 
 interface Options<
+  Render,
   Struct extends Schema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
 > {
-  flow: Flow<Struct, Inputs, Params>;
+  flow: Flow<Render, Struct, Inputs, Params>;
   inputs?: Inputs;
   params?: Params;
   onYield?: OnYield<Struct>;
@@ -27,6 +27,7 @@ interface Options<
 /**
  * Runs a multi-step form and returns the rendered output for the current step.
  *
+ * @template Render The type of the rendered output for each form step.
  * @template Struct The structure of the multi-step form.
  * @template Inputs The input values available throughout the form.
  * @template Params The parameter values available when rendering each step.
@@ -38,6 +39,7 @@ interface Options<
  * @param initialState The initial state to resume from, if any.
  */
 export function useFormity<
+  Render,
   Struct extends Schema,
   Inputs extends Record<string, unknown> = Record<never, never>,
   Params extends Record<string, unknown> = Record<never, never>,
@@ -48,15 +50,24 @@ export function useFormity<
   onYield = () => {},
   onReturn = () => {},
   initialState,
-}: Options<Struct, Inputs, Params>) {
+}: Options<Render, Struct, Inputs, Params>): {
+  form: Render;
+  inputs: Record<string, unknown>;
+  values: Record<string, unknown>;
+  params: Record<string, unknown>;
+  onNext: OnNext<Record<string, unknown>>;
+  onBack: OnBack<Record<string, unknown>>;
+  getState: GetState<Record<string, unknown>>;
+  setState: SetState;
+} {
   const [state, setState] = useState<State>(() => {
     if (initialState) return initialState;
-    return initState(flow, onYield, inputs);
+    return initState({ flow, onYield, inputs });
   });
 
   const onNext = useCallback(
     (values: Record<string, unknown>) => {
-      const changed = nextState(flow, onYield, onReturn, state, values);
+      const changed = nextState({ flow, onYield, onReturn, state, values });
       setState(changed);
     },
     [flow, onYield, onReturn, state],
@@ -64,7 +75,7 @@ export function useFormity<
 
   const onBack = useCallback(
     (values: Record<string, unknown>) => {
-      const changed = prevState(flow, onYield, state, values);
+      const changed = prevState({ flow, onYield, state, values });
       setState(changed);
     },
     [flow, onYield, state],
@@ -72,10 +83,12 @@ export function useFormity<
 
   const getState = useCallback(
     (values: Record<string, unknown>) => {
-      return syncState(flow, state, values);
+      return syncState({ flow, state, values });
     },
     [state, flow],
   );
 
-  return render(flow, params, state, onNext, onBack, getState, setState);
+  const args = { flow, params, state, onNext, onBack, getState, setState };
+
+  return getForm(args);
 }

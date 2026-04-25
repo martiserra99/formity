@@ -26,7 +26,7 @@ export type LoopSchema = [
   s.Return<{ languagesRatings: { name: string; rating: string }[] }>,
 ];
 
-export const loopFlow: Flow<LoopSchema> = [
+export const loopFlow: Flow<React.ReactNode, LoopSchema> = [
   {
     variables: () => ({
       languages: [

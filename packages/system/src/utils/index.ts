@@ -17,7 +17,7 @@ import type { State } from "../types/state/state";
 
 import * as NavigateUtils from "./navigate";
 import * as StateUtils from "./state";
-import * as RenderUtils from "./render";
+import * as FormUtils from "./form";
 
 /**
  * Finds the first form step in the flow, triggering `onYield` for any yield
@@ -30,15 +30,15 @@ export function initState<
   Struct extends Schema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
->(
-  flow: Flow<Render, Struct, Inputs, Params>,
-  onYield: OnYield<Struct>,
-  inputs: Inputs,
-): State {
-  const plainFlow = flow as PlainFlow;
-  const plainInputs = inputs as Record<string, unknown>;
-  const plainOnYield = onYield as PlainOnYield;
-  return NavigateUtils.initState(plainFlow, plainOnYield, plainInputs);
+>(options: {
+  flow: Flow<Render, Struct, Inputs, Params>;
+  onYield: OnYield<Struct>;
+  inputs: Inputs;
+}): State {
+  const flow = options.flow as PlainFlow;
+  const inputs = options.inputs as Record<string, unknown>;
+  const onYield = options.onYield as PlainOnYield;
+  return NavigateUtils.initState({ flow, onYield, inputs });
 }
 
 /**
@@ -51,23 +51,19 @@ export function nextState<
   Struct extends Schema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
->(
-  flow: Flow<Render, Struct, Inputs, Params>,
-  onYield: OnYield<Struct>,
-  onReturn: OnReturn<Struct>,
-  state: State,
-  values: Record<string, unknown>,
-): State {
-  const plainFlow = flow as PlainFlow;
-  const plainOnYield = onYield as PlainOnYield;
-  const plainOnReturn = onReturn as PlainOnReturn;
-  return NavigateUtils.nextState(
-    plainFlow,
-    plainOnYield,
-    plainOnReturn,
-    state,
-    values,
-  );
+>(options: {
+  flow: Flow<Render, Struct, Inputs, Params>;
+  onYield: OnYield<Struct>;
+  onReturn: OnReturn<Struct>;
+  state: State;
+  values: Record<string, unknown>;
+}): State {
+  const flow = options.flow as PlainFlow;
+  const onYield = options.onYield as PlainOnYield;
+  const onReturn = options.onReturn as PlainOnReturn;
+  const state = options.state;
+  const values = options.values;
+  return NavigateUtils.nextState({ flow, onYield, onReturn, state, values });
 }
 
 /**
@@ -80,15 +76,17 @@ export function prevState<
   Struct extends Schema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
->(
-  flow: Flow<Render, Struct, Inputs, Params>,
-  onYield: OnYield<Struct>,
-  state: State,
-  values: Record<string, unknown>,
-): State {
-  const plainFlow = flow as PlainFlow;
-  const plainOnYield = onYield as PlainOnYield;
-  return NavigateUtils.prevState(plainFlow, plainOnYield, state, values);
+>(options: {
+  flow: Flow<Render, Struct, Inputs, Params>;
+  onYield: OnYield<Struct>;
+  state: State;
+  values: Record<string, unknown>;
+}): State {
+  const flow = options.flow as PlainFlow;
+  const onYield = options.onYield as PlainOnYield;
+  const state = options.state;
+  const values = options.values;
+  return NavigateUtils.prevState({ flow, onYield, state, values });
 }
 
 /**
@@ -99,41 +97,59 @@ export function syncState<
   Struct extends Schema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
->(
-  flow: Flow<Render, Struct, Inputs, Params>,
-  state: State,
-  values: Record<string, unknown>,
-): State {
-  const plainFlow = flow as PlainFlow;
-  return StateUtils.syncState(plainFlow, state, values);
+>(options: {
+  flow: Flow<Render, Struct, Inputs, Params>;
+  state: State;
+  values: Record<string, unknown>;
+}): State {
+  const flow = options.flow as PlainFlow;
+  const state = options.state;
+  const values = options.values;
+  return StateUtils.syncState({ flow, state, values });
 }
 
 /**
  * Returns the rendered form for the current step of the multi-step form.
  */
-export function render<
+export function getForm<
   Render,
   Struct extends Schema,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
->(
-  flow: Flow<Render, Struct, Inputs, Params>,
-  params: Params,
-  state: State,
-  onNext: OnNext<Record<string, unknown>>,
-  onBack: OnBack<Record<string, unknown>>,
-  getState: GetState<Record<string, unknown>>,
-  setState: SetState,
-): Render {
-  const plainFlow = flow as PlainFlow;
-  const plainParams = params as Record<string, unknown>;
-  return RenderUtils.render(
-    plainFlow,
-    plainParams,
-    state,
-    onNext,
-    onBack,
-    getState,
-    setState,
-  ) as Render;
+>(options: {
+  flow: Flow<Render, Struct, Inputs, Params>;
+  params: Params;
+  state: State;
+  onNext: OnNext<Record<string, unknown>>;
+  onBack: OnBack<Record<string, unknown>>;
+  getState: GetState<Record<string, unknown>>;
+  setState: SetState;
+}): {
+  form: Render;
+  inputs: Record<string, unknown>;
+  values: Record<string, unknown>;
+  params: Record<string, unknown>;
+  onNext: OnNext<Record<string, unknown>>;
+  onBack: OnBack<Record<string, unknown>>;
+  getState: GetState<Record<string, unknown>>;
+  setState: SetState;
+} {
+  const flow = options.flow as PlainFlow;
+  const params = options.params as Record<string, unknown>;
+  const state = options.state;
+  const onNext = options.onNext;
+  const onBack = options.onBack;
+  const getState = options.getState;
+  const setState = options.setState;
+  const controls = { onNext, onBack, getState, setState };
+  return FormUtils.getForm({ flow, params, state, ...controls }) as {
+    form: Render;
+    inputs: Record<string, unknown>;
+    values: Record<string, unknown>;
+    params: Record<string, unknown>;
+    onNext: OnNext<Record<string, unknown>>;
+    onBack: OnBack<Record<string, unknown>>;
+    getState: GetState<Record<string, unknown>>;
+    setState: SetState;
+  };
 }

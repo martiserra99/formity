@@ -35,7 +35,7 @@ export type ConditionSchema = [
   }>,
 ];
 
-export const conditionFlow: Flow<ConditionSchema> = [
+export const conditionFlow: Flow<React.ReactNode, ConditionSchema> = [
   {
     form: {
       values: () => ({

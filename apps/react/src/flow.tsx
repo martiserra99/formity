@@ -91,7 +91,7 @@ export type Schema = [
   }>,
 ];
 
-export const flow: Flow<Schema> = [
+export const flow: Flow<React.ReactNode, Schema> = [
   {
     form: {
       values: () => ({

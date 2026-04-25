@@ -38,7 +38,7 @@ export type SwitchSchema = [
   }>,
 ];
 
-export const switchFlow: Flow<SwitchSchema> = [
+export const switchFlow: Flow<React.ReactNode, SwitchSchema> = [
   {
     form: {
       values: () => ({

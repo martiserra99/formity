@@ -16,11 +16,12 @@ import * as VariablesFlowUtils from "./flow/variables";
 
 import * as FlowInputsUtils from "./values/nest";
 
-export function initState(
-  flow: Flow,
-  onYield: OnYield,
-  inputs: Record<string, unknown>,
-): State {
+export function initState(options: {
+  flow: Flow;
+  onYield: OnYield;
+  inputs: Record<string, unknown>;
+}): State {
+  const { flow, onYield, inputs } = options;
   const path = initialPath(flow, inputs);
   const points = initialPoints(flow, { path, inputs }, onYield);
   return { points, values: { type: "list", list: {} } };
@@ -95,13 +96,14 @@ function initialPoints(
   return points;
 }
 
-export function nextState(
-  flow: Flow,
-  onYield: OnYield,
-  onReturn: OnReturn,
-  state: State,
-  values: Record<string, unknown>,
-): State {
+export function nextState(options: {
+  flow: Flow;
+  onYield: OnYield;
+  onReturn: OnReturn;
+  state: State;
+  values: Record<string, unknown>;
+}): State {
+  const { flow, onYield, onReturn, state, values } = options;
   const point = state.points[state.points.length - 1];
   const points = advanceForm(flow, onYield, onReturn, point, values);
   const stateValues = updateStateValues(flow, state, values);
@@ -203,12 +205,13 @@ function overPoint(point: Point): Point | null {
   return null;
 }
 
-export function prevState(
-  flow: Flow,
-  onYield: OnYield,
-  state: State,
-  values: Record<string, unknown>,
-): State {
+export function prevState(options: {
+  flow: Flow;
+  onYield: OnYield;
+  state: State;
+  values: Record<string, unknown>;
+}): State {
+  const { flow, onYield, state, values } = options;
   const points = state.points.slice(0, -1);
   while (points.length > 0) {
     const currentPoint = points[points.length - 1];

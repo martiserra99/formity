@@ -16,7 +16,7 @@ export type ListSchema = [
   s.Return<{ fullName: string }>,
 ];
 
-export const listFlow: Flow<ListSchema> = [
+export const listFlow: Flow<React.ReactNode, ListSchema> = [
   {
     variables: () => ({
       fullName: "",

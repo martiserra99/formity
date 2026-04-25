@@ -47,7 +47,11 @@ describe("syncState", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const state: State = syncState(flow, current, { a: 1, b: 2 });
+    const state: State = syncState({
+      flow,
+      state: current,
+      values: { a: 1, b: 2 },
+    });
     const expected: State = {
       points: [
         {

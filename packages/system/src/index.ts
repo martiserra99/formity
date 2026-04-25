@@ -21,4 +21,4 @@ export { nextState } from "./utils";
 export { prevState } from "./utils";
 
 export { syncState } from "./utils";
-export { render } from "./utils";
+export { getForm } from "./utils";

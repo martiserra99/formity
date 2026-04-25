@@ -13,7 +13,7 @@ import { Form } from "./form";
 import { Data } from "./components";
 
 interface AppProps<T extends Schema> {
-  flow: Flow<T>;
+  flow: Flow<React.ReactNode, T>;
 }
 
 export default function App<T extends Schema>({ flow }: AppProps<T>) {

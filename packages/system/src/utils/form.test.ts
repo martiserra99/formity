@@ -3,9 +3,9 @@ import { describe, expect, it } from "vitest";
 import type { Flow } from "src/types/flow/plain";
 import type { State } from "src/types/state/state";
 
-import { render } from "./render";
+import { getForm } from "./form";
 
-describe("render", () => {
+describe("getForm", () => {
   it("renders the form at the specified position", () => {
     const flow: Flow = [
       { variables: () => ({}) },
@@ -46,15 +46,15 @@ describe("render", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const form = render(
+    const form = getForm({
       flow,
-      {},
+      params: {},
       state,
-      () => {},
-      () => {},
-      () => state,
-      () => {},
-    );
+      onNext: () => {},
+      onBack: () => {},
+      getState: () => state,
+      setState: () => {},
+    });
     expect(form).toEqual({ hello: "world" });
   });
 
@@ -82,15 +82,15 @@ describe("render", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const form = render(
+    const form = getForm({
       flow,
-      {},
+      params: {},
       state,
-      () => {},
-      () => {},
-      () => state,
-      () => {},
-    );
+      onNext: () => {},
+      onBack: () => {},
+      getState: () => state,
+      setState: () => {},
+    });
     expect(form).toEqual({
       defaultValues: {
         name: "John",
@@ -118,15 +118,15 @@ describe("render", () => {
       ],
       values: { type: "list", list: {} },
     };
-    const form = render(
+    const form = getForm({
       flow,
-      { hello: "world" },
+      params: { hello: "world" },
       state,
-      () => {},
-      () => {},
-      () => state,
-      () => {},
-    );
+      onNext: () => {},
+      onBack: () => {},
+      getState: () => state,
+      setState: () => {},
+    });
     expect(form).toEqual({
       hello: "world",
     });
