@@ -17,6 +17,8 @@ import {
   BackButton,
 } from "./components";
 
+import type { Render } from "./render";
+
 export type Schema = [
   s.Form<{ name: string; surname: string; age: number }>,
   s.Yield<{
@@ -89,7 +91,7 @@ export type Schema = [
   }>,
 ];
 
-export const flow: Flow<{ Form: React.FC; step: string }, Schema> = [
+export const flow: Flow<Render, Schema> = [
   {
     form: {
       values: () => ({

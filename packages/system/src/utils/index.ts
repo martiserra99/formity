@@ -8,10 +8,10 @@ import type { OnReturn } from "../types/handlers/typed";
 import type { OnYield as PlainOnYield } from "../types/handlers/plain";
 import type { OnReturn as PlainOnReturn } from "../types/handlers/plain";
 
-import type { OnNext } from "src/types/render";
-import type { OnBack } from "src/types/render";
-import type { GetState } from "src/types/render";
-import type { SetState } from "src/types/render";
+import type { OnNext } from "src/types/form-actions";
+import type { OnBack } from "src/types/form-actions";
+import type { GetState } from "src/types/form-actions";
+import type { SetState } from "src/types/form-actions";
 
 import type { State } from "../types/state/state";
 

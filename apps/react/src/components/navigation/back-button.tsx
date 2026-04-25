@@ -1,12 +1,12 @@
 import { useFormContext } from "react-hook-form";
 import { ChevronLeftIcon } from "@heroicons/react/20/solid";
 
-import { useMultiStep } from "../../multi-step";
+import { useFormActions } from "../../form-actions";
 import { cn } from "../../utils";
 
 export default function BackButton<T extends Record<string, unknown>>() {
   const { getValues } = useFormContext<T>();
-  const { onBack } = useMultiStep<T>();
+  const { onBack } = useFormActions<T>();
   return (
     <button
       data-cy="back"

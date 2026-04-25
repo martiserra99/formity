@@ -12,8 +12,10 @@ import {
 import { Form } from "./form";
 import { Data } from "./components";
 
+import type { Render } from "./render";
+
 interface AppProps<T extends Schema> {
-  flow: Flow<{ Form: React.FC; step: string }, T>;
+  flow: Flow<Render, T>;
 }
 
 export default function App<T extends Schema>({ flow }: AppProps<T>) {

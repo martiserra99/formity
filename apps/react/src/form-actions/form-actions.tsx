@@ -3,10 +3,10 @@ import type { OnNext, OnBack, GetState, SetState } from "@formity/react";
 
 import { useMemo } from "react";
 
-import { MultiStepContext } from "./multi-step-context";
-import { MultiStepValue } from "./multi-step-value";
+import { FormActionsContext } from "./form-actions-context";
+import { FormActionsValue } from "./form-actions-value";
 
-interface MultiStepProps<T extends Record<string, unknown>> {
+interface FormActionsProps<T extends Record<string, unknown>> {
   step: string;
   onNext: OnNext<T>;
   onBack: OnBack<T>;
@@ -15,23 +15,23 @@ interface MultiStepProps<T extends Record<string, unknown>> {
   children: ReactNode;
 }
 
-export function MultiStep<T extends Record<string, unknown>>({
+export function FormActions<T extends Record<string, unknown>>({
   step,
   onNext,
   onBack,
   getState,
   setState,
   children,
-}: MultiStepProps<T>) {
+}: FormActionsProps<T>) {
   const value = useMemo(
     () => ({ onNext, onBack, getState, setState }),
     [onNext, onBack, getState, setState],
-  ) as MultiStepValue<Record<string, unknown>>;
+  ) as FormActionsValue<Record<string, unknown>>;
   return (
     <div key={step} className="h-full">
-      <MultiStepContext.Provider value={value}>
+      <FormActionsContext.Provider value={value}>
         {children}
-      </MultiStepContext.Provider>
+      </FormActionsContext.Provider>
     </div>
   );
 }

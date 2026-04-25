@@ -11,10 +11,10 @@ export type { ReturnOutput } from "./types/output/return";
 
 export type { State } from "./types/state/state";
 
-export type { OnNext } from "./types/render";
-export type { OnBack } from "./types/render";
-export type { GetState } from "./types/render";
-export type { SetState } from "./types/render";
+export type { OnNext } from "./types/form-actions";
+export type { OnBack } from "./types/form-actions";
+export type { GetState } from "./types/form-actions";
+export type { SetState } from "./types/form-actions";
 
 export { initState } from "./utils";
 export { nextState } from "./utils";

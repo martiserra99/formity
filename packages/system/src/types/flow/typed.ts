@@ -14,7 +14,7 @@ import type {
   JumpSchema,
 } from "../schema";
 
-import type { OnNext, OnBack, GetState, SetState } from "../render";
+import type { OnNext, OnBack, GetState, SetState } from "../form-actions";
 
 /**
  * Defines the structure and behavior of a multi-step form.

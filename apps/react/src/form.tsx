@@ -7,10 +7,12 @@ import {
   State,
 } from "@formity/react";
 
-import { MultiStep } from "./multi-step";
+import { FormActions } from "./form-actions";
+
+import type { Render } from "./render";
 
 interface FormProps<T extends Schema> {
-  flow: Flow<{ Form: React.FC; step: string }, T>;
+  flow: Flow<Render, T>;
   onYield?: OnYield<Schema>;
   onReturn?: OnReturn<Schema>;
   initialState?: State;
@@ -22,13 +24,7 @@ export function Form<T extends Schema>({
   onReturn,
   initialState,
 }: FormProps<T>): React.ReactNode {
-  const { form, onNext, onBack, getState, setState } = useFormity<
-    {
-      Form: React.FC;
-      step: string;
-    },
-    T
-  >({
+  const { form, ...rest } = useFormity<Render, T>({
     flow,
     onYield,
     onReturn,
@@ -36,14 +32,8 @@ export function Form<T extends Schema>({
   });
   const { step, Form } = form;
   return (
-    <MultiStep
-      step={step}
-      onNext={onNext}
-      onBack={onBack}
-      getState={getState}
-      setState={setState}
-    >
+    <FormActions step={step} {...rest}>
       <Form />
-    </MultiStep>
+    </FormActions>
   );
 }

@@ -3,7 +3,7 @@ import type { DefaultValues, Resolver } from "react-hook-form";
 
 import { FormProvider, useForm } from "react-hook-form";
 
-import { useMultiStep } from "../multi-step";
+import { useFormActions } from "../form-actions";
 
 interface StepProps<T extends Record<string, unknown>> {
   defaultValues: DefaultValues<T>;
@@ -17,7 +17,7 @@ export default function Step<T extends Record<string, unknown>>({
   children,
 }: StepProps<T>) {
   const form = useForm({ defaultValues, resolver });
-  const { onNext } = useMultiStep<T>();
+  const { onNext } = useFormActions<T>();
   return (
     <form onSubmit={form.handleSubmit(onNext)} className="h-full">
       <FormProvider {...form}>{children}</FormProvider>

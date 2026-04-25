@@ -13,6 +13,8 @@ import {
   BackButton,
 } from "./components";
 
+import type { Render } from "./render";
+
 export type ConditionSchema = [
   s.Form<{ softwareDeveloper: boolean }>,
   s.Condition<{
@@ -33,10 +35,7 @@ export type ConditionSchema = [
   }>,
 ];
 
-export const conditionFlow: Flow<
-  { Form: React.FC; step: string },
-  ConditionSchema
-> = [
+export const conditionFlow: Flow<Render, ConditionSchema> = [
   {
     form: {
       values: () => ({

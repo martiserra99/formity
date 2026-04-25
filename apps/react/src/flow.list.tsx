@@ -5,6 +5,8 @@ import { z } from "zod";
 
 import { Step, Layout, Row, TextField, NextButton } from "./components";
 
+import type { Render } from "./render";
+
 export type ListSchema = [
   s.Variables<{ fullName: string }>,
   [
@@ -14,7 +16,7 @@ export type ListSchema = [
   s.Return<{ fullName: string }>,
 ];
 
-export const listFlow: Flow<{ Form: React.FC; step: string }, ListSchema> = [
+export const listFlow: Flow<Render, ListSchema> = [
   {
     variables: () => ({
       fullName: "",
