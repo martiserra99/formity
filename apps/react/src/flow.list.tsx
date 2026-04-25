@@ -5,8 +5,6 @@ import { z } from "zod";
 
 import { Step, Layout, Row, TextField, NextButton } from "./components";
 
-import { MultiStep } from "./multi-step";
-
 export type ListSchema = [
   s.Variables<{ fullName: string }>,
   [
@@ -16,7 +14,7 @@ export type ListSchema = [
   s.Return<{ fullName: string }>,
 ];
 
-export const listFlow: Flow<React.ReactNode, ListSchema> = [
+export const listFlow: Flow<{ Form: React.FC; step: string }, ListSchema> = [
   {
     variables: () => ({
       fullName: "",
@@ -29,8 +27,9 @@ export const listFlow: Flow<React.ReactNode, ListSchema> = [
           name: ["", []],
           surname: ["", []],
         }),
-        render: ({ values, ...rest }) => (
-          <MultiStep step="nameSurname" {...rest}>
+        render: ({ values }) => ({
+          step: "nameSurname",
+          Form: () => (
             <Step
               defaultValues={values}
               resolver={zodResolver(
@@ -65,8 +64,8 @@ export const listFlow: Flow<React.ReactNode, ListSchema> = [
                 button={<NextButton>Next</NextButton>}
               />
             </Step>
-          </MultiStep>
-        ),
+          ),
+        }),
       },
     },
     [

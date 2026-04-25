@@ -55,7 +55,7 @@ describe("getForm", () => {
       getState: () => state,
       setState: () => {},
     });
-    expect(form).toEqual({ hello: "world" });
+    expect(form.form).toEqual({ hello: "world" });
   });
 
   it("uses the form values", () => {
@@ -66,9 +66,7 @@ describe("getForm", () => {
             name: ["John", []],
           }),
           render: ({ values }) => ({
-            defaultValues: {
-              name: values.name,
-            },
+            name: values.name,
           }),
         },
       },
@@ -91,10 +89,8 @@ describe("getForm", () => {
       getState: () => state,
       setState: () => {},
     });
-    expect(form).toEqual({
-      defaultValues: {
-        name: "John",
-      },
+    expect(form.form).toEqual({
+      name: "John",
     });
   });
 
@@ -127,7 +123,7 @@ describe("getForm", () => {
       getState: () => state,
       setState: () => {},
     });
-    expect(form).toEqual({
+    expect(form.form).toEqual({
       hello: "world",
     });
   });

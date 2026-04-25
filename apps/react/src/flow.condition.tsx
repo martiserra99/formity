@@ -13,8 +13,6 @@ import {
   BackButton,
 } from "./components";
 
-import { MultiStep } from "./multi-step";
-
 export type ConditionSchema = [
   s.Form<{ softwareDeveloper: boolean }>,
   s.Condition<{
@@ -35,14 +33,18 @@ export type ConditionSchema = [
   }>,
 ];
 
-export const conditionFlow: Flow<React.ReactNode, ConditionSchema> = [
+export const conditionFlow: Flow<
+  { Form: React.FC; step: string },
+  ConditionSchema
+> = [
   {
     form: {
       values: () => ({
         softwareDeveloper: [true, []],
       }),
-      render: ({ values, ...rest }) => (
-        <MultiStep step="softwareDeveloper" {...rest}>
+      render: ({ values }) => ({
+        step: "softwareDeveloper",
+        Form: () => (
           <Step
             defaultValues={values}
             resolver={zodResolver(
@@ -64,8 +66,8 @@ export const conditionFlow: Flow<React.ReactNode, ConditionSchema> = [
               button={<NextButton>Next</NextButton>}
             />
           </Step>
-        </MultiStep>
-      ),
+        ),
+      }),
     },
   },
   {
@@ -77,8 +79,9 @@ export const conditionFlow: Flow<React.ReactNode, ConditionSchema> = [
             values: () => ({
               languages: [[], []],
             }),
-            render: ({ values, ...rest }) => (
-              <MultiStep step="languages" {...rest}>
+            render: ({ values }) => ({
+              step: "languages",
+              Form: () => (
                 <Step
                   defaultValues={values}
                   resolver={zodResolver(
@@ -107,8 +110,8 @@ export const conditionFlow: Flow<React.ReactNode, ConditionSchema> = [
                     back={<BackButton />}
                   />
                 </Step>
-              </MultiStep>
-            ),
+              ),
+            }),
           },
         },
         {
@@ -124,8 +127,9 @@ export const conditionFlow: Flow<React.ReactNode, ConditionSchema> = [
             values: () => ({
               interested: ["maybe", []],
             }),
-            render: ({ values, ...rest }) => (
-              <MultiStep step="interested" {...rest}>
+            render: ({ values }) => ({
+              step: "interested",
+              Form: () => (
                 <Step
                   defaultValues={values}
                   resolver={zodResolver(
@@ -162,8 +166,8 @@ export const conditionFlow: Flow<React.ReactNode, ConditionSchema> = [
                     back={<BackButton />}
                   />
                 </Step>
-              </MultiStep>
-            ),
+              ),
+            }),
           },
         },
         {

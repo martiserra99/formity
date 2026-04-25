@@ -17,8 +17,6 @@ import {
   BackButton,
 } from "./components";
 
-import { MultiStep } from "./multi-step";
-
 export type Schema = [
   s.Form<{ name: string; surname: string; age: number }>,
   s.Yield<{
@@ -91,7 +89,7 @@ export type Schema = [
   }>,
 ];
 
-export const flow: Flow<React.ReactNode, Schema> = [
+export const flow: Flow<{ Form: React.FC; step: string }, Schema> = [
   {
     form: {
       values: () => ({
@@ -99,8 +97,9 @@ export const flow: Flow<React.ReactNode, Schema> = [
         surname: ["", []],
         age: [20, []],
       }),
-      render: ({ values, ...rest }) => (
-        <MultiStep step="name" {...rest}>
+      render: ({ values }) => ({
+        step: "name",
+        Form: () => (
           <Step
             defaultValues={values}
             resolver={zodResolver(
@@ -136,8 +135,8 @@ export const flow: Flow<React.ReactNode, Schema> = [
               button={<NextButton>Next</NextButton>}
             />
           </Step>
-        </MultiStep>
-      ),
+        ),
+      }),
     },
   },
   {
@@ -159,8 +158,9 @@ export const flow: Flow<React.ReactNode, Schema> = [
       values: () => ({
         softwareDeveloper: [true, []],
       }),
-      render: ({ values, ...rest }) => (
-        <MultiStep step="softwareDeveloper" {...rest}>
+      render: ({ values }) => ({
+        step: "softwareDeveloper",
+        Form: () => (
           <Step
             defaultValues={values}
             resolver={zodResolver(
@@ -183,8 +183,8 @@ export const flow: Flow<React.ReactNode, Schema> = [
               back={<BackButton />}
             />
           </Step>
-        </MultiStep>
-      ),
+        ),
+      }),
     },
   },
   {
@@ -221,8 +221,9 @@ export const flow: Flow<React.ReactNode, Schema> = [
             values: () => ({
               languages: [[], []],
             }),
-            render: ({ inputs, values, ...rest }) => (
-              <MultiStep step="languages" {...rest}>
+            render: ({ inputs, values }) => ({
+              step: "languages",
+              Form: () => (
                 <Step
                   defaultValues={values}
                   resolver={zodResolver(
@@ -247,8 +248,8 @@ export const flow: Flow<React.ReactNode, Schema> = [
                     back={<BackButton />}
                   />
                 </Step>
-              </MultiStep>
-            ),
+              ),
+            }),
           },
         },
         {
@@ -282,8 +283,9 @@ export const flow: Flow<React.ReactNode, Schema> = [
                   values: ({ language }) => ({
                     rating: ["love-it", [language]],
                   }),
-                  render: ({ inputs, values, ...rest }) => (
-                    <MultiStep step={`rating-${inputs.language}`} {...rest}>
+                  render: ({ inputs, values }) => ({
+                    step: `rating-${inputs.language}`,
+                    Form: () => (
                       <Step
                         defaultValues={values}
                         resolver={zodResolver(
@@ -321,8 +323,8 @@ export const flow: Flow<React.ReactNode, Schema> = [
                           back={<BackButton />}
                         />
                       </Step>
-                    </MultiStep>
-                  ),
+                    ),
+                  }),
                 },
               },
               {
@@ -358,8 +360,9 @@ export const flow: Flow<React.ReactNode, Schema> = [
             values: () => ({
               interested: ["maybe", []],
             }),
-            render: ({ values, ...rest }) => (
-              <MultiStep step="interested" {...rest}>
+            render: ({ values }) => ({
+              step: "interested",
+              Form: () => (
                 <Step
                   defaultValues={values}
                   resolver={zodResolver(
@@ -396,8 +399,8 @@ export const flow: Flow<React.ReactNode, Schema> = [
                     back={<BackButton />}
                   />
                 </Step>
-              </MultiStep>
-            ),
+              ),
+            }),
           },
         },
         {

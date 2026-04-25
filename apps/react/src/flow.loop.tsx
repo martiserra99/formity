@@ -5,8 +5,6 @@ import { z } from "zod";
 
 import { Step, Layout, Select, NextButton, BackButton } from "./components";
 
-import { MultiStep } from "./multi-step";
-
 export type LoopSchema = [
   s.Variables<{ languages: { value: string; question: string }[] }>,
   s.Variables<{
@@ -26,7 +24,7 @@ export type LoopSchema = [
   s.Return<{ languagesRatings: { name: string; rating: string }[] }>,
 ];
 
-export const loopFlow: Flow<React.ReactNode, LoopSchema> = [
+export const loopFlow: Flow<{ Form: React.FC; step: string }, LoopSchema> = [
   {
     variables: () => ({
       languages: [
@@ -65,8 +63,9 @@ export const loopFlow: Flow<React.ReactNode, LoopSchema> = [
             values: ({ language }) => ({
               rating: ["love-it", [language.value]],
             }),
-            render: ({ inputs, values, ...rest }) => (
-              <MultiStep step={`rating-${inputs.language.value}`} {...rest}>
+            render: ({ inputs, values }) => ({
+              step: `rating-${inputs.language.value}`,
+              Form: () => (
                 <Step
                   defaultValues={values}
                   resolver={zodResolver(
@@ -95,8 +94,8 @@ export const loopFlow: Flow<React.ReactNode, LoopSchema> = [
                     back={inputs.i > 0 ? <BackButton /> : undefined}
                   />
                 </Step>
-              </MultiStep>
-            ),
+              ),
+            }),
           },
         },
         {
