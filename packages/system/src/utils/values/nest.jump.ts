@@ -5,7 +5,7 @@ import type {
 } from "../../types/state/values";
 
 export function create(): NestValues {
-  return { type: "jump", item: undefined };
+  return { type: "jump", at: undefined };
 }
 
 export function clone(values: JumpValues): NestValues {
@@ -13,10 +13,10 @@ export function clone(values: JumpValues): NestValues {
 }
 
 export function getItem(values: JumpValues): ItemValues | null {
-  if (values.item) return values.item;
+  if (values.at) return values.at;
   return null;
 }
 
 export function setItem(values: JumpValues, item: ItemValues): void {
-  values.item = item;
+  values.at = item;
 }

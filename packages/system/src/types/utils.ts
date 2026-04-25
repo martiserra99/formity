@@ -38,7 +38,9 @@ export type Switch<T extends { branches: ListSchema[]; default: ListSchema }> =
  */
 export type Jump<T extends ItemSchema> = {
   type: "jump";
-  item: T;
+  jump: {
+    at: T;
+  };
 };
 
 /**
@@ -46,7 +48,9 @@ export type Jump<T extends ItemSchema> = {
  */
 export type Form<T extends Record<string, unknown>> = {
   type: "form";
-  form: T;
+  form: {
+    values: T;
+  };
 };
 
 /**

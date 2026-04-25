@@ -1058,7 +1058,7 @@ describe("nextState", () => {
         list: {
           0: {
             type: "loop",
-            list: {
+            do: {
               0: {
                 a: {
                   data: { here: false },

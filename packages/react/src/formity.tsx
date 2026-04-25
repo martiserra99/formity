@@ -62,7 +62,6 @@ export function Formity<
       const changed = nextState(flow, onYield, onReturn, state, values);
       setState(changed);
     },
-    // @ts-expect-error: excessively deep type instantiation due to recursive ReturnOutput<T>
     [flow, onYield, onReturn, state],
   );
 

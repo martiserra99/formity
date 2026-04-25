@@ -67,7 +67,7 @@ describe("syncState", () => {
             then: {
               0: {
                 type: "loop",
-                list: {
+                do: {
                   0: {
                     a: {
                       data: { here: true, data: 1 },

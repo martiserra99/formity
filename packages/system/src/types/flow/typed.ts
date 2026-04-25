@@ -177,7 +177,7 @@ export type JumpFlow<
 > = {
   jump: {
     id: string;
-    item: ItemFlow<Render, Schema["item"], Inputs, Inputs, Params>;
+    at: FormFlow<Render, Schema["jump"]["at"], Inputs, Params>;
   };
 };
 
@@ -189,15 +189,18 @@ export type FormFlow<
 > = {
   form: {
     values: (inputs: Memory) => {
-      [K in keyof Schema["form"]]: [Schema["form"][K], PropertyKey[]];
+      [K in keyof Schema["form"]["values"]]: [
+        Schema["form"]["values"][K],
+        PropertyKey[],
+      ];
     };
     render: (args: {
       inputs: Memory;
-      values: Schema["form"];
+      values: Schema["form"]["values"];
       params: Params;
-      onNext: OnNext<Schema["form"]>;
-      onBack: OnBack<Schema["form"]>;
-      getState: GetState<Schema["form"]>;
+      onNext: OnNext<Schema["form"]["values"]>;
+      onBack: OnBack<Schema["form"]["values"]>;
+      getState: GetState<Schema["form"]["values"]>;
       setState: SetState;
     }) => Render;
   };
@@ -250,7 +253,7 @@ type Output<
 type FormOutput<
   Schema extends FormSchema,
   Memory extends Record<string, unknown>,
-> = Join<Schema["form"], Memory>;
+> = Join<Schema["form"]["values"], Memory>;
 
 type VariablesOutput<
   Schema extends VariablesSchema,
@@ -261,13 +264,7 @@ type ListOutput<
   Schema extends ListSchema,
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
-> = Schema extends [infer Head, ...infer Others]
-  ? Head extends ItemSchema
-    ? Others extends ListSchema[]
-      ? ListOutput<Others, Inputs, Output<Head, Inputs, Memory>>
-      : never
-    : never
-  : Memory;
+> = ListContainsJump<Schema> extends true ? Inputs : Memory;
 
 type ConditionOutput<
   Schema extends ConditionSchema,
@@ -298,7 +295,7 @@ type SwitchOutput<
 type JumpOutput<
   Schema extends JumpSchema,
   Inputs extends Record<string, unknown>,
-> = Output<Schema["item"], Inputs, Inputs>;
+> = Output<Schema["jump"]["at"], Inputs, Inputs>;
 
 type BranchesContainsJump<Series extends ListSchema[]> = Series extends [
   infer Head,

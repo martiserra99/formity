@@ -7,11 +7,11 @@ import type {
 import type { Position, LoopPosition } from "../../types/state/position";
 
 export function create(): NestValues {
-  return { type: "loop", list: {} };
+  return { type: "loop", do: {} };
 }
 
 export function clone(values: LoopValues): NestValues {
-  return { ...values, list: { ...values.list } };
+  return { ...values, do: { ...values.do } };
 }
 
 export function getItem(
@@ -19,7 +19,7 @@ export function getItem(
   position: Position,
 ): ItemValues | null {
   const { slot } = position as LoopPosition;
-  if (slot in values.list) return values.list[slot];
+  if (slot in values.do) return values.do[slot];
   return null;
 }
 
@@ -29,5 +29,5 @@ export function setItem(
   item: ItemValues,
 ): void {
   const { slot } = position as LoopPosition;
-  values.list[slot] = item;
+  values.do[slot] = item;
 }

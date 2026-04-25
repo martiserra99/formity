@@ -16,7 +16,7 @@ describe("LoopValues", () => {
       };
       const nest: LoopValues = {
         type: "loop",
-        list: {
+        do: {
           1: item,
         },
       };
@@ -34,7 +34,7 @@ describe("LoopValues", () => {
       };
       const nest: LoopValues = {
         type: "loop",
-        list: {
+        do: {
           0: item,
         },
       };
@@ -48,7 +48,7 @@ describe("LoopValues", () => {
     it("sets the item at the given position within the given `LoopValues` object", () => {
       const nest: LoopValues = {
         type: "loop",
-        list: {},
+        do: {},
       };
       const position: Position = { type: "loop", slot: 1 };
       const item: FormValues = {
@@ -60,7 +60,7 @@ describe("LoopValues", () => {
       setItem(nest, position, item);
       const expected: LoopValues = {
         type: "loop",
-        list: {
+        do: {
           1: item,
         },
       };

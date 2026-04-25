@@ -30,7 +30,7 @@ describe("JumpFlow", () => {
       const flow: JumpFlow = {
         jump: {
           id: "A",
-          item: item,
+          at: item,
         },
       };
       const result = at(flow);

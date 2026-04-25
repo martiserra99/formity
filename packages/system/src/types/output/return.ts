@@ -78,7 +78,7 @@ type SwitchData<Switch extends SwitchSchema, Data, Flag> = BranchesData<
 >;
 
 type JumpData<Jump extends JumpSchema, Data> = ItemData<
-  Jump["item"],
+  Jump["jump"]["at"],
   Data,
   false
 >;

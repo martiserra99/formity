@@ -65,7 +65,9 @@ export type SwitchSchema = {
  */
 export type JumpSchema = {
   type: "jump";
-  item: ItemSchema;
+  jump: {
+    at: FormSchema;
+  };
 };
 
 /**
@@ -73,7 +75,9 @@ export type JumpSchema = {
  */
 export type FormSchema = {
   type: "form";
-  form: Record<string, unknown>;
+  form: {
+    values: Record<string, unknown>;
+  };
 };
 
 /**

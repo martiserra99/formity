@@ -15,7 +15,7 @@ describe("JumpValues", () => {
       };
       const nest: JumpValues = {
         type: "jump",
-        item: item,
+        at: item,
       };
       const result = getItem(nest);
       expect(result).toBe(item);
@@ -24,7 +24,7 @@ describe("JumpValues", () => {
     it("returns null when trying to get the item and it doesn't exist in the given `JumpValues` object", () => {
       const nest: JumpValues = {
         type: "jump",
-        item: undefined,
+        at: undefined,
       };
       const result = getItem(nest);
       expect(result).toBe(null);
@@ -35,7 +35,7 @@ describe("JumpValues", () => {
     it("sets the item within the given `JumpValues` object", () => {
       const nest: JumpValues = {
         type: "jump",
-        item: undefined,
+        at: undefined,
       };
       const item: FormValues = {
         a: {
@@ -46,7 +46,7 @@ describe("JumpValues", () => {
       setItem(nest, item);
       const expected: JumpValues = {
         type: "jump",
-        item: item,
+        at: item,
       };
       expect(nest).toEqual(expected);
     });

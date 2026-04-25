@@ -14,5 +14,5 @@ export function next(): Position | null {
 }
 
 export function at(flow: JumpFlow): ItemFlow {
-  return flow.jump.item;
+  return flow.jump.at;
 }

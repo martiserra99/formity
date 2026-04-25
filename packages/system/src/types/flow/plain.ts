@@ -46,7 +46,7 @@ export type SwitchFlow<Render = unknown> = {
 export type JumpFlow<Render = unknown> = {
   jump: {
     id: string;
-    item: ItemFlow<Render>;
+    at: FormFlow<Render>;
   };
 };
 

@@ -40,7 +40,7 @@ export type ConditionValues = {
  */
 export type LoopValues = {
   type: "loop";
-  list: { [position: number]: ItemValues };
+  do: { [position: number]: ItemValues };
 };
 
 /**
@@ -57,7 +57,7 @@ export type SwitchValues = {
  */
 export type JumpValues = {
   type: "jump";
-  item: ItemValues | undefined;
+  at: ItemValues | undefined;
 };
 
 /**
