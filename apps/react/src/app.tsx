@@ -12,24 +12,29 @@ import {
 import { MultiStepForm } from "./multi-step-form";
 import { Data } from "./components";
 
-import type { Render } from "./render";
+type Definition = {
+  render: { Form: React.FC; step: string };
+  schema: Schema;
+  inputs: Record<string, unknown>;
+  params: Record<string, unknown>;
+};
 
-interface AppProps<T extends Schema> {
-  flow: Flow<Render, T>;
+interface AppProps<T extends Definition> {
+  flow: Flow<T>;
 }
 
-export default function App<T extends Schema>({ flow }: AppProps<T>) {
-  const [values, setValues] = useState<ReturnOutput<Schema> | null>(null);
+export default function App<T extends Definition>({ flow }: AppProps<T>) {
+  const [values, setValues] = useState<ReturnOutput<Definition> | null>(null);
 
-  const onYield = useCallback<OnYield<Schema>>(
-    (values: YieldOutput<Schema>) => {
+  const onYield = useCallback<OnYield<Definition>>(
+    (values: YieldOutput<Definition>) => {
       console.log(values);
     },
     [],
   );
 
-  const onReturn = useCallback<OnReturn<Schema>>(
-    (values: ReturnOutput<Schema>) => {
+  const onReturn = useCallback<OnReturn<Definition>>(
+    (values: ReturnOutput<Definition>) => {
       setValues(values);
     },
     [],

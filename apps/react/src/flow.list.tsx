@@ -5,18 +5,21 @@ import { z } from "zod";
 
 import { Form, Layout, Row, TextField, NextButton } from "./components";
 
-import type { Render } from "./render";
+export type ListDefinition = {
+  render: { Form: React.FC; step: string };
+  schema: [
+    s.Variables<{ fullName: string }>,
+    [
+      s.Form<{ name: string; surname: string }>,
+      [s.Variables<{ fullName: string }>],
+    ],
+    s.Return<{ fullName: string }>,
+  ];
+  inputs: Record<never, never>;
+  params: Record<never, never>;
+};
 
-export type ListSchema = [
-  s.Variables<{ fullName: string }>,
-  [
-    s.Form<{ name: string; surname: string }>,
-    [s.Variables<{ fullName: string }>],
-  ],
-  s.Return<{ fullName: string }>,
-];
-
-export const listFlow: Flow<Render, ListSchema> = [
+export const listFlow: Flow<ListDefinition> = [
   {
     variables: () => ({
       fullName: "",

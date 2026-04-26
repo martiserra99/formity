@@ -13,29 +13,32 @@ import {
   BackButton,
 } from "./components";
 
-import type { Render } from "./render";
+export type ConditionDefinition = {
+  render: { Form: React.FC; step: string };
+  schema: [
+    s.Form<{ softwareDeveloper: boolean }>,
+    s.Condition<{
+      then: [
+        s.Form<{ languages: string[] }>,
+        s.Return<{
+          softwareDeveloper: true;
+          languages: string[];
+        }>,
+      ];
+      else: [
+        s.Form<{ interested: string }>,
+        s.Return<{
+          softwareDeveloper: false;
+          interested: string;
+        }>,
+      ];
+    }>,
+  ];
+  inputs: Record<never, never>;
+  params: Record<never, never>;
+};
 
-export type ConditionSchema = [
-  s.Form<{ softwareDeveloper: boolean }>,
-  s.Condition<{
-    then: [
-      s.Form<{ languages: string[] }>,
-      s.Return<{
-        softwareDeveloper: true;
-        languages: string[];
-      }>,
-    ];
-    else: [
-      s.Form<{ interested: string }>,
-      s.Return<{
-        softwareDeveloper: false;
-        interested: string;
-      }>,
-    ];
-  }>,
-];
-
-export const conditionFlow: Flow<Render, ConditionSchema> = [
+export const conditionFlow: Flow<ConditionDefinition> = [
   {
     form: {
       values: () => ({

@@ -5,28 +5,31 @@ import { z } from "zod";
 
 import { Form, Layout, Select, NextButton, BackButton } from "./components";
 
-import type { Render } from "./render";
+export type LoopDefinition = {
+  render: { Form: React.FC; step: string };
+  schema: [
+    s.Variables<{ languages: { value: string; question: string }[] }>,
+    s.Variables<{
+      i: number;
+      languagesRatings: { name: string; rating: string }[];
+    }>,
+    s.Loop<
+      [
+        s.Variables<{ language: { value: string; question: string } }>,
+        s.Form<{ rating: string }>,
+        s.Variables<{
+          i: number;
+          languagesRatings: { name: string; rating: string }[];
+        }>,
+      ]
+    >,
+    s.Return<{ languagesRatings: { name: string; rating: string }[] }>,
+  ];
+  inputs: Record<never, never>;
+  params: Record<never, never>;
+};
 
-export type LoopSchema = [
-  s.Variables<{ languages: { value: string; question: string }[] }>,
-  s.Variables<{
-    i: number;
-    languagesRatings: { name: string; rating: string }[];
-  }>,
-  s.Loop<
-    [
-      s.Variables<{ language: { value: string; question: string } }>,
-      s.Form<{ rating: string }>,
-      s.Variables<{
-        i: number;
-        languagesRatings: { name: string; rating: string }[];
-      }>,
-    ]
-  >,
-  s.Return<{ languagesRatings: { name: string; rating: string }[] }>,
-];
-
-export const loopFlow: Flow<Render, LoopSchema> = [
+export const loopFlow: Flow<LoopDefinition> = [
   {
     variables: () => ({
       languages: [

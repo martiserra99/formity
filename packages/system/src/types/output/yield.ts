@@ -1,4 +1,4 @@
-import type { Schema } from "../schema";
+import type { Definition } from "../definition";
 
 import type {
   ItemSchema,
@@ -15,8 +15,8 @@ import type {
 /**
  * Returns the union of all possible values that can be yielded by a multi-step form.
  */
-export type YieldOutput<Struct extends Schema> = ListData<
-  Struct,
+export type YieldOutput<T extends Definition> = ListData<
+  T["schema"],
   never,
   false
 > extends [infer U, boolean]

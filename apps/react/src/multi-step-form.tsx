@@ -9,22 +9,27 @@ import {
 
 import { FormActions } from "./form-actions";
 
-import type { Render } from "./render";
+type Definition = {
+  render: { Form: React.FC; step: string };
+  schema: Schema;
+  inputs: Record<string, unknown>;
+  params: Record<string, unknown>;
+};
 
-interface MultiStepFormProps<T extends Schema> {
-  flow: Flow<Render, T>;
-  onYield?: OnYield<Schema>;
-  onReturn?: OnReturn<Schema>;
+interface MultiStepFormProps<T extends Definition> {
+  flow: Flow<T>;
+  onYield?: OnYield<Definition>;
+  onReturn?: OnReturn<Definition>;
   initialState?: State;
 }
 
-export function MultiStepForm<T extends Schema>({
+export function MultiStepForm<T extends Definition>({
   flow,
   onYield,
   onReturn,
   initialState,
 }: MultiStepFormProps<T>): React.ReactNode {
-  const { form, ...rest } = useFormity<Render, T>({
+  const { form, ...rest } = useFormity<T>({
     flow,
     onYield,
     onReturn,

@@ -5,32 +5,32 @@ import "./main.css";
 
 import App from "./app";
 
-import { flow, Schema } from "./flow";
-import { listFlow, ListSchema } from "./flow.list";
-import { conditionFlow, ConditionSchema } from "./flow.condition";
-import { loopFlow, LoopSchema } from "./flow.loop";
-import { switchFlow, SwitchSchema } from "./flow.switch";
+import { flow, Definition } from "./flow";
+import { listFlow, ListDefinition } from "./flow.list";
+import { conditionFlow, ConditionDefinition } from "./flow.condition";
+import { loopFlow, LoopDefinition } from "./flow.loop";
+import { switchFlow, SwitchDefinition } from "./flow.switch";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App<Schema> flow={flow} />} />
+        <Route path="/" element={<App<Definition> flow={flow} />} />
         <Route
           path="/flow/list"
-          element={<App<ListSchema> flow={listFlow} />}
+          element={<App<ListDefinition> flow={listFlow} />}
         />
         <Route
           path="/flow/cond"
-          element={<App<ConditionSchema> flow={conditionFlow} />}
+          element={<App<ConditionDefinition> flow={conditionFlow} />}
         />
         <Route
           path="/flow/loop"
-          element={<App<LoopSchema> flow={loopFlow} />}
+          element={<App<LoopDefinition> flow={loopFlow} />}
         />
         <Route
           path="/flow/switch"
-          element={<App<SwitchSchema> flow={switchFlow} />}
+          element={<App<SwitchDefinition> flow={switchFlow} />}
         />
       </Routes>
     </BrowserRouter>

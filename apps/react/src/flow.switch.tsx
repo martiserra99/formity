@@ -12,33 +12,36 @@ import {
   BackButton,
 } from "./components";
 
-import type { Render } from "./render";
+export type SwitchDefinition = {
+  render: { Form: React.FC; step: string };
+  schema: [
+    s.Form<{ interested: string }>,
+    s.Switch<{
+      branches: [
+        [
+          s.Form<{ whyYes: string }>,
+          s.Return<{ interested: "yes"; whyYes: string }>,
+        ],
+        [
+          s.Form<{ whyNot: string }>,
+          s.Return<{ interested: "no"; whyNot: string }>,
+        ],
+        [
+          s.Form<{ whyMaybe: string }>,
+          s.Return<{ interested: "maybe"; whyMaybe: string }>,
+        ],
+      ];
+      default: [
+        s.Form<{ whyNotSure: string }>,
+        s.Return<{ interested: "notSure"; whyNotSure: string }>,
+      ];
+    }>,
+  ];
+  inputs: Record<never, never>;
+  params: Record<never, never>;
+};
 
-export type SwitchSchema = [
-  s.Form<{ interested: string }>,
-  s.Switch<{
-    branches: [
-      [
-        s.Form<{ whyYes: string }>,
-        s.Return<{ interested: "yes"; whyYes: string }>,
-      ],
-      [
-        s.Form<{ whyNot: string }>,
-        s.Return<{ interested: "no"; whyNot: string }>,
-      ],
-      [
-        s.Form<{ whyMaybe: string }>,
-        s.Return<{ interested: "maybe"; whyMaybe: string }>,
-      ],
-    ];
-    default: [
-      s.Form<{ whyNotSure: string }>,
-      s.Return<{ interested: "notSure"; whyNotSure: string }>,
-    ];
-  }>,
-];
-
-export const switchFlow: Flow<Render, SwitchSchema> = [
+export const switchFlow: Flow<SwitchDefinition> = [
   {
     form: {
       values: () => ({

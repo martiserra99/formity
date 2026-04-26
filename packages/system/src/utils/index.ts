@@ -1,4 +1,4 @@
-import type { Schema } from "../types/schema";
+import type { Definition } from "src/types/definition";
 
 import type { Flow } from "../types/flow/typed";
 import type { Flow as PlainFlow } from "../types/flow/plain";
@@ -25,15 +25,10 @@ import * as FormUtils from "./form";
  *
  * @throws If no form step is found or a return is encountered before reaching one.
  */
-export function initState<
-  Render,
-  Struct extends Schema,
-  Inputs extends Record<string, unknown>,
-  Params extends Record<string, unknown>,
->(options: {
-  flow: Flow<Render, Struct, Inputs, Params>;
-  onYield: OnYield<Struct>;
-  inputs: Inputs;
+export function initState<T extends Definition>(options: {
+  flow: Flow<T>;
+  onYield: OnYield<T>;
+  inputs: T["inputs"];
 }): State {
   const flow = options.flow as PlainFlow;
   const inputs = options.inputs as Record<string, unknown>;
@@ -46,15 +41,10 @@ export function initState<
  * and `onReturn` if a return is found, and returns the state at the next form step
  * if reached, or the current one otherwise.
  */
-export function nextState<
-  Render,
-  Struct extends Schema,
-  Inputs extends Record<string, unknown>,
-  Params extends Record<string, unknown>,
->(options: {
-  flow: Flow<Render, Struct, Inputs, Params>;
-  onYield: OnYield<Struct>;
-  onReturn: OnReturn<Struct>;
+export function nextState<T extends Definition>(options: {
+  flow: Flow<T>;
+  onYield: OnYield<T>;
+  onReturn: OnReturn<T>;
   state: State;
   values: Record<string, unknown>;
 }): State {
@@ -71,14 +61,9 @@ export function nextState<
  * operations encountered along the way, and returns the state at the previous
  * form step if found, or the current one otherwise.
  */
-export function prevState<
-  Render,
-  Struct extends Schema,
-  Inputs extends Record<string, unknown>,
-  Params extends Record<string, unknown>,
->(options: {
-  flow: Flow<Render, Struct, Inputs, Params>;
-  onYield: OnYield<Struct>;
+export function prevState<T extends Definition>(options: {
+  flow: Flow<T>;
+  onYield: OnYield<T>;
   state: State;
   values: Record<string, unknown>;
 }): State {
@@ -92,13 +77,8 @@ export function prevState<
 /**
  * Returns a new state with the values of the current form step updated.
  */
-export function syncState<
-  Render,
-  Struct extends Schema,
-  Inputs extends Record<string, unknown>,
-  Params extends Record<string, unknown>,
->(options: {
-  flow: Flow<Render, Struct, Inputs, Params>;
+export function syncState<T extends Definition>(options: {
+  flow: Flow<T>;
   state: State;
   values: Record<string, unknown>;
 }): State {
@@ -111,24 +91,16 @@ export function syncState<
 /**
  * Returns the rendered form for the current step of the multi-step form.
  */
-export function getForm<
-  Render,
-  Struct extends Schema,
-  Inputs extends Record<string, unknown>,
-  Params extends Record<string, unknown>,
->(options: {
-  flow: Flow<Render, Struct, Inputs, Params>;
-  params: Params;
+export function getForm<T extends Definition>(options: {
+  flow: Flow<T>;
+  params: T["params"];
   state: State;
   onNext: OnNext<Record<string, unknown>>;
   onBack: OnBack<Record<string, unknown>>;
   getState: GetState<Record<string, unknown>>;
   setState: SetState;
 }): {
-  form: Render;
-  inputs: Record<string, unknown>;
-  values: Record<string, unknown>;
-  params: Record<string, unknown>;
+  form: T["render"];
   onNext: OnNext<Record<string, unknown>>;
   onBack: OnBack<Record<string, unknown>>;
   getState: GetState<Record<string, unknown>>;
@@ -143,10 +115,7 @@ export function getForm<
   const setState = options.setState;
   const controls = { onNext, onBack, getState, setState };
   return FormUtils.getForm({ flow, params, state, ...controls }) as {
-    form: Render;
-    inputs: Record<string, unknown>;
-    values: Record<string, unknown>;
-    params: Record<string, unknown>;
+    form: T["render"];
     onNext: OnNext<Record<string, unknown>>;
     onBack: OnBack<Record<string, unknown>>;
     getState: GetState<Record<string, unknown>>;

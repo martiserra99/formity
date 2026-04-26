@@ -17,81 +17,84 @@ import {
   BackButton,
 } from "./components";
 
-import type { Render } from "./render";
+export type Definition = {
+  render: { Form: React.FC; step: string };
+  schema: [
+    s.Form<{ name: string; surname: string; age: number }>,
+    s.Yield<{
+      next: [
+        { type: "next"; data: { name: string } },
+        { type: "next"; data: { surname: string } },
+        { type: "next"; data: { age: number } },
+      ];
+      back: [
+        { type: "back"; data: { name: string } },
+        { type: "back"; data: { surname: string } },
+        { type: "back"; data: { age: number } },
+      ];
+    }>,
+    s.Form<{ softwareDeveloper: boolean }>,
+    s.Yield<{
+      next: [{ type: "next"; data: { softwareDeveloper: boolean } }];
+      back: [{ type: "back"; data: { softwareDeveloper: boolean } }];
+    }>,
+    s.Condition<{
+      then: [
+        s.Variables<{
+          languagesOptions: { value: string; label: string }[];
+          questions: Record<string, string>;
+        }>,
+        s.Form<{ languages: string[] }>,
+        s.Yield<{
+          next: [{ type: "next"; data: { languages: string[] } }];
+          back: [{ type: "back"; data: { languages: string[] } }];
+        }>,
+        s.Variables<{
+          i: number;
+          languagesRatings: { name: string; rating: string }[];
+        }>,
+        s.Loop<
+          [
+            s.Variables<{ language: string }>,
+            s.Variables<{ question: string }>,
+            s.Form<{ rating: string }>,
+            s.Yield<{
+              next: [{ type: "next"; data: { rating: string } }];
+              back: [{ type: "back"; data: { rating: string } }];
+            }>,
+            s.Variables<{
+              i: number;
+              languagesRatings: { name: string; rating: string }[];
+            }>,
+          ]
+        >,
+        s.Return<{
+          fullName: string;
+          age: number;
+          softwareDeveloper: true;
+          languages: { name: string; rating: string }[];
+        }>,
+      ];
+      else: [
+        s.Form<{ interested: string }>,
+        s.Yield<{
+          next: [{ type: "next"; data: { interested: string } }];
+          back: [{ type: "back"; data: { interested: string } }];
+        }>,
+        s.Return<{
+          fullName: string;
+          age: number;
+          softwareDeveloper: false;
+          interested: string;
+        }>,
+      ];
+    }>,
+  ];
+  inputs: Record<never, never>;
+  params: Record<never, never>;
+};
 
-export type Schema = [
-  s.Form<{ name: string; surname: string; age: number }>,
-  s.Yield<{
-    next: [
-      { type: "next"; data: { name: string } },
-      { type: "next"; data: { surname: string } },
-      { type: "next"; data: { age: number } },
-    ];
-    back: [
-      { type: "back"; data: { name: string } },
-      { type: "back"; data: { surname: string } },
-      { type: "back"; data: { age: number } },
-    ];
-  }>,
-  s.Form<{ softwareDeveloper: boolean }>,
-  s.Yield<{
-    next: [{ type: "next"; data: { softwareDeveloper: boolean } }];
-    back: [{ type: "back"; data: { softwareDeveloper: boolean } }];
-  }>,
-  s.Condition<{
-    then: [
-      s.Variables<{
-        languagesOptions: { value: string; label: string }[];
-        questions: Record<string, string>;
-      }>,
-      s.Form<{ languages: string[] }>,
-      s.Yield<{
-        next: [{ type: "next"; data: { languages: string[] } }];
-        back: [{ type: "back"; data: { languages: string[] } }];
-      }>,
-      s.Variables<{
-        i: number;
-        languagesRatings: { name: string; rating: string }[];
-      }>,
-      s.Loop<
-        [
-          s.Variables<{ language: string }>,
-          s.Variables<{ question: string }>,
-          s.Form<{ rating: string }>,
-          s.Yield<{
-            next: [{ type: "next"; data: { rating: string } }];
-            back: [{ type: "back"; data: { rating: string } }];
-          }>,
-          s.Variables<{
-            i: number;
-            languagesRatings: { name: string; rating: string }[];
-          }>,
-        ]
-      >,
-      s.Return<{
-        fullName: string;
-        age: number;
-        softwareDeveloper: true;
-        languages: { name: string; rating: string }[];
-      }>,
-    ];
-    else: [
-      s.Form<{ interested: string }>,
-      s.Yield<{
-        next: [{ type: "next"; data: { interested: string } }];
-        back: [{ type: "back"; data: { interested: string } }];
-      }>,
-      s.Return<{
-        fullName: string;
-        age: number;
-        softwareDeveloper: false;
-        interested: string;
-      }>,
-    ];
-  }>,
-];
-
-export const flow: Flow<Render, Schema> = [
+export const flow: Flow<Definition> = [
   {
     form: {
       values: () => ({
