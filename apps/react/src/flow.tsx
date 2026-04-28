@@ -19,7 +19,7 @@ import {
 
 import { FormControls } from "./form-controls";
 
-export type Definition = {
+export type Shape = {
   render: React.ReactNode;
   schema: [
     s.Form<{ name: string; surname: string; age: number }>,
@@ -96,7 +96,7 @@ export type Definition = {
   params: Record<never, never>;
 };
 
-export const flow: Flow<Definition> = [
+export const flow: Flow<Shape> = [
   {
     form: {
       values: () => ({

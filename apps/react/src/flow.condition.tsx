@@ -15,7 +15,7 @@ import {
 
 import { FormControls } from "./form-controls";
 
-export type ConditionDefinition = {
+export type ConditionShape = {
   render: React.ReactNode;
   schema: [
     s.Form<{ softwareDeveloper: boolean }>,
@@ -40,7 +40,7 @@ export type ConditionDefinition = {
   params: Record<never, never>;
 };
 
-export const conditionFlow: Flow<ConditionDefinition> = [
+export const conditionFlow: Flow<ConditionShape> = [
   {
     form: {
       values: () => ({

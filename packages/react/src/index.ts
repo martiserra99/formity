@@ -1,7 +1,7 @@
 export type { s } from "@formity/system";
 
 export type { Flow } from "@formity/system";
-export type { Definition } from "@formity/system";
+export type { Shape } from "@formity/system";
 export type { Schema } from "@formity/system";
 
 export type { OnYield } from "@formity/system";

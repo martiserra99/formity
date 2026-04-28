@@ -1,4 +1,4 @@
-import type { Flow, Definition } from "@formity/system";
+import type { Flow, Shape } from "@formity/system";
 import type { OnYield, OnReturn, State } from "@formity/system";
 
 import { useState, useCallback } from "react";
@@ -10,7 +10,7 @@ import { prevState } from "@formity/system";
 import { syncState } from "@formity/system";
 import { getForm } from "@formity/system";
 
-interface Options<T extends Definition> {
+interface Options<T extends Shape> {
   flow: Flow<T>;
   inputs?: T["inputs"];
   params?: T["params"];
@@ -22,7 +22,7 @@ interface Options<T extends Definition> {
 /**
  * Runs a multi-step form and returns the rendered output for the current step.
  *
- * @template T An object type extending `Definition` with the following properties:
+ * @template T An object type extending `Shape` with the following properties:
  * - `render` - the type of the rendered output for each form step.
  * - `schema` — the structure of the multi-step form, including the values handled in each phase.
  * - `inputs` — additional values available across all steps of the multi-step form.
@@ -35,7 +35,7 @@ interface Options<T extends Definition> {
  * @param onReturn Callback invoked when the form returns its final values.
  * @param initialState The initial state to resume from, if any.
  */
-export function useFormity<T extends Definition>({
+export function useFormity<T extends Shape>({
   flow,
   inputs = {} as T["inputs"],
   params = {} as T["params"],

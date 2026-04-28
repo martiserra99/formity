@@ -1,6 +1,6 @@
 import type { Schema } from "./schema";
 
-export type Definition = {
+export type Shape = {
   render: unknown;
   schema: Schema;
   inputs: Record<string, unknown>;

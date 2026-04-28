@@ -1,4 +1,4 @@
-import type { Definition } from "../definition";
+import type { Shape } from "../shape";
 
 import type {
   ItemSchema,
@@ -19,13 +19,13 @@ import type { OnNext, OnBack, GetState, SetState } from "../form-controls";
 /**
  * Defines the structure and behavior of a multi-step form.
  *
- * @template T An object type extending `Definition` with the following properties:
+ * @template T An object type extending `Shape` with the following properties:
  * - `render` - the type of the rendered output for each form step.
  * - `schema` — the structure of the multi-step form, including the values handled in each phase.
  * - `inputs` — additional values available across all steps of the multi-step form.
  * - `params` — values accessible when rendering each form step.
  */
-export type Flow<T extends Definition> = ListFlow<
+export type Flow<T extends Shape> = ListFlow<
   T["render"],
   T["schema"],
   T["inputs"],

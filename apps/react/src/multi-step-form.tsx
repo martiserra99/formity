@@ -7,21 +7,21 @@ import {
   State,
 } from "@formity/react";
 
-type Definition = {
+type Shape = {
   render: React.ReactNode;
   schema: Schema;
   inputs: Record<string, unknown>;
   params: Record<string, unknown>;
 };
 
-interface MultiStepFormProps<T extends Definition> {
+interface MultiStepFormProps<T extends Shape> {
   flow: Flow<T>;
-  onYield?: OnYield<Definition>;
-  onReturn?: OnReturn<Definition>;
+  onYield?: OnYield<Shape>;
+  onReturn?: OnReturn<Shape>;
   initialState?: State;
 }
 
-export function MultiStepForm<T extends Definition>({
+export function MultiStepForm<T extends Shape>({
   flow,
   onYield,
   onReturn,
