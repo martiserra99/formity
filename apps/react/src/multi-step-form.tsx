@@ -27,10 +27,5 @@ export function MultiStepForm<T extends Shape>({
   onReturn,
   initialState,
 }: MultiStepFormProps<T>): React.ReactNode {
-  return useFormity<T>({
-    flow,
-    onYield,
-    onReturn,
-    initialState,
-  });
+  return useFormity<T>({ flow, onYield, onReturn, initialState });
 }
