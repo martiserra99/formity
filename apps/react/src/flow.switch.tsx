@@ -12,8 +12,10 @@ import {
   BackButton,
 } from "./components";
 
+import { FormActions } from "./form-actions";
+
 export type SwitchDefinition = {
-  render: { Form: React.FC; step: string };
+  render: React.ReactNode;
   schema: [
     s.Form<{ interested: string }>,
     s.Switch<{
@@ -47,9 +49,8 @@ export const switchFlow: Flow<SwitchDefinition> = [
       values: () => ({
         interested: ["yes", []],
       }),
-      render: ({ values }) => ({
-        step: "interested",
-        Form: () => (
+      render: ({ values, ...rest }) => (
+        <FormActions step="interested" {...rest}>
           <Form
             defaultValues={values}
             resolver={zodResolver(
@@ -89,8 +90,8 @@ export const switchFlow: Flow<SwitchDefinition> = [
               button={<NextButton>Next</NextButton>}
             />
           </Form>
-        ),
-      }),
+        </FormActions>
+      ),
     },
   },
   {
@@ -104,9 +105,8 @@ export const switchFlow: Flow<SwitchDefinition> = [
                 values: () => ({
                   whyYes: ["", []],
                 }),
-                render: ({ values }) => ({
-                  step: "whyYes",
-                  Form: () => (
+                render: ({ values, ...rest }) => (
+                  <FormActions step="whyYes" {...rest}>
                     <Form
                       defaultValues={values}
                       resolver={zodResolver(
@@ -125,8 +125,8 @@ export const switchFlow: Flow<SwitchDefinition> = [
                         back={<BackButton />}
                       />
                     </Form>
-                  ),
-                }),
+                  </FormActions>
+                ),
               },
             },
             {
@@ -145,9 +145,8 @@ export const switchFlow: Flow<SwitchDefinition> = [
                 values: () => ({
                   whyNot: ["", []],
                 }),
-                render: ({ values }) => ({
-                  step: "whyNot",
-                  Form: () => (
+                render: ({ values, ...rest }) => (
+                  <FormActions step="whyNot" {...rest}>
                     <Form
                       defaultValues={values}
                       resolver={zodResolver(
@@ -166,8 +165,8 @@ export const switchFlow: Flow<SwitchDefinition> = [
                         back={<BackButton />}
                       />
                     </Form>
-                  ),
-                }),
+                  </FormActions>
+                ),
               },
             },
             {
@@ -186,9 +185,8 @@ export const switchFlow: Flow<SwitchDefinition> = [
                 values: () => ({
                   whyMaybe: ["", []],
                 }),
-                render: ({ values }) => ({
-                  step: "whyMaybe",
-                  Form: () => (
+                render: ({ values, ...rest }) => (
+                  <FormActions step="whyMaybe" {...rest}>
                     <Form
                       defaultValues={values}
                       resolver={zodResolver(
@@ -211,8 +209,8 @@ export const switchFlow: Flow<SwitchDefinition> = [
                         back={<BackButton />}
                       />
                     </Form>
-                  ),
-                }),
+                  </FormActions>
+                ),
               },
             },
             {
@@ -230,9 +228,8 @@ export const switchFlow: Flow<SwitchDefinition> = [
             values: () => ({
               whyNotSure: ["", []],
             }),
-            render: ({ values }) => ({
-              step: "whyNotSure",
-              Form: () => (
+            render: ({ values, ...rest }) => (
+              <FormActions step="whyNotSure" {...rest}>
                 <Form
                   defaultValues={values}
                   resolver={zodResolver(
@@ -255,8 +252,8 @@ export const switchFlow: Flow<SwitchDefinition> = [
                     back={<BackButton />}
                   />
                 </Form>
-              ),
-            }),
+              </FormActions>
+            ),
           },
         },
         {

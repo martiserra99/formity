@@ -99,13 +99,7 @@ export function getForm<T extends Definition>(options: {
   onBack: OnBack<Record<string, unknown>>;
   getState: GetState<Record<string, unknown>>;
   setState: SetState;
-}): {
-  form: T["render"];
-  onNext: OnNext<Record<string, unknown>>;
-  onBack: OnBack<Record<string, unknown>>;
-  getState: GetState<Record<string, unknown>>;
-  setState: SetState;
-} {
+}): T["render"] {
   const flow = options.flow as PlainFlow;
   const params = options.params as Record<string, unknown>;
   const state = options.state;
@@ -113,12 +107,6 @@ export function getForm<T extends Definition>(options: {
   const onBack = options.onBack;
   const getState = options.getState;
   const setState = options.setState;
-  const controls = { onNext, onBack, getState, setState };
-  return FormUtils.getForm({ flow, params, state, ...controls }) as {
-    form: T["render"];
-    onNext: OnNext<Record<string, unknown>>;
-    onBack: OnBack<Record<string, unknown>>;
-    getState: GetState<Record<string, unknown>>;
-    setState: SetState;
-  };
+  const actions = { onNext, onBack, getState, setState };
+  return FormUtils.getForm({ flow, params, state, ...actions }) as T["render"];
 }

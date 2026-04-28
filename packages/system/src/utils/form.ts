@@ -15,16 +15,7 @@ export function getForm(options: {
   onBack: OnBack<Record<string, unknown>>;
   getState: GetState<Record<string, unknown>>;
   setState: SetState;
-}): {
-  form: unknown;
-  inputs: Record<string, unknown>;
-  values: Record<string, unknown>;
-  params: Record<string, unknown>;
-  onNext: OnNext<Record<string, unknown>>;
-  onBack: OnBack<Record<string, unknown>>;
-  getState: GetState<Record<string, unknown>>;
-  setState: SetState;
-} {
+}): unknown {
   const { flow, state, ...rest } = options;
   const point = state.points[state.points.length - 1];
   const form = NestFlowUtils.find(flow, point.path) as FormFlow;
@@ -39,6 +30,5 @@ export function getForm(options: {
       },
     ),
   );
-  const params = { ...rest, inputs, values };
-  return { form: form["form"]["render"](params), ...params };
+  return form["form"]["render"]({ inputs, values, ...rest });
 }

@@ -1,6 +1,5 @@
 import type { Flow, Definition } from "@formity/system";
 import type { OnYield, OnReturn, State } from "@formity/system";
-import type { OnNext, OnBack, GetState, SetState } from "@formity/system";
 
 import { useState, useCallback } from "react";
 
@@ -43,13 +42,7 @@ export function useFormity<T extends Definition>({
   onYield = () => {},
   onReturn = () => {},
   initialState,
-}: Options<T>): {
-  form: T["render"];
-  onNext: OnNext<Record<string, unknown>>;
-  onBack: OnBack<Record<string, unknown>>;
-  getState: GetState<Record<string, unknown>>;
-  setState: SetState;
-} {
+}: Options<T>): T["render"] {
   const [state, setState] = useState<State>(() => {
     if (initialState) return initialState;
     return initState({ flow, onYield, inputs });

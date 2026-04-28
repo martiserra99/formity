@@ -17,8 +17,10 @@ import {
   BackButton,
 } from "./components";
 
+import { FormActions } from "./form-actions";
+
 export type Definition = {
-  render: { Form: React.FC; step: string };
+  render: React.ReactNode;
   schema: [
     s.Form<{ name: string; surname: string; age: number }>,
     s.Yield<{
@@ -102,9 +104,8 @@ export const flow: Flow<Definition> = [
         surname: ["", []],
         age: [20, []],
       }),
-      render: ({ values }) => ({
-        step: "name",
-        Form: () => (
+      render: ({ values, ...rest }) => (
+        <FormActions step="name" {...rest}>
           <Form
             defaultValues={values}
             resolver={zodResolver(
@@ -140,8 +141,8 @@ export const flow: Flow<Definition> = [
               button={<NextButton>Next</NextButton>}
             />
           </Form>
-        ),
-      }),
+        </FormActions>
+      ),
     },
   },
   {
@@ -163,9 +164,8 @@ export const flow: Flow<Definition> = [
       values: () => ({
         softwareDeveloper: [true, []],
       }),
-      render: ({ values }) => ({
-        step: "softwareDeveloper",
-        Form: () => (
+      render: ({ values, ...rest }) => (
+        <FormActions step="softwareDeveloper" {...rest}>
           <Form
             defaultValues={values}
             resolver={zodResolver(
@@ -188,8 +188,8 @@ export const flow: Flow<Definition> = [
               back={<BackButton />}
             />
           </Form>
-        ),
-      }),
+        </FormActions>
+      ),
     },
   },
   {
@@ -226,9 +226,8 @@ export const flow: Flow<Definition> = [
             values: () => ({
               languages: [[], []],
             }),
-            render: ({ inputs, values }) => ({
-              step: "languages",
-              Form: () => (
+            render: ({ inputs, values, ...rest }) => (
+              <FormActions step="languages" {...rest}>
                 <Form
                   defaultValues={values}
                   resolver={zodResolver(
@@ -253,8 +252,8 @@ export const flow: Flow<Definition> = [
                     back={<BackButton />}
                   />
                 </Form>
-              ),
-            }),
+              </FormActions>
+            ),
           },
         },
         {
@@ -288,9 +287,8 @@ export const flow: Flow<Definition> = [
                   values: ({ language }) => ({
                     rating: ["love-it", [language]],
                   }),
-                  render: ({ inputs, values }) => ({
-                    step: `rating-${inputs.language}`,
-                    Form: () => (
+                  render: ({ inputs, values, ...rest }) => (
+                    <FormActions step={`rating-${inputs.language}`} {...rest}>
                       <Form
                         defaultValues={values}
                         resolver={zodResolver(
@@ -328,8 +326,8 @@ export const flow: Flow<Definition> = [
                           back={<BackButton />}
                         />
                       </Form>
-                    ),
-                  }),
+                    </FormActions>
+                  ),
                 },
               },
               {
@@ -365,9 +363,8 @@ export const flow: Flow<Definition> = [
             values: () => ({
               interested: ["maybe", []],
             }),
-            render: ({ values }) => ({
-              step: "interested",
-              Form: () => (
+            render: ({ values, ...rest }) => (
+              <FormActions step="interested" {...rest}>
                 <Form
                   defaultValues={values}
                   resolver={zodResolver(
@@ -404,8 +401,8 @@ export const flow: Flow<Definition> = [
                     back={<BackButton />}
                   />
                 </Form>
-              ),
-            }),
+              </FormActions>
+            ),
           },
         },
         {

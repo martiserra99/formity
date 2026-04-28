@@ -7,10 +7,8 @@ import {
   State,
 } from "@formity/react";
 
-import { FormActions } from "./form-actions";
-
 type Definition = {
-  render: { Form: React.FC; step: string };
+  render: React.ReactNode;
   schema: Schema;
   inputs: Record<string, unknown>;
   params: Record<string, unknown>;
@@ -29,16 +27,10 @@ export function MultiStepForm<T extends Definition>({
   onReturn,
   initialState,
 }: MultiStepFormProps<T>): React.ReactNode {
-  const { form, ...rest } = useFormity<T>({
+  return useFormity<T>({
     flow,
     onYield,
     onReturn,
     initialState,
   });
-  const { step, Form } = form;
-  return (
-    <FormActions step={step} {...rest}>
-      <Form />
-    </FormActions>
-  );
 }

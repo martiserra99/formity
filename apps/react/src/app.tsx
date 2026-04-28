@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import React, { useCallback, useState } from "react";
 
 import {
   Flow,
@@ -13,7 +13,7 @@ import { MultiStepForm } from "./multi-step-form";
 import { Data } from "./components";
 
 type Definition = {
-  render: { Form: React.FC; step: string };
+  render: React.ReactNode;
   schema: Schema;
   inputs: Record<string, unknown>;
   params: Record<string, unknown>;

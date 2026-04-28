@@ -13,8 +13,10 @@ import {
   BackButton,
 } from "./components";
 
+import { FormActions } from "./form-actions";
+
 export type ConditionDefinition = {
-  render: { Form: React.FC; step: string };
+  render: React.ReactNode;
   schema: [
     s.Form<{ softwareDeveloper: boolean }>,
     s.Condition<{
@@ -44,9 +46,8 @@ export const conditionFlow: Flow<ConditionDefinition> = [
       values: () => ({
         softwareDeveloper: [true, []],
       }),
-      render: ({ values }) => ({
-        step: "softwareDeveloper",
-        Form: () => (
+      render: ({ values, ...rest }) => (
+        <FormActions step="softwareDeveloper" {...rest}>
           <Form
             defaultValues={values}
             resolver={zodResolver(
@@ -68,8 +69,8 @@ export const conditionFlow: Flow<ConditionDefinition> = [
               button={<NextButton>Next</NextButton>}
             />
           </Form>
-        ),
-      }),
+        </FormActions>
+      ),
     },
   },
   {
@@ -81,9 +82,8 @@ export const conditionFlow: Flow<ConditionDefinition> = [
             values: () => ({
               languages: [[], []],
             }),
-            render: ({ values }) => ({
-              step: "languages",
-              Form: () => (
+            render: ({ values, ...rest }) => (
+              <FormActions step="languages" {...rest}>
                 <Form
                   defaultValues={values}
                   resolver={zodResolver(
@@ -112,8 +112,8 @@ export const conditionFlow: Flow<ConditionDefinition> = [
                     back={<BackButton />}
                   />
                 </Form>
-              ),
-            }),
+              </FormActions>
+            ),
           },
         },
         {
@@ -129,9 +129,8 @@ export const conditionFlow: Flow<ConditionDefinition> = [
             values: () => ({
               interested: ["maybe", []],
             }),
-            render: ({ values }) => ({
-              step: "interested",
-              Form: () => (
+            render: ({ values, ...rest }) => (
+              <FormActions step="interested" {...rest}>
                 <Form
                   defaultValues={values}
                   resolver={zodResolver(
@@ -168,8 +167,8 @@ export const conditionFlow: Flow<ConditionDefinition> = [
                     back={<BackButton />}
                   />
                 </Form>
-              ),
-            }),
+              </FormActions>
+            ),
           },
         },
         {
