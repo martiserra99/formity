@@ -1,4 +1,4 @@
-import type { OnNext, OnBack, GetState, SetState } from "../form-actions";
+import type { OnNext, OnBack, GetState, SetState } from "../form-controls";
 
 export type Flow<Render = unknown> = ListFlow<Render>;
 

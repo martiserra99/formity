@@ -5,7 +5,7 @@ import { z } from "zod";
 
 import { Form, Layout, Select, NextButton, BackButton } from "./components";
 
-import { FormActions } from "./form-actions";
+import { FormControls } from "./form-controls";
 
 export type LoopDefinition = {
   render: React.ReactNode;
@@ -71,7 +71,7 @@ export const loopFlow: Flow<LoopDefinition> = [
               rating: ["love-it", [language.value]],
             }),
             render: ({ inputs, values, ...rest }) => (
-              <FormActions step={`rating-${inputs.language.value}`} {...rest}>
+              <FormControls step={`rating-${inputs.language.value}`} {...rest}>
                 <Form
                   defaultValues={values}
                   resolver={zodResolver(
@@ -100,7 +100,7 @@ export const loopFlow: Flow<LoopDefinition> = [
                     back={inputs.i > 0 ? <BackButton /> : undefined}
                   />
                 </Form>
-              </FormActions>
+              </FormControls>
             ),
           },
         },

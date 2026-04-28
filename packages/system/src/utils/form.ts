@@ -2,7 +2,12 @@ import type { Flow, FormFlow } from "../types/flow/plain";
 
 import type { State } from "../types/state/state";
 
-import type { OnNext, OnBack, GetState, SetState } from "../types/form-actions";
+import type {
+  OnNext,
+  OnBack,
+  GetState,
+  SetState,
+} from "../types/form-controls";
 
 import * as NestFlowUtils from "./flow/nest";
 import * as NestValuesUtils from "./values/nest";

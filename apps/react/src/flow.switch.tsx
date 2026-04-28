@@ -12,7 +12,7 @@ import {
   BackButton,
 } from "./components";
 
-import { FormActions } from "./form-actions";
+import { FormControls } from "./form-controls";
 
 export type SwitchDefinition = {
   render: React.ReactNode;
@@ -50,7 +50,7 @@ export const switchFlow: Flow<SwitchDefinition> = [
         interested: ["yes", []],
       }),
       render: ({ values, ...rest }) => (
-        <FormActions step="interested" {...rest}>
+        <FormControls step="interested" {...rest}>
           <Form
             defaultValues={values}
             resolver={zodResolver(
@@ -90,7 +90,7 @@ export const switchFlow: Flow<SwitchDefinition> = [
               button={<NextButton>Next</NextButton>}
             />
           </Form>
-        </FormActions>
+        </FormControls>
       ),
     },
   },
@@ -106,7 +106,7 @@ export const switchFlow: Flow<SwitchDefinition> = [
                   whyYes: ["", []],
                 }),
                 render: ({ values, ...rest }) => (
-                  <FormActions step="whyYes" {...rest}>
+                  <FormControls step="whyYes" {...rest}>
                     <Form
                       defaultValues={values}
                       resolver={zodResolver(
@@ -125,7 +125,7 @@ export const switchFlow: Flow<SwitchDefinition> = [
                         back={<BackButton />}
                       />
                     </Form>
-                  </FormActions>
+                  </FormControls>
                 ),
               },
             },
@@ -146,7 +146,7 @@ export const switchFlow: Flow<SwitchDefinition> = [
                   whyNot: ["", []],
                 }),
                 render: ({ values, ...rest }) => (
-                  <FormActions step="whyNot" {...rest}>
+                  <FormControls step="whyNot" {...rest}>
                     <Form
                       defaultValues={values}
                       resolver={zodResolver(
@@ -165,7 +165,7 @@ export const switchFlow: Flow<SwitchDefinition> = [
                         back={<BackButton />}
                       />
                     </Form>
-                  </FormActions>
+                  </FormControls>
                 ),
               },
             },
@@ -186,7 +186,7 @@ export const switchFlow: Flow<SwitchDefinition> = [
                   whyMaybe: ["", []],
                 }),
                 render: ({ values, ...rest }) => (
-                  <FormActions step="whyMaybe" {...rest}>
+                  <FormControls step="whyMaybe" {...rest}>
                     <Form
                       defaultValues={values}
                       resolver={zodResolver(
@@ -209,7 +209,7 @@ export const switchFlow: Flow<SwitchDefinition> = [
                         back={<BackButton />}
                       />
                     </Form>
-                  </FormActions>
+                  </FormControls>
                 ),
               },
             },
@@ -229,7 +229,7 @@ export const switchFlow: Flow<SwitchDefinition> = [
               whyNotSure: ["", []],
             }),
             render: ({ values, ...rest }) => (
-              <FormActions step="whyNotSure" {...rest}>
+              <FormControls step="whyNotSure" {...rest}>
                 <Form
                   defaultValues={values}
                   resolver={zodResolver(
@@ -252,7 +252,7 @@ export const switchFlow: Flow<SwitchDefinition> = [
                     back={<BackButton />}
                   />
                 </Form>
-              </FormActions>
+              </FormControls>
             ),
           },
         },

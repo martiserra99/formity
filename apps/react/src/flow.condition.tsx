@@ -13,7 +13,7 @@ import {
   BackButton,
 } from "./components";
 
-import { FormActions } from "./form-actions";
+import { FormControls } from "./form-controls";
 
 export type ConditionDefinition = {
   render: React.ReactNode;
@@ -47,7 +47,7 @@ export const conditionFlow: Flow<ConditionDefinition> = [
         softwareDeveloper: [true, []],
       }),
       render: ({ values, ...rest }) => (
-        <FormActions step="softwareDeveloper" {...rest}>
+        <FormControls step="softwareDeveloper" {...rest}>
           <Form
             defaultValues={values}
             resolver={zodResolver(
@@ -69,7 +69,7 @@ export const conditionFlow: Flow<ConditionDefinition> = [
               button={<NextButton>Next</NextButton>}
             />
           </Form>
-        </FormActions>
+        </FormControls>
       ),
     },
   },
@@ -83,7 +83,7 @@ export const conditionFlow: Flow<ConditionDefinition> = [
               languages: [[], []],
             }),
             render: ({ values, ...rest }) => (
-              <FormActions step="languages" {...rest}>
+              <FormControls step="languages" {...rest}>
                 <Form
                   defaultValues={values}
                   resolver={zodResolver(
@@ -112,7 +112,7 @@ export const conditionFlow: Flow<ConditionDefinition> = [
                     back={<BackButton />}
                   />
                 </Form>
-              </FormActions>
+              </FormControls>
             ),
           },
         },
@@ -130,7 +130,7 @@ export const conditionFlow: Flow<ConditionDefinition> = [
               interested: ["maybe", []],
             }),
             render: ({ values, ...rest }) => (
-              <FormActions step="interested" {...rest}>
+              <FormControls step="interested" {...rest}>
                 <Form
                   defaultValues={values}
                   resolver={zodResolver(
@@ -167,7 +167,7 @@ export const conditionFlow: Flow<ConditionDefinition> = [
                     back={<BackButton />}
                   />
                 </Form>
-              </FormActions>
+              </FormControls>
             ),
           },
         },

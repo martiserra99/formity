@@ -8,10 +8,10 @@ import type { OnReturn } from "../types/handlers/typed";
 import type { OnYield as PlainOnYield } from "../types/handlers/plain";
 import type { OnReturn as PlainOnReturn } from "../types/handlers/plain";
 
-import type { OnNext } from "src/types/form-actions";
-import type { OnBack } from "src/types/form-actions";
-import type { GetState } from "src/types/form-actions";
-import type { SetState } from "src/types/form-actions";
+import type { OnNext } from "src/types/form-controls";
+import type { OnBack } from "src/types/form-controls";
+import type { GetState } from "src/types/form-controls";
+import type { SetState } from "src/types/form-controls";
 
 import type { State } from "../types/state/state";
 
@@ -107,6 +107,6 @@ export function getForm<T extends Definition>(options: {
   const onBack = options.onBack;
   const getState = options.getState;
   const setState = options.setState;
-  const actions = { onNext, onBack, getState, setState };
-  return FormUtils.getForm({ flow, params, state, ...actions }) as T["render"];
+  const controls = { onNext, onBack, getState, setState };
+  return FormUtils.getForm({ flow, params, state, ...controls }) as T["render"];
 }

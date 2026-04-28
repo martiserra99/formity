@@ -5,7 +5,7 @@ import { z } from "zod";
 
 import { Form, Layout, Row, TextField, NextButton } from "./components";
 
-import { FormActions } from "./form-actions";
+import { FormControls } from "./form-controls";
 
 export type ListDefinition = {
   render: React.ReactNode;
@@ -35,7 +35,7 @@ export const listFlow: Flow<ListDefinition> = [
           surname: ["", []],
         }),
         render: ({ values, ...rest }) => (
-          <FormActions step="nameSurname" {...rest}>
+          <FormControls step="nameSurname" {...rest}>
             <Form
               defaultValues={values}
               resolver={zodResolver(
@@ -70,7 +70,7 @@ export const listFlow: Flow<ListDefinition> = [
                 button={<NextButton>Next</NextButton>}
               />
             </Form>
-          </FormActions>
+          </FormControls>
         ),
       },
     },
