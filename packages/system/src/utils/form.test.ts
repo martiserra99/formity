@@ -52,6 +52,7 @@ describe("getForm", () => {
       state,
       onNext: () => {},
       onBack: () => {},
+      onJump: () => {},
       getState: () => state,
       setState: () => {},
     });
@@ -86,6 +87,7 @@ describe("getForm", () => {
       state,
       onNext: () => {},
       onBack: () => {},
+      onJump: () => {},
       getState: () => state,
       setState: () => {},
     });
@@ -120,6 +122,7 @@ describe("getForm", () => {
       state,
       onNext: () => {},
       onBack: () => {},
+      onJump: () => {},
       getState: () => state,
       setState: () => {},
     });

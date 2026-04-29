@@ -14,6 +14,7 @@ export type { State } from "@formity/system";
 
 export type { OnNext } from "@formity/system";
 export type { OnBack } from "@formity/system";
+export type { OnJump } from "@formity/system";
 export type { GetState } from "@formity/system";
 export type { SetState } from "@formity/system";
 

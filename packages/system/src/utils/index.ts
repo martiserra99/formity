@@ -10,6 +10,7 @@ import type { OnReturn as PlainOnReturn } from "../types/handlers/plain";
 
 import type { OnNext } from "src/types/form-controls";
 import type { OnBack } from "src/types/form-controls";
+import type { OnJump } from "src/types/form-controls";
 import type { GetState } from "src/types/form-controls";
 import type { SetState } from "src/types/form-controls";
 
@@ -97,6 +98,7 @@ export function getForm<T extends Schema>(options: {
   state: State;
   onNext: OnNext<Record<string, unknown>>;
   onBack: OnBack<Record<string, unknown>>;
+  onJump: OnJump<Record<string, unknown>>;
   getState: GetState<Record<string, unknown>>;
   setState: SetState;
 }): T["render"] {
@@ -105,8 +107,9 @@ export function getForm<T extends Schema>(options: {
   const state = options.state;
   const onNext = options.onNext;
   const onBack = options.onBack;
+  const onJump = options.onJump;
   const getState = options.getState;
   const setState = options.setState;
-  const controls = { onNext, onBack, getState, setState };
+  const controls = { onNext, onBack, onJump, getState, setState };
   return FormUtils.getForm({ flow, params, state, ...controls }) as T["render"];
 }

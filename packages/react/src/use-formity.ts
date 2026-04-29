@@ -64,6 +64,13 @@ export function useFormity<T extends Schema>({
     [flow, onYield, state],
   );
 
+  const onJump = useCallback(
+    (id: string, values: Record<string, unknown>) => {
+      console.log(id, values, flow, state);
+    },
+    [flow, state],
+  );
+
   const getState = useCallback(
     (values: Record<string, unknown>) => {
       return syncState({ flow, state, values });
@@ -71,7 +78,14 @@ export function useFormity<T extends Schema>({
     [state, flow],
   );
 
-  const args = { flow, params, state, onNext, onBack, getState, setState };
-
-  return getForm(args);
+  return getForm({
+    flow,
+    params,
+    state,
+    onNext,
+    onBack,
+    onJump,
+    getState,
+    setState,
+  });
 }
