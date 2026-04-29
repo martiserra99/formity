@@ -38,7 +38,7 @@ export function jump(flow: LoopFlow, id: string): Position[] | null {
   for (let i = 0; i < flow.loop.do.length; i++) {
     const item = flow.loop.do[i];
     if (NestFlowUtils.is(item)) {
-      const path = NestFlowUtils.jump(flow, id);
+      const path = NestFlowUtils.jump(item, id);
       if (path) {
         return [{ type: "loop", slot: i }, ...path];
       }

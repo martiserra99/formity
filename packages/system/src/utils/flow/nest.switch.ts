@@ -45,7 +45,7 @@ export function jump(flow: SwitchFlow, id: string): Position[] | null {
     for (let j = 0; j < flow.switch.branches[i].then.length; j++) {
       const item = flow.switch.branches[i].then[j];
       if (NestFlowUtils.is(item)) {
-        const path = NestFlowUtils.jump(flow, id);
+        const path = NestFlowUtils.jump(item, id);
         if (path) {
           return [{ type: "switch", branch: i, slot: j }, ...path];
         }

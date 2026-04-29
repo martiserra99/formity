@@ -26,7 +26,7 @@ export function jump(flow: ListFlow, id: string): Position[] | null {
   for (let i = 0; i < flow.length; i++) {
     const item = flow[i];
     if (NestFlowUtils.is(item)) {
-      const path = NestFlowUtils.jump(flow, id);
+      const path = NestFlowUtils.jump(item, id);
       if (path) {
         return [{ type: "list", slot: i }, ...path];
       }

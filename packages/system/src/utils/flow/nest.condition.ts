@@ -36,7 +36,7 @@ export function jump(flow: ConditionFlow, id: string): Position[] | null {
     for (let i = 0; i < flow.condition[branch].length; i++) {
       const item = flow.condition[branch][i];
       if (NestFlowUtils.is(item)) {
-        const path = NestFlowUtils.jump(flow, id);
+        const path = NestFlowUtils.jump(item, id);
         if (path) {
           return [{ type: "condition", branch, slot: i }, ...path];
         }
