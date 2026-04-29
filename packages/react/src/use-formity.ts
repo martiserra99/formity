@@ -6,6 +6,7 @@ import { useState, useCallback } from "react";
 import { initState } from "@formity/system";
 import { nextState } from "@formity/system";
 import { prevState } from "@formity/system";
+import { jumpState } from "@formity/system";
 
 import { syncState } from "@formity/system";
 import { getForm } from "@formity/system";
@@ -70,9 +71,10 @@ export function useFormity<T extends Schema>({
 
   const onJump = useCallback(
     (id: string, values: Record<string, unknown>) => {
-      console.log(id, values, flow, state);
+      const changed = jumpState({ id, flow, state, values, history });
+      setState(changed);
     },
-    [flow, state],
+    [flow, state, history],
   );
 
   const getState = useCallback(

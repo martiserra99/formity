@@ -79,6 +79,23 @@ export function prevState<T extends Schema>(options: {
 }
 
 /**
+ * Jumps to the jump element with the given id and returns the state at its form step,
+ * or returns the current state if no matching jump element is found.
+ */
+export function jumpState<T extends Schema>(options: {
+  id: string;
+  flow: Flow<T>;
+  state: State;
+  values: Record<string, unknown>;
+  history: boolean;
+}): State {
+  const flow = options.flow as PlainFlow;
+  const state = options.state;
+  const values = options.values;
+  return NavigateUtils.jumpState({ flow, state, values });
+}
+
+/**
  * Returns a new state with the values of the current form step updated.
  */
 export function syncState<T extends Schema>(options: {

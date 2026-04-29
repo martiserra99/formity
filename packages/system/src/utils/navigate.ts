@@ -231,6 +231,15 @@ export function prevState(options: {
   return { points: state.points, values: stateValues };
 }
 
+export function jumpState(options: {
+  flow: Flow;
+  state: State;
+  values: Record<string, unknown>;
+}): State {
+  console.log(options);
+  return options.state;
+}
+
 function updateStateValues(
   flow: Flow,
   state: State,

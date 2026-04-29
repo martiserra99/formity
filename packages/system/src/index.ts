@@ -21,6 +21,6 @@ export type { SetState } from "./types/form-controls";
 export { initState } from "./utils";
 export { nextState } from "./utils";
 export { prevState } from "./utils";
-
+export { jumpState } from "./utils";
 export { syncState } from "./utils";
 export { getForm } from "./utils";
