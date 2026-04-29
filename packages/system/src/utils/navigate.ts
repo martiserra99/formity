@@ -102,6 +102,7 @@ export function nextState(options: {
   onReturn: OnReturn;
   state: State;
   values: Record<string, unknown>;
+  history: boolean;
 }): State {
   const { flow, onYield, onReturn, state, values } = options;
   const point = state.points[state.points.length - 1];

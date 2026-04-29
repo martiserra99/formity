@@ -366,6 +366,7 @@ describe("nextState", () => {
       onReturn: () => {},
       state: current,
       values: {},
+      history: true,
     });
     const expected: State = {
       points: [
@@ -425,6 +426,7 @@ describe("nextState", () => {
       onReturn: () => {},
       state: current,
       values: {},
+      history: true,
     });
     const expected: State = {
       points: [
@@ -506,6 +508,7 @@ describe("nextState", () => {
       onReturn: () => {},
       state: current,
       values: {},
+      history: true,
     });
     const expected: State = {
       points: [
@@ -606,6 +609,7 @@ describe("nextState", () => {
       onReturn: () => {},
       state: current,
       values: {},
+      history: true,
     });
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
@@ -688,6 +692,7 @@ describe("nextState", () => {
       onReturn: () => {},
       state: current,
       values: {},
+      history: true,
     });
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
@@ -769,6 +774,7 @@ describe("nextState", () => {
       onReturn: () => {},
       state: current,
       values: {},
+      history: true,
     });
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
@@ -832,6 +838,7 @@ describe("nextState", () => {
       onReturn,
       state: current,
       values: {},
+      history: true,
     });
     expect(onReturn).toHaveBeenCalledWith({ a: 1, b: 2 });
   });
@@ -892,6 +899,7 @@ describe("nextState", () => {
       onReturn: () => {},
       state: current,
       values: {},
+      history: true,
     });
     const expected: State = {
       points: [
@@ -959,6 +967,7 @@ describe("nextState", () => {
       onReturn: () => {},
       state: current,
       values: {},
+      history: true,
     });
     const expected: State = {
       points: [
@@ -1004,6 +1013,7 @@ describe("nextState", () => {
       onReturn: () => {},
       state: current,
       values: { a: 1, b: 2 },
+      history: true,
     });
     const expected: State = {
       points: [
@@ -1066,6 +1076,7 @@ describe("nextState", () => {
       onReturn: () => {},
       state: current,
       values: { a: 1, b: 2 },
+      history: true,
     });
     const expected: State = {
       points: [

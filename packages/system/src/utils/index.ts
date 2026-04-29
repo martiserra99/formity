@@ -48,13 +48,16 @@ export function nextState<T extends Schema>(options: {
   onReturn: OnReturn<T>;
   state: State;
   values: Record<string, unknown>;
+  history: boolean;
 }): State {
   const flow = options.flow as PlainFlow;
   const onYield = options.onYield as PlainOnYield;
   const onReturn = options.onReturn as PlainOnReturn;
   const state = options.state;
   const values = options.values;
-  return NavigateUtils.nextState({ flow, onYield, onReturn, state, values });
+  const history = options.history;
+  const args = { flow, onYield, onReturn, state, values, history };
+  return NavigateUtils.nextState(args);
 }
 
 /**

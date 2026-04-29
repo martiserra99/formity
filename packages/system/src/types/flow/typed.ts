@@ -21,7 +21,7 @@ import type { OnNext, OnBack, GetState, SetState } from "../form-controls";
  *
  * @template T An object type extending `Schema` with the following properties:
  * - `render` - the type of the rendered output for each form step.
- * - `schema` — the structure of the multi-step form, including the values handled in each phase.
+ * - `struct` — the structure of the multi-step form, including the values handled in each phase.
  * - `inputs` — additional values available across all steps of the multi-step form.
  * - `params` — values accessible when rendering each form step.
  */

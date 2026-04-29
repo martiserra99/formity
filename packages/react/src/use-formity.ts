@@ -14,9 +14,10 @@ interface Options<T extends Schema> {
   flow: Flow<T>;
   inputs?: T["inputs"];
   params?: T["params"];
+  history?: boolean;
+  initialState?: State;
   onYield?: OnYield<T>;
   onReturn?: OnReturn<T>;
-  initialState?: State;
 }
 
 /**
@@ -24,24 +25,26 @@ interface Options<T extends Schema> {
  *
  * @template T An object type extending `Schema` with the following properties:
  * - `render` - the type of the rendered output for each form step.
- * - `schema` — the structure of the multi-step form, including the values handled in each phase.
+ * - `struct` — the structure of the multi-step form, including the values handled in each phase.
  * - `inputs` — additional values available across all steps of the multi-step form.
  * - `params` — values accessible when rendering each form step.
  *
  * @param flow The structure and behavior of the multi-step form.
  * @param inputs Additional values available across all steps of the multi-step form.
  * @param params Values accessible when rendering each form step.
+ * @param history Whether to keep a history of previous states.
+ * @param initialState The initial state to resume from, if any.
  * @param onYield Callback invoked when the form yields values.
  * @param onReturn Callback invoked when the form returns its final values.
- * @param initialState The initial state to resume from, if any.
  */
 export function useFormity<T extends Schema>({
   flow,
   inputs = {} as T["inputs"],
   params = {} as T["params"],
+  history = false,
+  initialState = undefined,
   onYield = () => {},
   onReturn = () => {},
-  initialState,
 }: Options<T>): T["render"] {
   const [state, setState] = useState<State>(() => {
     if (initialState) return initialState;
@@ -50,10 +53,11 @@ export function useFormity<T extends Schema>({
 
   const onNext = useCallback(
     (values: Record<string, unknown>) => {
-      const changed = nextState({ flow, onYield, onReturn, state, values });
+      const options = { flow, onYield, onReturn, state, values, history };
+      const changed = nextState(options);
       setState(changed);
     },
-    [flow, onYield, onReturn, state],
+    [flow, onYield, onReturn, state, history],
   );
 
   const onBack = useCallback(
