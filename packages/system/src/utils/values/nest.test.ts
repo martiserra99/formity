@@ -42,7 +42,7 @@ describe("NestValues", () => {
       };
       const path: Position[] = [
         { type: "list", slot: 1 },
-        { type: "condition", path: "else", slot: 0 },
+        { type: "condition", branch: "else", slot: 0 },
         { type: "loop", slot: 0 },
       ];
       const name: string = "a";
@@ -87,7 +87,7 @@ describe("NestValues", () => {
       };
       const path: Position[] = [
         { type: "list", slot: 1 },
-        { type: "condition", path: "then", slot: 0 },
+        { type: "condition", branch: "then", slot: 0 },
         { type: "loop", slot: 0 },
       ];
       const name: string = "a";
@@ -132,7 +132,7 @@ describe("NestValues", () => {
       };
       const path: Position[] = [
         { type: "list", slot: 1 },
-        { type: "condition", path: "else", slot: 0 },
+        { type: "condition", branch: "else", slot: 0 },
         { type: "loop", slot: 0 },
       ];
       const name: string = "a";
@@ -148,7 +148,7 @@ describe("NestValues", () => {
       const nest: NestValues = { type: "list", list: {} };
       const path: Position[] = [
         { type: "list", slot: 1 },
-        { type: "condition", path: "else", slot: 0 },
+        { type: "condition", branch: "else", slot: 0 },
         { type: "loop", slot: 0 },
       ];
       const name: string = "a";

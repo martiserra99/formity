@@ -87,7 +87,7 @@ describe("ConditionFlow", () => {
           else: [],
         },
       };
-      const current: Position = { type: "condition", path: "then", slot: 0 };
+      const current: Position = { type: "condition", branch: "then", slot: 0 };
       const position = next(flow, current);
       expect(position).toEqual({ type: "condition", path: "then", slot: 1 });
     });
@@ -113,7 +113,7 @@ describe("ConditionFlow", () => {
           ],
         },
       };
-      const current: Position = { type: "condition", path: "else", slot: 0 };
+      const current: Position = { type: "condition", branch: "else", slot: 0 };
       const position = next(flow, current);
       expect(position).toEqual({ type: "condition", path: "else", slot: 1 });
     });
@@ -140,7 +140,7 @@ describe("ConditionFlow", () => {
           ],
         },
       };
-      const current: Position = { type: "condition", path: "then", slot: 0 };
+      const current: Position = { type: "condition", branch: "then", slot: 0 };
       const position = next(flow, current);
       expect(position).toEqual(null);
     });
@@ -156,7 +156,7 @@ describe("ConditionFlow", () => {
           else: [],
         },
       };
-      const position: Position = { type: "condition", path: "then", slot: 1 };
+      const position: Position = { type: "condition", branch: "then", slot: 1 };
       const result = at(flow, position);
       expect(result).toBe(item);
     });
@@ -170,7 +170,7 @@ describe("ConditionFlow", () => {
           else: [{ variables: () => ({}) }, item],
         },
       };
-      const position: Position = { type: "condition", path: "else", slot: 1 };
+      const position: Position = { type: "condition", branch: "else", slot: 1 };
       const result = at(flow, position);
       expect(result).toBe(item);
     });

@@ -1,6 +1,8 @@
 import type { ItemFlow, SwitchFlow } from "../../types/flow/plain";
 import type { Position, SwitchPosition } from "../../types/state/position";
 
+import * as NestFlowUtils from "./nest";
+
 export function is(flow: ItemFlow): flow is SwitchFlow {
   return "switch" in flow;
 }
@@ -34,6 +36,21 @@ export function next(flow: SwitchFlow, position: Position): Position | null {
   }
   if (slot < flow.switch.default.length - 1) {
     return { type: "switch", branch: -1, slot: slot + 1 };
+  }
+  return null;
+}
+
+export function jump(flow: SwitchFlow, id: string): Position[] | null {
+  for (let i = 0; i < flow.switch.branches.length; i++) {
+    for (let j = 0; j < flow.switch.branches[i].then.length; j++) {
+      const item = flow.switch.branches[i].then[j];
+      if (NestFlowUtils.is(item)) {
+        const path = NestFlowUtils.jump(flow, id);
+        if (path) {
+          return [{ type: "switch", branch: i, slot: j }, ...path];
+        }
+      }
+    }
   }
   return null;
 }

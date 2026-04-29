@@ -49,7 +49,7 @@ export function useFormity<T extends Schema>({
 }: Options<T>): T["render"] {
   const [state, setState] = useState<State>(() => {
     if (initialState) return initialState;
-    return initState({ flow, onYield, inputs });
+    return initState({ flow, onYield, inputs, history });
   });
 
   const onNext = useCallback(

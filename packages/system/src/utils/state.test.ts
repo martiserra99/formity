@@ -39,7 +39,7 @@ describe("syncState", () => {
         {
           path: [
             { type: "list", slot: 1 },
-            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
             { type: "loop", slot: 0 },
           ],
           inputs: {},
@@ -57,7 +57,7 @@ describe("syncState", () => {
         {
           path: [
             { type: "list", slot: 1 },
-            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
             { type: "loop", slot: 0 },
           ],
           inputs: {},

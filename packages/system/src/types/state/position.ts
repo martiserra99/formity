@@ -21,7 +21,7 @@ export type ListPosition = {
  */
 export type ConditionPosition = {
   type: "condition";
-  path: "then" | "else";
+  branch: "then" | "else";
   slot: number;
 };
 

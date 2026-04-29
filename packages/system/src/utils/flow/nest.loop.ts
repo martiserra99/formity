@@ -1,6 +1,8 @@
 import type { ItemFlow, LoopFlow } from "../../types/flow/plain";
 import type { Position, LoopPosition } from "../../types/state/position";
 
+import * as NestFlowUtils from "./nest";
+
 export function is(flow: ItemFlow): flow is LoopFlow {
   return "loop" in flow;
 }
@@ -28,6 +30,19 @@ export function next(
   }
   if (flow.loop.while(inputs)) {
     return { type: "loop", slot: 0 };
+  }
+  return null;
+}
+
+export function jump(flow: LoopFlow, id: string): Position[] | null {
+  for (let i = 0; i < flow.loop.do.length; i++) {
+    const item = flow.loop.do[i];
+    if (NestFlowUtils.is(item)) {
+      const path = NestFlowUtils.jump(flow, id);
+      if (path) {
+        return [{ type: "loop", slot: i }, ...path];
+      }
+    }
   }
   return null;
 }

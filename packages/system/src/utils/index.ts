@@ -30,11 +30,13 @@ export function initState<T extends Schema>(options: {
   flow: Flow<T>;
   onYield: OnYield<T>;
   inputs: T["inputs"];
+  history: boolean;
 }): State {
   const flow = options.flow as PlainFlow;
   const inputs = options.inputs as Record<string, unknown>;
   const onYield = options.onYield as PlainOnYield;
-  return NavigateUtils.initState({ flow, onYield, inputs });
+  const history = options.history;
+  return NavigateUtils.initState({ flow, onYield, inputs, history });
 }
 
 /**
@@ -83,16 +85,18 @@ export function prevState<T extends Schema>(options: {
  * or returns the current state if no matching jump element is found.
  */
 export function jumpState<T extends Schema>(options: {
-  id: string;
   flow: Flow<T>;
   state: State;
   values: Record<string, unknown>;
   history: boolean;
+  id: string;
 }): State {
+  const id = options.id;
   const flow = options.flow as PlainFlow;
   const state = options.state;
   const values = options.values;
-  return NavigateUtils.jumpState({ flow, state, values });
+  const history = options.history;
+  return NavigateUtils.jumpState({ flow, state, values, history, id });
 }
 
 /**

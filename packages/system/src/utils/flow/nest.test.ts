@@ -28,7 +28,7 @@ describe("NestFlow", () => {
       ];
       const path: Position[] = [
         { type: "list", slot: 1 },
-        { type: "condition", path: "then", slot: 0 },
+        { type: "condition", branch: "then", slot: 0 },
         { type: "loop", slot: 0 },
       ];
       const result = find(flow, path);

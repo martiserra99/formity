@@ -48,7 +48,7 @@ describe("<Formity />", () => {
                 },
                 {
                   type: "condition",
-                  path: "else",
+                  branch: "else",
                   slot: 0,
                 },
               ],

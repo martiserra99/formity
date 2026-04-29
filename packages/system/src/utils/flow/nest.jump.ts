@@ -13,6 +13,13 @@ export function next(): Position | null {
   return null;
 }
 
+export function jump(flow: JumpFlow, id: string): Position[] | null {
+  if (flow.jump.id === id) {
+    return [{ type: "jump" }];
+  }
+  return null;
+}
+
 export function at(flow: JumpFlow): ItemFlow {
   return flow.jump.at;
 }

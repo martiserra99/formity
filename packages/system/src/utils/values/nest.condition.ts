@@ -18,8 +18,8 @@ export function getItem(
   values: ConditionValues,
   position: Position,
 ): ItemValues | null {
-  const { path, slot } = position as ConditionPosition;
-  if (slot in values[path]) return values[path][slot];
+  const { branch, slot } = position as ConditionPosition;
+  if (slot in values[branch]) return values[branch][slot];
   return null;
 }
 
@@ -28,6 +28,6 @@ export function setItem(
   position: Position,
   item: ItemValues,
 ): void {
-  const { path, slot } = position as ConditionPosition;
-  values[path][slot] = item;
+  const { branch, slot } = position as ConditionPosition;
+  values[branch][slot] = item;
 }

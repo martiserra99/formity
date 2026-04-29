@@ -80,8 +80,8 @@ describe("initState", () => {
         {
           path: [
             { type: "list", slot: 0 },
-            { type: "condition", path: "then", slot: 0 },
-            { type: "condition", path: "else", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
+            { type: "condition", branch: "else", slot: 0 },
             { type: "loop", slot: 0 },
           ],
           inputs: {},
@@ -134,8 +134,8 @@ describe("initState", () => {
         {
           path: [
             { type: "list", slot: 2 },
-            { type: "condition", path: "then", slot: 0 },
-            { type: "condition", path: "else", slot: 1 },
+            { type: "condition", branch: "then", slot: 0 },
+            { type: "condition", branch: "else", slot: 1 },
             { type: "loop", slot: 1 },
           ],
           inputs: {},
@@ -306,8 +306,8 @@ describe("initState", () => {
         {
           path: [
             { type: "list", slot: 1 },
-            { type: "condition", path: "then", slot: 0 },
-            { type: "condition", path: "else", slot: 1 },
+            { type: "condition", branch: "then", slot: 0 },
+            { type: "condition", branch: "else", slot: 1 },
             { type: "loop", slot: 2 },
           ],
           inputs: { a: 1, b: 2, c: 3, d: 4, e: 5 },
@@ -441,7 +441,7 @@ describe("nextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
           ],
           inputs: {},
         },
@@ -495,7 +495,7 @@ describe("nextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
           ],
           inputs: {},
         },
@@ -516,14 +516,14 @@ describe("nextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
           ],
           inputs: {},
         },
         {
           path: [
             { type: "list", slot: 1 },
-            { type: "condition", path: "else", slot: 0 },
+            { type: "condition", branch: "else", slot: 0 },
           ],
           inputs: {},
         },
@@ -595,7 +595,7 @@ describe("nextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
           ],
           inputs: {},
         },
@@ -678,7 +678,7 @@ describe("nextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
           ],
           inputs: {},
         },
@@ -760,7 +760,7 @@ describe("nextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
           ],
           inputs: {},
         },
@@ -824,7 +824,7 @@ describe("nextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
           ],
           inputs: {},
         },
@@ -886,7 +886,7 @@ describe("nextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
           ],
           inputs: {},
         },
@@ -907,7 +907,7 @@ describe("nextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
           ],
           inputs: {},
         },
@@ -954,7 +954,7 @@ describe("nextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
           ],
           inputs: {},
         },
@@ -975,7 +975,7 @@ describe("nextState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "condition", path: "then", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
           ],
           inputs: {},
         },
@@ -1315,16 +1315,16 @@ describe("prevState", () => {
         {
           path: [
             { type: "list", slot: 1 },
-            { type: "condition", path: "then", slot: 0 },
-            { type: "condition", path: "else", slot: 0 },
+            { type: "condition", branch: "then", slot: 0 },
+            { type: "condition", branch: "else", slot: 0 },
           ],
           inputs: {},
         },
         {
           path: [
             { type: "list", slot: 1 },
-            { type: "condition", path: "then", slot: 0 },
-            { type: "condition", path: "else", slot: 1 },
+            { type: "condition", branch: "then", slot: 0 },
+            { type: "condition", branch: "else", slot: 1 },
             { type: "loop", slot: 0 },
           ],
           inputs: {},
@@ -1404,7 +1404,7 @@ describe("prevState", () => {
           path: [
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
-            { type: "condition", path: "then", slot: 1 },
+            { type: "condition", branch: "then", slot: 1 },
           ],
           inputs: {},
         },
@@ -1415,14 +1415,14 @@ describe("prevState", () => {
         {
           path: [
             { type: "list", slot: 2 },
-            { type: "condition", path: "else", slot: 0 },
+            { type: "condition", branch: "else", slot: 0 },
           ],
           inputs: {},
         },
         {
           path: [
             { type: "list", slot: 2 },
-            { type: "condition", path: "else", slot: 1 },
+            { type: "condition", branch: "else", slot: 1 },
           ],
           inputs: {},
         },

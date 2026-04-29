@@ -21,7 +21,7 @@ describe("ConditionValues", () => {
         },
         else: {},
       };
-      const position: Position = { type: "condition", path: "then", slot: 1 };
+      const position: Position = { type: "condition", branch: "then", slot: 1 };
       const result = getItem(nest, position);
       expect(result).toBe(item);
     });
@@ -40,7 +40,7 @@ describe("ConditionValues", () => {
           1: item,
         },
       };
-      const position: Position = { type: "condition", path: "else", slot: 1 };
+      const position: Position = { type: "condition", branch: "else", slot: 1 };
       const result = getItem(nest, position);
       expect(result).toBe(item);
     });
@@ -59,7 +59,7 @@ describe("ConditionValues", () => {
           1: item,
         },
       };
-      const position: Position = { type: "condition", path: "then", slot: 1 };
+      const position: Position = { type: "condition", branch: "then", slot: 1 };
       const result = getItem(nest, position);
       expect(result).toBe(null);
     });
@@ -72,7 +72,7 @@ describe("ConditionValues", () => {
         then: {},
         else: {},
       };
-      const position: Position = { type: "condition", path: "then", slot: 1 };
+      const position: Position = { type: "condition", branch: "then", slot: 1 };
       const item: FormValues = {
         a: {
           data: { here: true, data: 1 },
@@ -96,7 +96,7 @@ describe("ConditionValues", () => {
         then: {},
         else: {},
       };
-      const position: Position = { type: "condition", path: "else", slot: 1 };
+      const position: Position = { type: "condition", branch: "else", slot: 1 };
       const item: FormValues = {
         a: {
           data: { here: true, data: 1 },

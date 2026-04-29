@@ -20,11 +20,22 @@ export function initState(options: {
   flow: Flow;
   onYield: OnYield;
   inputs: Record<string, unknown>;
+  history: boolean;
 }): State {
-  const { flow, onYield, inputs } = options;
+  const { flow, onYield, inputs, history } = options;
   const path = initialPath(flow, inputs);
   const points = initialPoints(flow, { path, inputs }, onYield);
-  return { points, values: { type: "list", list: {} } };
+  if (history) {
+    return {
+      points,
+      values: { type: "list", list: {} },
+    };
+  } else {
+    return {
+      points: [points[points.length - 1]],
+      values: { type: "list", list: {} },
+    };
+  }
 }
 
 function initialPath(
@@ -106,10 +117,11 @@ export function nextState(options: {
 }): State {
   const { flow, onYield, onReturn, state, values, history } = options;
   const point = state.points[state.points.length - 1];
-  const points = advanceForm(flow, onYield, onReturn, point, values);
+  const array = advanceForm(flow, onYield, onReturn, point, values);
+  const points: Point[] = [...state.points, ...array];
   const stateValues = updateStateValues(flow, state, values);
   if (history) {
-    return { points: [...state.points, ...points], values: stateValues };
+    return { points, values: stateValues };
   } else {
     return { points: [points[points.length - 1]], values: stateValues };
   }
@@ -120,11 +132,11 @@ function advanceForm(
   onYield: OnYield,
   onReturn: OnReturn,
   point: Point,
-  inputs: Record<string, unknown>,
+  values: Record<string, unknown>,
 ): Point[] {
   let currentPoint: Point | null = nextPoint(flow, {
     path: point.path,
-    inputs: { ...point.inputs, ...inputs },
+    inputs: { ...point.inputs, ...values },
   });
   if (!currentPoint) {
     return [];
@@ -239,9 +251,33 @@ export function jumpState(options: {
   flow: Flow;
   state: State;
   values: Record<string, unknown>;
+  history: boolean;
+  id: string;
 }): State {
-  console.log(options);
-  return options.state;
+  const { flow, state, values, history, id } = options;
+  const point = state.points[state.points.length - 1];
+  const array = jumpToForm(flow, point, values, id);
+  const points: Point[] = [...state.points, ...array];
+  const stateValues = updateStateValues(flow, state, values);
+  if (history) {
+    return { points, values: stateValues };
+  } else {
+    return { points: [points[points.length - 1]], values: stateValues };
+  }
+}
+
+function jumpToForm(
+  flow: Flow,
+  point: Point,
+  values: Record<string, unknown>,
+  id: string,
+): Point[] {
+  const path = NestFlowUtils.jump(flow, id);
+  if (path) {
+    return [{ path, inputs: { ...point.inputs, ...values } }];
+  } else {
+    return [];
+  }
 }
 
 function updateStateValues(

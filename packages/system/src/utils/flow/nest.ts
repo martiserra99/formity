@@ -62,6 +62,25 @@ export function next(
   throw new Error("Invalid flow");
 }
 
+export function jump(flow: NestFlow, id: string): Position[] | null {
+  if (ListFlowUtils.is(flow)) {
+    return ListFlowUtils.jump(flow, id);
+  }
+  if (ConditionFlowUtils.is(flow)) {
+    return ConditionFlowUtils.jump(flow, id);
+  }
+  if (LoopFlowUtils.is(flow)) {
+    return LoopFlowUtils.jump(flow, id);
+  }
+  if (SwitchFlowUtils.is(flow)) {
+    return SwitchFlowUtils.jump(flow, id);
+  }
+  if (JumpFlowUtils.is(flow)) {
+    return JumpFlowUtils.jump(flow, id);
+  }
+  throw new Error("Invalid flow");
+}
+
 export function at(flow: NestFlow, position: Position): ItemFlow {
   if (ListFlowUtils.is(flow)) {
     return ListFlowUtils.at(flow, position);
