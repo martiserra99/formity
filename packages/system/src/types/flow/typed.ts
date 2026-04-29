@@ -1,33 +1,33 @@
-import type { Shape } from "../shape";
+import type { Schema } from "../schema";
 
 import type {
-  ItemSchema,
-  NestSchema,
-  ListSchema,
-  ConditionSchema,
-  LoopSchema,
-  SwitchSchema,
-  FormSchema,
-  YieldSchema,
-  ReturnSchema,
-  VariablesSchema,
-  JumpSchema,
-} from "../schema";
+  ItemStruct,
+  NestStruct,
+  ListStruct,
+  ConditionStruct,
+  LoopStruct,
+  SwitchStruct,
+  FormStruct,
+  YieldStruct,
+  ReturnStruct,
+  VariablesStruct,
+  JumpStruct,
+} from "../struct";
 
 import type { OnNext, OnBack, GetState, SetState } from "../form-controls";
 
 /**
  * Defines the structure and behavior of a multi-step form.
  *
- * @template T An object type extending `Shape` with the following properties:
+ * @template T An object type extending `Schema` with the following properties:
  * - `render` - the type of the rendered output for each form step.
  * - `schema` — the structure of the multi-step form, including the values handled in each phase.
  * - `inputs` — additional values available across all steps of the multi-step form.
  * - `params` — values accessible when rendering each form step.
  */
-export type Flow<T extends Shape> = ListFlow<
+export type Flow<T extends Schema> = ListFlow<
   T["render"],
-  T["schema"],
+  T["struct"],
   T["inputs"],
   T["inputs"],
   T["params"]
@@ -35,49 +35,49 @@ export type Flow<T extends Shape> = ListFlow<
 
 export type ItemFlow<
   Render,
-  Schema extends ItemSchema,
+  Struct extends ItemStruct,
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = Schema extends NestSchema
-  ? NestFlow<Render, Schema, Inputs, Memory, Params>
-  : Schema extends FormSchema
-  ? FormFlow<Render, Schema, Memory, Params>
-  : Schema extends VariablesSchema
-  ? VariablesFlow<Schema, Memory>
-  : Schema extends YieldSchema
-  ? YieldFlow<Schema, Memory>
-  : Schema extends ReturnSchema
-  ? ReturnFlow<Schema, Memory>
+> = Struct extends NestStruct
+  ? NestFlow<Render, Struct, Inputs, Memory, Params>
+  : Struct extends FormStruct
+  ? FormFlow<Render, Struct, Memory, Params>
+  : Struct extends VariablesStruct
+  ? VariablesFlow<Struct, Memory>
+  : Struct extends YieldStruct
+  ? YieldFlow<Struct, Memory>
+  : Struct extends ReturnStruct
+  ? ReturnFlow<Struct, Memory>
   : never;
 
 export type NestFlow<
   Render,
-  Schema extends ItemSchema,
+  Struct extends ItemStruct,
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = Schema extends ListSchema
-  ? ListFlow<Render, Schema, Inputs, Memory, Params>
-  : Schema extends ConditionSchema
-  ? ConditionFlow<Render, Schema, Inputs, Memory, Params>
-  : Schema extends LoopSchema
-  ? LoopFlow<Render, Schema, Inputs, Memory, Params>
-  : Schema extends SwitchSchema
-  ? SwitchFlow<Render, Schema, Inputs, Memory, Params>
-  : Schema extends JumpSchema
-  ? JumpFlow<Render, Schema, Inputs, Params>
+> = Struct extends ListStruct
+  ? ListFlow<Render, Struct, Inputs, Memory, Params>
+  : Struct extends ConditionStruct
+  ? ConditionFlow<Render, Struct, Inputs, Memory, Params>
+  : Struct extends LoopStruct
+  ? LoopFlow<Render, Struct, Inputs, Memory, Params>
+  : Struct extends SwitchStruct
+  ? SwitchFlow<Render, Struct, Inputs, Memory, Params>
+  : Struct extends JumpStruct
+  ? JumpFlow<Render, Struct, Inputs, Params>
   : never;
 
 export type ListFlow<
   Render,
-  Schema extends ListSchema,
+  Struct extends ListStruct,
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = Schema extends [infer Head, ...infer Others]
-  ? Head extends ItemSchema
-    ? Others extends ListSchema
+> = Struct extends [infer Head, ...infer Others]
+  ? Head extends ItemStruct
+    ? Others extends ListStruct
       ? [
           ItemFlow<Render, Head, Inputs, Memory, Params>,
           ...ListFlow<
@@ -94,34 +94,34 @@ export type ListFlow<
 
 export type ConditionFlow<
   Render,
-  Schema extends ConditionSchema,
+  Struct extends ConditionStruct,
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
   Params extends Record<string, unknown>,
 > = {
   condition: {
     if: (inputs: Memory) => boolean;
-    then: ListFlow<Render, Schema["condition"]["then"], Inputs, Memory, Params>;
-    else: ListFlow<Render, Schema["condition"]["else"], Inputs, Memory, Params>;
+    then: ListFlow<Render, Struct["condition"]["then"], Inputs, Memory, Params>;
+    else: ListFlow<Render, Struct["condition"]["else"], Inputs, Memory, Params>;
   };
 };
 
 export type LoopFlow<
   Render,
-  Schema extends LoopSchema,
+  Struct extends LoopStruct,
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
   Params extends Record<string, unknown>,
 > = {
   loop: {
     while: (inputs: Memory) => boolean;
-    do: ListFlow<Render, Schema["loop"]["do"], Inputs, Memory, Params>;
+    do: ListFlow<Render, Struct["loop"]["do"], Inputs, Memory, Params>;
   };
 };
 
 export type SwitchFlow<
   Render,
-  Schema extends SwitchSchema,
+  Struct extends SwitchStruct,
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
   Params extends Record<string, unknown>,
@@ -129,14 +129,14 @@ export type SwitchFlow<
   switch: {
     branches: SwitchBranchesFlow<
       Render,
-      Schema["switch"]["branches"],
+      Struct["switch"]["branches"],
       Inputs,
       Memory,
       Params
     >;
     default: ListFlow<
       Render,
-      Schema["switch"]["default"],
+      Struct["switch"]["default"],
       Inputs,
       Memory,
       Params
@@ -146,13 +146,13 @@ export type SwitchFlow<
 
 type SwitchBranchesFlow<
   Render,
-  Schema extends ListSchema[],
+  Struct extends ListStruct[],
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = Schema extends [infer Head, ...infer Others]
-  ? Head extends ListSchema
-    ? Others extends ListSchema[]
+> = Struct extends [infer Head, ...infer Others]
+  ? Head extends ListStruct
+    ? Others extends ListStruct[]
       ? [
           {
             case: (inputs: Memory) => boolean;
@@ -166,138 +166,138 @@ type SwitchBranchesFlow<
 
 export type JumpFlow<
   Render,
-  Schema extends JumpSchema,
+  Struct extends JumpStruct,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
 > = {
   jump: {
     id: string;
-    at: FormFlow<Render, Schema["jump"]["at"], Inputs, Params>;
+    at: FormFlow<Render, Struct["jump"]["at"], Inputs, Params>;
   };
 };
 
 export type FormFlow<
   Render,
-  Schema extends FormSchema,
+  Struct extends FormStruct,
   Memory extends Record<string, unknown>,
   Params extends Record<string, unknown>,
 > = {
   form: {
     values: (inputs: Memory) => {
-      [K in keyof Schema["form"]["values"]]: [
-        Schema["form"]["values"][K],
+      [K in keyof Struct["form"]["values"]]: [
+        Struct["form"]["values"][K],
         PropertyKey[],
       ];
     };
     render: (args: {
       inputs: Memory;
-      values: Schema["form"]["values"];
+      values: Struct["form"]["values"];
       params: Params;
-      onNext: OnNext<Schema["form"]["values"]>;
-      onBack: OnBack<Schema["form"]["values"]>;
-      getState: GetState<Schema["form"]["values"]>;
+      onNext: OnNext<Struct["form"]["values"]>;
+      onBack: OnBack<Struct["form"]["values"]>;
+      getState: GetState<Struct["form"]["values"]>;
       setState: SetState;
     }) => Render;
   };
 };
 
 export type VariablesFlow<
-  Schema extends VariablesSchema,
+  Struct extends VariablesStruct,
   Memory extends Record<string, unknown>,
 > = {
-  variables: (inputs: Memory) => Schema["variables"];
+  variables: (inputs: Memory) => Struct["variables"];
 };
 
 export type YieldFlow<
-  Schema extends YieldSchema,
+  Struct extends YieldStruct,
   Memory extends Record<string, unknown>,
 > = {
   yield: {
-    next: (inputs: Memory) => Schema["yield"]["next"];
-    back: (inputs: Memory) => Schema["yield"]["back"];
+    next: (inputs: Memory) => Struct["yield"]["next"];
+    back: (inputs: Memory) => Struct["yield"]["back"];
   };
 };
 
 export type ReturnFlow<
-  Schema extends ReturnSchema,
+  Struct extends ReturnStruct,
   Memory extends Record<string, unknown>,
 > = {
-  return: (inputs: Memory) => Schema["return"];
+  return: (inputs: Memory) => Struct["return"];
 };
 
 type Output<
-  Schema extends ItemSchema,
+  Struct extends ItemStruct,
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
-> = Schema extends FormSchema
-  ? FormOutput<Schema, Memory>
-  : Schema extends VariablesSchema
-  ? VariablesOutput<Schema, Memory>
-  : Schema extends ListSchema
-  ? ListOutput<Schema, Inputs, Memory>
-  : Schema extends ConditionSchema
-  ? ConditionOutput<Schema, Inputs, Memory>
-  : Schema extends LoopSchema
-  ? LoopOutput<Schema, Inputs, Memory>
-  : Schema extends SwitchSchema
-  ? SwitchOutput<Schema, Inputs, Memory>
-  : Schema extends JumpSchema
-  ? JumpOutput<Schema, Inputs>
+> = Struct extends FormStruct
+  ? FormOutput<Struct, Memory>
+  : Struct extends VariablesStruct
+  ? VariablesOutput<Struct, Memory>
+  : Struct extends ListStruct
+  ? ListOutput<Struct, Inputs, Memory>
+  : Struct extends ConditionStruct
+  ? ConditionOutput<Struct, Inputs, Memory>
+  : Struct extends LoopStruct
+  ? LoopOutput<Struct, Inputs, Memory>
+  : Struct extends SwitchStruct
+  ? SwitchOutput<Struct, Inputs, Memory>
+  : Struct extends JumpStruct
+  ? JumpOutput<Struct, Inputs>
   : Memory;
 
 type FormOutput<
-  Schema extends FormSchema,
+  Struct extends FormStruct,
   Memory extends Record<string, unknown>,
-> = Join<Schema["form"]["values"], Memory>;
+> = Join<Struct["form"]["values"], Memory>;
 
 type VariablesOutput<
-  Schema extends VariablesSchema,
+  Struct extends VariablesStruct,
   Memory extends Record<string, unknown>,
-> = Join<Schema["variables"], Memory>;
+> = Join<Struct["variables"], Memory>;
 
 type ListOutput<
-  Schema extends ListSchema,
+  Struct extends ListStruct,
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
-> = ListContainsJump<Schema> extends true ? Inputs : Memory;
+> = ListContainsJump<Struct> extends true ? Inputs : Memory;
 
 type ConditionOutput<
-  Schema extends ConditionSchema,
+  Struct extends ConditionStruct,
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
 > = BranchesContainsJump<
-  [Schema["condition"]["then"], Schema["condition"]["else"]]
+  [Struct["condition"]["then"], Struct["condition"]["else"]]
 > extends true
   ? Inputs
   : Memory;
 
 type LoopOutput<
-  Schema extends LoopSchema,
+  Struct extends LoopStruct,
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
-> = ListContainsJump<Schema["loop"]["do"]> extends true ? Inputs : Memory;
+> = ListContainsJump<Struct["loop"]["do"]> extends true ? Inputs : Memory;
 
 type SwitchOutput<
-  Schema extends SwitchSchema,
+  Struct extends SwitchStruct,
   Inputs extends Record<string, unknown>,
   Memory extends Record<string, unknown>,
 > = BranchesContainsJump<
-  [...Schema["switch"]["branches"], Schema["switch"]["default"]]
+  [...Struct["switch"]["branches"], Struct["switch"]["default"]]
 > extends true
   ? Inputs
   : Memory;
 
 type JumpOutput<
-  Schema extends JumpSchema,
+  Struct extends JumpStruct,
   Inputs extends Record<string, unknown>,
-> = Output<Schema["jump"]["at"], Inputs, Inputs>;
+> = Output<Struct["jump"]["at"], Inputs, Inputs>;
 
-type BranchesContainsJump<Series extends ListSchema[]> = Series extends [
+type BranchesContainsJump<Series extends ListStruct[]> = Series extends [
   infer Head,
   ...infer Others,
 ]
-  ? Head extends ListSchema
-    ? Others extends ListSchema[]
+  ? Head extends ListStruct
+    ? Others extends ListStruct[]
       ? ListContainsJump<Head> extends true
         ? true
         : BranchesContainsJump<Others>
@@ -305,13 +305,13 @@ type BranchesContainsJump<Series extends ListSchema[]> = Series extends [
     : never
   : false;
 
-type ListContainsJump<Schema extends ListSchema> = Schema extends [
+type ListContainsJump<Struct extends ListStruct> = Struct extends [
   infer Head,
   ...infer Others,
 ]
-  ? Head extends ItemSchema
-    ? Others extends ListSchema
-      ? Head extends JumpSchema
+  ? Head extends ItemStruct
+    ? Others extends ListStruct
+      ? Head extends JumpStruct
         ? true
         : ListContainsJump<Others>
       : never

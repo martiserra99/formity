@@ -1,51 +1,51 @@
-import type { Shape } from "../shape";
+import type { Schema } from "../schema";
 
 import type {
-  ItemSchema,
-  NestSchema,
-  ListSchema,
-  ConditionSchema,
-  LoopSchema,
-  SwitchSchema,
-  ReturnSchema,
-  JumpSchema,
-} from "../schema";
+  ItemStruct,
+  NestStruct,
+  ListStruct,
+  ConditionStruct,
+  LoopStruct,
+  SwitchStruct,
+  ReturnStruct,
+  JumpStruct,
+} from "../struct";
 
 /**
  * Returns the union of all possible values that can be returned by a multi-step form.
  */
-export type ReturnOutput<T extends Shape> = ListData<
-  T["schema"],
+export type ReturnOutput<T extends Schema> = ListData<
+  T["struct"],
   never,
   false
 > extends [infer U, boolean]
   ? U
   : never;
 
-type ItemData<Item extends ItemSchema, Data, Flag> = Item extends NestSchema
+type ItemData<Item extends ItemStruct, Data, Flag> = Item extends NestStruct
   ? NestData<Item, Data, Flag>
-  : Item extends ReturnSchema
+  : Item extends ReturnStruct
   ? ReturnData<Item, Data, Flag>
   : [Data, Flag];
 
-type NestData<Nest extends NestSchema, Data, Flag> = Nest extends ListSchema
+type NestData<Nest extends NestStruct, Data, Flag> = Nest extends ListStruct
   ? ListData<Nest, Data, Flag>
-  : Nest extends ConditionSchema
+  : Nest extends ConditionStruct
   ? ConditionData<Nest, Data, Flag>
-  : Nest extends LoopSchema
+  : Nest extends LoopStruct
   ? LoopData<Nest, Data, Flag>
-  : Nest extends SwitchSchema
+  : Nest extends SwitchStruct
   ? SwitchData<Nest, Data, Flag>
-  : Nest extends JumpSchema
+  : Nest extends JumpStruct
   ? JumpData<Nest, Data>
   : never;
 
-type ListData<List extends ListSchema, Data, Flag> = List extends [
+type ListData<List extends ListStruct, Data, Flag> = List extends [
   infer Item,
   ...infer Rest,
 ]
-  ? Item extends ItemSchema
-    ? Rest extends ListSchema
+  ? Item extends ItemStruct
+    ? Rest extends ListStruct
       ? ItemData<Item, Data, Flag> extends [infer NextData, infer NextFlag]
         ? ListData<Rest, NextData, NextFlag>
         : never
@@ -54,7 +54,7 @@ type ListData<List extends ListSchema, Data, Flag> = List extends [
   : [Data, Flag];
 
 type ConditionData<
-  Condition extends ConditionSchema,
+  Condition extends ConditionStruct,
   Data,
   Flag,
 > = BranchesData<
@@ -63,7 +63,7 @@ type ConditionData<
   Flag
 >;
 
-type LoopData<Loop extends LoopSchema, Data, Flag> = ListData<
+type LoopData<Loop extends LoopStruct, Data, Flag> = ListData<
   Loop["loop"]["do"],
   Data,
   Flag
@@ -71,26 +71,26 @@ type LoopData<Loop extends LoopSchema, Data, Flag> = ListData<
   ? [NextData, Flag]
   : never;
 
-type SwitchData<Switch extends SwitchSchema, Data, Flag> = BranchesData<
+type SwitchData<Switch extends SwitchStruct, Data, Flag> = BranchesData<
   [...Switch["switch"]["branches"], Switch["switch"]["default"]],
   Data,
   Flag
 >;
 
-type JumpData<Jump extends JumpSchema, Data> = ItemData<
+type JumpData<Jump extends JumpStruct, Data> = ItemData<
   Jump["jump"]["at"],
   Data,
   false
 >;
 
 type BranchesData<
-  List extends ListSchema[],
+  List extends ListStruct[],
   Data,
   Flag,
   Mark = true,
 > = List extends [infer Item, ...infer Rest]
-  ? Item extends ListSchema
-    ? Rest extends ListSchema[]
+  ? Item extends ListStruct
+    ? Rest extends ListStruct[]
       ? ListData<Item, Data, Flag> extends [infer NextData, infer NextMark]
         ? Mark extends false
           ? BranchesData<Rest, NextData, Flag, Mark>
@@ -102,6 +102,6 @@ type BranchesData<
   ? [Data, Mark]
   : [Data, Flag];
 
-type ReturnData<Return extends ReturnSchema, Data, Flag> = Flag extends false
+type ReturnData<Return extends ReturnStruct, Data, Flag> = Flag extends false
   ? [Data | Return["return"], true]
   : [Data, true];

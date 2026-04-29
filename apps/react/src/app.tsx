@@ -2,7 +2,7 @@ import React, { useCallback, useState } from "react";
 
 import {
   Flow,
-  Schema,
+  Struct,
   OnYield,
   OnReturn,
   YieldOutput,
@@ -12,26 +12,29 @@ import {
 import { MultiStepForm } from "./multi-step-form";
 import { Data } from "./components";
 
-type Shape = {
+type Schema = {
   render: React.ReactNode;
-  schema: Schema;
+  struct: Struct;
   inputs: Record<string, unknown>;
   params: Record<string, unknown>;
 };
 
-interface AppProps<T extends Shape> {
+interface AppProps<T extends Schema> {
   flow: Flow<T>;
 }
 
-export default function App<T extends Shape>({ flow }: AppProps<T>) {
-  const [values, setValues] = useState<ReturnOutput<Shape> | null>(null);
+export default function App<T extends Schema>({ flow }: AppProps<T>) {
+  const [values, setValues] = useState<ReturnOutput<Schema> | null>(null);
 
-  const onYield = useCallback<OnYield<Shape>>((values: YieldOutput<Shape>) => {
-    console.log(values);
-  }, []);
+  const onYield = useCallback<OnYield<Schema>>(
+    (values: YieldOutput<Schema>) => {
+      console.log(values);
+    },
+    [],
+  );
 
-  const onReturn = useCallback<OnReturn<Shape>>(
-    (values: ReturnOutput<Shape>) => {
+  const onReturn = useCallback<OnReturn<Schema>>(
+    (values: ReturnOutput<Schema>) => {
       setValues(values);
     },
     [],

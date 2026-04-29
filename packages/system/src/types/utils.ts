@@ -1,9 +1,9 @@
-import { ListSchema, ItemSchema } from "./schema";
+import { ListStruct, ItemStruct } from "./struct";
 
 /**
  * Utility type that defines the structure of a condition element in a multi-step form.
  */
-export type Condition<T extends { then: ListSchema; else: ListSchema }> = {
+export type Condition<T extends { then: ListStruct; else: ListStruct }> = {
   type: "condition";
   condition: {
     then: T["then"];
@@ -14,7 +14,7 @@ export type Condition<T extends { then: ListSchema; else: ListSchema }> = {
 /**
  * Utility type that defines the structure of a loop element in a multi-step form.
  */
-export type Loop<T extends ListSchema> = {
+export type Loop<T extends ListStruct> = {
   type: "loop";
   loop: {
     do: T;
@@ -24,7 +24,7 @@ export type Loop<T extends ListSchema> = {
 /**
  * Utility type that defines the structure of a switch element in a multi-step form.
  */
-export type Switch<T extends { branches: ListSchema[]; default: ListSchema }> =
+export type Switch<T extends { branches: ListStruct[]; default: ListStruct }> =
   {
     type: "switch";
     switch: {
@@ -36,7 +36,7 @@ export type Switch<T extends { branches: ListSchema[]; default: ListSchema }> =
 /**
  * Utility type that defines the structure of a jump element in a multi-step form.
  */
-export type Jump<T extends ItemSchema> = {
+export type Jump<T extends ItemStruct> = {
   type: "jump";
   jump: {
     at: T;

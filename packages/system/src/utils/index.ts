@@ -1,4 +1,4 @@
-import type { Shape } from "src/types/shape";
+import type { Schema } from "src/types/schema";
 
 import type { Flow } from "../types/flow/typed";
 import type { Flow as PlainFlow } from "../types/flow/plain";
@@ -25,7 +25,7 @@ import * as FormUtils from "./form";
  *
  * @throws If no form step is found or a return is encountered before reaching one.
  */
-export function initState<T extends Shape>(options: {
+export function initState<T extends Schema>(options: {
   flow: Flow<T>;
   onYield: OnYield<T>;
   inputs: T["inputs"];
@@ -41,7 +41,7 @@ export function initState<T extends Shape>(options: {
  * and `onReturn` if a return is found, and returns the state at the next form step
  * if reached, or the current one otherwise.
  */
-export function nextState<T extends Shape>(options: {
+export function nextState<T extends Schema>(options: {
   flow: Flow<T>;
   onYield: OnYield<T>;
   onReturn: OnReturn<T>;
@@ -61,7 +61,7 @@ export function nextState<T extends Shape>(options: {
  * operations encountered along the way, and returns the state at the previous
  * form step if found, or the current one otherwise.
  */
-export function prevState<T extends Shape>(options: {
+export function prevState<T extends Schema>(options: {
   flow: Flow<T>;
   onYield: OnYield<T>;
   state: State;
@@ -77,7 +77,7 @@ export function prevState<T extends Shape>(options: {
 /**
  * Returns a new state with the values of the current form step updated.
  */
-export function syncState<T extends Shape>(options: {
+export function syncState<T extends Schema>(options: {
   flow: Flow<T>;
   state: State;
   values: Record<string, unknown>;
@@ -91,7 +91,7 @@ export function syncState<T extends Shape>(options: {
 /**
  * Returns the rendered form for the current step of the multi-step form.
  */
-export function getForm<T extends Shape>(options: {
+export function getForm<T extends Schema>(options: {
   flow: Flow<T>;
   params: T["params"];
   state: State;

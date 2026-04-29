@@ -7,9 +7,9 @@ import { Form, Layout, Row, TextField, NextButton } from "./components";
 
 import { FormControls } from "./form-controls";
 
-export type ListShape = {
+export type ListSchema = {
   render: React.ReactNode;
-  schema: [
+  struct: [
     s.Variables<{ fullName: string }>,
     [
       s.Form<{ name: string; surname: string }>,
@@ -21,7 +21,7 @@ export type ListShape = {
   params: Record<never, never>;
 };
 
-export const listFlow: Flow<ListShape> = [
+export const listFlow: Flow<ListSchema> = [
   {
     variables: () => ({
       fullName: "",

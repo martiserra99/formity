@@ -1,8 +1,8 @@
 export * as s from "./types/utils";
 
 export type { Flow } from "./types/flow/typed";
-export type { Shape } from "./types/shape";
 export type { Schema } from "./types/schema";
+export type { Struct } from "./types/struct";
 
 export type { OnYield } from "./types/handlers/typed";
 export type { OnReturn } from "./types/handlers/typed";

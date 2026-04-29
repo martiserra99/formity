@@ -15,9 +15,9 @@ import {
 
 import { FormControls } from "./form-controls";
 
-export type ConditionShape = {
+export type ConditionSchema = {
   render: React.ReactNode;
-  schema: [
+  struct: [
     s.Form<{ softwareDeveloper: boolean }>,
     s.Condition<{
       then: [
@@ -40,7 +40,7 @@ export type ConditionShape = {
   params: Record<never, never>;
 };
 
-export const conditionFlow: Flow<ConditionShape> = [
+export const conditionFlow: Flow<ConditionSchema> = [
   {
     form: {
       values: () => ({

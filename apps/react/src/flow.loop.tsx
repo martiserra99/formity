@@ -7,9 +7,9 @@ import { Form, Layout, Select, NextButton, BackButton } from "./components";
 
 import { FormControls } from "./form-controls";
 
-export type LoopShape = {
+export type LoopSchema = {
   render: React.ReactNode;
-  schema: [
+  struct: [
     s.Variables<{ languages: { value: string; question: string }[] }>,
     s.Variables<{
       i: number;
@@ -31,7 +31,7 @@ export type LoopShape = {
   params: Record<never, never>;
 };
 
-export const loopFlow: Flow<LoopShape> = [
+export const loopFlow: Flow<LoopSchema> = [
   {
     variables: () => ({
       languages: [

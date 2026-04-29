@@ -14,9 +14,9 @@ import {
 
 import { FormControls } from "./form-controls";
 
-export type SwitchShape = {
+export type SwitchSchema = {
   render: React.ReactNode;
-  schema: [
+  struct: [
     s.Form<{ interested: string }>,
     s.Switch<{
       branches: [
@@ -43,7 +43,7 @@ export type SwitchShape = {
   params: Record<never, never>;
 };
 
-export const switchFlow: Flow<SwitchShape> = [
+export const switchFlow: Flow<SwitchSchema> = [
   {
     form: {
       values: () => ({
