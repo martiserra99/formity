@@ -42,7 +42,7 @@ export function useFormity<T extends Schema>({
   flow,
   inputs = {} as T["inputs"],
   params = {} as T["params"],
-  history = false,
+  history = true,
   initialState = undefined,
   onYield = () => {},
   onReturn = () => {},

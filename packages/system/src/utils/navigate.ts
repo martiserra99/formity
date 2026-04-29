@@ -104,11 +104,15 @@ export function nextState(options: {
   values: Record<string, unknown>;
   history: boolean;
 }): State {
-  const { flow, onYield, onReturn, state, values } = options;
+  const { flow, onYield, onReturn, state, values, history } = options;
   const point = state.points[state.points.length - 1];
   const points = advanceForm(flow, onYield, onReturn, point, values);
   const stateValues = updateStateValues(flow, state, values);
-  return { points: [...state.points, ...points], values: stateValues };
+  if (history) {
+    return { points: [...state.points, ...points], values: stateValues };
+  } else {
+    return { points: [points[points.length - 1]], values: stateValues };
+  }
 }
 
 function advanceForm(
