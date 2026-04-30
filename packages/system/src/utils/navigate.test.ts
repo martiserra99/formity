@@ -15,7 +15,12 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState({ flow, onYield: () => {}, inputs: {} });
+    const state = initState({
+      flow,
+      onYield: () => {},
+      inputs: {},
+      history: true,
+    });
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
       values: { type: "list", list: {} },
@@ -34,7 +39,12 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState({ flow, onYield: () => {}, inputs: {} });
+    const state = initState({
+      flow,
+      onYield: () => {},
+      inputs: {},
+      history: true,
+    });
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 2 }], inputs: {} }],
       values: { type: "list", list: {} },
@@ -74,7 +84,12 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState({ flow, onYield: () => {}, inputs: {} });
+    const state = initState({
+      flow,
+      onYield: () => {},
+      inputs: {},
+      history: true,
+    });
     const expected: State = {
       points: [
         {
@@ -128,7 +143,12 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState({ flow, onYield: () => {}, inputs: {} });
+    const state = initState({
+      flow,
+      onYield: () => {},
+      inputs: {},
+      history: true,
+    });
     const expected: State = {
       points: [
         {
@@ -148,7 +168,9 @@ describe("initState", () => {
 
   it("throws an error when the flow is empty", () => {
     const flow: Flow = [];
-    expect(() => initState({ flow, onYield: () => {}, inputs: {} })).toThrow();
+    expect(() =>
+      initState({ flow, onYield: () => {}, inputs: {}, history: true }),
+    ).toThrow();
   });
 
   it("throws an error if no form can be reached", () => {
@@ -178,7 +200,9 @@ describe("initState", () => {
         },
       },
     ];
-    expect(() => initState({ flow, onYield: () => {}, inputs: {} })).toThrow();
+    expect(() =>
+      initState({ flow, onYield: () => {}, inputs: {}, history: true }),
+    ).toThrow();
   });
 
   it("throws an error if it finds a return before a form", () => {
@@ -207,7 +231,9 @@ describe("initState", () => {
         },
       },
     ];
-    expect(() => initState({ flow, onYield: () => {}, inputs: {} })).toThrow();
+    expect(() =>
+      initState({ flow, onYield: () => {}, inputs: {}, history: true }),
+    ).toThrow();
   });
 
   it("calls the onYield callback with the appropriate values every time values are yielded until it reaches a form", () => {
@@ -255,7 +281,7 @@ describe("initState", () => {
       },
     ];
     const onYield = vi.fn();
-    initState({ flow, onYield, inputs: {} });
+    initState({ flow, onYield, inputs: {}, history: true });
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
     expect(onYield).toHaveBeenNthCalledWith(2, { bn: 2 });
     expect(onYield).toHaveBeenNthCalledWith(3, { cn: 3 });
@@ -300,7 +326,12 @@ describe("initState", () => {
         },
       },
     ];
-    const state = initState({ flow, onYield: () => {}, inputs: {} });
+    const state = initState({
+      flow,
+      onYield: () => {},
+      inputs: {},
+      history: true,
+    });
     const expected: State = {
       points: [
         {
@@ -331,6 +362,7 @@ describe("initState", () => {
       flow,
       onYield: () => {},
       inputs: { a: 1, b: 2 },
+      history: true,
     });
     const expected: State = {
       points: [{ path: [{ type: "list", slot: 0 }], inputs: { a: 1, b: 2 } }],

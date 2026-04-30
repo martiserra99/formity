@@ -16,8 +16,8 @@ type Schema = {
 
 interface MultiStepFormProps<T extends Schema> {
   flow: Flow<T>;
-  onYield?: OnYield<Schema>;
-  onReturn?: OnReturn<Schema>;
+  onYield?: OnYield<T>;
+  onReturn?: OnReturn<T>;
   initialState?: State;
 }
 

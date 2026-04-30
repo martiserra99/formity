@@ -1,4 +1,10 @@
-import type { OnNext, OnBack, GetState, SetState } from "../form-controls";
+import type {
+  OnNext,
+  OnBack,
+  OnJump,
+  GetState,
+  SetState,
+} from "../form-controls";
 
 export type Flow<Render = unknown> = ListFlow<Render>;
 
@@ -61,6 +67,7 @@ export type FormFlow<Render = unknown> = {
       params: Record<string, unknown>;
       onNext: OnNext<Record<string, unknown>>;
       onBack: OnBack<Record<string, unknown>>;
+      onJump: OnJump<Record<string, unknown>>;
       getState: GetState<Record<string, unknown>>;
       setState: SetState;
     }) => Render;
