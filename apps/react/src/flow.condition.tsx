@@ -43,13 +43,13 @@ export type ConditionSchema = {
 export const conditionFlow: Flow<ConditionSchema> = [
   {
     form: {
-      values: () => ({
+      fields: () => ({
         softwareDeveloper: [true, []],
       }),
-      render: ({ values, ...rest }) => (
+      render: ({ fields, ...rest }) => (
         <FormControls step="softwareDeveloper" {...rest}>
           <Form
-            defaultValues={values}
+            defaultValues={fields}
             resolver={zodResolver(
               z.object({
                 softwareDeveloper: z.boolean(),
@@ -79,13 +79,13 @@ export const conditionFlow: Flow<ConditionSchema> = [
       then: [
         {
           form: {
-            values: () => ({
+            fields: () => ({
               languages: [[], []],
             }),
-            render: ({ values, ...rest }) => (
+            render: ({ fields, ...rest }) => (
               <FormControls step="languages" {...rest}>
                 <Form
-                  defaultValues={values}
+                  defaultValues={fields}
                   resolver={zodResolver(
                     z.object({
                       languages: z.array(z.string()),
@@ -126,13 +126,13 @@ export const conditionFlow: Flow<ConditionSchema> = [
       else: [
         {
           form: {
-            values: () => ({
+            fields: () => ({
               interested: ["maybe", []],
             }),
-            render: ({ values, ...rest }) => (
+            render: ({ fields, ...rest }) => (
               <FormControls step="interested" {...rest}>
                 <Form
-                  defaultValues={values}
+                  defaultValues={fields}
                   resolver={zodResolver(
                     z.object({
                       interested: z.string(),

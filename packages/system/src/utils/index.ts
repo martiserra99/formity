@@ -49,16 +49,16 @@ export function nextState<T extends Schema>(options: {
   onYield: OnYield<T>;
   onReturn: OnReturn<T>;
   state: State;
-  values: Record<string, unknown>;
+  fields: Record<string, unknown>;
   history: boolean;
 }): State {
   const flow = options.flow as PlainFlow;
   const onYield = options.onYield as PlainOnYield;
   const onReturn = options.onReturn as PlainOnReturn;
   const state = options.state;
-  const values = options.values;
+  const fields = options.fields;
   const history = options.history;
-  const args = { flow, onYield, onReturn, state, values, history };
+  const args = { flow, onYield, onReturn, state, fields, history };
   return NavigateUtils.nextState(args);
 }
 
@@ -71,13 +71,13 @@ export function prevState<T extends Schema>(options: {
   flow: Flow<T>;
   onYield: OnYield<T>;
   state: State;
-  values: Record<string, unknown>;
+  fields: Record<string, unknown>;
 }): State {
   const flow = options.flow as PlainFlow;
   const onYield = options.onYield as PlainOnYield;
   const state = options.state;
-  const values = options.values;
-  return NavigateUtils.prevState({ flow, onYield, state, values });
+  const fields = options.fields;
+  return NavigateUtils.prevState({ flow, onYield, state, fields });
 }
 
 /**
@@ -87,16 +87,16 @@ export function prevState<T extends Schema>(options: {
 export function jumpState<T extends Schema>(options: {
   flow: Flow<T>;
   state: State;
-  values: Record<string, unknown>;
+  fields: Record<string, unknown>;
   history: boolean;
   id: string;
 }): State {
   const id = options.id;
   const flow = options.flow as PlainFlow;
   const state = options.state;
-  const values = options.values;
+  const fields = options.fields;
   const history = options.history;
-  return NavigateUtils.jumpState({ flow, state, values, history, id });
+  return NavigateUtils.jumpState({ flow, state, fields, history, id });
 }
 
 /**
@@ -105,12 +105,12 @@ export function jumpState<T extends Schema>(options: {
 export function syncState<T extends Schema>(options: {
   flow: Flow<T>;
   state: State;
-  values: Record<string, unknown>;
+  fields: Record<string, unknown>;
 }): State {
   const flow = options.flow as PlainFlow;
   const state = options.state;
-  const values = options.values;
-  return StateUtils.syncState({ flow, state, values });
+  const fields = options.fields;
+  return StateUtils.syncState({ flow, state, fields });
 }
 
 /**

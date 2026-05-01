@@ -67,13 +67,13 @@ export const loopFlow: Flow<LoopSchema> = [
         },
         {
           form: {
-            values: ({ language }) => ({
+            fields: ({ language }) => ({
               rating: ["love-it", [language.value]],
             }),
-            render: ({ inputs, values, ...rest }) => (
-              <FormControls step={`rating-${inputs.language.value}`} {...rest}>
+            render: ({ fields, values, ...rest }) => (
+              <FormControls step={`rating-${values.language.value}`} {...rest}>
                 <Form
-                  defaultValues={values}
+                  defaultValues={fields}
                   resolver={zodResolver(
                     z.object({
                       rating: z.string(),
@@ -81,7 +81,7 @@ export const loopFlow: Flow<LoopSchema> = [
                   )}
                 >
                   <Layout
-                    heading={inputs.language.question}
+                    heading={values.language.question}
                     description="We would like to know how much you like it"
                     fields={[
                       <Select
@@ -97,7 +97,7 @@ export const loopFlow: Flow<LoopSchema> = [
                       />,
                     ]}
                     button={<NextButton>Next</NextButton>}
-                    back={inputs.i > 0 ? <BackButton /> : undefined}
+                    back={values.i > 0 ? <BackButton /> : undefined}
                   />
                 </Form>
               </FormControls>

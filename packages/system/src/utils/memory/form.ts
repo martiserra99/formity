@@ -1,15 +1,15 @@
-import type { FormValues, NameValues } from "../../types/state/values";
+import type { FormMemory, NameMemory } from "../../types/state/memory";
 
 /**
- * Returns a value from `FormValues` by name and key path, falling back to `defaultValue`.
+ * Returns a value from `FormMemory` by name and key path, falling back to `defaultValue`.
  */
 export function get(
-  form: FormValues,
+  form: FormMemory,
   name: string,
   keys: PropertyKey[],
   defaultValue: unknown,
 ): unknown {
-  let current: NameValues = form[name];
+  let current: NameMemory = form[name];
   for (const key of keys) {
     if (key in current.keys) {
       current = current.keys[key];
@@ -24,29 +24,29 @@ export function get(
 }
 
 /**
- * Returns a new `FormValues` object with the value at the given name and keys set to `data`.
+ * Returns a new `FormMemory` object with the value at the given name and keys set to `data`.
  */
 export function set(
-  form: FormValues,
+  form: FormMemory,
   name: string,
   keys: PropertyKey[],
   data: unknown,
-): FormValues {
-  const updated: FormValues = { ...form };
+): FormMemory {
+  const updated: FormMemory = { ...form };
   if (name in form) {
     updated[name] = { ...form[name], keys: { ...form[name].keys } };
   } else {
     updated[name] = { data: { here: false }, keys: {} };
   }
-  let current: NameValues = updated[name];
+  let current: NameMemory = updated[name];
   for (const key of keys) {
     if (key in current.keys) {
-      const name: NameValues = current.keys[key];
-      const copy: NameValues = { ...name, keys: { ...name.keys } };
+      const name: NameMemory = current.keys[key];
+      const copy: NameMemory = { ...name, keys: { ...name.keys } };
       current.keys[key] = copy;
       current = copy;
     } else {
-      const name: NameValues = { data: { here: false }, keys: {} };
+      const name: NameMemory = { data: { here: false }, keys: {} };
       current.keys[key] = name;
       current = name;
     }

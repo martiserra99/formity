@@ -49,7 +49,7 @@ export type Jump<T extends ItemStruct> = {
 export type Form<T extends Record<string, unknown>> = {
   type: "form";
   form: {
-    values: T;
+    fields: T;
   };
 };
 

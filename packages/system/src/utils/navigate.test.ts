@@ -10,7 +10,7 @@ describe("initState", () => {
     const flow: Flow = [
       {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: () => null,
         },
       },
@@ -22,8 +22,8 @@ describe("initState", () => {
       history: true,
     });
     const expected: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
-      values: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      memory: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -34,7 +34,7 @@ describe("initState", () => {
       { variables: () => ({}) },
       {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: () => null,
         },
       },
@@ -46,8 +46,8 @@ describe("initState", () => {
       history: true,
     });
     const expected: State = {
-      points: [{ path: [{ type: "list", slot: 2 }], inputs: {} }],
-      values: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 2 }], values: {} }],
+      memory: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -69,7 +69,7 @@ describe("initState", () => {
                       do: [
                         {
                           form: {
-                            values: () => ({}),
+                            fields: () => ({}),
                             render: () => null,
                           },
                         },
@@ -99,10 +99,10 @@ describe("initState", () => {
             { type: "condition", branch: "else", slot: 0 },
             { type: "loop", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -128,7 +128,7 @@ describe("initState", () => {
                         { variables: () => ({}) },
                         {
                           form: {
-                            values: () => ({}),
+                            fields: () => ({}),
                             render: () => null,
                           },
                         },
@@ -158,10 +158,10 @@ describe("initState", () => {
             { type: "condition", branch: "else", slot: 1 },
             { type: "loop", slot: 1 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -187,7 +187,7 @@ describe("initState", () => {
                 then: [
                   {
                     form: {
-                      values: () => ({}),
+                      fields: () => ({}),
                       render: () => null,
                     },
                   },
@@ -226,7 +226,7 @@ describe("initState", () => {
       },
       {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: () => null,
         },
       },
@@ -265,7 +265,7 @@ describe("initState", () => {
                       do: [
                         {
                           form: {
-                            values: () => ({}),
+                            fields: () => ({}),
                             render: () => null,
                           },
                         },
@@ -311,7 +311,7 @@ describe("initState", () => {
                         { variables: () => ({ e: 5 }) },
                         {
                           form: {
-                            values: () => ({}),
+                            fields: () => ({}),
                             render: () => null,
                           },
                         },
@@ -341,10 +341,10 @@ describe("initState", () => {
             { type: "condition", branch: "else", slot: 1 },
             { type: "loop", slot: 2 },
           ],
-          inputs: { a: 1, b: 2, c: 3, d: 4, e: 5 },
+          values: { a: 1, b: 2, c: 3, d: 4, e: 5 },
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -353,7 +353,7 @@ describe("initState", () => {
     const flow: Flow = [
       {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: () => null,
         },
       },
@@ -365,8 +365,8 @@ describe("initState", () => {
       history: true,
     });
     const expected: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], inputs: { a: 1, b: 2 } }],
-      values: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], values: { a: 1, b: 2 } }],
+      memory: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -377,35 +377,35 @@ describe("nextState", () => {
     const flow: Flow = [
       {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: () => null,
         },
       },
       {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: () => null,
         },
       },
     ];
     const current: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
-      values: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      memory: { type: "list", list: {} },
     };
     const state = nextState({
       flow,
       onYield: () => {},
       onReturn: () => {},
       state: current,
-      values: {},
+      fields: {},
       history: true,
     });
     const expected: State = {
       points: [
-        { path: [{ type: "list", slot: 0 }], inputs: {} },
-        { path: [{ type: "list", slot: 1 }], inputs: {} },
+        { path: [{ type: "list", slot: 0 }], values: {} },
+        { path: [{ type: "list", slot: 1 }], values: {} },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -422,7 +422,7 @@ describe("nextState", () => {
                 then: [
                   {
                     form: {
-                      values: () => ({}),
+                      fields: () => ({}),
                       render: () => null,
                     },
                   },
@@ -432,7 +432,7 @@ describe("nextState", () => {
             },
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => null,
               },
             },
@@ -447,17 +447,17 @@ describe("nextState", () => {
             { type: "list", slot: 0 },
             { type: "loop", slot: 1 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const state = nextState({
       flow,
       onYield: () => {},
       onReturn: () => {},
       state: current,
-      values: {},
+      fields: {},
       history: true,
     });
     const expected: State = {
@@ -467,7 +467,7 @@ describe("nextState", () => {
             { type: "list", slot: 0 },
             { type: "loop", slot: 1 },
           ],
-          inputs: {},
+          values: {},
         },
         {
           path: [
@@ -475,10 +475,10 @@ describe("nextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", branch: "then", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -495,7 +495,7 @@ describe("nextState", () => {
                 then: [
                   {
                     form: {
-                      values: () => ({}),
+                      fields: () => ({}),
                       render: () => null,
                     },
                   },
@@ -513,7 +513,7 @@ describe("nextState", () => {
           else: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => null,
               },
             },
@@ -529,17 +529,17 @@ describe("nextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", branch: "then", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const next = nextState({
       flow,
       onYield: () => {},
       onReturn: () => {},
       state: current,
-      values: {},
+      fields: {},
       history: true,
     });
     const expected: State = {
@@ -550,17 +550,17 @@ describe("nextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", branch: "then", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
         {
           path: [
             { type: "list", slot: 1 },
             { type: "condition", branch: "else", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     expect(next).toEqual(expected);
   });
@@ -577,7 +577,7 @@ describe("nextState", () => {
                 then: [
                   {
                     form: {
-                      values: () => ({}),
+                      fields: () => ({}),
                       render: () => null,
                     },
                   },
@@ -613,7 +613,7 @@ describe("nextState", () => {
             },
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => null,
               },
             },
@@ -629,10 +629,10 @@ describe("nextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", branch: "then", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const onYield = vi.fn();
     nextState({
@@ -640,7 +640,7 @@ describe("nextState", () => {
       onYield,
       onReturn: () => {},
       state: current,
-      values: {},
+      fields: {},
       history: true,
     });
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
@@ -665,7 +665,7 @@ describe("nextState", () => {
                 then: [
                   {
                     form: {
-                      values: () => ({}),
+                      fields: () => ({}),
                       render: () => null,
                     },
                   },
@@ -712,10 +712,10 @@ describe("nextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", branch: "then", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const onYield = vi.fn();
     nextState({
@@ -723,7 +723,7 @@ describe("nextState", () => {
       onYield,
       onReturn: () => {},
       state: current,
-      values: {},
+      fields: {},
       history: true,
     });
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
@@ -748,7 +748,7 @@ describe("nextState", () => {
                 then: [
                   {
                     form: {
-                      values: () => ({}),
+                      fields: () => ({}),
                       render: () => null,
                     },
                   },
@@ -794,10 +794,10 @@ describe("nextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", branch: "then", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const onYield = vi.fn();
     nextState({
@@ -805,7 +805,7 @@ describe("nextState", () => {
       onYield,
       onReturn: () => {},
       state: current,
-      values: {},
+      fields: {},
       history: true,
     });
     expect(onYield).toHaveBeenNthCalledWith(1, { an: 1 });
@@ -830,7 +830,7 @@ describe("nextState", () => {
                 then: [
                   {
                     form: {
-                      values: () => ({}),
+                      fields: () => ({}),
                       render: () => null,
                     },
                   },
@@ -858,10 +858,10 @@ describe("nextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", branch: "then", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const onReturn = vi.fn();
     nextState({
@@ -869,7 +869,7 @@ describe("nextState", () => {
       onYield: () => {},
       onReturn,
       state: current,
-      values: {},
+      fields: {},
       history: true,
     });
     expect(onReturn).toHaveBeenCalledWith({ a: 1, b: 2 });
@@ -887,7 +887,7 @@ describe("nextState", () => {
                 then: [
                   {
                     form: {
-                      values: () => ({}),
+                      fields: () => ({}),
                       render: () => null,
                     },
                   },
@@ -907,7 +907,7 @@ describe("nextState", () => {
       },
       {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: () => null,
         },
       },
@@ -920,17 +920,17 @@ describe("nextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", branch: "then", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const next = nextState({
       flow,
       onYield: () => {},
       onReturn: () => {},
       state: current,
-      values: {},
+      fields: {},
       history: true,
     });
     const expected: State = {
@@ -941,10 +941,10 @@ describe("nextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", branch: "then", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     expect(next).toEqual(expected);
   });
@@ -961,7 +961,7 @@ describe("nextState", () => {
                 then: [
                   {
                     form: {
-                      values: () => ({}),
+                      fields: () => ({}),
                       render: () => null,
                     },
                   },
@@ -988,17 +988,17 @@ describe("nextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", branch: "then", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const next = nextState({
       flow,
       onYield: () => {},
       onReturn: () => {},
       state: current,
-      values: {},
+      fields: {},
       history: true,
     });
     const expected: State = {
@@ -1009,10 +1009,10 @@ describe("nextState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", branch: "then", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     expect(next).toEqual(expected);
   });
@@ -1021,7 +1021,7 @@ describe("nextState", () => {
     const flow: Flow = [
       {
         form: {
-          values: () => ({
+          fields: () => ({
             a: [0, []],
             b: [0, []],
           }),
@@ -1030,29 +1030,29 @@ describe("nextState", () => {
       },
       {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: () => null,
         },
       },
     ];
     const current: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
-      values: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      memory: { type: "list", list: {} },
     };
     const state = nextState({
       flow,
       onYield: () => {},
       onReturn: () => {},
       state: current,
-      values: { a: 1, b: 2 },
+      fields: { a: 1, b: 2 },
       history: true,
     });
     const expected: State = {
       points: [
-        { path: [{ type: "list", slot: 0 }], inputs: {} },
-        { path: [{ type: "list", slot: 1 }], inputs: { a: 1, b: 2 } },
+        { path: [{ type: "list", slot: 0 }], values: {} },
+        { path: [{ type: "list", slot: 1 }], values: { a: 1, b: 2 } },
       ],
-      values: {
+      memory: {
         type: "list",
         list: {
           0: {
@@ -1073,7 +1073,7 @@ describe("nextState", () => {
           do: [
             {
               form: {
-                values: () => ({
+                fields: () => ({
                   a: [0, ["x", "y"]],
                   b: [0, ["x", "y"]],
                 }),
@@ -1085,7 +1085,7 @@ describe("nextState", () => {
       },
       {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: () => null,
         },
       },
@@ -1097,17 +1097,17 @@ describe("nextState", () => {
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const state = nextState({
       flow,
       onYield: () => {},
       onReturn: () => {},
       state: current,
-      values: { a: 1, b: 2 },
+      fields: { a: 1, b: 2 },
       history: true,
     });
     const expected: State = {
@@ -1117,14 +1117,14 @@ describe("nextState", () => {
             { type: "list", slot: 0 },
             { type: "loop", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
         {
           path: [{ type: "list", slot: 1 }],
-          inputs: { a: 1, b: 2 },
+          values: { a: 1, b: 2 },
         },
       ],
-      values: {
+      memory: {
         type: "list",
         list: {
           0: {
@@ -1174,33 +1174,33 @@ describe("prevState", () => {
     const flow: Flow = [
       {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: () => null,
         },
       },
       {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: () => null,
         },
       },
     ];
     const current: State = {
       points: [
-        { path: [{ type: "list", slot: 0 }], inputs: {} },
-        { path: [{ type: "list", slot: 1 }], inputs: {} },
+        { path: [{ type: "list", slot: 0 }], values: {} },
+        { path: [{ type: "list", slot: 1 }], values: {} },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const state = prevState({
       flow,
       onYield: () => {},
       state: current,
-      values: {},
+      fields: {},
     });
     const expected: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
-      values: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      memory: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -1209,24 +1209,24 @@ describe("prevState", () => {
     const flow: Flow = [
       {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: () => null,
         },
       },
     ];
     const current: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
-      values: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      memory: { type: "list", list: {} },
     };
     const state = prevState({
       flow,
       onYield: () => {},
       state: current,
-      values: {},
+      fields: {},
     });
     const expected: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
-      values: { type: "list", list: {} },
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      memory: { type: "list", list: {} },
     };
     expect(state).toEqual(expected);
   });
@@ -1235,7 +1235,7 @@ describe("prevState", () => {
     const flow: Flow = [
       {
         form: {
-          values: () => ({
+          fields: () => ({
             a: [0, []],
           }),
           render: () => null,
@@ -1243,7 +1243,7 @@ describe("prevState", () => {
       },
       {
         form: {
-          values: () => ({
+          fields: () => ({
             b: [0, []],
           }),
           render: () => null,
@@ -1252,10 +1252,10 @@ describe("prevState", () => {
     ];
     const current: State = {
       points: [
-        { path: [{ type: "list", slot: 0 }], inputs: {} },
-        { path: [{ type: "list", slot: 1 }], inputs: { a: 1 } },
+        { path: [{ type: "list", slot: 0 }], values: {} },
+        { path: [{ type: "list", slot: 1 }], values: { a: 1 } },
       ],
-      values: {
+      memory: {
         type: "list",
         list: {
           0: {
@@ -1271,11 +1271,11 @@ describe("prevState", () => {
       flow,
       onYield: () => {},
       state: current,
-      values: { b: 2 },
+      fields: { b: 2 },
     });
     const expected: State = {
-      points: [{ path: [{ type: "list", slot: 0 }], inputs: {} }],
-      values: {
+      points: [{ path: [{ type: "list", slot: 0 }], values: {} }],
+      memory: {
         type: "list",
         list: {
           0: {
@@ -1325,7 +1325,7 @@ describe("prevState", () => {
                       do: [
                         {
                           form: {
-                            values: () => ({}),
+                            fields: () => ({}),
                             render: () => null,
                           },
                         },
@@ -1343,14 +1343,14 @@ describe("prevState", () => {
     const onYield = vi.fn();
     const current: State = {
       points: [
-        { path: [{ type: "list", slot: 0 }], inputs: {} },
+        { path: [{ type: "list", slot: 0 }], values: {} },
         {
           path: [
             { type: "list", slot: 1 },
             { type: "condition", branch: "then", slot: 0 },
             { type: "condition", branch: "else", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
         {
           path: [
@@ -1359,12 +1359,12 @@ describe("prevState", () => {
             { type: "condition", branch: "else", slot: 1 },
             { type: "loop", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
-    prevState({ flow, onYield, state: current, values: {} });
+    prevState({ flow, onYield, state: current, fields: {} });
     expect(onYield).toHaveBeenNthCalledWith(1, { cb: 3 });
     expect(onYield).toHaveBeenNthCalledWith(2, { ab: 1 });
     expect(onYield).toHaveBeenNthCalledWith(3, { bb: 2 });
@@ -1385,7 +1385,7 @@ describe("prevState", () => {
                 then: [
                   {
                     form: {
-                      values: () => ({}),
+                      fields: () => ({}),
                       render: () => null,
                     },
                   },
@@ -1421,7 +1421,7 @@ describe("prevState", () => {
             },
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => null,
               },
             },
@@ -1438,30 +1438,30 @@ describe("prevState", () => {
             { type: "loop", slot: 0 },
             { type: "condition", branch: "then", slot: 1 },
           ],
-          inputs: {},
+          values: {},
         },
         {
           path: [{ type: "list", slot: 1 }],
-          inputs: {},
+          values: {},
         },
         {
           path: [
             { type: "list", slot: 2 },
             { type: "condition", branch: "else", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
         {
           path: [
             { type: "list", slot: 2 },
             { type: "condition", branch: "else", slot: 1 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
-    prevState({ flow, onYield, state: current, values: {} });
+    prevState({ flow, onYield, state: current, fields: {} });
     expect(onYield).toHaveBeenNthCalledWith(1, { db: 4 });
     expect(onYield).toHaveBeenNthCalledWith(2, { cb: 3 });
     expect(onYield).toHaveBeenNthCalledWith(3, { ab: 1 });

@@ -99,15 +99,15 @@ export type Schema = {
 export const flow: Flow<Schema> = [
   {
     form: {
-      values: () => ({
+      fields: () => ({
         name: ["", []],
         surname: ["", []],
         age: [20, []],
       }),
-      render: ({ values, ...rest }) => (
+      render: ({ fields, ...rest }) => (
         <FormControls step="name" {...rest}>
           <Form
-            defaultValues={values}
+            defaultValues={fields}
             resolver={zodResolver(
               z.object({
                 name: z
@@ -161,13 +161,13 @@ export const flow: Flow<Schema> = [
   },
   {
     form: {
-      values: () => ({
+      fields: () => ({
         softwareDeveloper: [true, []],
       }),
-      render: ({ values, ...rest }) => (
+      render: ({ fields, ...rest }) => (
         <FormControls step="softwareDeveloper" {...rest}>
           <Form
-            defaultValues={values}
+            defaultValues={fields}
             resolver={zodResolver(
               z.object({
                 softwareDeveloper: z.boolean(),
@@ -223,13 +223,13 @@ export const flow: Flow<Schema> = [
         },
         {
           form: {
-            values: () => ({
+            fields: () => ({
               languages: [[], []],
             }),
-            render: ({ inputs, values, ...rest }) => (
+            render: ({ fields, values, ...rest }) => (
               <FormControls step="languages" {...rest}>
                 <Form
-                  defaultValues={values}
+                  defaultValues={fields}
                   resolver={zodResolver(
                     z.object({
                       languages: z.array(z.string()),
@@ -244,7 +244,7 @@ export const flow: Flow<Schema> = [
                         key="languages"
                         name="languages"
                         label="Languages"
-                        options={inputs.languagesOptions}
+                        options={values.languagesOptions}
                         direction="y"
                       />,
                     ]}
@@ -284,13 +284,13 @@ export const flow: Flow<Schema> = [
               },
               {
                 form: {
-                  values: ({ language }) => ({
+                  fields: ({ language }) => ({
                     rating: ["love-it", [language]],
                   }),
-                  render: ({ inputs, values, ...rest }) => (
-                    <FormControls step={`rating-${inputs.language}`} {...rest}>
+                  render: ({ fields, values, ...rest }) => (
+                    <FormControls step={`rating-${values.language}`} {...rest}>
                       <Form
-                        defaultValues={values}
+                        defaultValues={fields}
                         resolver={zodResolver(
                           z.object({
                             rating: z.string(),
@@ -298,7 +298,7 @@ export const flow: Flow<Schema> = [
                         )}
                       >
                         <Layout
-                          heading={inputs.question}
+                          heading={values.question}
                           description="Since you said it is one of your favourite languages, we would like to know how much you like it"
                           fields={[
                             <Select
@@ -360,13 +360,13 @@ export const flow: Flow<Schema> = [
       else: [
         {
           form: {
-            values: () => ({
+            fields: () => ({
               interested: ["maybe", []],
             }),
-            render: ({ values, ...rest }) => (
+            render: ({ fields, ...rest }) => (
               <FormControls step="interested" {...rest}>
                 <Form
-                  defaultValues={values}
+                  defaultValues={fields}
                   resolver={zodResolver(
                     z.object({
                       interested: z.string(),

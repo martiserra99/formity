@@ -23,7 +23,7 @@ describe("JumpFlow", () => {
     it("retrieves the item of the `JumpFlow` object", () => {
       const item: FormFlow = {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: () => ({}),
         },
       };

@@ -14,7 +14,7 @@ describe("ConditionFlow", () => {
           then: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -34,7 +34,7 @@ describe("ConditionFlow", () => {
           else: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -53,7 +53,7 @@ describe("ConditionFlow", () => {
           else: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -73,13 +73,13 @@ describe("ConditionFlow", () => {
           then: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -100,13 +100,13 @@ describe("ConditionFlow", () => {
           else: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -125,7 +125,7 @@ describe("ConditionFlow", () => {
           then: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -133,7 +133,7 @@ describe("ConditionFlow", () => {
           else: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },

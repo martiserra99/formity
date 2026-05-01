@@ -19,7 +19,7 @@ describe("getForm", () => {
                 do: [
                   {
                     form: {
-                      values: () => ({}),
+                      fields: () => ({}),
                       render: () => ({
                         hello: "world",
                       }),
@@ -41,10 +41,10 @@ describe("getForm", () => {
             { type: "condition", branch: "then", slot: 0 },
             { type: "loop", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const form = getForm({
       flow,
@@ -63,11 +63,11 @@ describe("getForm", () => {
     const flow: Flow = [
       {
         form: {
-          values: () => ({
+          fields: () => ({
             name: ["John", []],
           }),
-          render: ({ values }) => ({
-            name: values.name,
+          render: ({ fields }) => ({
+            name: fields.name,
           }),
         },
       },
@@ -76,10 +76,10 @@ describe("getForm", () => {
       points: [
         {
           path: [{ type: "list", slot: 0 }],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const form = getForm({
       flow,
@@ -100,7 +100,7 @@ describe("getForm", () => {
     const flow: Flow = [
       {
         form: {
-          values: () => ({}),
+          fields: () => ({}),
           render: ({ params }) => ({
             hello: params.hello,
           }),
@@ -111,10 +111,10 @@ describe("getForm", () => {
       points: [
         {
           path: [{ type: "list", slot: 0 }],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const form = getForm({
       flow,

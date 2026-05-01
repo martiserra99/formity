@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import type { FormValues } from "src/types/state/values";
+import type { FormMemory } from "src/types/state/memory";
 
 import { get, set } from "./form";
 
-describe("FormValues", () => {
+describe("FormMemory", () => {
   describe("get", () => {
-    it("returns the value that is in the given `FormValues` object", () => {
-      const form: FormValues = {
+    it("returns the value that is in the given `FormMemory` object", () => {
+      const form: FormMemory = {
         a: {
           data: { here: false },
           keys: {
@@ -30,8 +30,8 @@ describe("FormValues", () => {
       expect(result).toEqual(1);
     });
 
-    it("returns the default value if the keys are not encountered in the given `FormValues` object", () => {
-      const form: FormValues = {
+    it("returns the default value if the keys are not encountered in the given `FormMemory` object", () => {
+      const form: FormMemory = {
         a: {
           data: { here: false },
           keys: {
@@ -56,13 +56,13 @@ describe("FormValues", () => {
   });
 
   describe("set", () => {
-    it("sets the value in the given `FormValues` object", () => {
-      const form: FormValues = {};
+    it("sets the value in the given `FormMemory` object", () => {
+      const form: FormMemory = {};
       const name: string = "a";
       const keys: PropertyKey[] = ["x", "y"];
       const data: unknown = 1;
       const result = set(form, name, keys, data);
-      const expected: FormValues = {
+      const expected: FormMemory = {
         a: {
           data: { here: false },
           keys: {

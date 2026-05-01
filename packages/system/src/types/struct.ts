@@ -76,7 +76,7 @@ export type JumpStruct = {
 export type FormStruct = {
   type: "form";
   form: {
-    values: Record<string, unknown>;
+    fields: Record<string, unknown>;
   };
 };
 

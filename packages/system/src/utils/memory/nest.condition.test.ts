@@ -1,20 +1,20 @@
 import { describe, expect, it } from "vitest";
 
-import type { ConditionValues, FormValues } from "src/types/state/values";
+import type { ConditionMemory, FormMemory } from "src/types/state/memory";
 import type { Position } from "src/types/state/position";
 
 import { getItem, setItem } from "./nest.condition";
 
-describe("ConditionValues", () => {
+describe("ConditionMemory", () => {
   describe("getItem", () => {
-    it("returns the item at the given `then` position within the given `ConditionValues` object", () => {
-      const item: FormValues = {
+    it("returns the item at the given `then` position within the given `ConditionMemory` object", () => {
+      const item: FormMemory = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const nest: ConditionValues = {
+      const nest: ConditionMemory = {
         type: "condition",
         then: {
           1: item,
@@ -26,14 +26,14 @@ describe("ConditionValues", () => {
       expect(result).toBe(item);
     });
 
-    it("returns the item at the given `else` position within the given `ConditionValues` object", () => {
-      const item: FormValues = {
+    it("returns the item at the given `else` position within the given `ConditionMemory` object", () => {
+      const item: FormMemory = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const nest: ConditionValues = {
+      const nest: ConditionMemory = {
         type: "condition",
         then: {},
         else: {
@@ -45,14 +45,14 @@ describe("ConditionValues", () => {
       expect(result).toBe(item);
     });
 
-    it("returns null when trying to get an item from a position that doesn't exist in the given `ConditionValues` object", () => {
-      const item: FormValues = {
+    it("returns null when trying to get an item from a position that doesn't exist in the given `ConditionMemory` object", () => {
+      const item: FormMemory = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const nest: ConditionValues = {
+      const nest: ConditionMemory = {
         type: "condition",
         then: {},
         else: {
@@ -66,21 +66,21 @@ describe("ConditionValues", () => {
   });
 
   describe("setItem", () => {
-    it("sets the item at the given `then` position within the given `ConditionValues` object", () => {
-      const nest: ConditionValues = {
+    it("sets the item at the given `then` position within the given `ConditionMemory` object", () => {
+      const nest: ConditionMemory = {
         type: "condition",
         then: {},
         else: {},
       };
       const position: Position = { type: "condition", branch: "then", slot: 1 };
-      const item: FormValues = {
+      const item: FormMemory = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
       setItem(nest, position, item);
-      const expected: ConditionValues = {
+      const expected: ConditionMemory = {
         type: "condition",
         then: {
           1: item,
@@ -90,21 +90,21 @@ describe("ConditionValues", () => {
       expect(nest).toEqual(expected);
     });
 
-    it("sets the item at the given `else` position within the given `ConditionValues` object", () => {
-      const nest: ConditionValues = {
+    it("sets the item at the given `else` position within the given `ConditionMemory` object", () => {
+      const nest: ConditionMemory = {
         type: "condition",
         then: {},
         else: {},
       };
       const position: Position = { type: "condition", branch: "else", slot: 1 };
-      const item: FormValues = {
+      const item: FormMemory = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
       setItem(nest, position, item);
-      const expected: ConditionValues = {
+      const expected: ConditionMemory = {
         type: "condition",
         then: {},
         else: {

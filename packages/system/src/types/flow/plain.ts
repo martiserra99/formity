@@ -26,7 +26,7 @@ export type ListFlow<Render = unknown> = ItemFlow<Render>[];
 
 export type ConditionFlow<Render = unknown> = {
   condition: {
-    if: (inputs: Record<string, unknown>) => boolean;
+    if: (values: Record<string, unknown>) => boolean;
     then: ListFlow<Render>;
     else: ListFlow<Render>;
   };
@@ -34,7 +34,7 @@ export type ConditionFlow<Render = unknown> = {
 
 export type LoopFlow<Render = unknown> = {
   loop: {
-    while: (inputs: Record<string, unknown>) => boolean;
+    while: (values: Record<string, unknown>) => boolean;
     do: ListFlow<Render>;
   };
 };
@@ -42,7 +42,7 @@ export type LoopFlow<Render = unknown> = {
 export type SwitchFlow<Render = unknown> = {
   switch: {
     branches: {
-      case: (inputs: Record<string, unknown>) => boolean;
+      case: (values: Record<string, unknown>) => boolean;
       then: ListFlow<Render>;
     }[];
     default: ListFlow<Render>;
@@ -51,18 +51,18 @@ export type SwitchFlow<Render = unknown> = {
 
 export type JumpFlow<Render = unknown> = {
   jump: {
-    id: string;
+    id: unknown;
     at: FormFlow<Render>;
   };
 };
 
 export type FormFlow<Render = unknown> = {
   form: {
-    values: (
-      inputs: Record<string, unknown>,
+    fields: (
+      values: Record<string, unknown>,
     ) => Record<string, [unknown, PropertyKey[]]>;
     render: (args: {
-      inputs: Record<string, unknown>;
+      fields: Record<string, unknown>;
       values: Record<string, unknown>;
       params: Record<string, unknown>;
       onNext: OnNext<Record<string, unknown>>;
@@ -75,16 +75,16 @@ export type FormFlow<Render = unknown> = {
 };
 
 export type VariablesFlow = {
-  variables: (inputs: Record<string, unknown>) => Record<string, unknown>;
+  variables: (values: Record<string, unknown>) => Record<string, unknown>;
 };
 
 export type YieldFlow = {
   yield: {
-    next: (inputs: Record<string, unknown>) => unknown[];
-    back: (inputs: Record<string, unknown>) => unknown[];
+    next: (values: Record<string, unknown>) => unknown[];
+    back: (values: Record<string, unknown>) => unknown[];
   };
 };
 
 export type ReturnFlow = {
-  return: (inputs: Record<string, unknown>) => unknown;
+  return: (values: Record<string, unknown>) => unknown;
 };

@@ -1,20 +1,20 @@
 import { describe, expect, it } from "vitest";
 
-import type { ListValues, FormValues } from "src/types/state/values";
+import type { ListMemory, FormMemory } from "src/types/state/memory";
 import type { Position } from "src/types/state/position";
 
 import { getItem, setItem } from "./nest.list";
 
-describe("ListValues", () => {
+describe("ListMemory", () => {
   describe("getItem", () => {
-    it("returns the item at the given position within the given `ListValues` object", () => {
-      const item: FormValues = {
+    it("returns the item at the given position within the given `ListMemory` object", () => {
+      const item: FormMemory = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const nest: ListValues = {
+      const nest: ListMemory = {
         type: "list",
         list: {
           1: item,
@@ -25,14 +25,14 @@ describe("ListValues", () => {
       expect(result).toBe(item);
     });
 
-    it("returns null when trying to get an item from a position that doesn't exist in the given `ListValues` object", () => {
-      const item: FormValues = {
+    it("returns null when trying to get an item from a position that doesn't exist in the given `ListMemory` object", () => {
+      const item: FormMemory = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const nest: ListValues = {
+      const nest: ListMemory = {
         type: "list",
         list: {
           0: item,
@@ -45,20 +45,20 @@ describe("ListValues", () => {
   });
 
   describe("setItem", () => {
-    it("sets the item at the given position within the given `ListValues` object", () => {
-      const nest: ListValues = {
+    it("sets the item at the given position within the given `ListMemory` object", () => {
+      const nest: ListMemory = {
         type: "list",
         list: {},
       };
       const position: Position = { type: "list", slot: 1 };
-      const item: FormValues = {
+      const item: FormMemory = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
       setItem(nest, position, item);
-      const expected: ListValues = {
+      const expected: ListMemory = {
         type: "list",
         list: {
           1: item,

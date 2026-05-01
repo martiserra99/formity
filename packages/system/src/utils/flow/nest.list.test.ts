@@ -11,7 +11,7 @@ describe("ListFlow", () => {
       const flow: ListFlow = [
         {
           form: {
-            values: () => ({}),
+            fields: () => ({}),
             render: () => ({}),
           },
         },
@@ -32,13 +32,13 @@ describe("ListFlow", () => {
       const flow: ListFlow = [
         {
           form: {
-            values: () => ({}),
+            fields: () => ({}),
             render: () => ({}),
           },
         },
         {
           form: {
-            values: () => ({}),
+            fields: () => ({}),
             render: () => ({}),
           },
         },
@@ -52,7 +52,7 @@ describe("ListFlow", () => {
       const flow: ListFlow = [
         {
           form: {
-            values: () => ({}),
+            fields: () => ({}),
             render: () => ({}),
           },
         },

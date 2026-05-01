@@ -46,13 +46,13 @@ export type SwitchSchema = {
 export const switchFlow: Flow<SwitchSchema> = [
   {
     form: {
-      values: () => ({
+      fields: () => ({
         interested: ["yes", []],
       }),
-      render: ({ values, ...rest }) => (
+      render: ({ fields, ...rest }) => (
         <FormControls step="interested" {...rest}>
           <Form
-            defaultValues={values}
+            defaultValues={fields}
             resolver={zodResolver(
               z.object({
                 interested: z.string(),
@@ -102,13 +102,13 @@ export const switchFlow: Flow<SwitchSchema> = [
           then: [
             {
               form: {
-                values: () => ({
+                fields: () => ({
                   whyYes: ["", []],
                 }),
-                render: ({ values, ...rest }) => (
+                render: ({ fields, ...rest }) => (
                   <FormControls step="whyYes" {...rest}>
                     <Form
-                      defaultValues={values}
+                      defaultValues={fields}
                       resolver={zodResolver(
                         z.object({
                           whyYes: z.string(),
@@ -142,13 +142,13 @@ export const switchFlow: Flow<SwitchSchema> = [
           then: [
             {
               form: {
-                values: () => ({
+                fields: () => ({
                   whyNot: ["", []],
                 }),
-                render: ({ values, ...rest }) => (
+                render: ({ fields, ...rest }) => (
                   <FormControls step="whyNot" {...rest}>
                     <Form
-                      defaultValues={values}
+                      defaultValues={fields}
                       resolver={zodResolver(
                         z.object({
                           whyNot: z.string(),
@@ -182,13 +182,13 @@ export const switchFlow: Flow<SwitchSchema> = [
           then: [
             {
               form: {
-                values: () => ({
+                fields: () => ({
                   whyMaybe: ["", []],
                 }),
-                render: ({ values, ...rest }) => (
+                render: ({ fields, ...rest }) => (
                   <FormControls step="whyMaybe" {...rest}>
                     <Form
-                      defaultValues={values}
+                      defaultValues={fields}
                       resolver={zodResolver(
                         z.object({
                           whyMaybe: z.string(),
@@ -225,13 +225,13 @@ export const switchFlow: Flow<SwitchSchema> = [
       default: [
         {
           form: {
-            values: () => ({
+            fields: () => ({
               whyNotSure: ["", []],
             }),
-            render: ({ values, ...rest }) => (
+            render: ({ fields, ...rest }) => (
               <FormControls step="whyNotSure" {...rest}>
                 <Form
-                  defaultValues={values}
+                  defaultValues={fields}
                   resolver={zodResolver(
                     z.object({
                       whyNotSure: z.string(),

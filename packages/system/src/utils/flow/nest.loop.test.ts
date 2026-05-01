@@ -14,7 +14,7 @@ describe("LoopFlow", () => {
           do: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -32,7 +32,7 @@ describe("LoopFlow", () => {
           do: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -63,13 +63,13 @@ describe("LoopFlow", () => {
           do: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -88,13 +88,13 @@ describe("LoopFlow", () => {
           do: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -113,13 +113,13 @@ describe("LoopFlow", () => {
           do: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },

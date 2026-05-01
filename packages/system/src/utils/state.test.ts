@@ -19,7 +19,7 @@ describe("syncState", () => {
                 do: [
                   {
                     form: {
-                      values: () => ({
+                      fields: () => ({
                         a: [0, []],
                         b: [0, []],
                       }),
@@ -42,15 +42,15 @@ describe("syncState", () => {
             { type: "condition", branch: "then", slot: 0 },
             { type: "loop", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: { type: "list", list: {} },
+      memory: { type: "list", list: {} },
     };
     const state: State = syncState({
       flow,
       state: current,
-      values: { a: 1, b: 2 },
+      fields: { a: 1, b: 2 },
     });
     const expected: State = {
       points: [
@@ -60,10 +60,10 @@ describe("syncState", () => {
             { type: "condition", branch: "then", slot: 0 },
             { type: "loop", slot: 0 },
           ],
-          inputs: {},
+          values: {},
         },
       ],
-      values: {
+      memory: {
         type: "list",
         list: {
           1: {

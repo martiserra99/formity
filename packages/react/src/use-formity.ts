@@ -53,8 +53,8 @@ export function useFormity<T extends Schema>({
   });
 
   const onNext = useCallback(
-    (values: Record<string, unknown>) => {
-      const options = { flow, onYield, onReturn, state, values, history };
+    (fields: Record<string, unknown>) => {
+      const options = { flow, onYield, onReturn, state, fields, history };
       const changed = nextState(options);
       setState(changed);
     },
@@ -62,24 +62,24 @@ export function useFormity<T extends Schema>({
   );
 
   const onBack = useCallback(
-    (values: Record<string, unknown>) => {
-      const changed = prevState({ flow, onYield, state, values });
+    (fields: Record<string, unknown>) => {
+      const changed = prevState({ flow, onYield, state, fields });
       setState(changed);
     },
     [flow, onYield, state],
   );
 
   const onJump = useCallback(
-    (id: string, values: Record<string, unknown>) => {
-      const changed = jumpState({ id, flow, state, values, history });
+    (id: string, fields: Record<string, unknown>) => {
+      const changed = jumpState({ id, flow, state, fields, history });
       setState(changed);
     },
     [flow, state, history],
   );
 
   const getState = useCallback(
-    (values: Record<string, unknown>) => {
-      return syncState({ flow, state, values });
+    (fields: Record<string, unknown>) => {
+      return syncState({ flow, state, fields });
     },
     [state, flow],
   );

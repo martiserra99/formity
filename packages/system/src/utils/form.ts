@@ -11,7 +11,7 @@ import type {
 } from "../types/form-controls";
 
 import * as NestFlowUtils from "./flow/nest";
-import * as NestValuesUtils from "./values/nest";
+import * as NestMemoryUtils from "./memory/nest";
 
 export function getForm(options: {
   flow: Flow;
@@ -26,16 +26,16 @@ export function getForm(options: {
   const { flow, state, params, ...controls } = options;
   const point = state.points[state.points.length - 1];
   const form = NestFlowUtils.find(flow, point.path) as FormFlow;
-  const inputs = point.inputs;
-  const values = Object.fromEntries(
-    Object.entries(form["form"]["values"](inputs)).map(
+  const values = point.values;
+  const fields = Object.fromEntries(
+    Object.entries(form["form"]["fields"](values)).map(
       ([name, [value, keys]]) => {
         return [
           name,
-          NestValuesUtils.get(state.values, point.path, name, keys, value),
+          NestMemoryUtils.get(state.memory, point.path, name, keys, value),
         ];
       },
     ),
   );
-  return form["form"]["render"]({ inputs, values, params, ...controls });
+  return form["form"]["render"]({ fields, values, params, ...controls });
 }

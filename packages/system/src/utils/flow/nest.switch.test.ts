@@ -16,7 +16,7 @@ describe("SwitchFlow", () => {
               then: [
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
@@ -27,7 +27,7 @@ describe("SwitchFlow", () => {
               then: [
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
@@ -38,7 +38,7 @@ describe("SwitchFlow", () => {
               then: [
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
@@ -61,7 +61,7 @@ describe("SwitchFlow", () => {
               then: [
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
@@ -72,7 +72,7 @@ describe("SwitchFlow", () => {
               then: [
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
@@ -82,7 +82,7 @@ describe("SwitchFlow", () => {
           default: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -102,7 +102,7 @@ describe("SwitchFlow", () => {
               then: [
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
@@ -117,7 +117,7 @@ describe("SwitchFlow", () => {
               then: [
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
@@ -127,7 +127,7 @@ describe("SwitchFlow", () => {
           default: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -153,13 +153,13 @@ describe("SwitchFlow", () => {
               then: [
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
@@ -190,13 +190,13 @@ describe("SwitchFlow", () => {
           default: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -221,7 +221,7 @@ describe("SwitchFlow", () => {
               then: [
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
@@ -232,7 +232,7 @@ describe("SwitchFlow", () => {
               then: [
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
@@ -242,7 +242,7 @@ describe("SwitchFlow", () => {
           default: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -270,7 +270,7 @@ describe("SwitchFlow", () => {
           default: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },
@@ -294,7 +294,7 @@ describe("SwitchFlow", () => {
               then: [
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
@@ -305,7 +305,7 @@ describe("SwitchFlow", () => {
               then: [
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
@@ -317,7 +317,7 @@ describe("SwitchFlow", () => {
               then: [
                 {
                   form: {
-                    values: () => ({}),
+                    fields: () => ({}),
                     render: () => ({}),
                   },
                 },
@@ -349,7 +349,7 @@ describe("SwitchFlow", () => {
           default: [
             {
               form: {
-                values: () => ({}),
+                fields: () => ({}),
                 render: () => ({}),
               },
             },

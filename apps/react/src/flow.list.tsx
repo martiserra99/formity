@@ -30,14 +30,14 @@ export const listFlow: Flow<ListSchema> = [
   [
     {
       form: {
-        values: () => ({
+        fields: () => ({
           name: ["", []],
           surname: ["", []],
         }),
-        render: ({ values, ...rest }) => (
+        render: ({ fields, ...rest }) => (
           <FormControls step="nameSurname" {...rest}>
             <Form
-              defaultValues={values}
+              defaultValues={fields}
               resolver={zodResolver(
                 z.object({
                   name: z

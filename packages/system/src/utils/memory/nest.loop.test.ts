@@ -1,20 +1,20 @@
 import { describe, expect, it } from "vitest";
 
-import type { LoopValues, FormValues } from "src/types/state/values";
+import type { LoopMemory, FormMemory } from "src/types/state/memory";
 import type { Position } from "src/types/state/position";
 
 import { getItem, setItem } from "./nest.loop";
 
-describe("LoopValues", () => {
+describe("LoopMemory", () => {
   describe("getItem", () => {
-    it("returns the item at the given position within the given `LoopValues` object", () => {
-      const item: FormValues = {
+    it("returns the item at the given position within the given `LoopMemory` object", () => {
+      const item: FormMemory = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const nest: LoopValues = {
+      const nest: LoopMemory = {
         type: "loop",
         do: {
           1: item,
@@ -25,14 +25,14 @@ describe("LoopValues", () => {
       expect(result).toBe(item);
     });
 
-    it("returns null when trying to get an item from a position that doesn't exist in the given `LoopValues` object", () => {
-      const item: FormValues = {
+    it("returns null when trying to get an item from a position that doesn't exist in the given `LoopMemory` object", () => {
+      const item: FormMemory = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const nest: LoopValues = {
+      const nest: LoopMemory = {
         type: "loop",
         do: {
           0: item,
@@ -45,20 +45,20 @@ describe("LoopValues", () => {
   });
 
   describe("setItem", () => {
-    it("sets the item at the given position within the given `LoopValues` object", () => {
-      const nest: LoopValues = {
+    it("sets the item at the given position within the given `LoopMemory` object", () => {
+      const nest: LoopMemory = {
         type: "loop",
         do: {},
       };
       const position: Position = { type: "loop", slot: 1 };
-      const item: FormValues = {
+      const item: FormMemory = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
       setItem(nest, position, item);
-      const expected: LoopValues = {
+      const expected: LoopMemory = {
         type: "loop",
         do: {
           1: item,

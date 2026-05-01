@@ -1,27 +1,27 @@
 import type { Flow, FormFlow } from "../types/flow/plain";
 
 import type { State } from "../types/state/state";
-import type { Values, NestValues } from "../types/state/values";
+import type { Memory, NestMemory } from "../types/state/memory";
 
 import * as NestFlowUtils from "./flow/nest";
-import * as FlowInputsUtils from "./values/nest";
+import * as NestMemoryUtils from "./memory/nest";
 
 export function syncState(options: {
   flow: Flow;
   state: State;
-  values: Record<string, unknown>;
+  fields: Record<string, unknown>;
 }): State {
-  const { flow, state, values } = options;
+  const { flow, state, fields } = options;
   const point = state.points[state.points.length - 1];
   const path = point.path;
   const formFlow = NestFlowUtils.find(flow, point.path) as FormFlow;
-  const formValues = formFlow["form"]["values"](point.inputs);
-  let stateValues: NestValues = state.values;
-  for (const [name, value] of Object.entries(values)) {
-    if (name in formValues) {
-      const keys = formValues[name][1];
-      stateValues = FlowInputsUtils.set(stateValues, path, name, keys, value);
+  const formFields = formFlow["form"]["fields"](point.values);
+  let memory: NestMemory = state.memory;
+  for (const [name, value] of Object.entries(fields)) {
+    if (name in formFields) {
+      const keys = formFields[name][1];
+      memory = NestMemoryUtils.set(memory, path, name, keys, value);
     }
   }
-  return { points: state.points, values: stateValues as Values };
+  return { points: state.points, memory: memory as Memory };
 }

@@ -40,23 +40,23 @@ describe("NestFlow", () => {
     it("returns the path to the form element with the given id", () => {
       const flow: ListFlow = [
         { variables: () => ({}) },
-        { form: { values: () => ({}), render: () => ({}) } },
+        { form: { fields: () => ({}), render: () => ({}) } },
         {
           condition: {
             if: () => true,
             then: [
-              { form: { values: () => ({}), render: () => ({}) } },
+              { form: { fields: () => ({}), render: () => ({}) } },
               {
                 loop: {
                   while: () => true,
                   do: [
                     { variables: () => ({}) },
-                    { form: { values: () => ({}), render: () => ({}) } },
+                    { form: { fields: () => ({}), render: () => ({}) } },
                     {
                       jump: {
                         id: "target",
                         at: {
-                          form: { values: () => ({}), render: () => ({}) },
+                          form: { fields: () => ({}), render: () => ({}) },
                         },
                       },
                     },
@@ -72,12 +72,12 @@ describe("NestFlow", () => {
                     {
                       case: () => true,
                       then: [
-                        { form: { values: () => ({}), render: () => ({}) } },
+                        { form: { fields: () => ({}), render: () => ({}) } },
                       ],
                     },
                   ],
                   default: [
-                    { form: { values: () => ({}), render: () => ({}) } },
+                    { form: { fields: () => ({}), render: () => ({}) } },
                   ],
                 },
               },

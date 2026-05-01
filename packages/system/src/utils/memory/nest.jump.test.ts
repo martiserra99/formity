@@ -1,19 +1,19 @@
 import { describe, expect, it } from "vitest";
 
-import type { JumpValues, FormValues } from "src/types/state/values";
+import type { JumpMemory, FormMemory } from "src/types/state/memory";
 
 import { getItem, setItem } from "./nest.jump";
 
-describe("JumpValues", () => {
+describe("JumpMemory", () => {
   describe("getItem", () => {
-    it("returns the item within the given `JumpValues` object", () => {
-      const item: FormValues = {
+    it("returns the item within the given `JumpMemory` object", () => {
+      const item: FormMemory = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
-      const nest: JumpValues = {
+      const nest: JumpMemory = {
         type: "jump",
         at: item,
       };
@@ -21,8 +21,8 @@ describe("JumpValues", () => {
       expect(result).toBe(item);
     });
 
-    it("returns null when trying to get the item and it doesn't exist in the given `JumpValues` object", () => {
-      const nest: JumpValues = {
+    it("returns null when trying to get the item and it doesn't exist in the given `JumpMemory` object", () => {
+      const nest: JumpMemory = {
         type: "jump",
         at: undefined,
       };
@@ -32,19 +32,19 @@ describe("JumpValues", () => {
   });
 
   describe("setItem", () => {
-    it("sets the item within the given `JumpValues` object", () => {
-      const nest: JumpValues = {
+    it("sets the item within the given `JumpMemory` object", () => {
+      const nest: JumpMemory = {
         type: "jump",
         at: undefined,
       };
-      const item: FormValues = {
+      const item: FormMemory = {
         a: {
           data: { here: true, data: 1 },
           keys: {},
         },
       };
       setItem(nest, item);
-      const expected: JumpValues = {
+      const expected: JumpMemory = {
         type: "jump",
         at: item,
       };
