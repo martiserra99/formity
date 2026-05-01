@@ -1,4 +1,4 @@
-import { ListStruct, ItemStruct } from "./struct";
+import { ListStruct, ItemStruct } from "../struct";
 
 /**
  * Utility type that defines the structure of a condition element in a multi-step form.

@@ -1,4 +1,4 @@
-export type { s } from "@formity/system";
+export type { s, f } from "@formity/system";
 
 export type { Join } from "@formity/system";
 
