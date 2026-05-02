@@ -1,8 +1,6 @@
 export * as s from "./types/utils/schema";
 export * as f from "./types/utils/flow";
 
-export type { Join } from "./utility-types";
-
 export type { Flow } from "./types/flow/typed";
 export type { Schema } from "./types/schema";
 export type { Struct } from "./types/struct";
