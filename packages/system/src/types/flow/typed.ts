@@ -178,7 +178,7 @@ export type JumpFlow<
 > = {
   jump: {
     id: string;
-    at: ItemFlow<Render, Struct["jump"]["at"], Inputs, Inputs, Params>;
+    at: FormFlow<Render, Struct["jump"]["at"], Inputs, Params>;
   };
 };
 
@@ -297,11 +297,7 @@ type SwitchOutput<
 type JumpOutput<
   Struct extends JumpStruct,
   Inputs extends Record<string, unknown>,
-> = Struct extends FormStruct
-  ? FormOutput<Struct, Inputs>
-  : Struct extends VariablesStruct
-  ? VariablesOutput<Struct, Inputs>
-  : Inputs;
+> = FormOutput<Struct["jump"]["at"], Inputs>;
 
 type BranchesContainsJump<Series extends ListStruct[]> = Series extends [
   infer Head,
