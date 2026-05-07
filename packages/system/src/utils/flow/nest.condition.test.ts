@@ -7,7 +7,7 @@ import { into, next, at } from "./nest.condition";
 
 describe("ConditionFlow", () => {
   describe("into", () => {
-    it("navigates into the `then` path of the `ConditionFlow` object", () => {
+    it("navigates into the `then` branch of the `ConditionFlow` object", () => {
       const flow: ConditionFlow = {
         condition: {
           if: () => true,
@@ -23,10 +23,11 @@ describe("ConditionFlow", () => {
         },
       };
       const position = into(flow, {});
-      expect(position).toEqual({ type: "condition", path: "then", slot: 0 });
+      console.log("position", position);
+      expect(position).toEqual({ type: "condition", branch: "then", slot: 0 });
     });
 
-    it("navigates into the `else` path of the `ConditionFlow` object", () => {
+    it("navigates into the `else` branch of the `ConditionFlow` object", () => {
       const flow: ConditionFlow = {
         condition: {
           if: () => false,
@@ -42,7 +43,7 @@ describe("ConditionFlow", () => {
         },
       };
       const position = into(flow, {});
-      expect(position).toEqual({ type: "condition", path: "else", slot: 0 });
+      expect(position).toEqual({ type: "condition", branch: "else", slot: 0 });
     });
 
     it("doesn't navigate into the `ConditionFlow` object", () => {
@@ -66,7 +67,7 @@ describe("ConditionFlow", () => {
   });
 
   describe("next", () => {
-    it("navigates to the next item in the `then` path of the `ConditionFlow` object", () => {
+    it("navigates to the next item in the `then` branch of the `ConditionFlow` object", () => {
       const flow: ConditionFlow = {
         condition: {
           if: () => true,
@@ -89,10 +90,10 @@ describe("ConditionFlow", () => {
       };
       const current: Position = { type: "condition", branch: "then", slot: 0 };
       const position = next(flow, current);
-      expect(position).toEqual({ type: "condition", path: "then", slot: 1 });
+      expect(position).toEqual({ type: "condition", branch: "then", slot: 1 });
     });
 
-    it("navigates to the next item in the `else` path of the `ConditionFlow` object", () => {
+    it("navigates to the next item in the `else` branch of the `ConditionFlow` object", () => {
       const flow: ConditionFlow = {
         condition: {
           if: () => true,
@@ -115,7 +116,7 @@ describe("ConditionFlow", () => {
       };
       const current: Position = { type: "condition", branch: "else", slot: 0 };
       const position = next(flow, current);
-      expect(position).toEqual({ type: "condition", path: "else", slot: 1 });
+      expect(position).toEqual({ type: "condition", branch: "else", slot: 1 });
     });
 
     it("doesn't navigate to the next item in the `ConditionFlow` object", () => {
@@ -147,7 +148,7 @@ describe("ConditionFlow", () => {
   });
 
   describe("at", () => {
-    it("retrieves the item at the specified position in the `then` path of the `ConditionFlow` object", () => {
+    it("retrieves the item at the specified position in the `then` branch of the `ConditionFlow` object", () => {
       const item: ReturnFlow = { return: () => ({}) };
       const flow: ConditionFlow = {
         condition: {
@@ -161,7 +162,7 @@ describe("ConditionFlow", () => {
       expect(result).toBe(item);
     });
 
-    it("retrieves the item at the specified position in the `else` path of the `ConditionFlow` object", () => {
+    it("retrieves the item at the specified position in the `else` branch of the `ConditionFlow` object", () => {
       const item: ReturnFlow = { return: () => ({}) };
       const flow: ConditionFlow = {
         condition: {
