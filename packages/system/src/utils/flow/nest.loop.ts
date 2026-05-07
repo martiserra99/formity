@@ -34,7 +34,7 @@ export function next(
   return null;
 }
 
-export function jump(flow: LoopFlow, id: string): Position[] | null {
+export function jump(flow: LoopFlow, id: unknown): Position[] | null {
   for (let i = 0; i < flow.loop.do.length; i++) {
     const item = flow.loop.do[i];
     if (NestFlowUtils.is(item)) {

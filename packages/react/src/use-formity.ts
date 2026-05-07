@@ -70,7 +70,7 @@ export function useFormity<T extends Schema>({
   );
 
   const onJump = useCallback(
-    (id: string, fields: Record<string, unknown>) => {
+    (id: unknown, fields: Record<string, unknown>) => {
       const changed = jumpState({ id, flow, state, fields, history });
       setState(changed);
     },

@@ -1,5 +1,26 @@
 # @formity/system
 
+## 2.0.0
+
+### Major Changes
+
+- Added **Jump element** to define targets within a form flow that can be jumped to from anywhere.
+- Introduced `useFormity` hook to allow form steps to return values instead of only `ReactNode`.
+
+- Renamed `Schema` to `Flow`.
+- `Flow` now requires a generic with `render`, `struct`, `inputs`, and `params`.
+
+- Updated form element API:
+
+  - `values()` → `fields()`
+  - In `render()`:
+    - `values` → `fields`
+    - `inputs` → `values`
+
+- Utility types (`Form`, `Return`, `Condition`, etc.) moved under the `s` namespace.
+
+- Added `onJump` callback to programmatically trigger jumps to defined jump targets.
+
 ## 1.0.5
 
 ### Patch Changes

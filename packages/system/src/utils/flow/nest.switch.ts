@@ -40,7 +40,7 @@ export function next(flow: SwitchFlow, position: Position): Position | null {
   return null;
 }
 
-export function jump(flow: SwitchFlow, id: string): Position[] | null {
+export function jump(flow: SwitchFlow, id: unknown): Position[] | null {
   for (let i = 0; i < flow.switch.branches.length; i++) {
     for (let j = 0; j < flow.switch.branches[i].then.length; j++) {
       const item = flow.switch.branches[i].then[j];

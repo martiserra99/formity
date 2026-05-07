@@ -18,7 +18,7 @@ export type OnBack<Fields extends Record<string, unknown>> = (
  * Callback function used to jump to the corresponding jump element of a multi-step form.
  */
 export type OnJump<Fields extends Record<string, unknown>> = (
-  id: string,
+  id: unknown,
   fields: Fields,
 ) => void;
 

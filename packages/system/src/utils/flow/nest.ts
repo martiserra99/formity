@@ -62,7 +62,7 @@ export function next(
   throw new Error("Invalid flow");
 }
 
-export function jump(flow: NestFlow, id: string): Position[] | null {
+export function jump(flow: NestFlow, id: unknown): Position[] | null {
   if (ListFlowUtils.is(flow)) {
     return ListFlowUtils.jump(flow, id);
   }

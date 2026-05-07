@@ -89,7 +89,7 @@ export function jumpState<T extends Schema>(options: {
   state: State;
   fields: Record<string, unknown>;
   history: boolean;
-  id: string;
+  id: unknown;
 }): State {
   const id = options.id;
   const flow = options.flow as PlainFlow;

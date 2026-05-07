@@ -177,7 +177,7 @@ export type JumpFlow<
   Params extends Record<string, unknown>,
 > = {
   jump: {
-    id: string;
+    id: unknown;
     at: FormFlow<Render, Struct["jump"]["at"], Inputs, Params>;
   };
 };

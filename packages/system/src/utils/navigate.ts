@@ -252,7 +252,7 @@ export function jumpState(options: {
   state: State;
   fields: Record<string, unknown>;
   history: boolean;
-  id: string;
+  id: unknown;
 }): State {
   const { flow, state, fields, history, id } = options;
   const point = state.points[state.points.length - 1];
@@ -270,7 +270,7 @@ function jumpToForm(
   flow: Flow,
   point: Point,
   fields: Record<string, unknown>,
-  id: string,
+  id: unknown,
 ): Point[] {
   const path = NestFlowUtils.jump(flow, id);
   if (path) {

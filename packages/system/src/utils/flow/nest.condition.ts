@@ -31,7 +31,7 @@ export function next(flow: ConditionFlow, position: Position): Position | null {
   return null;
 }
 
-export function jump(flow: ConditionFlow, id: string): Position[] | null {
+export function jump(flow: ConditionFlow, id: unknown): Position[] | null {
   for (const branch of ["then", "else"] as const) {
     for (let i = 0; i < flow.condition[branch].length; i++) {
       const item = flow.condition[branch][i];

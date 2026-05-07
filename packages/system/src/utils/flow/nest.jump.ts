@@ -13,7 +13,7 @@ export function next(): Position | null {
   return null;
 }
 
-export function jump(flow: JumpFlow, id: string): Position[] | null {
+export function jump(flow: JumpFlow, id: unknown): Position[] | null {
   if (flow.jump.id === id) {
     return [{ type: "jump" }];
   }

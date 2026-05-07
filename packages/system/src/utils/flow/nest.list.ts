@@ -22,7 +22,7 @@ export function next(flow: ListFlow, position: Position): Position | null {
   return null;
 }
 
-export function jump(flow: ListFlow, id: string): Position[] | null {
+export function jump(flow: ListFlow, id: unknown): Position[] | null {
   for (let i = 0; i < flow.length; i++) {
     const item = flow[i];
     if (NestFlowUtils.is(item)) {
