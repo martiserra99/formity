@@ -2,13 +2,13 @@ import type { Schema } from "../schema";
 
 import type {
   ItemStruct,
+  YieldStruct,
+  ReturnStruct,
   NestStruct,
   ListStruct,
   ConditionStruct,
   LoopStruct,
   SwitchStruct,
-  YieldStruct,
-  ReturnStruct,
   JumpStruct,
 } from "../struct";
 
@@ -23,13 +23,22 @@ export type YieldOutput<T extends Schema> = ListData<
   ? U
   : never;
 
-type ItemData<Item extends ItemStruct, Data, Flag> = Item extends NestStruct
-  ? NestData<Item, Data, Flag>
-  : Item extends YieldStruct
+type ItemData<Item extends ItemStruct, Data, Flag> = Item extends YieldStruct
   ? YieldData<Item, Data, Flag>
   : Item extends ReturnStruct
   ? ReturnData<Data>
+  : Item extends NestStruct
+  ? NestData<Item, Data, Flag>
   : [Data, Flag];
+
+type YieldData<Yield extends YieldStruct, Data, Flag> = Flag extends false
+  ? [
+      Data | Yield["yield"]["next"][number] | Yield["yield"]["back"][number],
+      Flag,
+    ]
+  : [Data, Flag];
+
+type ReturnData<Data> = [Data, true];
 
 type NestData<Nest extends NestStruct, Data, Flag> = Nest extends ListStruct
   ? ListData<Nest, Data, Flag>
@@ -104,12 +113,3 @@ type BranchesData<
   : Mark extends true
   ? [Data, Mark]
   : [Data, Flag];
-
-type YieldData<Yield extends YieldStruct, Data, Flag> = Flag extends false
-  ? [
-      Data | Yield["yield"]["next"][number] | Yield["yield"]["back"][number],
-      Flag,
-    ]
-  : [Data, Flag];
-
-type ReturnData<Data> = [Data, true];

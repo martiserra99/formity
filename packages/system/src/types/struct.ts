@@ -7,11 +7,48 @@ export type Struct = ListStruct;
  * This type is meant to be extended and is used to define the structure of an element in a multi-step form.
  */
 export type ItemStruct =
-  | NestStruct
   | FormStruct
   | VariablesStruct
   | YieldStruct
-  | ReturnStruct;
+  | ReturnStruct
+  | NestStruct;
+
+/**
+ * This type is meant to be extended and is used to define the structure of a form element in a multi-step form.
+ */
+export type FormStruct = {
+  type: "form";
+  form: {
+    fields: Record<string, unknown>;
+  };
+};
+
+/**
+ * This type is meant to be extended and is used to define the structure of a variables element in a multi-step form.
+ */
+export type VariablesStruct = {
+  type: "variables";
+  variables: Record<string, unknown>;
+};
+
+/**
+ * This type is meant to be extended and is used to define the structure of a yield element in a multi-step form.
+ */
+export type YieldStruct = {
+  type: "yield";
+  yield: {
+    next: unknown[];
+    back: unknown[];
+  };
+};
+
+/**
+ * This type is meant to be extended and is used to define the structure of a return element in a multi-step form.
+ */
+export type ReturnStruct = {
+  type: "return";
+  return: unknown;
+};
 
 /**
  * This type is meant to be extended and is used to define the structure of a nest element in a multi-step form.
@@ -68,41 +105,4 @@ export type JumpStruct = {
   jump: {
     at: FormStruct;
   };
-};
-
-/**
- * This type is meant to be extended and is used to define the structure of a form element in a multi-step form.
- */
-export type FormStruct = {
-  type: "form";
-  form: {
-    fields: Record<string, unknown>;
-  };
-};
-
-/**
- * This type is meant to be extended and is used to define the structure of a variables element in a multi-step form.
- */
-export type VariablesStruct = {
-  type: "variables";
-  variables: Record<string, unknown>;
-};
-
-/**
- * This type is meant to be extended and is used to define the structure of a yield element in a multi-step form.
- */
-export type YieldStruct = {
-  type: "yield";
-  yield: {
-    next: unknown[];
-    back: unknown[];
-  };
-};
-
-/**
- * This type is meant to be extended and is used to define the structure of a return element in a multi-step form.
- */
-export type ReturnStruct = {
-  type: "return";
-  return: unknown;
 };

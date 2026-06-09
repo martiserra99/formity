@@ -2,12 +2,12 @@ import type { Schema } from "../schema";
 
 import type {
   ItemStruct,
+  ReturnStruct,
   NestStruct,
   ListStruct,
   ConditionStruct,
   LoopStruct,
   SwitchStruct,
-  ReturnStruct,
   JumpStruct,
 } from "../struct";
 
@@ -22,11 +22,15 @@ export type ReturnOutput<T extends Schema> = ListData<
   ? U
   : never;
 
-type ItemData<Item extends ItemStruct, Data, Flag> = Item extends NestStruct
-  ? NestData<Item, Data, Flag>
-  : Item extends ReturnStruct
+type ItemData<Item extends ItemStruct, Data, Flag> = Item extends ReturnStruct
   ? ReturnData<Item, Data, Flag>
+  : Item extends NestStruct
+  ? NestData<Item, Data, Flag>
   : [Data, Flag];
+
+type ReturnData<Return extends ReturnStruct, Data, Flag> = Flag extends false
+  ? [Data | Return["return"], true]
+  : [Data, true];
 
 type NestData<Nest extends NestStruct, Data, Flag> = Nest extends ListStruct
   ? ListData<Nest, Data, Flag>
@@ -101,7 +105,3 @@ type BranchesData<
   : Mark extends true
   ? [Data, Mark]
   : [Data, Flag];
-
-type ReturnData<Return extends ReturnStruct, Data, Flag> = Flag extends false
-  ? [Data | Return["return"], true]
-  : [Data, true];
