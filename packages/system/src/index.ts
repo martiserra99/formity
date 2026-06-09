@@ -1,5 +1,4 @@
-export * as s from "./types/utils/schema";
-export * as f from "./types/utils/flow";
+export * as s from "./types/utils";
 
 export type { Flow } from "./types/flow/typed";
 export type { Schema } from "./types/schema";

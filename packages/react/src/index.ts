@@ -1,4 +1,4 @@
-export type { s, f } from "@formity/system";
+export type { s } from "@formity/system";
 
 export type { Flow } from "@formity/system";
 export type { Schema } from "@formity/system";
