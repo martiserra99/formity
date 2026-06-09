@@ -14,13 +14,7 @@ import type {
   JumpStruct,
 } from "../struct";
 
-import type {
-  OnNext,
-  OnBack,
-  OnJump,
-  GetState,
-  SetState,
-} from "../form-controls";
+import type { Next, Back, Jump, GetState, SetState } from "../form-controls";
 
 /**
  * Defines the structure and behavior of a multi-step form.
@@ -199,9 +193,9 @@ export type FormFlow<
       fields: Struct["form"]["fields"];
       values: Values;
       params: Params;
-      onNext: OnNext<Struct["form"]["fields"]>;
-      onBack: OnBack<Struct["form"]["fields"]>;
-      onJump: OnJump<Struct["form"]["fields"]>;
+      next: Next<Struct["form"]["fields"]>;
+      back: Back<Struct["form"]["fields"]>;
+      jump: Jump<Struct["form"]["fields"]>;
       getState: GetState<Struct["form"]["fields"]>;
       setState: SetState;
     }) => Render;

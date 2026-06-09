@@ -13,9 +13,9 @@ export type { ReturnOutput } from "./types/output/return";
 
 export type { State } from "./types/state/state";
 
-export type { OnNext } from "./types/form-controls";
-export type { OnBack } from "./types/form-controls";
-export type { OnJump } from "./types/form-controls";
+export type { Next } from "./types/form-controls";
+export type { Back } from "./types/form-controls";
+export type { Jump } from "./types/form-controls";
 export type { GetState } from "./types/form-controls";
 export type { SetState } from "./types/form-controls";
 

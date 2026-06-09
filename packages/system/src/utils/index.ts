@@ -8,9 +8,9 @@ import type { OnReturn } from "../types/handlers/typed";
 import type { OnYield as PlainOnYield } from "../types/handlers/plain";
 import type { OnReturn as PlainOnReturn } from "../types/handlers/plain";
 
-import type { OnNext } from "src/types/form-controls";
-import type { OnBack } from "src/types/form-controls";
-import type { OnJump } from "src/types/form-controls";
+import type { Next } from "src/types/form-controls";
+import type { Back } from "src/types/form-controls";
+import type { Jump } from "src/types/form-controls";
 import type { GetState } from "src/types/form-controls";
 import type { SetState } from "src/types/form-controls";
 
@@ -120,20 +120,20 @@ export function getForm<T extends Schema>(options: {
   flow: Flow<T>;
   params: T["params"];
   state: State;
-  onNext: OnNext<Record<string, unknown>>;
-  onBack: OnBack<Record<string, unknown>>;
-  onJump: OnJump<Record<string, unknown>>;
+  next: Next<Record<string, unknown>>;
+  back: Back<Record<string, unknown>>;
+  jump: Jump<Record<string, unknown>>;
   getState: GetState<Record<string, unknown>>;
   setState: SetState;
 }): T["render"] {
   const flow = options.flow as PlainFlow;
   const params = options.params as Record<string, unknown>;
   const state = options.state;
-  const onNext = options.onNext;
-  const onBack = options.onBack;
-  const onJump = options.onJump;
+  const next = options.next;
+  const back = options.back;
+  const jump = options.jump;
   const getState = options.getState;
   const setState = options.setState;
-  const controls = { onNext, onBack, onJump, getState, setState };
+  const controls = { next, back, jump, getState, setState };
   return FormUtils.getForm({ flow, params, state, ...controls }) as T["render"];
 }

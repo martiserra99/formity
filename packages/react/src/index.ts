@@ -12,9 +12,9 @@ export type { ReturnOutput } from "@formity/system";
 
 export type { State } from "@formity/system";
 
-export type { OnNext } from "@formity/system";
-export type { OnBack } from "@formity/system";
-export type { OnJump } from "@formity/system";
+export type { Next } from "@formity/system";
+export type { Back } from "@formity/system";
+export type { Jump } from "@formity/system";
 export type { GetState } from "@formity/system";
 export type { SetState } from "@formity/system";
 

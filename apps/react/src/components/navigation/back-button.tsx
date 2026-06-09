@@ -6,7 +6,7 @@ import { cn } from "../../utils";
 
 export default function BackButton<T extends Record<string, unknown>>() {
   const { getValues } = useFormContext<T>();
-  const { onBack } = useFormControls<T>();
+  const { back: onBack } = useFormControls<T>();
   return (
     <button
       data-cy="back"

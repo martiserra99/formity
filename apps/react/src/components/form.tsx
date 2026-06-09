@@ -17,9 +17,9 @@ export default function Form<T extends Record<string, unknown>>({
   children,
 }: FormProps<T>) {
   const form = useForm({ defaultValues, resolver });
-  const { onNext } = useFormControls<T>();
+  const { next } = useFormControls<T>();
   return (
-    <form onSubmit={form.handleSubmit(onNext)} className="h-full">
+    <form onSubmit={form.handleSubmit(next)} className="h-full">
       <FormProvider {...form}>{children}</FormProvider>
     </form>
   );

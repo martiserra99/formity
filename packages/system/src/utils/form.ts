@@ -3,9 +3,9 @@ import type { Flow, FormFlow } from "../types/flow/plain";
 import type { State } from "../types/state/state";
 
 import type {
-  OnNext,
-  OnBack,
-  OnJump,
+  Next,
+  Back,
+  Jump,
   GetState,
   SetState,
 } from "../types/form-controls";
@@ -17,9 +17,9 @@ export function getForm(options: {
   flow: Flow;
   params: Record<string, unknown>;
   state: State;
-  onNext: OnNext<Record<string, unknown>>;
-  onBack: OnBack<Record<string, unknown>>;
-  onJump: OnJump<Record<string, unknown>>;
+  next: Next<Record<string, unknown>>;
+  back: Back<Record<string, unknown>>;
+  jump: Jump<Record<string, unknown>>;
   getState: GetState<Record<string, unknown>>;
   setState: SetState;
 }): unknown {
