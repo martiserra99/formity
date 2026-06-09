@@ -16,7 +16,8 @@ export type NestMemory =
   | ConditionMemory
   | LoopMemory
   | SwitchMemory
-  | JumpMemory;
+  | JumpMemory
+  | ModuleMemory;
 
 /**
  * Field values entered in the forms that are within a list.
@@ -58,6 +59,14 @@ export type SwitchMemory = {
 export type JumpMemory = {
   type: "jump";
   at: ItemMemory | undefined;
+};
+
+/**
+ * Field values entered in the forms that are within a module.
+ */
+export type ModuleMemory = {
+  type: "module";
+  module: ItemMemory | undefined;
 };
 
 /**

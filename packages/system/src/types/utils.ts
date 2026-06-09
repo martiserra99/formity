@@ -1,4 +1,5 @@
 import { ListStruct, ItemStruct } from "./struct";
+import { ModuleSchema } from "./schema";
 
 /**
  * Utility type that defines the structure of a form element in a multi-step form.
@@ -78,4 +79,12 @@ export type Jump<T extends ItemStruct> = {
   jump: {
     at: T;
   };
+};
+
+/**
+ * Utility type that defines the structure of a module element in a multi-step form.
+ */
+export type Module<T extends ModuleSchema> = {
+  type: "module";
+  module: T;
 };

@@ -1,4 +1,4 @@
-import type { Schema } from "../schema";
+import type { Schema, ModuleSchema } from "../schema";
 
 import type {
   ItemStruct,
@@ -12,6 +12,7 @@ import type {
   LoopStruct,
   SwitchStruct,
   JumpStruct,
+  ModuleStruct,
 } from "../struct";
 
 import type { Next, Back, Jump, GetState, SetState } from "../form-controls";
@@ -30,6 +31,26 @@ export type Flow<T extends Schema> = ListData<
   T["struct"],
   T["inputs"],
   T["inputs"],
+  T["params"]
+> extends [infer Result, ...unknown[]]
+  ? Result
+  : never;
+
+/**
+ * Defines the structure and behavior of a multi-step form module.
+ *
+ * @template T An object type extending `ModuleSchema` with the following properties:
+ * - `render` - the type of the rendered output for each form step.
+ * - `struct` — the structure of the module, including the values handled in each phase.
+ * - `inputs` — additional values available across all steps of the module.
+ * - `values` — flow values excluding input values.
+ * - `params` — values accessible when rendering each form step.
+ */
+export type Module<T extends ModuleSchema> = ListData<
+  T["render"],
+  T["struct"],
+  T["inputs"],
+  Join<T["inputs"], T["values"]>,
   T["params"]
 > extends [infer Result, ...unknown[]]
   ? Result
@@ -141,6 +162,8 @@ type NestData<
   ? SwitchData<Render, Struct, Inputs, Values, Params, JumpAt>
   : Struct extends JumpStruct
   ? JumpData<Render, Struct, Inputs, Params>
+  : Struct extends ModuleStruct
+  ? ModuleData<Render, Struct, Inputs, Values, Params, JumpAt>
   : never;
 
 type ListData<
@@ -342,6 +365,35 @@ type JumpData<
       JumpAt,
     ]
   : never;
+
+type ModuleData<
+  Render,
+  Struct extends ModuleStruct,
+  Inputs extends Record<string, unknown>,
+  Values extends Record<string, unknown>,
+  Params extends Record<string, unknown>,
+  JumpAt extends boolean = false,
+> = Struct["module"]["render"] extends Render
+  ? Inputs extends Struct["module"]["inputs"]
+    ? Values extends Join<
+        Struct["module"]["inputs"],
+        Struct["module"]["values"]
+      >
+      ? Params extends Struct["module"]["params"]
+        ? ListData<
+            Struct["module"]["render"],
+            Struct["module"]["struct"],
+            Struct["module"]["inputs"],
+            Join<Struct["module"]["inputs"], Struct["module"]["values"]>,
+            Struct["module"]["params"],
+            JumpAt
+          > extends [infer Result, infer Values, infer JumpAt]
+          ? [{ module: Result }, Values, JumpAt]
+          : never
+        : [{ module: never }, Values, JumpAt]
+      : [{ module: never }, Values, JumpAt]
+    : [{ module: never }, Values, JumpAt]
+  : [{ module: never }, Values, JumpAt];
 
 type Join<
   T extends Record<string, unknown>,

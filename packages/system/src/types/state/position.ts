@@ -6,7 +6,8 @@ export type Position =
   | ConditionPosition
   | LoopPosition
   | SwitchPosition
-  | JumpPosition;
+  | JumpPosition
+  | ModulePosition;
 
 /**
  * Position within a list.
@@ -47,4 +48,11 @@ export type SwitchPosition = {
  */
 export type JumpPosition = {
   type: "jump";
+};
+
+/**
+ * Position within a module.
+ */
+export type ModulePosition = {
+  type: "module";
 };

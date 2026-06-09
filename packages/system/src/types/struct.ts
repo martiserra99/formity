@@ -1,11 +1,7 @@
-/**
- * This type is meant to be extended and is used to define the structure of a multi-step form.
- */
+import type { ModuleSchema } from "./schema";
+
 export type Struct = ListStruct;
 
-/**
- * This type is meant to be extended and is used to define the structure of an element in a multi-step form.
- */
 export type ItemStruct =
   | FormStruct
   | VariablesStruct
@@ -13,9 +9,6 @@ export type ItemStruct =
   | ReturnStruct
   | NestStruct;
 
-/**
- * This type is meant to be extended and is used to define the structure of a form element in a multi-step form.
- */
 export type FormStruct = {
   type: "form";
   form: {
@@ -23,17 +16,11 @@ export type FormStruct = {
   };
 };
 
-/**
- * This type is meant to be extended and is used to define the structure of a variables element in a multi-step form.
- */
 export type VariablesStruct = {
   type: "variables";
   variables: Record<string, unknown>;
 };
 
-/**
- * This type is meant to be extended and is used to define the structure of a yield element in a multi-step form.
- */
 export type YieldStruct = {
   type: "yield";
   yield: {
@@ -42,32 +29,21 @@ export type YieldStruct = {
   };
 };
 
-/**
- * This type is meant to be extended and is used to define the structure of a return element in a multi-step form.
- */
 export type ReturnStruct = {
   type: "return";
   return: unknown;
 };
 
-/**
- * This type is meant to be extended and is used to define the structure of a nest element in a multi-step form.
- */
 export type NestStruct =
   | ListStruct
   | ConditionStruct
   | LoopStruct
   | SwitchStruct
-  | JumpStruct;
+  | JumpStruct
+  | ModuleStruct;
 
-/**
- * This type is meant to be extended and is used to define the structure of a list element in a multi-step form.
- */
 export type ListStruct = ItemStruct[];
 
-/**
- * This type is meant to be extended and is used to define the structure of a condition element in a multi-step form.
- */
 export type ConditionStruct = {
   type: "condition";
   condition: {
@@ -76,9 +52,6 @@ export type ConditionStruct = {
   };
 };
 
-/**
- * This type is meant to be extended and is used to define the structure of a loop element in a multi-step form.
- */
 export type LoopStruct = {
   type: "loop";
   loop: {
@@ -86,9 +59,6 @@ export type LoopStruct = {
   };
 };
 
-/**
- * This type is meant to be extended and is used to define the structure of a switch element in a multi-step form.
- */
 export type SwitchStruct = {
   type: "switch";
   switch: {
@@ -97,12 +67,14 @@ export type SwitchStruct = {
   };
 };
 
-/**
- * This type is meant to be extended and is used to define the structure of a jump element in a multi-step form.
- */
 export type JumpStruct = {
   type: "jump";
   jump: {
     at: FormStruct;
   };
+};
+
+export type ModuleStruct = {
+  type: "module";
+  module: ModuleSchema;
 };

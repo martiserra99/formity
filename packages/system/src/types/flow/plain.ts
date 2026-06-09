@@ -47,7 +47,8 @@ export type NestFlow<Render = unknown> =
   | ConditionFlow<Render>
   | LoopFlow<Render>
   | SwitchFlow<Render>
-  | JumpFlow<Render>;
+  | JumpFlow<Render>
+  | ModuleFlow<Render>;
 
 export type ListFlow<Render = unknown> = ItemFlow<Render>[];
 
@@ -81,4 +82,8 @@ export type JumpFlow<Render = unknown> = {
     id: unknown;
     at: FormFlow<Render>;
   };
+};
+
+export type ModuleFlow<Render = unknown> = {
+  module: Flow<Render>;
 };

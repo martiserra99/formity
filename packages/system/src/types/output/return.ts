@@ -9,6 +9,7 @@ import type {
   LoopStruct,
   SwitchStruct,
   JumpStruct,
+  ModuleStruct,
 } from "../struct";
 
 /**
@@ -42,6 +43,8 @@ type NestData<Nest extends NestStruct, Data, Flag> = Nest extends ListStruct
   ? SwitchData<Nest, Data, Flag>
   : Nest extends JumpStruct
   ? JumpData<Nest, Data>
+  : Nest extends ModuleStruct
+  ? ModuleData<Nest, Data, Flag>
   : never;
 
 type ListData<List extends ListStruct, Data, Flag> = List extends [
@@ -85,6 +88,12 @@ type JumpData<Jump extends JumpStruct, Data> = ItemData<
   Jump["jump"]["at"],
   Data,
   false
+>;
+
+type ModuleData<Module extends ModuleStruct, Data, Flag> = ListData<
+  Module["module"]["struct"],
+  Data,
+  Flag
 >;
 
 type BranchesData<
