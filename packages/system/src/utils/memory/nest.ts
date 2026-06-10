@@ -11,6 +11,7 @@ import * as ConditionMemoryUtils from "./nest.condition";
 import * as LoopMemoryUtils from "./nest.loop";
 import * as SwitchMemoryUtils from "./nest.switch";
 import * as JumpMemoryUtils from "./nest.jump";
+import * as ModuleMemoryUtils from "./nest.module";
 import * as FormMemoryUtils from "./form";
 
 /**
@@ -84,6 +85,8 @@ export function create(position: Position): NestMemory {
       return SwitchMemoryUtils.create();
     case "jump":
       return JumpMemoryUtils.create();
+    case "module":
+      return ModuleMemoryUtils.create();
   }
 }
 
@@ -99,6 +102,8 @@ export function clone(memory: NestMemory): NestMemory {
       return SwitchMemoryUtils.clone(memory);
     case "jump":
       return JumpMemoryUtils.clone(memory);
+    case "module":
+      return ModuleMemoryUtils.clone(memory);
   }
 }
 
@@ -117,6 +122,8 @@ export function getItem(
       return SwitchMemoryUtils.getItem(memory, position);
     case "jump":
       return JumpMemoryUtils.getItem(memory);
+    case "module":
+      return ModuleMemoryUtils.getItem(memory);
   }
 }
 
@@ -136,5 +143,7 @@ export function setItem(
       return SwitchMemoryUtils.setItem(memory, position, item);
     case "jump":
       return JumpMemoryUtils.setItem(memory, item);
+    case "module":
+      return ModuleMemoryUtils.setItem(memory, item);
   }
 }

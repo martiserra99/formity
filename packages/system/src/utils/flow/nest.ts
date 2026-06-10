@@ -6,6 +6,7 @@ import * as ConditionFlowUtils from "./nest.condition";
 import * as LoopFlowUtils from "./nest.loop";
 import * as SwitchFlowUtils from "./nest.switch";
 import * as JumpFlowUtils from "./nest.jump";
+import * as ModuleFlowUtils from "./nest.module";
 
 export function is(flow: ItemFlow): flow is NestFlow {
   return (
@@ -13,7 +14,8 @@ export function is(flow: ItemFlow): flow is NestFlow {
     ConditionFlowUtils.is(flow) ||
     LoopFlowUtils.is(flow) ||
     SwitchFlowUtils.is(flow) ||
-    JumpFlowUtils.is(flow)
+    JumpFlowUtils.is(flow) ||
+    ModuleFlowUtils.is(flow)
   );
 }
 
@@ -35,6 +37,9 @@ export function into(
   }
   if (JumpFlowUtils.is(flow)) {
     return JumpFlowUtils.into();
+  }
+  if (ModuleFlowUtils.is(flow)) {
+    return ModuleFlowUtils.into();
   }
   throw new Error("Invalid flow");
 }
@@ -59,6 +64,9 @@ export function next(
   if (JumpFlowUtils.is(flow)) {
     return JumpFlowUtils.next();
   }
+  if (ModuleFlowUtils.is(flow)) {
+    return ModuleFlowUtils.next();
+  }
   throw new Error("Invalid flow");
 }
 
@@ -78,6 +86,9 @@ export function jump(flow: NestFlow, id: unknown): Position[] | null {
   if (JumpFlowUtils.is(flow)) {
     return JumpFlowUtils.jump(flow, id);
   }
+  if (ModuleFlowUtils.is(flow)) {
+    return ModuleFlowUtils.jump(flow, id);
+  }
   throw new Error("Invalid flow");
 }
 
@@ -96,6 +107,9 @@ export function at(flow: NestFlow, position: Position): ItemFlow {
   }
   if (JumpFlowUtils.is(flow)) {
     return JumpFlowUtils.at(flow);
+  }
+  if (ModuleFlowUtils.is(flow)) {
+    return ModuleFlowUtils.at(flow);
   }
   throw new Error("Invalid flow");
 }
