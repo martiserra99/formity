@@ -1,5 +1,17 @@
 # @formity/react
 
+## 3.0.0
+
+### Major Changes
+
+- Renamed onBack, onNext, onJump to back, next, jump.
+- Added module element.
+
+### Patch Changes
+
+- Updated dependencies
+  - @formity/system@3.0.0
+
 ## 2.0.0
 
 ### Major Changes
