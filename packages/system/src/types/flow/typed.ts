@@ -102,7 +102,7 @@ type FormData<
       }) => Render;
     };
   },
-  Join<Struct["form"]["fields"], Values>,
+  Join<Values, Struct["form"]["fields"]>,
   JumpAt,
 ];
 
@@ -114,7 +114,7 @@ type VariablesData<
   {
     variables: (values: Values) => Struct["variables"];
   },
-  Join<Struct["variables"], Values>,
+  Join<Values, Struct["variables"]>,
   JumpAt,
 ];
 
@@ -382,10 +382,13 @@ type ModuleData<
             Struct["module"]["struct"],
             Struct["module"]["inputs"],
             Join<Struct["module"]["inputs"], Struct["module"]["values"]>,
-            Struct["module"]["params"],
-            JumpAt
-          > extends [infer Result, infer Values, infer JumpAt]
-          ? [{ module: Result }, Values, JumpAt]
+            Struct["module"]["params"]
+          > extends [infer Result, infer Locals, infer JumpIn]
+          ? Locals extends Record<string, unknown>
+            ? JumpIn extends true
+              ? [{ module: Result }, Locals, JumpIn]
+              : [{ module: Result }, Join<Values, Locals>, JumpAt]
+            : never
           : never
         : [{ module: never }, Values, JumpAt]
       : [{ module: never }, Values, JumpAt]
