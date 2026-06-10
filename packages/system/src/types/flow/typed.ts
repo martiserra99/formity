@@ -372,16 +372,13 @@ type ModuleData<
   JumpAt extends boolean = false,
 > = Struct["module"]["render"] extends Render
   ? Inputs extends Struct["module"]["inputs"]
-    ? Values extends Join<
-        Struct["module"]["inputs"],
-        Struct["module"]["values"]
-      >
+    ? Values extends Struct["module"]["values"]
       ? Params extends Struct["module"]["params"]
         ? ListData<
             Struct["module"]["render"],
             Struct["module"]["struct"],
             Struct["module"]["inputs"],
-            Join<Struct["module"]["inputs"], Struct["module"]["values"]>,
+            Struct["module"]["values"],
             Struct["module"]["params"]
           > extends [infer Result, infer Locals, infer JumpIn]
           ? Locals extends Record<string, unknown>
