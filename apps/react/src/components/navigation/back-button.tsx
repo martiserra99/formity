@@ -6,12 +6,12 @@ import { cn } from "../../utils";
 
 export default function BackButton<T extends Record<string, unknown>>() {
   const { getValues } = useFormContext<T>();
-  const { back: onBack } = useFormControls<T>();
+  const { back } = useFormControls<T>();
   return (
     <button
       data-cy="back"
       type="button"
-      onClick={() => onBack(getValues())}
+      onClick={() => back(getValues())}
       className={cn(
         "block rounded-full border border-neutral-800 bg-neutral-950 px-6 py-2 hover:bg-neutral-800",
         "focus:outline-none focus:ring-2 focus:ring-white/10 focus:ring-offset-2 focus:ring-offset-black",
