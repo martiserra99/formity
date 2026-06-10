@@ -346,14 +346,11 @@ type JumpData<
   Struct extends JumpStruct,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = ListData<
-  Render,
-  Struct["jump"]["at"],
-  Inputs,
-  Inputs,
-  Params,
-  true
-> extends [infer Result, infer Values, infer JumpAt]
+> = FormData<Render, Struct["jump"]["at"], Inputs, Params, true> extends [
+  infer Result,
+  infer Values,
+  infer JumpAt,
+]
   ? [
       {
         jump: {
