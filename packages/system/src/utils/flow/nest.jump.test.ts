@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import type { JumpFlow, FormFlow } from "../../types/flow/plain";
+import type { JumpFlow, ListFlow } from "../../types/flow/plain";
 
 import { into, next, at } from "./nest.jump";
 
@@ -21,12 +21,14 @@ describe("JumpFlow", () => {
 
   describe("at", () => {
     it("retrieves the item of the `JumpFlow` object", () => {
-      const item: FormFlow = {
-        form: {
-          fields: () => ({}),
-          render: () => ({}),
+      const item: ListFlow = [
+        {
+          form: {
+            fields: () => ({}),
+            render: () => ({}),
+          },
         },
-      };
+      ];
       const flow: JumpFlow = {
         jump: {
           id: "A",

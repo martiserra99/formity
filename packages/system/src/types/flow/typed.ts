@@ -346,7 +346,7 @@ type JumpData<
   Struct extends JumpStruct,
   Inputs extends Record<string, unknown>,
   Params extends Record<string, unknown>,
-> = ItemData<
+> = ListData<
   Render,
   Struct["jump"]["at"],
   Inputs,

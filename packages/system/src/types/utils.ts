@@ -1,4 +1,4 @@
-import { ListStruct, ItemStruct } from "./struct";
+import { ListStruct } from "./struct";
 import { ModuleSchema } from "./schema";
 
 /**
@@ -74,7 +74,7 @@ export type Switch<T extends { branches: ListStruct[]; default: ListStruct }> =
 /**
  * Utility type that defines the structure of a jump element in a multi-step form.
  */
-export type Jump<T extends ItemStruct> = {
+export type Jump<T extends ListStruct> = {
   type: "jump";
   jump: {
     at: T;

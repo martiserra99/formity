@@ -55,9 +55,11 @@ describe("NestFlow", () => {
                     {
                       jump: {
                         id: "target",
-                        at: {
-                          form: { fields: () => ({}), render: () => ({}) },
-                        },
+                        at: [
+                          {
+                            form: { fields: () => ({}), render: () => ({}) },
+                          },
+                        ],
                       },
                     },
                   ],

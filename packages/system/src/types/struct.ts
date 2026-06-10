@@ -70,7 +70,7 @@ export type SwitchStruct = {
 export type JumpStruct = {
   type: "jump";
   jump: {
-    at: ItemStruct;
+    at: ListStruct;
   };
 };
 

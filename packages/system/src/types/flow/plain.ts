@@ -80,10 +80,10 @@ export type SwitchFlow<Render = unknown> = {
 export type JumpFlow<Render = unknown> = {
   jump: {
     id: unknown;
-    at: ItemFlow<Render>;
+    at: ListFlow<Render>;
   };
 };
 
 export type ModuleFlow<Render = unknown> = {
-  module: Flow<Render>;
+  module: ListFlow<Render>;
 };
