@@ -23,7 +23,7 @@ import type { Next, Back, Jump, GetState, SetState } from "../form-controls";
  * @template T An object type extending `Schema` with the following properties:
  * - `render` - the type of the rendered output for each form step.
  * - `struct` — the structure of the multi-step form, including the values handled in each phase.
- * - `inputs` — additional values available across all steps of the multi-step form.
+ * - `inputs` — values that have been provided with the `inputs` prop.
  * - `params` — values accessible when rendering each form step.
  */
 export type Flow<T extends Schema> = ListData<
@@ -42,15 +42,15 @@ export type Flow<T extends Schema> = ListData<
  * @template T An object type extending `ModuleSchema` with the following properties:
  * - `render` - the type of the rendered output for each form step.
  * - `struct` — the structure of the module, including the values handled in each phase.
- * - `inputs` — additional values available across all steps of the module.
- * - `values` — flow values excluding input values.
+ * - `inputs` — values that have been provided with the `inputs` prop.
+ * - `values` — values collected throughout the flow.
  * - `params` — values accessible when rendering each form step.
  */
 export type Module<T extends ModuleSchema> = ListData<
   T["render"],
   T["struct"],
   T["inputs"],
-  Join<T["inputs"], T["values"]>,
+  T["values"],
   T["params"]
 > extends [infer Result, ...unknown[]]
   ? Result
