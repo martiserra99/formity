@@ -23,7 +23,6 @@ describe("ConditionFlow", () => {
         },
       };
       const position = into(flow, {});
-      console.log("position", position);
       expect(position).toEqual({ type: "condition", branch: "then", slot: 0 });
     });
 
